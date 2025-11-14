@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="FaithGuard - Protecting Your Digital Faith">
+    <meta name="keywords" content="FaithGuard, Digital Security, Faith Protection, Online Safety">
+    <meta name="author" content="WWTW - FaithGuard">
+    <meta name="robots" content="noindex">
+    <!-- Version -->
+    <meta name="version" content="0.0.0">
+    <meta name="release" content="2025-11-14">
+    <!-- Title -->
+    <title>FaithGuard</title>
+    <!-- Favicon -->
+    <link rel="icon" href="./assets/img/#" type="image/x-icon">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark c-nav">
+        <div class="container-fluid">
+            <a class="navbar-brand c-nav__brand" href="Home.html">
+                <!--<img src="./assets/img/logo.png" alt="FaithGuard Logo" class="d-inline-block align-text-top c-nav__logo">-->
+                FaithGuard
+            </a>
+            <button class="navbar-toggler c-nav__toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="navbar-toggler-icon c-nav__toggler--btn bi bi-list">
+                    <!-- List icon -->
+                </i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item c-nav__item">
+                        <a class="nav-link active c-nav__link c-nav__link--active" aria-current="page" href="Home.html">Home</a>
+                    </li>
+                    <li class="nav-item c-nav__item">
+                        <a class="nav-link c-nav__link" href="Resources.html">Resources</a>
+                    </li>
+                    <li class="nav-item c-nav__item">
+                        <a class="nav-link c-nav__link" href="About.html">About</a>
+                    </li>
+                </ul>
+                <div class="d-flex me-3 dropdown c-dropdown">
+                    <button class="btn c-btn dropdown-toggle" type="button" id="loginDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-person-circle"></i>
+                    </button>
+                    <ul class="dropdown-menu c-dropdown__menu" aria-labelledby="loginDropdown">
+                        <li>
+                            <h6 class="dropdown-header c-dropdown__header">Sign Up / Log In</h6>
+                        </li>
+                        <li>
+                            <input type="text" id="signupUsername" class="form-control mb-2" placeholder="Username">
+                        </li>
+                        <li>
+                            <input type="password" id="signupPassword" class="form-control mb-2" placeholder="Password">
+                        </li>
+                        <li>
+                            <button class="btn c-btn btn-sm mb-2">Sign Up / Log In</button>
+                        </li> <!-- Sign Up/Log In button functionality to be implemented in php -->
+                    </ul>
+                </div>
+                <form class="d-flex me-3">
+                    <input class="form-control me-2" type="search" placeholder="Search resources..." aria-label="Search">
+                    <button class="btn c-btn" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+    <!-- Hero Content -->
+    <header class="c-hero">
+        <div class="c-hero__content text-center">
+            <h1 class="c-hero__title">Welcome to FaithGuard</h1>
+            <p class="c-hero__subtitle">Protecting Your Digital Faith</p>
+            <a href="Resources.html" class="btn c-btn c-hero__btn">Explore Resources</a>
+        </div>
+    </header>
+    <!-- Main Content -->
+    <main class="c-main container my-5">
+        <section class="c-main__section mb-5">
+            <h2 class="c-main__title">Our Mission</h2>
+            <p class="c-main__text">At FaithGuard, we are dedicated to providing resources and tools to help individuals protect their digital faith. In an increasingly connected world, safeguarding your beliefs and values online is more important than ever.</p>
+        </section>
+        <section class="c-main__section mb-5">
+            <h2 class="c-main__title">Featured Resources</h2>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card c-card">
+                        <div class="card-body">
+                            <h5 class="card-title c-card__title">Digital Security Basics</h5>
+                            <p class="card-text c-card__text">Learn the fundamentals of digital security and how to protect your online presence.</p>
+                            <a href="Resources.html" class="btn c-btn c-card__btn">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card c-card">
+                        <div class="card-body">
+                            <h5 class="card-title c-card__title">Faith-Based Online Communities</h5>
+                            <p class="card-text c-card__text">Discover safe and supportive online communities that align with your faith.</p>
+                            <a href="Resources.html" class="btn c-btn c-card__btn">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </main>
+</body>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<!-- Custom JS -->
+<script src="./assets/js/main.js"></script>
+
+</html>
