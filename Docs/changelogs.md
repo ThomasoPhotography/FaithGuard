@@ -2,13 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.0.1] - 2025-11-14
 
 ### Added
-- For new features.
+- SCSS got variables for colours and font
+- SCSS updated with Generic, element and object style.
+- SCSS updated with components like navigation and hero.
+- HTML updated dummy text in the six cards.
 
 ### Changed
 - For changes in existing functionality.
@@ -25,12 +26,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 - In case of vulnerabilities.
 
-## [1.0.0] - YYYY-MM-DD
+## [0.0.0] - 2025-11-14
 
 ### Added
 - Initial release of the website.
-- Core quiz functionality for personalized guidance.
-- Faith-based resources and progress tracking.
 
 ### Changed
 - N/A
@@ -45,7 +44,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - N/A
 
 ### Security
-- Implemented end-to-end encryption for user data.
+- N/A
 
 ---
 

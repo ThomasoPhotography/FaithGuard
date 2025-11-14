@@ -4,19 +4,58 @@
 /*---------------------------------------/*
  # GENERIC - BOOTSTRAP
 /*---------------------------------------*/
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Garamond", serif;
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+}
+
+.dropdown-menu.show {
+  margin: 0.5rem 1rem 0 0;
+}
+
 /*---------------------------------------/*
  # ELEMENTS
 /*---------------------------------------*/
+h1, h2, h3, h4, h5, h6 {
+  margin-bottom: 1rem;
+}
+
+p {
+  margin-bottom: 1rem;
+}
+
+a {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
 /*---------------------------------------/*
  # OBJECTS
 /*---------------------------------------*/
+.container {
+  max-width: 75rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
 /*---------------------------------------/*
  # COMPONENTS
 /*---------------------------------------*/
+.c-nav {
+  color: #F5F5DC;
+  background-color: #2F4F4F;
+}
 .c-nav__brand {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #000;
   text-decoration: none;
 }
 .c-nav__brand:hover {
@@ -31,14 +70,13 @@
   margin-right: 0;
 }
 .c-nav__item a {
-  color: #000;
   text-decoration: none;
 }
 .c-nav__item a:hover {
   text-decoration: underline;
 }
 .c-nav__link {
-  color: #000;
+  color: #F5F5DC;
   text-decoration: none;
 }
 .c-nav__link--active {
@@ -55,7 +93,7 @@
 }
 .c-nav__toggler--btn {
   font-size: 1.5rem;
-  color: #000;
+  color: #F5F5DC;
 }
 .c-nav__logo {
   width: 1.9rem;
@@ -106,6 +144,49 @@
   background-color: #0056b3;
   color: #fff;
   text-decoration: none;
+}
+
+.c-dropdown__btn {
+  color: #F5F5DC;
+  border: none;
+  padding: 0.5rem 1rem;
+}
+.c-dropdown__btn:hover {
+  color: #F5F5DC;
+  background-color: rgb(77, 0, 19.25);
+}
+.c-dropdown__menu {
+  background-color: rgb(51.5, 0, 12.875);
+  border: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.c-dropdown__header {
+  font-weight: bold;
+  color: #F5F5DC;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.c-dropdown__info {
+  width: 100%;
+  padding: 0.5rem;
+  background-color: rgb(77, 0, 19.25);
+  border: none;
+  color: #F5F5DC;
+}
+.c-dropdown__info::-moz-placeholder {
+  color: #F5F5DC;
+}
+.c-dropdown__info::placeholder {
+  color: #F5F5DC;
+}
+.c-dropdown__info:focus {
+  background-color: #800020;
+  color: #F5F5DC;
+  outline: none;
+  box-shadow: 0 0 5px rgb(230, 0, 57.5);
+}
+.c-dropdown__icon {
+  font-size: 1.5rem;
 }
 
 /*---------------------------------------/*

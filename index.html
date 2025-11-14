@@ -49,21 +49,21 @@
                     </li>
                 </ul>
                 <div class="d-flex me-3 dropdown c-dropdown">
-                    <button class="btn c-btn dropdown-toggle" type="button" id="loginDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-person-circle"></i>
+                    <button class="btn c-btn c-dropdown__btn dropdown-toggle" type="button" id="loginDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="c-dropdown__icon bi bi-person-circle"></i>
                     </button>
                     <ul class="dropdown-menu c-dropdown__menu" aria-labelledby="loginDropdown">
                         <li>
                             <h6 class="dropdown-header c-dropdown__header">Sign Up / Log In</h6>
                         </li>
                         <li>
-                            <input type="text" id="signupUsername" class="form-control mb-2" placeholder="Username">
+                            <input type="text" id="signupUsername" class="form-control c-dropdown__info mb-2" placeholder="Username">
                         </li>
                         <li>
-                            <input type="password" id="signupPassword" class="form-control mb-2" placeholder="Password">
+                            <input type="password" id="signupPassword" class="form-control c-dropdown__info mb-2" placeholder="Password">
                         </li>
                         <li>
-                            <button class="btn c-btn btn-sm mb-2">Sign Up / Log In</button>
+                            <button class="btn c-btn c-dropdown__btn btn-sm mb-2">Sign Up / Log In</button>
                         </li> <!-- Sign Up/Log In button functionality to be implemented in php -->
                     </ul>
                 </div>
@@ -78,38 +78,78 @@
     <header class="c-hero">
         <div class="c-hero__content text-center">
             <h1 class="c-hero__title">Welcome to FaithGuard</h1>
-            <p class="c-hero__subtitle">Protecting Your Digital Faith</p>
-            <a href="Resources.html" class="btn c-btn c-hero__btn">Explore Resources</a>
+            <h2 class="c-hero__subtitle">Faith-Based Resources for Recovery</h2>
+            <p class="c-hero__text">Free, vetted resources to support your journey toward spiritual freedom. Rooted in Christian hope and redemption.</p>
+            <button onclick="openQuizModal()" class="btn c-btn c-hero__btn">Take the Quiz</button>
         </div>
     </header>
     <!-- Main Content -->
     <main class="c-main container my-5">
         <section class="c-main__section mb-5">
             <h2 class="c-main__title">Our Mission</h2>
-            <p class="c-main__text">At FaithGuard, we are dedicated to providing resources and tools to help individuals protect their digital faith. In an increasingly connected world, safeguarding your beliefs and values online is more important than ever.</p>
+            <p class="c-main__text">At FaithGuard, we are dedicated to providing resources and tools to help individuals regain and protect their faith from digital influenced addictions like porn.</p>
         </section>
         <section class="c-main__section mb-5">
             <h2 class="c-main__title">Featured Resources</h2>
             <div class="row">
                 <div class="col-md-4 mb-4">
                     <div class="card c-card">
-                        <div class="card-body">
-                            <h5 class="card-title c-card__title">Digital Security Basics</h5>
-                            <p class="card-text c-card__text">Learn the fundamentals of digital security and how to protect your online presence.</p>
+                        <div class="card-body c-card__body">
+                            <h5 class="card-title c-card__title">Devotional: Overcoming Temptation</h5>
+                            <p class="card-text c-card__text">Daily readings with Bible verses on purity and strength.</p>
                             <a href="Resources.html" class="btn c-btn c-card__btn">Learn More</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4 mb-4">
                     <div class="card c-card">
-                        <div class="card-body">
-                            <h5 class="card-title c-card__title">Faith-Based Online Communities</h5>
-                            <p class="card-text c-card__text">Discover safe and supportive online communities that align with your faith.</p>
+                        <div class="card-body c-card__body">
+                            <h5 class="card-title c-card__title">Prayer Guide for Accountability</h5>
+                            <p class="card-text c-card__text">Sample prayers for forgiveness and spiritual warfare.</p>
+                            <a href="Resources.html" class="btn c-btn c-card__btn">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card c-card">
+                        <div class="card-body c-card__body">
+                            <h5 class="card-title c-card__title">Bible Verses on Purity</h5>
+                            <p class="card-text c-card__text">Curated scriptures for encouragement and reflection.</p>
                             <a href="Resources.html" class="btn c-btn c-card__btn">Learn More</a>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card c-card">
+                        <div class="card-body c-card__body">
+                            <h5 class="card-title c-card__title">Accountability Partner Tips</h5>
+                            <p class="card-text c-card__text">Guidance on building supportive relationships for recovery.</p>
+                            <a href="Resources.html" class="btn c-btn c-card__btn">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card c-card">
+                        <div class="card-body c-card__body">
+                            <h5 class="card-title c-card__title">Digital Detox Strategies</h5>
+                            <p class="card-text c-card__text">Practical steps to reduce screen time and focus on faith.</p>
+                            <a href="Resources.html" class="btn c-btn c-card__btn">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card c-card">
+                        <div class="card-body c-card__body">
+                            <h5 class="card-title c-card__title">Testimonies of Hope</h5>
+                            <p class="card-text c-card__text">Stories of redemption and strength from the community.</p>
+                            <a href="Resources.html" class="btn c-btn c-card__btn">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 </body>
 <!-- Bootstrap JS -->
