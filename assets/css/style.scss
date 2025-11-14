@@ -1,32 +1,71 @@
 /*---------------------------------------/*
  # SETTINGS
 /*---------------------------------------*/
+// Variables for "Old Money" and "Dark Academia" theme
+$primary-bg: #2F4F4F; // Deep forest green
+$secondary-bg: #12124d; // Navy blue
+$accent: #800020; // Burgundy
+$highlight: #D4AF37; // Muted gold
+$text-light: #F5F5DC; // Cream
+$text-dark: #282727; // Dark brown
+$font-family: 'Garamond', serif; // Classic serif font (Can change)
 
 /*---------------------------------------/*
  # GENERIC - BOOTSTRAP
 /*---------------------------------------*/
+* {
+    box-sizing: border-box;
+}
+body {
+    font-family: $font-family;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
 
+.dropdown-menu.show{
+    margin: 0.5rem 1rem 0 0;
+}
 /*---------------------------------------/*
  # ELEMENTS
 /*---------------------------------------*/
+h1, h2, h3, h4, h5, h6 {
+    margin-bottom: 1rem;
+}
 
+p {
+    margin-bottom: 1rem;
+}
+
+a {
+    text-decoration: none;
+    &:hover {
+        text-decoration: underline;
+    }
+}
 /*---------------------------------------/*
  # OBJECTS
 /*---------------------------------------*/
-
+.container {
+    max-width: 75rem;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
 /*---------------------------------------/*
  # COMPONENTS
 /*---------------------------------------*/
 .c-nav {
+    color: $text-light;
+    background-color: $primary-bg;
+
     &__brand {
         font-size: 1.5rem;
         font-weight: bold;
-        color: #000;
         text-decoration: none;
 
         &:hover {
             text-decoration: none;
-            color: #282727;
+            color: $text-dark;
         }
     }
 
@@ -39,7 +78,6 @@
         }
 
         a {
-            color: #000;
             text-decoration: none;
 
             &:hover {
@@ -49,7 +87,7 @@
     }
 
     &__link {
-        color: #000;
+        color: $text-light;
         text-decoration: none;
 
         &--active {
@@ -69,7 +107,7 @@
 
         &--btn {
             font-size: 1.5rem;
-            color: #000;
+            color: $text-light;
         }
     }
 
@@ -130,6 +168,55 @@
             color: #fff;
             text-decoration: none;
         }
+    }
+}
+
+.c-dropdown {
+    &__btn {
+        color: $text-light;
+        border: none;
+        padding: 0.5rem 1rem;
+
+        &:hover {
+            color: $text-light;
+            background-color: darken($accent, 10%);
+        }
+    }
+
+    &__menu {
+        background-color: darken($accent, 15%);
+        border: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    &__header {
+        font-weight: bold;
+        color: $text-light;
+        padding: 0.5rem 1rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    &__info {
+        width: 100%;
+        padding: 0.5rem;
+        background-color: darken($accent, 10%);
+        border: none;
+        color: $text-light;
+        
+        &::placeholder{
+            color: $text-light
+        }
+        
+        &:focus {
+            background-color: $accent;
+            color: $text-light;
+            outline: none;
+            box-shadow: 0 0 5px lighten($accent, 20%);
+        }
+    }
+
+    &__icon {
+        font-size: 1.5rem;
     }
 }
 
