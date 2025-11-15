@@ -10,7 +10,7 @@
     <meta name="author" content="WWTW - FaithGuard">
     <meta name="robots" content="noindex">
     <!-- Version -->
-    <meta name="version" content="0.0.2">
+    <meta name="version" content="0.0.3">
     <meta name="release" content="2025-11-15">
     <!-- Title -->
     <title>FaithGuard</title>
@@ -68,8 +68,8 @@
                     </ul>
                 </div>
                 <form class="d-flex me-3">
-                    <input class="form-control me-2" type="search" placeholder="Search resources..." aria-label="Search">
-                    <button class="btn c-btn" type="submit">Search</button>
+                    <input class="form-control c-nav__search me-2" type="search" placeholder="Search resources..." aria-label="Search">
+                    <button class="btn c-btn c-nav__btn" type="submit">Search</button>
                 </form>
             </div>
         </div>
@@ -167,15 +167,17 @@
             </div>
             <p class="c-cta__verse"><em>"Therefore, if anyone is in Christ, the new creation has come: The old has gone, the new is here!" – 2 Corinthians 5:17</em></p>
         </section>
-        <!-- Community Impact Section -->
-         <section class="c-main__section c-impact mb-5">
+    </main>
+    <!-- Community Impact Section -->
+    <article class="container-fluid mb-4">
+        <section class="c-main__section c-impact mb-5">
             <h2 class="c-impact__title text-center">Community Impact</h2>
             <p class="c-impact__intro text-center">Hear from those who have found hope and strength through FaithGuard's faith-based resources.</p>
             <div class="row">
                 <!-- Static input, get's changed in PHP -->
                 <div class="col-md-4 mb-4">
-                    <div class="card c-card">
-                        <div class="card-body c-card__body">
+                    <div class="card c-card c-impact__card">
+                        <div class="card-body c-card__body c-impact__body">
                             <blockquote class="c-impact__quote">"FaithGuard's devotionals helped me rebuild my relationship with God after years of struggle. I'm free now."</blockquote>
                             <cite class="c-impact__cite">- Anonymous User</cite>
                         </div>
@@ -198,8 +200,8 @@
                     </div>
                 </div> -->
             </div>
-         </section>
-    </main>
+        </section>
+    </article>
     <!-- Footer -->
     <footer class="c-footer">
         <div class="container">
@@ -222,6 +224,128 @@
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 <!-- Custom JS -->
-<script src="./assets/js/main.js"></script>
+<script>
+// #region ***  DOM references                           ***********
+let htmlQuizModal, htmlQuizForm, htmlSignupUsername, htmlSignupPassword;
+// #endregion
 
+// #region ***  Callback-Visualisation - show___         ***********
+const showQuizModal = function () {
+    const modal = new bootstrap.Modal(htmlQuizModal);
+    modal.show();
+};
+
+const showLoginStatus = function () {
+    // No UI changes needed for now, but can expand for dashboard link
+};
+// #endregion
+
+// #region ***  Callback-No Visualisation - callback___  ***********
+const callbackSignUpLogIn = function () {
+    const username = htmlSignupUsername.value.trim();
+    const password = htmlSignupPassword.value.trim();
+    
+    if (!username || !password) {
+        alert('Please enter both username and password.');
+        return;
+    }
+    
+    const storedUser = getStoredUser();
+    if (!storedUser) {
+        // Signup: Store new user
+        localStorage.setItem('user', JSON.stringify({ username, password }));
+        alert('Signed up successfully! You can now log in.');
+    } else {
+        // Login: Check credentials
+        if (storedUser.username === username && storedUser.password === password) {
+            localStorage.setItem('loggedIn', 'true');
+            alert('Logged in successfully!');
+            // Redirect to dashboard if needed
+        } else {
+            alert('Invalid username or password.');
+        }
+    }
+};
+
+const callbackSubmitQuiz = function () {
+    const formData = new FormData(htmlQuizForm);
+    let results = {};
+    
+    // Collect radio and checkbox values
+    for (let [key, value] of formData.entries()) {
+        if (results[key]) {
+            if (Array.isArray(results[key])) {
+                results[key].push(value);
+            } else {
+                results[key] = [results[key], value];
+            }
+        } else {
+            results[key] = value;
+        }
+    }
+    
+    // Validate: Ensure at least one option per question
+    if (!results.frequency || (!results.triggers || results.triggers.length === 0) || !results.readiness) {
+        alert('Please answer all questions.');
+        return;
+    }
+    
+    // Store results locally (confidential)
+    localStorage.setItem('quizResults', JSON.stringify(results));
+    alert('Quiz submitted! Results saved locally. Personalized guidance coming soon.');
+    
+    // Close modal
+    const modal = bootstrap.Modal.getInstance(htmlQuizModal);
+    modal.hide();
+    
+    // Reset form
+    htmlQuizForm.reset();
+};
+// #endregion
+
+// #region ***  Data Access - get___                     ***********
+const getStoredUser = function () {
+    return JSON.parse(localStorage.getItem('user') || 'null');
+};
+// #endregion
+
+// #region ***  Event Listeners - listenTo___            ***********
+const listenToSignUpLogIn = function () {
+    const button = document.querySelector('.js-log');
+    if (button) {
+        button.addEventListener('click', callbackSignUpLogIn);
+    }
+};
+
+const listenToQuizModal = function () {
+    const openButtons = document.querySelectorAll('.js-modal');
+    openButtons.forEach(button => {
+        button.addEventListener('click', showQuizModal);
+    });
+};
+
+const listenToSubmitQuiz = function () {
+    const submitButton = document.querySelector('.js-submit');
+    if (submitButton) {
+        submitButton.addEventListener('click', callbackSubmitQuiz);
+    }
+};
+// #endregion
+
+// #region ***  Init / DOMContentLoaded                  ***********
+const init = function () {
+    console.log('Page loaded and DOM fully parsed');
+    
+    // Get DOM references
+    htmlQuizModal = document.getElementById('quizModal');
+    htmlQuizForm = document.getElementById('quizForm');
+    htmlSignupUsername = document.getElementById('signupUsername');
+    htmlSignupPassword = document.getElementById('signupPassword');
+    // Set up event listeners
+    listenToSignUpLogIn();
+    listenToQuizModal();
+    listenToSubmitQuiz();
+};
+document.addEventListener('DOMContentLoaded', init);
+</script>
 </html>
