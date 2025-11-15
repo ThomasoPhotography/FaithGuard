@@ -27,6 +27,148 @@ body {
 .dropdown-menu.show{
     margin: 0.5rem 1rem 0 0;
 }
+
+.navbar-toggler{
+    &:active, &:focus{
+        outline: none;
+        box-shadow: none;
+    }
+}
+
+.modal{
+    &-content{
+        background-color: $primary-bg;
+        border: 2px solid $accent;
+        border-radius: .5rem;
+        color: $text-light;
+    }
+
+    &-header{
+        background-color: $primary-bg;
+        border-bottom: 2px solid $highlight;
+
+        .modal-title{
+            color: $highlight;
+            font-weight: bold;
+        }
+
+        .btn-close{
+            filter: invert(1);
+            opacity: 0.7;
+
+            &:hover{
+                opacity: 1;
+            }
+        }
+    }
+
+    &-body{
+        padding: 2rem;
+
+        .text-muted{
+            color: lighten($text-dark, 30%) !important;
+        }
+
+        .form-label{
+            color: $text-light;
+            margin-bottom: .5rem;
+        }
+
+        .form-select{
+            background-color: darken($primary-bg, 5%);
+            border: 1px solid $highlight;
+            color: $text-light;
+            padding: .5rem;
+            border-radius: .25rem;
+
+            &::placeholder{
+                color: $text-light
+            }
+
+            &:focus {
+                background-color: $primary-bg;
+                color: $text-light;
+                border-color: $accent;
+                box-shadow: 0 0 5px lighten($accent, 20%);
+            }
+
+            option {
+                background-color: $primary-bg;
+                color: $text-light;
+
+                &:hover {
+                    background-color: darken($accent, 10%);
+                    color: $text-light;
+                }
+
+                &:focus {
+                    background-color: $accent;
+                    color: $text-light;
+                }
+            }
+        }
+
+        .form-check{
+            margin-bottom: .75rem;
+
+            &-input{
+                background-color: darken($primary-bg, 5%);
+                border: 1px solid $highlight;
+                color: $text-light;
+
+                &:checked{
+                    background-color: $accent;
+                    border-color: $accent;
+                }
+
+                &:focus {
+                    background-color: $primary-bg;
+                    color: $text-light;
+                    border-color: $accent;
+                    box-shadow: 0 0 0 .2rem lighten($accent, 20%);
+                }
+            }
+
+            &-label{
+                color: $text-light;
+                margin-left: .5rem;
+                cursor: pointer;
+            }
+        }
+    }
+
+    &-footer{
+        background-color: $primary-bg;
+        border-top: 2px solid $highlight;
+        padding: 1rem 2rem;
+
+        .btn-secondary{
+            background-color: darken($primary-bg, 5%);
+            border: 1px solid $highlight;
+            color: $text-light;
+            padding: .5rem 1rem;
+            border-radius: .25rem;
+
+            &:hover {
+                background-color: $accent;
+                color: $text-light;
+                text-decoration: none;
+            }
+        }
+
+        .c-btn{
+            background-color: $accent;
+            color: $text-light;
+            border: none;
+
+            &:hover {
+                background-color: darken($accent, 10%);
+                color: $text-light;
+                text-decoration: none;
+            }
+        }
+    }
+}
 /*---------------------------------------/*
  # ELEMENTS
 /*---------------------------------------*/
@@ -104,7 +246,7 @@ a {
         border: none;
         background: transparent;
         padding: 0;
-        margin: 0;
+        margin-left: .5rem;
 
         &--btn {
             font-size: 1.5rem;
@@ -249,6 +391,15 @@ a {
 
     &__icon {
         font-size: 1.5rem;
+    }
+
+    &__item {
+        color: $text-light;
+
+        &:hover {
+            background-color: darken($accent, 10%);
+            color: $text-light;
+        }
     }
 }
 

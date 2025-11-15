@@ -31,12 +31,31 @@
                 <!--<img src="./assets/img/logo.png" alt="FaithGuard Logo" class="d-inline-block align-text-top c-nav__logo">-->
                 FaithGuard
             </a>
-            <button class="navbar-toggler c-nav__toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <i class="navbar-toggler-icon c-nav__toggler--btn bi bi-list">
-                    <!-- List icon -->
-                </i>
+            <!-- Login Dropdown -->
+            <div class="d-flex me-3 dropdown c-dropdown order-lg-3">
+                <button class="btn c-btn c-dropdown__btn js-dropdown-btn dropdown-toggle" type="button" id="loginDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="c-dropdown__icon bi bi-person-circle"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu js-dropdown-menu" aria-labelledby="loginDropdown">
+                    <li>
+                        <h6 class="dropdown-header c-dropdown__header">Sign Up / Log In</h6>
+                    </li>
+                    <li>
+                        <input type="text" id="signupUsername" class="form-control c-dropdown__info mb-2" placeholder="Username">
+                    </li>
+                    <li>
+                        <input type="password" id="signupPassword" class="form-control c-dropdown__info mb-2" placeholder="Password">
+                    </li>
+                    <li>
+                        <button class="btn c-btn c-dropdown__btn js-log btn-sm mb-2">Sign Up / Log In</button>
+                    </li> <!-- Sign Up/Log In button functionality to be implemented in php -->
+                </ul>
+            </div>
+            <!-- Navbar Toggler and Links -->
+            <button class="navbar-toggler c-nav__toggler bi bi-list order-lg-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
+            <!-- Collapsable navbar content -->
+            <div class="collapse navbar-collapse order-lg-1" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item c-nav__item">
                         <a class="nav-link active c-nav__link c-nav__link--active" aria-current="page" href="Home.html">Home</a>
@@ -48,28 +67,10 @@
                         <a class="nav-link c-nav__link" href="About.html">About</a>
                     </li>
                 </ul>
-                <div class="d-flex me-3 dropdown c-dropdown">
-                    <button class="btn c-btn c-dropdown__btn dropdown-toggle" type="button" id="loginDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="c-dropdown__icon bi bi-person-circle"></i>
-                    </button>
-                    <ul class="dropdown-menu c-dropdown__menu" aria-labelledby="loginDropdown">
-                        <li>
-                            <h6 class="dropdown-header c-dropdown__header">Sign Up / Log In</h6>
-                        </li>
-                        <li>
-                            <input type="text" id="signupUsername" class="form-control c-dropdown__info mb-2" placeholder="Username">
-                        </li>
-                        <li>
-                            <input type="password" id="signupPassword" class="form-control c-dropdown__info mb-2" placeholder="Password">
-                        </li>
-                        <li>
-                            <button class="btn c-btn c-dropdown__btn js-log btn-sm mb-2">Sign Up / Log In</button>
-                        </li> <!-- Sign Up/Log In button functionality to be implemented in php -->
-                    </ul>
-                </div>
-                <form class="d-flex me-3">
-                    <input class="form-control c-nav__search me-2" type="search" placeholder="Search resources..." aria-label="Search">
-                    <button class="btn c-btn c-nav__btn" type="submit">Search</button>
+                <!-- Search Form -->
+                <form class="d-flex mt-3 mt-lg-0">
+                    <input class="form-control js-search-form c-nav__search me-2" type="search" placeholder="Search resources..." aria-label="Search">
+                    <button class="btn c-btn js-search-btn c-nav__btn" type="submit">Search</button>
                 </form>
             </div>
         </div>
@@ -224,128 +225,5 @@
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 <!-- Custom JS -->
-<script>
-// #region ***  DOM references                           ***********
-let htmlQuizModal, htmlQuizForm, htmlSignupUsername, htmlSignupPassword;
-// #endregion
-
-// #region ***  Callback-Visualisation - show___         ***********
-const showQuizModal = function () {
-    const modal = new bootstrap.Modal(htmlQuizModal);
-    modal.show();
-};
-
-const showLoginStatus = function () {
-    // No UI changes needed for now, but can expand for dashboard link
-};
-// #endregion
-
-// #region ***  Callback-No Visualisation - callback___  ***********
-const callbackSignUpLogIn = function () {
-    const username = htmlSignupUsername.value.trim();
-    const password = htmlSignupPassword.value.trim();
-    
-    if (!username || !password) {
-        alert('Please enter both username and password.');
-        return;
-    }
-    
-    const storedUser = getStoredUser();
-    if (!storedUser) {
-        // Signup: Store new user
-        localStorage.setItem('user', JSON.stringify({ username, password }));
-        alert('Signed up successfully! You can now log in.');
-    } else {
-        // Login: Check credentials
-        if (storedUser.username === username && storedUser.password === password) {
-            localStorage.setItem('loggedIn', 'true');
-            alert('Logged in successfully!');
-            // Redirect to dashboard if needed
-        } else {
-            alert('Invalid username or password.');
-        }
-    }
-};
-
-const callbackSubmitQuiz = function () {
-    const formData = new FormData(htmlQuizForm);
-    let results = {};
-    
-    // Collect radio and checkbox values
-    for (let [key, value] of formData.entries()) {
-        if (results[key]) {
-            if (Array.isArray(results[key])) {
-                results[key].push(value);
-            } else {
-                results[key] = [results[key], value];
-            }
-        } else {
-            results[key] = value;
-        }
-    }
-    
-    // Validate: Ensure at least one option per question
-    if (!results.frequency || (!results.triggers || results.triggers.length === 0) || !results.readiness) {
-        alert('Please answer all questions.');
-        return;
-    }
-    
-    // Store results locally (confidential)
-    localStorage.setItem('quizResults', JSON.stringify(results));
-    alert('Quiz submitted! Results saved locally. Personalized guidance coming soon.');
-    
-    // Close modal
-    const modal = bootstrap.Modal.getInstance(htmlQuizModal);
-    modal.hide();
-    
-    // Reset form
-    htmlQuizForm.reset();
-};
-// #endregion
-
-// #region ***  Data Access - get___                     ***********
-const getStoredUser = function () {
-    return JSON.parse(localStorage.getItem('user') || 'null');
-};
-// #endregion
-
-// #region ***  Event Listeners - listenTo___            ***********
-const listenToSignUpLogIn = function () {
-    const button = document.querySelector('.js-log');
-    if (button) {
-        button.addEventListener('click', callbackSignUpLogIn);
-    }
-};
-
-const listenToQuizModal = function () {
-    const openButtons = document.querySelectorAll('.js-modal');
-    openButtons.forEach(button => {
-        button.addEventListener('click', showQuizModal);
-    });
-};
-
-const listenToSubmitQuiz = function () {
-    const submitButton = document.querySelector('.js-submit');
-    if (submitButton) {
-        submitButton.addEventListener('click', callbackSubmitQuiz);
-    }
-};
-// #endregion
-
-// #region ***  Init / DOMContentLoaded                  ***********
-const init = function () {
-    console.log('Page loaded and DOM fully parsed');
-    
-    // Get DOM references
-    htmlQuizModal = document.getElementById('quizModal');
-    htmlQuizForm = document.getElementById('quizForm');
-    htmlSignupUsername = document.getElementById('signupUsername');
-    htmlSignupPassword = document.getElementById('signupPassword');
-    // Set up event listeners
-    listenToSignUpLogIn();
-    listenToQuizModal();
-    listenToSubmitQuiz();
-};
-document.addEventListener('DOMContentLoaded', init);
-</script>
+<script src="./assets/js/main.js"></script>
 </html>

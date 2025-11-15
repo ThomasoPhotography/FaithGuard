@@ -1,6 +1,6 @@
 # FaithGuard
 
-FaithGuard is a small static website / front-end project that provides a clean, responsive landing page and assets for a web presence. The project includes HTML, SCSS/CSS, and a simple file structure that makes it easy to develop, preview, and deploy.
+FaithGuard is currently a small static website / front-end project that provides a clean, responsive landing page and assets for a web presence. The project includes HTML, SCSS/CSS, and a simple file structure that makes it easy to develop, preview, and deploy.
 
 **Highlights**
 - **Simple**: Static site built with plain HTML and CSS/SCSS.
@@ -13,6 +13,7 @@ FaithGuard is a small static website / front-end project that provides a clean, 
 - Getting started
 - Development
 - Project structure
+- Future Development Plans
 
 ## Features
 - Static, responsive layout suitable for a landing page.
@@ -30,6 +31,13 @@ FaithGuard is a small static website / front-end project that provides a clean, 
 - `assets/css/style.scss` — SCSS source
 - `assets/css/style.css` — Compiled stylesheet
 - `assets/` — Other static assets (images, fonts, etc.)
+
+## Future Development Plans
+- `index.html` — Current main page
+- `index.php` — Future main page
+- SQL for Database
+- PHP for backend
+- JS for functionality
 
 ## Contributing
 - Improve content, styles, or accessibility. Open a PR with a clear description.
