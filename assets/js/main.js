@@ -79,7 +79,6 @@ const callbackQuizSubmit = () => {
 			window.location.href = 'resources.html';
 		}, 1500);
 	} else {
-		quizForm.reportValidity();
 	}
 };
 

@@ -207,7 +207,7 @@ a:hover {
   border: none;
   background: transparent;
   padding: 0;
-  margin: 0;
+  margin-left: 0.5rem;
 }
 .c-nav__toggler--btn {
   font-size: 1.5rem;
