@@ -2,29 +2,48 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.2] - 2025-11-15
+
+### Added
+- Javascript basics added in `assets/js/main.js`
+- CTA section added to `index.html`
+- Testimonial section added to `index.html`
+- Footer added to `index.html`
+- SCSS added for CTA & Testimonial section and footer.
+
+### Changed
+- Hero section changed from container to container-fluid.
+### Deprecated
+- N/A
+
+### Removed
+- N/A
+
+### Fixed
+- N/A
+
+### Security
+- N/A
 
 ## [0.0.1] - 2025-11-14
 
 ### Added
-- SCSS got variables for colours and font
-- SCSS updated with Generic, element and object style.
-- SCSS updated with components like navigation and hero.
-- HTML updated dummy text in the six cards.
+- basic js
 
 ### Changed
-- For changes in existing functionality.
+- N/A
 
 ### Deprecated
-- For soon-to-be removed features.
+- N/A
 
 ### Removed
-- For now removed features.
+- N/A
 
 ### Fixed
-- For any bug fixes.
+- N/A
 
 ### Security
-- In case of vulnerabilities.
+- N/A
 
 ## [0.0.0] - 2025-11-14
 
@@ -45,8 +64,3 @@ All notable changes to this project will be documented in this file.
 
 ### Security
 - N/A
-
----
-
-[Unreleased]: https://github.com/yourusername/yourrepo/compare/v1.0.0...HEAD
-[1.0.0]: https://github.com/yourusername/yourrepo/releases/tag/v1.0.0
