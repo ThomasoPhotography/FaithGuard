@@ -103,6 +103,35 @@ a:hover {
 .c-nav__logo:hover {
   opacity: 0.8;
 }
+.c-nav__btn {
+  color: #F5F5DC;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.25rem;
+  font-size: 1rem;
+}
+.c-nav__btn:hover {
+  background-color: rgb(77, 0, 19.25);
+  color: #F5F5DC;
+  text-decoration: none;
+}
+.c-nav__search {
+  background-color: #2F4F4F;
+  border: none;
+  color: #F5F5DC;
+}
+.c-nav__search::-moz-placeholder {
+  color: #F5F5DC;
+}
+.c-nav__search::placeholder {
+  color: #F5F5DC;
+}
+.c-nav__search:focus {
+  background-color: #800020;
+  color: #F5F5DC;
+  outline: none;
+  box-shadow: 0 0 5px rgb(230, 0, 57.5);
+}
 
 .c-hero {
   background-image: url("../img/hero-bg.jpg");

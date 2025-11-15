@@ -121,6 +121,37 @@ a {
             opacity: 0.8;
         }
     }
+
+    &__btn {
+        color: $text-light;
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 0.25rem;
+        font-size: 1rem;
+
+        &:hover {
+            background-color: darken($accent, 10%);
+            color: $text-light;
+            text-decoration: none;
+        }
+    }
+
+    &__search {
+        background-color: $primary-bg;
+        border: none;
+        color: $text-light;
+
+        &::placeholder{
+            color: $text-light
+        }
+
+        &:focus {
+            background-color: $accent;
+            color: $text-light;
+            outline: none;
+            box-shadow: 0 0 5px lighten($accent, 20%);
+        }
+    }
 }
 
 .c-hero {
