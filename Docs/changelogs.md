@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.4] - 2025-11-15
+
+### Added
+- `<script src="./assets/js/main.js"></script>` to `index.html`
+- JavaScript Template using dataregions for `DOM references`, `Callback-Visualisations - show`, `Callback-No Visualisation - callback`, `Data Access - get`, `Event Listeners - listenTo` & `Init / DOMContentLoaded`
+
+### Changed
+- SCSS to accommodate the Javascript Modal styling
+
+### Deprecated
+- N/A
+
+### Removed
+- Injected JS inside HTML.
+
+### Fixed
+- N/A
+
+### Security
+- N/A
+
+
+
 ## [0.0.3] - 2025-11-15
 
 ### Added
