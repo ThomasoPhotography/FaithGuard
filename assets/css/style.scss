@@ -268,6 +268,88 @@ a {
     }
 }
 
+.c-impact {
+    background-color: $primary-bg;
+
+    &__title {
+        color: $highlight;
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        padding-top: 1rem;
+        font-weight: bold;
+    }
+
+    &__intro {
+        color: $text-light;
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+    }
+
+    &__quote {
+        color: $text-light;
+        font-style: italic;
+        margin-bottom: 1rem;
+    }
+
+    &__cite {
+        color: $text-dark;
+        font-weight: bold;
+    }
+
+    &__card{
+        background-color: darken($accent, 5%);
+        padding: 1.5rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+        margin-left: 2rem;
+    }
+}
+
+.c-card{
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    &__title {
+        font-size: 1.25rem;
+        margin-bottom: 1rem;
+        color: $text-light;
+        font-weight: bold;
+    }
+
+    &__text {
+        font-size: .9rem;
+        line-height: 1.5;
+        color: $text-dark;
+    }
+}
+
+.c-footer {
+    background-color: $primary-bg;
+    color: $text-light;
+    padding: 2rem 0;
+    margin-top: 3rem;
+    &__text {
+        margin: 0;
+        font-size: 0.9rem;
+    }
+    &__links {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+        li a {
+            color: $highlight;
+            text-decoration: none;
+            &:hover {
+                color: $accent;
+            }
+        }
+    }
+}
+
 /*---------------------------------------/*
  # UTILITIES
 /*---------------------------------------*/

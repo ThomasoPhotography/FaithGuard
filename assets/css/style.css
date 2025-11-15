@@ -230,6 +230,81 @@ a:hover {
   text-decoration: none;
 }
 
+.c-impact {
+  background-color: #2F4F4F;
+}
+.c-impact__title {
+  color: #D4AF37;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  padding-top: 1rem;
+  font-weight: bold;
+}
+.c-impact__intro {
+  color: #F5F5DC;
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+.c-impact__quote {
+  color: #F5F5DC;
+  font-style: italic;
+  margin-bottom: 1rem;
+}
+.c-impact__cite {
+  color: #282727;
+  font-weight: bold;
+}
+.c-impact__card {
+  background-color: rgb(102.5, 0, 25.625);
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+  margin-left: 2rem;
+}
+
+.c-card {
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.c-card__title {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  color: #F5F5DC;
+  font-weight: bold;
+}
+.c-card__text {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #282727;
+}
+
+.c-footer {
+  background-color: #2F4F4F;
+  color: #F5F5DC;
+  padding: 2rem 0;
+  margin-top: 3rem;
+}
+.c-footer__text {
+  margin: 0;
+  font-size: 0.9rem;
+}
+.c-footer__links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+.c-footer__links li a {
+  color: #D4AF37;
+  text-decoration: none;
+}
+.c-footer__links li a:hover {
+  color: #800020;
+}
+
 /*---------------------------------------/*
  # UTILITIES
 /*---------------------------------------*/
