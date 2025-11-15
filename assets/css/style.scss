@@ -16,6 +16,7 @@ $font-family: 'Garamond', serif; // Classic serif font (Can change)
 * {
     box-sizing: border-box;
 }
+
 body {
     font-family: $font-family;
     margin: 0;
@@ -217,6 +218,53 @@ a {
 
     &__icon {
         font-size: 1.5rem;
+    }
+}
+
+.c-cta {
+    background-color: $secondary-bg;
+    padding: 3rem 2rem;
+    border-radius: 0.5rem;
+    margin-bottom: 3rem;
+
+    &__title {
+        color: $highlight;
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+
+    &__text {
+        color: $text-light;
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+    }
+
+    &__actions {
+        margin-bottom: 2rem;
+        .c-cta__btn {
+            margin: 0 0.5rem;
+        }
+    }
+
+    &__verse {
+        color: $accent;
+        font-style: italic;
+        font-size: 1rem;
+    }
+
+    &__btn {
+        background-color: $accent;
+        color: $text-light;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 0.25rem;
+        font-size: 1rem;
+
+        &:hover {
+            background-color: darken($accent, 10%);
+            color: $text-light;
+            text-decoration: none;
+        }
     }
 }
 

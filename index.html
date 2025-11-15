@@ -10,8 +10,8 @@
     <meta name="author" content="WWTW - FaithGuard">
     <meta name="robots" content="noindex">
     <!-- Version -->
-    <meta name="version" content="0.0.0">
-    <meta name="release" content="2025-11-14">
+    <meta name="version" content="0.0.2">
+    <meta name="release" content="2025-11-15">
     <!-- Title -->
     <title>FaithGuard</title>
     <!-- Favicon -->
@@ -76,15 +76,18 @@
     </nav>
     <!-- Hero Content -->
     <header class="c-hero">
-        <div class="c-hero__content text-center">
-            <h1 class="c-hero__title">Welcome to FaithGuard</h1>
-            <h2 class="c-hero__subtitle">Faith-Based Resources for Recovery</h2>
-            <p class="c-hero__text">Free, vetted resources to support your journey toward spiritual freedom. Rooted in Christian hope and redemption.</p>
-            <button class="btn c-btn c-hero__btn js-modal">Take the Quiz</button>
+        <div class="container-fluid">
+            <div class="c-hero__content text-center">
+                <h1 class="c-hero__title">Welcome to FaithGuard</h1>
+                <h2 class="c-hero__subtitle">Faith-Based Resources for Recovery</h2>
+                <p class="c-hero__text">Free, vetted resources to support your journey toward spiritual freedom. Rooted in Christian hope and redemption.</p>
+                <button class="btn c-btn c-hero__btn js-modal">Take the Quiz</button>
+            </div>
         </div>
     </header>
     <!-- Main Content -->
     <main class="c-main container my-5">
+        <!-- Resource Section -->
         <section class="c-main__section mb-5">
             <h2 class="c-main__title">Our Mission</h2>
             <p class="c-main__text">At FaithGuard, we are dedicated to providing resources and tools to help individuals regain and protect their faith from digital influenced addictions like porn.</p>
@@ -150,7 +153,71 @@
                 </div>
             </div>
         </section>
+        <!-- CTA Section -->
+        <section class="c-main__section c-cta mb-5 text-center">
+            <h2 class="c-cta__title">Take the First Step Toward Redemption</h2>
+            <p class="c-cta__text">Your journey to spiritual freedom starts here. Take our confidential quiz for personalized guidance, or sign up to access exclusive resources and community support.</p>
+            <div class="row">
+                <div class="col-md-4 offset-md-2 mb-3">
+                    <button class="btn c-btn c-cta__btn js-modal">Take the Quiz</button>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <button class="btn c-btn c-cta__btn">Sign Up Now</button> <!-- Sign Up functionality to be implemented in php -->
+                </div>
+            </div>
+            <p class="c-cta__verse"><em>"Therefore, if anyone is in Christ, the new creation has come: The old has gone, the new is here!" – 2 Corinthians 5:17</em></p>
+        </section>
+        <!-- Community Impact Section -->
+         <section class="c-main__section c-impact mb-5">
+            <h2 class="c-impact__title text-center">Community Impact</h2>
+            <p class="c-impact__intro text-center">Hear from those who have found hope and strength through FaithGuard's faith-based resources.</p>
+            <div class="row">
+                <!-- Static input, get's changed in PHP -->
+                <div class="col-md-4 mb-4">
+                    <div class="card c-card">
+                        <div class="card-body c-card__body">
+                            <blockquote class="c-impact__quote">"FaithGuard's devotionals helped me rebuild my relationship with God after years of struggle. I'm free now."</blockquote>
+                            <cite class="c-impact__cite">- Anonymous User</cite>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="col-md-4 mb-4">
+                    <div class="card c-card">
+                        <div class="card-body c-card__body">
+                            <blockquote class="c-impact__quote"></blockquote>
+                            <cite class="c-impact__cite"></cite>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card c-card">
+                        <div class="card-body c-card__body">
+                            <blockquote class="c-impact__quote"></blockquote>
+                            <cite class="c-impact__cite"></cite>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+         </section>
     </main>
+    <!-- Footer -->
+    <footer class="c-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="c-footer__text">&copy; 2025 FaithGuard. All rights reserved. Protecting your digital faith with hope and redemption.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <ul class="c-footer__links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="resources.html">Resources</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="#">Contact</a></li> <!-- Will be added once I upload it to a webhost -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
 </body>
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
