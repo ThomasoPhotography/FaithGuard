@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.5] - 2025-11-16
+
+### Added
+- Page added `resources.html`.
+- JavaScript adds redirection to `resources.html` after quiz is submitted.
+
+### Changed
+- SCSS changes to clarify which page you are on.
+- HTML links to pages, logo will direct to `index.html`.
+- Simple JS colour changes for the log.
+- Buttons on the Quiz Modal are changed to add more cohesion.
+
+### Deprecated
+- N/A
+
+### Removed
+- N/A
+
+### Fixed
+- N/A
+
+### Security
+- N/A
+
+
 ## [0.0.4] - 2025-11-15
 
 ### Added
@@ -23,7 +48,6 @@ All notable changes to this project will be documented in this file.
 
 ### Security
 - N/A
-
 
 
 ## [0.0.3] - 2025-11-15

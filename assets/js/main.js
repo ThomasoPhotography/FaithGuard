@@ -1,8 +1,8 @@
 /**
  * FaithGuard Main JS
- * Version: 0.0.4
+ * Version: 0.0.5
  * Author: Thomas Deseure
- * Release: 2025-11-15
+ * Release: 2025-11-16
  */
 
 // #region ***  DOM references                           ***********
@@ -53,32 +53,28 @@ const showErrorMessage = (message) => {
 // #endregion
 
 // #region ***  Callback-No Visualisation - callback___  ***********
-const callbackQuizSubmit = () => {
+const callbackQuizSubmit = function (event) {
+	event.preventDefault(); // Prevent form submission and page refresh
+
 	if (quizForm.checkValidity()) {
-		// Collect form data
+		// Collect form data (updated to match HTML form: frequency, triggers, readiness)
 		const formData = new FormData(quizForm);
 		const quizData = {
-			duration: formData.get('duration'),
-			accountability: formData.get('accountability'),
-			resouces: formData.getAll('resources'),
-			spiritual: formData.get('spiritual'),
-			goal: formData.get('goal'),
+			frequency: formData.get('frequency'),
+			triggers: formData.getAll('triggers'), // Array for checkboxes
+			readiness: formData.get('readiness'),
 			timestamp: new Date().toISOString(),
 		};
-
 		// Store in localStorage
 		localStorage.setItem('faithGuard_quiz_' + Date.now(), JSON.stringify(quizData));
-		showSuccessMessage('Thank you for completing the quiz! Based on your answers, we recommend exploring ouy resources page for personalized guidance.');
-
+		showSuccessMessage('Thank you for completing the quiz! Based on your answers, we recommend exploring our resources page for personalized guidance.');
 		// Reset form and hide modal
 		quizForm.reset();
-		quizModal.hide();
-
-		// Optionally, redirect to resources page
-		setTimeout(() => {
-			window.location.href = 'resources.html';
-		}, 1500);
+		quizModal.hide(); // Directly hide the modal instance
+		// Redirect immediately to resources page
+		window.location.href = 'resources.html';
 	} else {
+		alert('Please answer all questions.');
 	}
 };
 
@@ -162,15 +158,6 @@ const callbackFormValidation = (event) => {
 		event.stopPropagation();
 	}
 	event.target.classList.add('was-validated');
-};
-
-const callbackNavbarScroll = () => {
-	const currentScroll = window.pageYOffset;
-	if (currentScroll > 100) {
-		navbar.classList.add('scrolled');
-	} else {
-		navbar.classList.remove('scrolled');
-	}
 };
 
 const callbackCardHoverEnter = (e) => {
@@ -286,8 +273,8 @@ const createQuizModal = () => {
                             </select>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-primary" id="submitQuizBtn">Submit Quiz</button>
+                            <button type="button" class="btn c-btn__cancel" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn c-btn__submit js-submit">Submit Quiz</button>
                         </div>
                     </form>
                 </div>
@@ -326,7 +313,8 @@ const listenToQuizButtons = () => {
 };
 
 const listenToQuizSubmit = () => {
-	submitQuizBtn.addEventListener('click', callbackQuizSubmit());
+	// Attach to form submit event instead of button click for reliable prevention
+	quizForm.addEventListener('submit', callbackQuizSubmit);
 };
 
 const listenToLogin = () => {
@@ -373,10 +361,6 @@ const listenToFormValidation = () => {
 	});
 };
 
-const listenToNavbarScroll = () => {
-	window.addEventListener('scroll', callbackNavbarScroll);
-};
-
 const listenToCardHover = () => {
 	cards.forEach((card) => {
 		card.addEventListener('mouseenter', callbackCardHoverEnter);
@@ -394,7 +378,7 @@ const init = () => {
 	// Initialize DOM references
 	quizButtons = document.querySelectorAll('.js-modal');
 	quizModal = new bootstrap.Modal(document.getElementById('quizModal'));
-	submitQuizBtn = document.getElementById('submitQuizBtn');
+	submitQuizBtn = document.querySelector('.js-submit');
 	quizForm = document.getElementById('quizForm');
 	loginBtn = document.querySelector('.js-log');
 	signupUsernameInput = document.getElementById('signupUsername');
@@ -402,7 +386,6 @@ const init = () => {
 	dropdownBtn = document.querySelector('.js-dropdown-btn');
 	dropdownMenu = document.querySelector('.js-dropdown-menu');
 	searchForm = document.querySelector('.form.d-flex');
-	navbar = document.getElementById('navbar');
 	navLinks = document.querySelectorAll('.c-nav__link');
 	cards = document.querySelectorAll('.c-card');
 
@@ -414,7 +397,6 @@ const init = () => {
 	listenToSmoothScroll();
 	listenToNavLinks();
 	listenToFormValidation();
-	listenToNavbarScroll();
 	listenToCardHover();
 
 	// Check if user is already logged in
@@ -424,9 +406,9 @@ const init = () => {
 	}
 
 	// Console welcome message
-	console.log('%cWelcome to FaithGuard! Empowering your journey to digital purity and spiritual growth.', 'color: #F5F5DC; font-size: 1.25rem; font-weight: bold;');
-	console.log('%cProtecting Your Faith, One Click at a Time.', 'color: #F5F5DC; font-size: 0.875rem; font-style: italic;');
-	console.log('%cVersion 0.0.4 - Released on 2025-11-15', 'color: #282727; font-size: 0.75rem;');
+	console.log('%cWelcome to FaithGuard! Empowering your journey to digital purity and spiritual growth.', 'background-color: #2F4F4F; color: #F5F5DC; font-size: 1.25rem; font-weight: bold;');
+	console.log('%cProtecting Your Faith, One Click at a Time.', 'background-color: #2F4F4F; color: #F5F5DC; font-size: 0.875rem; font-style: italic;');
+	console.log('%cVersion 0.0.5 - Released on 2025-11-16', 'color: #F5F5DC; font-size: 0.75rem;');
 };
 
 document.addEventListener('DOMContentLoaded', init);
