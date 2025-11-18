@@ -405,6 +405,7 @@ const init = () => {
 	}
 
 	// Console welcome message
+	console.log('%cPage loaded', 'color: #F5F5DC; font-size: 0.5rem; font-weight: bold;');
 	console.log('%cWelcome to FaithGuard! Empowering your journey to digital purity and spiritual growth.', 'background-color: #2F4F4F; color: #F5F5DC; font-size: 1.25rem; font-weight: bold;');
 	console.log('%cProtecting Your Faith, One Click at a Time.', 'background-color: #2F4F4F; color: #F5F5DC; font-size: 0.875rem; font-style: italic;');
 	console.log('%cVersion 0.0.5 - Released on 2025-11-16', 'color: #F5F5DC; font-size: 0.75rem;');
