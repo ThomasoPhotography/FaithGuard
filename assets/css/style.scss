@@ -2,12 +2,13 @@
  # SETTINGS
 /*---------------------------------------*/
 // Variables for "Old Money" and "Dark Academia" theme
-$primary-bg: #2F4F4F; // Deep forest green
-$secondary-bg: #12124d; // Navy blue
-$accent: #800020; // Burgundy
-$highlight: #D4AF37; // Muted gold
+$primary-bg: #E9B48A; // Light tan
+$secondary-bg: #614338; // Rich brown
+$accent: #5C352C; // Deep brown
+$highlight: #2A1717; // Very dark brown
+$danger: #8B0000; // Dark red for errors
 $text-light: #F5F5DC; // Cream
-$text-dark: #282727; // Dark brown
+$text-dark: #3C3C34; // Dark olive green
 $font-family: 'Garamond', serif; // Classic serif font (Can change)
 
 /*---------------------------------------/*
@@ -29,164 +30,15 @@ body {
     margin: 0.5rem 1rem 0 0;
 }
 
+.text-muted{
+    color: lighten($text-dark, 20%) !important;
+    font-size: 0.9rem;
+}
+
 .navbar-toggler{
     &:active, &:focus{
         outline: none;
         box-shadow: none;
-    }
-}
-
-.modal{
-    &-content{
-        background-color: $primary-bg;
-        border: 2px solid $accent;
-        border-radius: .5rem;
-        color: $text-light;
-    }
-
-    &-header{
-        background-color: $primary-bg;
-        border-bottom: 2px solid $highlight;
-
-        .modal-title{
-            color: $highlight;
-            font-weight: bold;
-            font-size: 1.1rem;
-            
-            @media (min-width: 576px) {
-                font-size: 1.25rem;
-            }
-        }
-
-        .btn-close{
-            filter: invert(1);
-            opacity: 0.7;
-
-            &:hover{
-                opacity: 1;
-            }
-        }
-    }
-
-    &-body{
-        padding: 1rem;
-        
-        @media (min-width: 576px) {
-            padding: 2rem;
-        }
-
-        .text-muted{
-            color: lighten($text-dark, 30%) !important;
-            font-size: 0.9rem;
-        }
-
-        .form-label{
-            color: $text-light;
-            margin-bottom: .5rem;
-            font-size: 0.95rem;
-        }
-
-        .form-select{
-            background-color: darken($primary-bg, 5%);
-            border: 1px solid $highlight;
-            color: $text-light;
-            padding: .5rem;
-            border-radius: .25rem;
-            font-size: 0.9rem;
-
-            &::placeholder{
-                color: $text-light
-            }
-
-            &:focus {
-                background-color: $primary-bg;
-                color: $text-light;
-                border-color: $accent;
-                box-shadow: 0 0 5px lighten($accent, 20%);
-            }
-
-            option {
-                background-color: $primary-bg;
-                color: $text-light;
-
-                &:hover {
-                    background-color: darken($accent, 10%);
-                    color: $text-light;
-                }
-
-                &:focus {
-                    background-color: $accent;
-                    color: $text-light;
-                }
-            }
-        }
-
-        .form-check{
-            margin-bottom: .75rem;
-
-            &-input{
-                background-color: darken($primary-bg, 5%);
-                border: 1px solid $highlight;
-                color: $text-light;
-
-                &:checked{
-                    background-color: $accent;
-                    border-color: $accent;
-                }
-
-                &:focus {
-                    background-color: $primary-bg;
-                    color: $text-light;
-                    border-color: $accent;
-                    box-shadow: 0 0 0 .2rem lighten($accent, 20%);
-                }
-            }
-
-            &-label{
-                color: $text-light;
-                margin-left: .5rem;
-                cursor: pointer;
-                font-size: 0.9rem;
-            }
-        }
-    }
-
-    &-footer{
-        background-color: $primary-bg;
-        border-top: 2px solid $highlight;
-        padding: 1rem;
-        
-        @media (min-width: 576px) {
-            padding: 1rem 2rem;
-        }
-
-        .btn-secondary{
-            background-color: darken($primary-bg, 5%);
-            border: 1px solid $highlight;
-            color: $text-light;
-            padding: .5rem 1rem;
-            border-radius: .25rem;
-            font-size: 0.9rem;
-
-            &:hover {
-                background-color: $accent;
-                color: $text-light;
-                text-decoration: none;
-            }
-        }
-
-        .c-btn{
-            background-color: $accent;
-            color: $text-light;
-            border: none;
-            font-size: 0.9rem;
-
-            &:hover {
-                background-color: darken($accent, 10%);
-                color: $text-light;
-                text-decoration: none;
-            }
-        }
     }
 }
 /*---------------------------------------/*
@@ -223,7 +75,6 @@ a {
  # COMPONENTS
 /*---------------------------------------*/
 .c-nav {
-    color: $text-light;
     background-color: $primary-bg;
 
     &__brand {
@@ -263,7 +114,7 @@ a {
     }
 
     &__link {
-        color: $text-light;
+        color: $text-dark;
         text-decoration: none;
 
         &--active {
@@ -272,6 +123,7 @@ a {
 
         &:hover {
             text-decoration: underline;
+            color: $text-light;
         }
     }
 
@@ -280,10 +132,15 @@ a {
         background: transparent;
         padding: 0;
         margin-left: .5rem;
+        color: $text-dark;
+
+        &:hover{
+            color: $text-light;
+        }
 
         &--btn {
             font-size: 1.5rem;
-            color: $text-light;
+            color: $text-dark;
         }
     }
 
@@ -298,7 +155,7 @@ a {
     }
 
     &__btn {
-        color: $text-light;
+        color: $text-dark;
         padding: 0.5rem 1rem;
         border: none;
         border-radius: 0.25rem;
@@ -318,11 +175,14 @@ a {
     &__search {
         background-color: $primary-bg;
         border: none;
-        color: $text-light;
         font-size: 0.9rem;
 
         &::placeholder{
-            color: $text-light
+            color: $text-dark;
+
+            &:focus{
+                color: $text-light !important;
+            }
         }
 
         &:focus {
@@ -358,6 +218,7 @@ a {
         font-size: 1.75rem;
         font-weight: bold;
         margin-bottom: 1rem;
+        color: $text-dark;
         
         @media (min-width: 576px) {
             font-size: 2rem;
@@ -370,7 +231,7 @@ a {
 
     &__subtitle {
         font-size: 1rem;
-        color: #6c757d;
+        color: lighten($text-dark, 5%);
         
         @media (min-width: 576px) {
             font-size: 1.1rem;
@@ -384,6 +245,7 @@ a {
     &__text {
         font-size: 0.95rem;
         padding: 0 0.5rem;
+        color: $text-dark;
         
         @media (min-width: 576px) {
             font-size: 1rem;
@@ -393,8 +255,8 @@ a {
 
     &__btn {
         margin-top: 1.5rem;
-        background-color: #282727;
-        color: #fff;
+        background-color: $secondary-bg;
+        color: $text-light;
         padding: 0.5rem 1rem;
         font-size: 0.95rem;
         
@@ -404,9 +266,9 @@ a {
         }
 
         &:hover {
-            background-color: #1c1b1b;
-            color: #fff;
-            text-decoration: none;
+            background-color: $highlight;
+            color: $text-light;
+            text-decoration: underline;
         }
     }
 }
@@ -456,52 +318,11 @@ a {
     @media (min-width: 576px) {
         font-size: 1rem;
     }
-
-    &__submit {
-        color: $highlight;
-        border: .125rem solid $highlight;
-        border-radius: 0.25rem;
-        text-decoration: none;
-
-        &:hover {
-            background-color: lighten($primary-bg, 10%);
-            color: lighten($highlight, 25%);
-            text-decoration: none;
-        }
-    }
-
-    &__cancel {
-        color: $accent;
-        border: .125rem solid $accent;
-        border-radius: 0.25rem;
-        text-decoration: none;
-
-        &:hover {
-            background-color: lighten($accent, 10%);
-            color: $text-light;
-            text-decoration: none;
-        }
-    }
-
-    &--primary {
-        background-color: #007bff;
-        color: #fff;
-        padding: 0.75rem 1.5rem;
-        border: none;
-        border-radius: 0.25rem;
-        text-decoration: none;
-
-        &:hover {
-            background-color: #0056b3;
-            color: #fff;
-            text-decoration: none;
-        }
-    }
 }
 
 .c-dropdown {
     &__btn {
-        color: $text-light;
+        color: $text-dark;
         border: none;
         padding: 0.4rem 0.8rem;
         
@@ -572,8 +393,157 @@ a {
     }
 }
 
+.c-modal{
+    &__content{
+        background-color: $primary-bg;
+        border: 2px solid $accent;
+        border-radius: .5rem;
+        color: $text-dark;
+    }
+
+    &__header{
+        background-color: $primary-bg;
+        border-bottom: 2px solid $highlight;
+    }
+
+    &__title{
+        color: $text-dark;
+        font-weight: bold;
+        font-size: 1.1rem;
+            
+        @media (min-width: 576px) {
+            font-size: 1.25rem;
+        }
+    }
+
+    &__btn{
+        padding: .5rem 1rem;
+        background-color: $secondary-bg;
+        color: $text-light;
+
+        &--close{
+            padding: 0.5rem !important;
+            margin-top: -0.5rem !important;
+            background-color: transparent !important;
+            color: $text-dark !important;
+            filter: invert(1);
+            opacity: 0.7;
+
+            &:hover{
+                opacity: 1;
+            }
+        }
+
+        &--cancel{
+            background-color: transparent;
+            border: 2px solid $highlight;
+            color: $text-dark;
+            font-size: 0.9rem;
+
+            &:hover {
+                background-color: $danger;
+                color: $text-light;
+                text-decoration: none;
+            }
+        }
+
+        &--submit{
+            background-color: $accent;
+            border: none;
+            color: $text-light;
+            font-size: 0.9rem;
+
+            &:hover {
+                background-color: darken($accent, 10%);
+                color: $text-light;
+                text-decoration: none;
+            }
+        }
+    }
+
+    &__body{
+        padding: 1rem;
+        
+        @media (min-width: 576px) {
+            padding: 2rem;
+        }
+    }
+
+    &__label{
+        color: $text-dark;
+        margin-bottom: .5rem;
+        font-size: 0.95rem;
+    }
+
+    &__option, &__radiobuttons, &__checkbox-group{
+        margin-right: 1rem;
+        color: $text-dark;
+
+        &:hover {
+            color: $text-dark;
+            font-weight: 600;
+        }
+
+        &:focus, &:focus-visible{
+            background-color: transparent;
+            border-color: transparent;
+        }
+
+        &:active, &:checked{
+            font-weight: 700;
+            background-color: $accent;
+            border-color: transparent;
+        }
+    }
+    
+    &__select{
+        background-color: $primary-bg;
+        border: 1px solid $highlight;
+        color: $text-dark;
+        padding: .5rem;
+        border-radius: .25rem;
+        font-size: 0.9rem;
+
+        &::placeholder{
+            color: $text-dark !important;
+        }
+
+        &:focus {
+            background-color: $primary-bg;
+            color: $text-dark;
+            border-color: $accent;
+            box-shadow: 0 0 5px lighten($accent, 20%);
+        }
+
+        &__option {
+            background-color: $primary-bg;
+            color: $text-dark;
+
+            &:hover {
+                background-color: darken($accent, 10%) !important;
+                color: $text-dark;
+            }
+
+            &:focus {
+                background-color: $accent;
+                color: $text-dark;
+            }
+        }
+    }
+
+    &__footer{
+        background-color: $primary-bg;
+        border-top: 2px solid $highlight;
+        padding: 1rem;
+        
+        @media (min-width: 576px) {
+            padding: 1rem 2rem;
+        }
+    }
+}
+
 .c-cta {
-    background-color: $secondary-bg;
+    background-color: $primary-bg;
     padding: 2rem 1rem;
     border-radius: 0.5rem;
     margin-bottom: 2rem;
@@ -588,9 +558,10 @@ a {
     }
 
     &__title {
-        color: $highlight;
+        color: darken($text-dark, 10%);
         font-size: 1.5rem;
         margin-bottom: 1rem;
+        font-weight: 600;
         
         @media (min-width: 576px) {
             font-size: 1.75rem;
@@ -602,7 +573,7 @@ a {
     }
 
     &__text {
-        color: $text-light;
+        color: $text-dark;
         font-size: 0.95rem;
         margin-bottom: 1.5rem;
         
@@ -622,10 +593,6 @@ a {
         @media (min-width: 768px) {
             margin-bottom: 2rem;
         }
-        
-        .c-cta__btn {
-            margin: 0.5rem;
-        }
     }
 
     &__verse {
@@ -643,30 +610,6 @@ a {
             padding: 0;
         }
     }
-
-    &__btn {
-        background-color: $accent;
-        color: $text-light;
-        padding: 0.65rem 1.25rem;
-        border: none;
-        border-radius: 0.25rem;
-        font-size: 0.9rem;
-        
-        @media (min-width: 576px) {
-            font-size: 0.95rem;
-        }
-        
-        @media (min-width: 768px) {
-            padding: 0.75rem 1.5rem;
-            font-size: 1rem;
-        }
-
-        &:hover {
-            background-color: darken($accent, 10%);
-            color: $text-light;
-            text-decoration: none;
-        }
-    }
 }
 
 .c-impact {
@@ -678,7 +621,7 @@ a {
     }
 
     &__title {
-        color: $highlight;
+        color: darken($text-dark, 15%);
         font-size: 1.5rem;
         margin-bottom: 1rem;
         padding-top: 1rem;
@@ -694,7 +637,7 @@ a {
     }
 
     &__intro {
-        color: $text-light;
+        color: $text-dark;
         font-size: 0.95rem;
         margin-bottom: 1.5rem;
         
@@ -720,7 +663,7 @@ a {
     }
 
     &__cite {
-        color: $text-dark;
+        color: lighten($text-light, 10%);
         font-weight: bold;
         font-size: 0.9rem;
     }
@@ -801,7 +744,7 @@ a {
 }
 
 .c-footer {
-    background-color: $primary-bg;
+    background-color: $secondary-bg;
     color: $text-light;
     padding: 1.5rem 0;
     margin-top: 2rem;
@@ -822,8 +765,8 @@ a {
             text-align: left;
         }
     }
-    
-    &__links {
+
+    &__item{
         list-style: none;
         padding: 0;
         margin: 0;
@@ -836,10 +779,11 @@ a {
             justify-content: flex-end;
             gap: 1rem;
         }
-        
-        li a {
-            color: $highlight;
-            text-decoration: none;
+    }
+
+    &__links {
+        color: $text-light ;
+        text-decoration: none;
             font-size: 0.85rem;
             
             @media (min-width: 576px) {
@@ -849,7 +793,6 @@ a {
             &:hover {
                 color: $accent;
             }
-        }
     }
 }
 

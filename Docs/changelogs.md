@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
 - HTML links to pages, logo will direct to `index.html`.
 - Simple JS colour changes for the log.
 - Buttons on the Quiz Modal are changed to add more cohesion.
+- Colour changes to Warm Ember pallette (`#E9B48A` = Primary-bg, `#956959` = Secondary-bg, `#5C352C` = Accent, `#2A1717` = Highlight and `#3C3C34` = Text-dark).
 
 ### Deprecated
 - N/A
@@ -21,7 +22,8 @@ All notable changes to this project will be documented in this file.
 - N/A
 
 ### Fixed
-- N/A
+- Modal innerHTML inside `main.js` and `SCSS`-classes.
+- Footer spacing and style in `style.scss`.
 
 ### Security
 - N/A
