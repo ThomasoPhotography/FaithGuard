@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="FaithGuard - Protecting Your Digital Faith">
+    <meta name="keywords" content="FaithGuard, Digital Security, Faith Protection, Online Safety">
+    <meta name="author" content="WWTW - FaithGuard">
+    <meta name="robots" content="noindex">
+    <!-- Version -->
+    <meta name="version" content="0.0.5">
+    <meta name="release" content="2025-11-19">
+    <!-- Title -->
+    <title>FaithGuard</title>
+    <!-- Favicon -->
+    <link rel="icon" href="./assets/img/favicon.ico" type="image/x-icon">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark c-nav">
+        <div class="container-fluid">
+            <a class="navbar-brand c-nav__brand" href="index.html">
+                <img src="./assets/img/FaithGuard_Primary_Logo.svg" alt="FaithGuard Logo" class="d-inline-block align-text-top c-nav__logo">
+            </a>
+            <!-- Login Dropdown -->
+            <div class="d-flex me-3 dropdown c-dropdown order-lg-3">
+                <button class="btn c-btn c-dropdown__btn js-dropdown-btn dropdown-toggle" type="button" id="loginDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="c-dropdown__icon bi bi-person-circle"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu js-dropdown-menu" aria-labelledby="loginDropdown">
+                    <li>
+                        <h6 class="dropdown-header c-dropdown__header">Sign Up / Log In</h6>
+                    </li>
+                    <li>
+                        <input type="text" id="signupUsername" class="form-control c-dropdown__info mb-2" placeholder="Username">
+                    </li>
+                    <li>
+                        <input type="password" id="signupPassword" class="form-control c-dropdown__info mb-2" placeholder="Password">
+                    </li>
+                    <li>
+                        <button class="btn c-btn c-dropdown__btn js-log btn-sm mb-2">Sign Up / Log In</button>
+                    </li> <!-- Sign Up/Log In button functionality to be implemented in php -->
+                </ul>
+            </div>
+            <!-- Navbar Toggler and Links -->
+            <button class="navbar-toggler c-nav__toggler bi bi-list order-lg-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            </button>
+            <!-- Collapsable navbar content -->
+            <div class="collapse navbar-collapse order-lg-1" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item c-nav__item">
+                        <a class="nav-link active c-nav__link c-nav__link--active" aria-current="page" href="resources.html">Resources</a>
+                    </li>
+                    <li class="nav-item c-nav__item">
+                        <a class="nav-link c-nav__link" href="about.html">About</a>
+                    </li>
+                </ul>
+                <!-- Search Form -->
+                <form class="d-flex mt-3 mt-lg-0">
+                    <input class="form-control js-search-form c-nav__search me-2" type="search" placeholder="Search resources..." aria-label="Search">
+                    <button class="btn c-btn js-search-btn c-nav__btn" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+    <!-- Hero Content -->
+    <header class="c-hero c-hero--small">
+        <div class="container-fluid">
+            <div class="c-hero__content text-center">
+                <h1 class="c-hero__title">Faith-Based Resources</h1>
+                <p class="c-hero__text">Discover tools and guidance for your journey to spiritual freedom</p>
+            </div>
+        </div>
+    </header>
+    <!-- Main Content -->
+    <main class="c-main container my-5">
+        <!-- Filter Section -->
+        <section class="c-filter mb-4">
+            <div class="row">
+                <div class="col-12">
+                    <h3 class="c-filter__title">Filter Resources</h3>
+                </div>
+            </div>
+            <div class="row">
+                <!-- Category Filter -->
+                <div class="col-md-4 mb-3">
+                    <label for="categoryFilter" class="form-label c-filter__label">Category</label>
+                    <select id="categoryFilter" class="form-select c-filter__select">
+                        <option value="all">All Categories</option>
+                        <option value="devotional">Devotionals</option>
+                        <option value="prayer">Prayer Guides</option>
+                        <option value="scripture">Bible Verses</option>
+                        <option value="accountability">Accountability</option>
+                        <option value="digital-detox">Digital Detox</option>
+                        <option value="testimony">Testimonies</option>
+                    </select>
+                </div>
+                <!-- Type Filter -->
+                <div class="col-md-4 mb-3">
+                    <label for="typeFilter" class="form-label c-filter__label">Resource Type</label>
+                    <select id="typeFilter" class="form-select c-filter__select">
+                        <option value="all">All Types</option>
+                        <option value="article">Articles</option>
+                        <option value="guide">Guides</option>
+                        <option value="video">Videos</option>
+                        <option value="audio">Audio</option>
+                        <option value="tool">Tools</option>
+                    </select>
+                </div>
+                <!-- Difficulty Filter -->
+                <div class="col-md-4 mb-3">
+                    <label for="difficultyFilter" class="form-label c-filter__label">Level</label>
+                    <select id="difficultyFilter" class="form-select c-filter__select">
+                        <option value="all">All Levels</option>
+                        <option value="beginner">Beginner</option>
+                        <option value="intermediate">Intermediate</option>
+                        <option value="advanced">Advanced</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <button class="btn c-btn c-filter__reset" id="resetFilters">Reset Filters</button>
+                    <span class="c-filter__count ms-3" id="resourceCount">Showing all resources</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Resources Grid -->
+        <section class="c-resources">
+            <div class="row" id="resourcesGrid">
+                <!-- Resource Cards will be dynamically generated -->
+            </div>
+            <!-- No Results Message -->
+            <div class="c-resources__no-results d-none" id="noResults">
+                <i class="bi bi-search"></i>
+                <h3>No resources found</h3>
+                <p>Try adjusting your filters or search terms</p>
+            </div>
+        </section>
+    </main>
+    <!-- Footer -->
+    <footer class="c-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-12">
+                    <img class="c-footer__logo" src="./assets/img/FaithGuard_Secondary_Logo.svg" alt="Secondary Logo">
+                    <p class="c-footer__text">&copy; 2025 FaithGuard. All rights reserved. Overcoming addiction through Christ &amp; Protecting your digital faith with hope and redemption.</p>
+                </div>
+                <div class="col-md-6 col-12 text-md-end">
+                    <ul class="footer-nav">
+                        <li class="c-footer__item">
+                            <a class="c-footer__links" href="index.html">Home</a>
+                        </li>
+                        <li class="c-footer__item">
+                            <a class="c-footer__links" href="resources.html">Resources</a>
+                        </li>
+                        <li class="c-footer__item">
+                            <a class="c-footer__links" href="about.html">About</a>
+                        </li>
+                        <li class="c-footer__item">
+                            <a class="c-footer__links" href="#">Contact</a>
+                        </li> <!-- Will be added once I upload it to a webhost -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<!-- Custom JS -->
+<script src="./assets/js/main.js"></script>
+<script src="./assets/js/resources.js"></script>
+</html>

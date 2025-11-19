@@ -2,6 +2,54 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.5] - 2025-11-19
+
+### Added
+- `img`-folder inside the folder `assets`.
+- Favicon `favicon.ico`, primary logo, secondary logo and Wordmark added.
+
+### Changed
+- Tagline: `Protecting your digital faith with hope and redemption.` changed to `Overcoming addiction through Christ &amp; Protecting your digital faith with hope and redemption.`
+
+### Deprecated
+- N/A
+
+### Removed
+- N/A
+
+### Fixed
+- N/A
+
+### Security
+- N/A
+
+## [0.0.5-Alpha] - 2025-11-16
+
+### Added
+- Page added `resources.html`.
+- JavaScript adds redirection to `resources.html` after quiz is submitted.
+
+### Changed
+- SCSS changes to clarify which page you are on.
+- HTML links to pages, logo will direct to `index.html`.
+- Simple JS colour changes for the log.
+- Buttons on the Quiz Modal are changed to add more cohesion.
+- Colour changes to Warm Ember pallette (`#E9B48A` = Primary-bg, `#956959` = Secondary-bg, `#5C352C` = Accent, `#2A1717` = Highlight and `#3C3C34` = Text-dark).
+
+### Deprecated
+- N/A
+
+### Removed
+- N/A
+
+### Fixed
+- Modal innerHTML inside `main.js` and `SCSS`-classes.
+- Footer spacing and style in `style.scss`.
+
+### Security
+- N/A
+
+
 ## [0.0.4] - 2025-11-15
 
 ### Added
@@ -23,7 +71,6 @@ All notable changes to this project will be documented in this file.
 
 ### Security
 - N/A
-
 
 
 ## [0.0.3] - 2025-11-15

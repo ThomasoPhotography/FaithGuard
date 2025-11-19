@@ -10,12 +10,12 @@
     <meta name="author" content="WWTW - FaithGuard">
     <meta name="robots" content="noindex">
     <!-- Version -->
-    <meta name="version" content="0.0.3">
-    <meta name="release" content="2025-11-15">
+    <meta name="version" content="0.0.5">
+    <meta name="release" content="2025-11-19">
     <!-- Title -->
     <title>FaithGuard</title>
     <!-- Favicon -->
-    <link rel="icon" href="./assets/img/#" type="image/x-icon">
+    <link rel="icon" href="./assets/img/favicon.ico" type="image/x-icon">
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
@@ -27,9 +27,8 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark c-nav">
         <div class="container-fluid">
-            <a class="navbar-brand c-nav__brand" href="Home.html">
-                <!--<img src="./assets/img/logo.png" alt="FaithGuard Logo" class="d-inline-block align-text-top c-nav__logo">-->
-                FaithGuard
+            <a class="navbar-brand c-nav__brand" href="index.html">
+                <img src="./assets/img/FaithGuard_Primary_Logo.svg" alt="FaithGuard Logo" class="d-inline-block align-text-top c-nav__logo">
             </a>
             <!-- Login Dropdown -->
             <div class="d-flex me-3 dropdown c-dropdown order-lg-3">
@@ -58,13 +57,10 @@
             <div class="collapse navbar-collapse order-lg-1" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item c-nav__item">
-                        <a class="nav-link active c-nav__link c-nav__link--active" aria-current="page" href="Home.html">Home</a>
+                        <a class="nav-link c-nav__link" href="resources.html">Resources</a>
                     </li>
                     <li class="nav-item c-nav__item">
-                        <a class="nav-link c-nav__link" href="Resources.html">Resources</a>
-                    </li>
-                    <li class="nav-item c-nav__item">
-                        <a class="nav-link c-nav__link" href="About.html">About</a>
+                        <a class="nav-link c-nav__link" href="about.html">About</a>
                     </li>
                 </ul>
                 <!-- Search Form -->
@@ -96,7 +92,7 @@
         <section class="c-main__section mb-5">
             <h2 class="c-main__title">Featured Resources</h2>
             <div class="row">
-                <div class="col-md-4 mb-4">
+                <div class="col-md-4 col-12 mb-4">
                     <div class="card c-card">
                         <div class="card-body c-card__body">
                             <h5 class="card-title c-card__title">Devotional: Overcoming Temptation</h5>
@@ -105,7 +101,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 mb-4">
+                <div class="col-md-4 col-12 mb-4">
                     <div class="card c-card">
                         <div class="card-body c-card__body">
                             <h5 class="card-title c-card__title">Prayer Guide for Accountability</h5>
@@ -114,7 +110,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 mb-4">
+                <div class="col-md-4 col-12 mb-4">
                     <div class="card c-card">
                         <div class="card-body c-card__body">
                             <h5 class="card-title c-card__title">Bible Verses on Purity</h5>
@@ -125,7 +121,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4 mb-4">
+                <div class="col-md-4 col-12 mb-4">
                     <div class="card c-card">
                         <div class="card-body c-card__body">
                             <h5 class="card-title c-card__title">Accountability Partner Tips</h5>
@@ -134,7 +130,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 mb-4">
+                <div class="col-md-4 col-12 mb-4">
                     <div class="card c-card">
                         <div class="card-body c-card__body">
                             <h5 class="card-title c-card__title">Digital Detox Strategies</h5>
@@ -143,7 +139,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 mb-4">
+                <div class="col-md-4 col-12 mb-4">
                     <div class="card c-card">
                         <div class="card-body c-card__body">
                             <h5 class="card-title c-card__title">Testimonies of Hope</h5>
@@ -159,14 +155,14 @@
             <h2 class="c-cta__title">Take the First Step Toward Redemption</h2>
             <p class="c-cta__text">Your journey to spiritual freedom starts here. Take our confidential quiz for personalized guidance, or sign up to access exclusive resources and community support.</p>
             <div class="row">
-                <div class="col-md-4 offset-md-2 mb-3">
-                    <button class="btn c-btn c-cta__btn js-modal">Take the Quiz</button>
+                <div class="col-md-4 col-12 offset-md-2 mb-3">
+                    <button class="btn c-btn c-hero__btn js-modal">Take the Quiz</button>
                 </div>
-                <div class="col-md-4 mb-3">
-                    <button class="btn c-btn c-cta__btn">Sign Up Now</button> <!-- Sign Up functionality to be implemented in php -->
+                <div class="col-md-4 col-12 mb-3">
+                    <button class="btn c-btn c-hero__btn">Sign Up Now</button> <!-- Sign Up functionality to be implemented in php -->
                 </div>
             </div>
-            <p class="c-cta__verse"><em>"Therefore, if anyone is in Christ, the new creation has come: The old has gone, the new is here!" – 2 Corinthians 5:17</em></p>
+            <p class="c-cta__verse"><em>"Therefore, if anyone is in Christ, the new creation has come: The old has gone, the new is here!" - 2 Corinthians 5:17</em></p>
         </section>
     </main>
     <!-- Community Impact Section -->
@@ -176,7 +172,7 @@
             <p class="c-impact__intro text-center">Hear from those who have found hope and strength through FaithGuard's faith-based resources.</p>
             <div class="row">
                 <!-- Static input, get's changed in PHP -->
-                <div class="col-md-4 mb-4">
+                <div class="col-md-4 col-12 mb-4">
                     <div class="card c-card c-impact__card">
                         <div class="card-body c-card__body c-impact__body">
                             <blockquote class="c-impact__quote">"FaithGuard's devotionals helped me rebuild my relationship with God after years of struggle. I'm free now."</blockquote>
@@ -184,7 +180,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- <div class="col-md-4 mb-4">
+                <!-- <div class="col-md-4 col-12 mb-4">
                     <div class="card c-card">
                         <div class="card-body c-card__body">
                             <blockquote class="c-impact__quote"></blockquote>
@@ -192,7 +188,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 mb-4">
+                <div class="col-md-4 col-12 mb-4">
                     <div class="card c-card">
                         <div class="card-body c-card__body">
                             <blockquote class="c-impact__quote"></blockquote>
@@ -207,15 +203,24 @@
     <footer class="c-footer">
         <div class="container">
             <div class="row">
-                <div class="col-md-6">
-                    <p class="c-footer__text">&copy; 2025 FaithGuard. All rights reserved. Protecting your digital faith with hope and redemption.</p>
+                <div class="col-md-6 col-12">
+                    <img class="c-footer__logo" src="./assets/img/FaithGuard_Secondary_Logo.svg" alt="Secondary Logo">
+                    <p class="c-footer__text">&copy; 2025 FaithGuard. All rights reserved. Overcoming addiction through Christ &amp; Protecting your digital faith with hope and redemption.</p>
                 </div>
-                <div class="col-md-6 text-md-end">
-                    <ul class="c-footer__links">
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="resources.html">Resources</a></li>
-                        <li><a href="about.html">About</a></li>
-                        <li><a href="#">Contact</a></li> <!-- Will be added once I upload it to a webhost -->
+                <div class="col-md-6 col-12 text-md-end">
+                    <ul class="footer-nav">
+                        <li class="c-footer__item">
+                            <a class="c-footer__links" href="index.html">Home</a>
+                        </li>
+                        <li class="c-footer__item">
+                            <a class="c-footer__links" href="resources.html">Resources</a>
+                        </li>
+                        <li class="c-footer__item">
+                            <a class="c-footer__links" href="about.html">About</a>
+                        </li>
+                        <li class="c-footer__item">
+                            <a class="c-footer__links" href="#">Contact</a>
+                        </li> <!-- Will be added once I upload it to a webhost -->
                     </ul>
                 </div>
             </div>
