@@ -7,9 +7,13 @@ $secondary-bg: #614338; // Rich brown
 $accent: #5C352C; // Deep brown
 $highlight: #2A1717; // Very dark brown
 $danger: #8B0000; // Dark red for errors
+$beginner: #0B4A14; // Badge Green Color
+$intermediate: #BA6F0E; // Badge Orange Color
+$advanced: #750716; // Badge Red Color
 $text-light: #F5F5DC; // Cream
 $text-dark: #3C3C34; // Dark olive green
 $font-family: 'Garamond', serif; // Classic serif font (Can change)
+$spacing: 2rem;
 
 /*---------------------------------------/*
  # GENERIC - BOOTSTRAP
@@ -145,11 +149,13 @@ a {
     }
 
     &__logo {
-        width: 1.9rem;
-        height: 1.9rem;
-        margin-right: 0.5rem;
+        max-width: 100%;
+        height: 8rem;
+        margin: calc($spacing /2) $spacing;
 
         &:hover {
+            background-color: $highlight;
+            border-radius: 75%;
             opacity: 0.8;
         }
     }
@@ -735,10 +741,35 @@ a {
         margin-top: 0.75rem;
         font-size: 0.85rem;
         padding: 0.4rem 0.8rem;
+        background-color: $accent;
+        border-radius: 2rem;
+        color: $text-light;
+
+        &:hover{
+            text-decoration: underline;
+        }
         
         @media (min-width: 576px) {
             font-size: 0.9rem;
             padding: 0.5rem 1rem;
+        }
+    }
+
+    &__badge{
+        padding: .5rem 1rem;
+        border-radius: 2rem;
+
+        &--Beginner{
+            background-color: $beginner;
+            color: $text-light;
+        }
+        &--Intermediate{
+            background-color: $intermediate;
+            color: $text-light;
+        }
+        &--Advanced{
+            background-color: $advanced;
+            color: $text-light;
         }
     }
 }
@@ -793,6 +824,15 @@ a {
             &:hover {
                 color: $accent;
             }
+    }
+
+    &__logo {
+        max-width: 100%;
+        height: 5rem;
+
+        &:hover {
+            opacity: 0.8;
+        }
     }
 }
 

@@ -2,7 +2,7 @@
  * FaithGuard Main JS
  * Version: 0.0.5
  * Author: Thomas Deseure
- * Release: 2025-11-16
+ * Release: 2025-11-19
  */
 
 // #region ***  DOM references                           ***********

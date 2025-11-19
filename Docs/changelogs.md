@@ -2,7 +2,28 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.0.5] - 2025-11-16
+## [0.0.5] - 2025-11-19
+
+### Added
+- `img`-folder inside the folder `assets`.
+- Favicon `favicon.ico`, primary logo, secondary logo and Wordmark added.
+
+### Changed
+- Tagline: `Protecting your digital faith with hope and redemption.` changed to `Overcoming addiction through Christ &amp; Protecting your digital faith with hope and redemption.`
+
+### Deprecated
+- N/A
+
+### Removed
+- N/A
+
+### Fixed
+- N/A
+
+### Security
+- N/A
+
+## [0.0.5-Alpha] - 2025-11-16
 
 ### Added
 - Page added `resources.html`.
