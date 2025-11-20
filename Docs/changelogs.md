@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.6-alpha] - 2025-11-20
+
+### Added
+- SQL database `faithguard_db.sql`.
+- Database connection in php `database.php`.
+- Different PHP files: `database.php`, `auth.php`, `repository.php`, `debug.php`, `user.php`.
+
+### Changed
+- N/A
+
+### Deprecated
+- N/A
+
+### Removed
+- N/A
+
+### Fixed
+- N/A
+
+### Security
+- N/A
+
 ## [0.0.5] - 2025-11-19
 
 ### Added
