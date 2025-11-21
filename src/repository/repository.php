@@ -1,6 +1,7 @@
 <?php
 
-require_once dirname(__FILE__) . "/../model/";
+require_once dirname(__FILE__) . "/../model/resources.php";
+require_once dirname(__FILE__) . "/../model/testimonies.php";
 require_once dirname(__FILE__) . "/../model/user.php";
 require_once dirname(__FILE__) . "/../database/database.php";
 
@@ -9,31 +10,24 @@ class FaithGuardRepository
     // GET ALL
     public static function getAllResources()
     {
-        $arr = Database::getRows("SELECT s.id, s.titel, s.beschrijving, s.afbeelding, s.prijs, s.nieuweCollectie, k.kleur_id, k.naam, m.maat_id, m.naam, m.afkorting, t.type_id, t.naam 
-        FROM sportkleding s
-        JOIN maten m ON s.maatId = m.maat_id
-        JOIN types t ON s.typeId = t.type_id
-        JOIN kleuren k ON s.kleurId = k.kleur_id", null, "Kleding");
+        $arr = Database::getRows("SELECT r.id, r.title, r.description, r.category, r.type, r.difficulty, r.tags
+        FROM resources r
+        JOIN users u ON r.user_id = u.id", null, "Resources");
         return $arr;
     }
 
     public static function getAllQuizzes()
     {
-        $arr = Database::getRows("SELECT s.id, s.titel, s.beschrijving, s.afbeelding, s.prijs, s.nieuweCollectie, k.kleur_id, k.naam, m.maat_id, m.naam, m.afkorting, t.type_id, t.naam 
-        FROM sportkleding s
-        JOIN maten m ON s.maatId = m.maat_id
-        JOIN types t ON s.typeId = t.type_id
-        JOIN kleuren k ON s.kleurId = k.kleur_id", null, "Kleding");
+        $arr = Database::getRows("SELECT q.id, q.user_id, q.duration, q.accountability, q.resources_of_interest, q.spiritual_connection, q.primary_goal, q.created_at, u.username FROM quizzes q
+        JOIN users u ON q.user_id = u.id", null, "Quiz");
         return $arr;
     }
 
-    public static function getAllTestemonies()
+    public static function getAllTestimonies()
     {
-        $arr = Database::getRows("SELECT s.id, s.titel, s.beschrijving, s.afbeelding, s.prijs, s.nieuweCollectie, k.kleur_id, k.naam, m.maat_id, m.naam, m.afkorting, t.type_id, t.naam 
-        FROM sportkleding s
-        JOIN maten m ON s.maatId = m.maat_id
-        JOIN types t ON s.typeId = t.type_id
-        JOIN kleuren k ON s.kleurId = k.kleur_id", null, "Kleding");
+        $arr = Database::getRows("SELECT t.id, t.quote_text, t.cite_name, t.approved
+        FROM testimonies t
+        JOIN users u ON t.user_id = u.id", null, "Testimony");
         return $arr;
     }
 
@@ -41,12 +35,10 @@ class FaithGuardRepository
 
     public static function getResourcesById($parId)
     {
-        $item = Database::getSingleRow("SELECT s.id, s.titel,s.beschrijving, s.afbeelding, s.prijs, s.nieuweCollectie, k.kleur_id, k.naam, m.maat_id, m.naam, m.afkorting, t.type_id, t.naam 
-        FROM sportkleding s
-        JOIN maten m ON s.maatId = m.maat_id
-        JOIN types t ON s.typeId = t.type_id
-        JOIN kleuren k ON s.kleurId = k.kleur_id
-        WHERE s.id = ?", [$parId], "Kleding");
+        $item = Database::getSingleRow("SELECT r.id, r.title, r.description, r.category, r.type, r.difficulty, r.tags
+        FROM resources r
+        JOIN users u ON r.user_id = u.id
+        WHERE r.id = ?", [$parId], "Resources");
         return $item;
     }
 

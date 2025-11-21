@@ -3,14 +3,18 @@
 class User{
 
     public $id;
-    public $login;
-    public $paswoord;
+    public $username;
+    public $password;
+    public $created;
+    public $admin;
   
 
-    public function __construct($parId=-1, $parLogin="",$parPaswoord =""){
+    public function __construct($parId=-1, $parUsername="",$parPassword ="", $parCreated ="", $parAdmin = ""){
         $this->id =$parId;
-        $this->login = $parLogin;
-        $this->paswoord = $parPaswoord;
+        $this->username = $parUsername;
+        $this->password = $parPassword;
+        $this->created = $parCreated;
+        $this->admin = $parAdmin;
     }
 }
 
