@@ -1,22 +1,20 @@
 <?php
 
-class User{
-
-    public $id;
+class User
+{
+    public $user_id;
     public $username;
     public $password;
-    public $created;
-    public $admin;
-  
+    public $created_at;
+    public $is_admin;
 
-    public function __construct($parId=-1, $parUsername="",$parPassword ="", $parCreated ="", $parAdmin = ""){
-        $this->id =$parId;
+    public function __construct($parUserId = -1, $parUsername = "", $parPassword = "", $parCreatedAt = "", $parIsAdmin = false)
+    {
+        $this->user_id = $parUserId;
         $this->username = $parUsername;
         $this->password = $parPassword;
-        $this->created = $parCreated;
-        $this->admin = $parAdmin;
+        $this->created_at = $parCreatedAt;
+        $this->is_admin = $parIsAdmin;
     }
 }
-
-
 ?>
