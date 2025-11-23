@@ -71,14 +71,19 @@ class FaithGuardRepository
         return self::getSingleRow("SELECT * FROM users WHERE user_id = ?", [$id], 'User');
     }
 
+    public static function getUserByUsername($username)
+    {
+        return self::getSingleRow("SELECT * FROM users WHERE username = ?", [$username], 'User');
+    }
+
     public static function addUser($username, $passwordHash, $isAdmin = false)
     {
-        return self::execute("INSERT INTO users (username, password_hash, is_admin) VALUES (?, ?, ?)", [$username, $passwordHash, $isAdmin]);
+        return self::execute("INSERT INTO users (username, password, is_admin) VALUES (?, ?, ?)", [$username, $passwordHash, $isAdmin]);
     }
 
     public static function updateUser($id, $username, $passwordHash, $isAdmin)
     {
-        return self::execute("UPDATE users SET username = ?, password_hash = ?, is_admin = ? WHERE user_id = ?", [$username, $passwordHash, $isAdmin, $id]);
+        return self::execute("UPDATE users SET username = ?, password = ?, is_admin = ? WHERE user_id = ?", [$username, $passwordHash, $isAdmin, $id]);
     }
 
     public static function deleteUser($id)
