@@ -41,6 +41,7 @@ if ($user) {
     // User doesn't exist: sign up
     $password_hash = password_hash($password, PASSWORD_DEFAULT);  // Hash the password securely
     $rowsAffected = FaithGuardRepository::addUser($username, $password_hash, false);  // Default to non-admin, stores in 'password' column
+    echo $password_hash;
     if ($rowsAffected > 0) {
         // Retrieve the new user to get the ID
         $newUser = FaithGuardRepository::getUserByUsername($username);
