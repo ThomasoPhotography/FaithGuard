@@ -113,7 +113,7 @@ const callbackLogin = async (e) => {
 
 const callbackLogout = async () => {
 	try {
-		const response = await fetch('auth.php', {
+		const response = await fetch('../../src/helper/auth.php', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
 			body: new URLSearchParams({ logout: true }),
