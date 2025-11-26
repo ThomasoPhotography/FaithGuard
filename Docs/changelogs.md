@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.0] - 2025-11-26
+
+### Added
+- Four JavaScript files: `nav.js`, `quiz.js`, `progress.js`, `community.js`.
+- Database Folder
+
+### Changed
+- SCSS file `style.scss` and CSS compiled from SCSS renamed to `main.scss`.
+- Renamed the Javascript file from `resources.js` to `messaging.js`.
+- Renamed folder `img` to `uploads`.
+- Renamed folder `src` to `api`.
+
+### Deprecated
+- N/A
+
+### Removed
+- JavaScript file `main.js`.
+- SQL file.
+
+### Fixed
+- N/A
+
+### Security
+- N/A
+
+
 ## [0.0.6-alpha] - 2025-11-20
 
 ### Added
@@ -19,7 +45,7 @@ All notable changes to this project will be documented in this file.
 - N/A
 
 ### Fixed
-- N/A
+- Local Backend to V7
 
 ### Security
 - N/A
