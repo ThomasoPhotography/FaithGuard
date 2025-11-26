@@ -6,13 +6,24 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - Four JavaScript files: `nav.js`, `quiz.js`, `progress.js`, `community.js`.
-- Database Folder
+- Database Folder.
+- Template folder with admin folder inside.
+- Six template HTML files inside the `template` folder: `community.html`, `index.html`, `nav.html`, `progress.html`, `quiz.html` and `resources.html`.
+- Three template HTML files in the following path `/templates/admin`: `legal.html`, `manage-resources.html` and `moderation.html`.
+- Database files inside the folder with path `/database`: `database.php` and `FaithGuardRepository.php`.
+- Users file on path `/api/users`: `profile.php`.
+- Auth files on path `/api/auth`: `register.php`, `login.php` and `logout.php`.
+- Post files on path `/api/posts`: `list.php`, `create.php`, `reply.php` and `report.php`.
+- Messages folder on path `/api/messages`.
+- Messages files on path `/api/messages`: `send.php`, `inbox.php` and `delete.php`.
+- Resources files on path `/api/resources`: `create.php`, `delete.php`, `list.php` and `update.php`.
 
 ### Changed
 - SCSS file `style.scss` and CSS compiled from SCSS renamed to `main.scss`.
 - Renamed the Javascript file from `resources.js` to `messaging.js`.
 - Renamed folder `img` to `uploads`.
 - Renamed folder `src` to `api`.
+- Renamed file on path `/database` from `database.php` to `Database.php`.
 
 ### Deprecated
 - N/A

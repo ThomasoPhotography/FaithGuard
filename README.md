@@ -4,7 +4,7 @@ FaithGuard is currently a small static website / front-end project that provides
 
 **Highlights**
 - **Simple**: Static site built with plain HTML and CSS/SCSS.
-- **Organized assets**: Styles are in `assets/css/` including `style.scss` and the compiled `style.css`.
+- **Organized assets**: Stylesheet is in `assets/css/` including `main.scss` and the compiled `main.css`.
 - **Easy to run**: Open `index.html` locally or use a lightweight static server to preview.
 
 ## Table of Contents
@@ -24,12 +24,12 @@ FaithGuard is currently a small static website / front-end project that provides
 - Or run a simple static server (recommended if you use modules or want a nicer dev workflow):
 
 ## Development
-- Edit the SCSS source `assets/css/style.scss`. Recompile to `style.css` with your preferred tool (Dart Sass, node-sass, or your editor integration).
+- Edit the SCSS source `assets/css/main.scss`. Recompile to `main.css` with your preferred tool (Dart Sass, node-sass, or your editor integration).
 
 ## Project structure
 - `index.html` — Main page
-- `assets/css/style.scss` — SCSS source
-- `assets/css/style.css` — Compiled stylesheet
+- `assets/css/main.scss` — SCSS source
+- `assets/css/main.css` — Compiled stylesheet
 - `assets/` — Other static assets (images, fonts, etc.)
 
 ## Future Development Plans
@@ -41,6 +41,3 @@ FaithGuard is currently a small static website / front-end project that provides
 
 ## Contributing
 - Improve content, styles, or accessibility. Open a PR with a clear description.
-
-## License
-[comment] Add a `LICENSE` file to clarify the license (for example, MIT). If you want, I can add an MIT license file for you.
