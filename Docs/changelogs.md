@@ -1,6 +1,26 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [0.1.1] - 2025-11-26
+
+### Added
+- Progress files on path `/api/progress`: `checkin.php`, `get.php` and `export.php`.
+- One quiz file on path `/api/quiz`: `submit.php`.
+
+### Changed
+- N/A
+
+### Deprecated
+- N/A
+
+### Removed
+- N/A
+
+### Fixed
+- N/A
+
+### Security
+- N/A
 
 ## [0.1.0] - 2025-11-26
 
@@ -37,7 +57,6 @@ All notable changes to this project will be documented in this file.
 
 ### Security
 - N/A
-
 
 ## [0.0.6-alpha] - 2025-11-20
 
