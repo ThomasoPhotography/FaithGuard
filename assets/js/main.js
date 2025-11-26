@@ -33,7 +33,7 @@ const showLoginState = (username) => {
             <li><a class="dropdown-item c-dropdown__item" href="dashboard.html">Profile</a></li>
             <li><a class="dropdown-item c-dropdown__item" href="dashboard.html#settings">Settings</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item c-dropdown__item" href="#" id="logoutBtn">Logout</a></li>
+            <li><a class="dropdown-item c-dropdown__item js-logout" href="#" id="logoutBtn">Logout</a></li>
         `;
 
 		// Add event listener for logout
@@ -77,7 +77,7 @@ const callbackQuizSubmit = function (event) {
 	}
 };
 
-const callbackLogin = (e) => {
+const callbackLogin = async (e) => {
 	e.preventDefault();
 	const username = signupUsernameInput.value.trim();
 	const password = signupPasswordInput.value.trim();
@@ -86,38 +86,51 @@ const callbackLogin = (e) => {
 		showErrorMessage('Please enter both username and password.');
 		return;
 	}
-	// Check localStorage for existing user
-	const existingUser = localStorage.getItem('faithGuard_user_' + username);
-	if (existingUser) {
-		const userData = JSON.parse(existingUser);
-		if (userData.password === password) {
-			sessionStorage.setItem('faithGuard_loggedInUser', username);
-			showSuccessMessage(`Welcome back, ${username}!`);
-			showLoginState(username);
+
+	try {
+		const response = await fetch('auth.php', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			body: new URLSearchParams({ username, password }),
+		});
+		const data = await response.json();
+
+		if (data.success) {
+			sessionStorage.setItem('faithGuard_loggedInUser', data.username); // Store username client-side for UI
+			showSuccessMessage(data.message);
+			showLoginState(data.username);
 			// Clear inputs
 			signupUsernameInput.value = '';
 			signupPasswordInput.value = '';
 		} else {
-			showErrorMessage('Incorrect password. Please try again.');
+			showErrorMessage(data.message);
 		}
-	} else {
-		// Register new user
-		const newUser = {
-			username: username,
-			password: password,
-			created: new Date().toISOString(),
-		};
-		localStorage.setItem('faithGuard_user_' + username, JSON.stringify(newUser));
-		sessionStorage.setItem('faithGuard_loggedInUser', username);
-		showSuccessMessage(`Account created! Welcome, ${username}!`);
-		showLoginState(username);
-		// Clear inputs
-		signupUsernameInput.value = '';
-		signupPasswordInput.value = '';
+	} catch (error) {
+		showErrorMessage('Login failed. Please try again.');
+		console.error('Login error:', error);
 	}
 };
 
-const callbackLogout = () => {
+const callbackLogout = async () => {
+	try {
+		const response = await fetch('auth.php', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			body: new URLSearchParams({ logout: true }),
+		});
+		const data = await response.json();
+
+		if (data.success) {
+			showSuccessMessage(data.message);
+		} else {
+			showErrorMessage(data.message);
+		}
+	} catch (error) {
+		showErrorMessage('Logout failed on server, but clearing local data.');
+		console.error('Logout error:', error);
+	}
+
+	// Always clear client-side data and reload
 	sessionStorage.removeItem('faithGuard_loggedInUser');
 	location.reload();
 };
