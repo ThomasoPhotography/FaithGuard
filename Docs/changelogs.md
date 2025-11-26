@@ -8,7 +8,7 @@ All notable changes to this project will be documented in this file.
 - One quiz file on path `/api/quiz`: `submit.php`.
 
 ### Changed
-- N/A
+- File path in file with path: `/database/FaithGuardRepository.php`, changes made on line 2.
 
 ### Deprecated
 - N/A

@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . "/database.php";
+require_once dirname(__FILE__) . "/Database.php";
 class FaithGuardRepository {
     public static function getUserByEmail($email) {
         return Database::getSingleRow("SELECT * FROM users WHERE email = ?", [$email]);
