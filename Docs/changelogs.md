@@ -12,6 +12,8 @@ All notable changes to this project will be documented in this file.
 - Progress template on path `/templates/progress.html`.
 - Resources template on path `/templates/resources.html`.
 - Resources Javascript on path `/assets/js/resources.js`.
+- Quiz template on path: `/templates/quiz.html`.
+- Admin Templates on path: `/templates/admin`.
 
 ### Changed
 - File path in file with path: `/database/FaithGuardRepository.php`, changes made on line 2.
