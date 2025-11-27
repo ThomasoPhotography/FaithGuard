@@ -5,44 +5,43 @@ const newPostTextarea = document.getElementById('newPost');
 
 // #region ***  Callback-Visualisation - show___         ***********
 const showPosts = (posts) => {
-	postsList.innerHTML = posts.map((p) => `<div class="card c-card">${p.content}</div>`).join('');
+    postsList.innerHTML = posts.map(p => `<div class="card">${p.content}</div>`).join('');
 };
 // #endregion
 
 // #region ***  Callback-No Visualisation - callback___  ***********
 const callbackPostNew = (data) => {
-	if (data.success) getPosts();
+    if (data.success) getPosts();
 };
 // #endregion
 
 // #region ***  Data Access - get___                     ***********
 const getPosts = () => {
-	fetch('api/posts/list.php')
-		.then((response) => response.json())
-		.then(showPosts);
+    fetch('/api/posts/list.php')
+        .then(response => response.json())
+        .then(showPosts);
 };
 // #endregion
 
 // #region ***  Event Listeners - listenTo___            ***********
 const listenToPostNew = () => {
-	document.querySelector('button[onclick="postNew()"]').addEventListener('click', () => {
-		const content = newPostTextarea.value;
-		fetch('api/posts/create.php', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ content }),
-		})
-			.then((response) => response.json())
-			.then(callbackPostNew);
-	});
+    document.querySelector('button[onclick="postNew()"]').addEventListener('click', () => {
+        const content = newPostTextarea.value;
+        fetch('/api/posts/create.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ content })
+        })
+        .then(response => response.json())
+        .then(callbackPostNew);
+    });
 };
 // #endregion
 
 // #region ***  Init / DOMContentLoaded                  ***********
-const initCommunity = () => {
-	console.log('Community Loaded');
-	getPosts();
-	listenToPostNew();
+const initPosts = () => {
+    getPosts();
+    listenToPostNew();
 };
-document.addEventListener('DOMContentLoaded', initCommunity);
+document.addEventListener('DOMContentLoaded', initPosts);
 // #endregion

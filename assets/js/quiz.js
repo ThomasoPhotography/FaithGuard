@@ -32,7 +32,7 @@ const listenToSubmit = () => {
 	quizForm.addEventListener('submit', (e) => {
 		e.preventDefault();
 		const data = getQuizData();
-		fetch('api/quiz/submit.php', {
+		fetch('/api/quiz/submit.php', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify(data),
@@ -45,7 +45,6 @@ const listenToSubmit = () => {
 
 // #region ***  Init / DOMContentLoaded                  ***********
 const initQuiz = () => {
-	console.log('Quiz Loaded');
 	showStep(1);
 	listenToSubmit();
 };

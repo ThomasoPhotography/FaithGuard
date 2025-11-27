@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 26, 2025 at 10:43 PM
+-- Generation Time: Nov 27, 2025 at 09:38 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -143,9 +143,10 @@ INSERT INTO `quiz_questions` (`id`, `question`, `options`) VALUES
 CREATE TABLE `quiz_results` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `score` int(11) NOT NULL,
-  `tags` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`tags`)),
-  `created_at` datetime DEFAULT current_timestamp()
+  `addiction_type` varchar(50) NOT NULL,
+  `answers_json` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`answers_json`)),
+  `total_score` decimal(10,2) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
