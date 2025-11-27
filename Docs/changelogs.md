@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 - Resources Javascript on path `/assets/js/resources.js`.
 - Quiz template on path: `/templates/quiz.html`.
 - Admin Templates on path: `/templates/admin`.
+- Footer Template and Footer function on `/templates/footer.html` and `/assets/js/footer.js`.
 
 ### Changed
 - File path in file with path: `/database/FaithGuardRepository.php`, changes made on line 2.

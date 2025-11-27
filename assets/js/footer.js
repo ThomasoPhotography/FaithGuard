@@ -1,25 +1,25 @@
 // #region ***  DOM references                           ***********
-const navPlaceholder = document.querySelector('.c-nav--placeholder');
+const footerPlaceholder = document.querySelector('.c-footer--placeholder');
 // #endregion
 
 // #region ***  Callback-Visualisation - show___         ***********
-const showNav = () => {
-	if (!navPlaceholder) {
-		console.error('c-nav--placeholder element not found in DOM');
+const showFooter = () => {
+	if (!footerPlaceholder) {
+		console.error('c-footer--placeholder element not found in DOM');
 		return;
 	}
-	fetch('/templates/nav.html') // Note: Use relative path if running from root; adjust if needed (e.g., '/templates/nav.html' for absolute)
+	fetch('/templates/footer.html') // Note: Use relative path if running from root; adjust if needed (e.g., '/templates/nav.html' for absolute)
 		.then((response) => {
 			if (!response.ok) {
-				throw new Error('Failed to load nav.html: ' + response.status);
+				throw new Error('Failed to load footer.html: ' + response.status);
 			}
 			return response.text();
 		})
 		.then((data) => {
-			navPlaceholder.innerHTML = data;
+			footerPlaceholder.innerHTML = data;
 		})
 		.catch((error) => {
-			console.error('Error loading nav:', error);
+			console.error('Error loading footer:', error);
 		});
 };
 // #endregion
@@ -31,17 +31,17 @@ const showNav = () => {
 // #endregion
 
 // #region ***  Event Listeners - listenTo___            ***********
-const listenToNavToggles = () => {
+const listenTofooterToggles = () => {
 	// Added when I want customised
 };
 // #endregion
 
 // #region ***  Init / DOMContentLoaded                  ***********
-const init = function () {
+const initFooter = function () {
 	console.log('Page Loaded');
-	showNav();
-	listenToNavToggles();
+	showFooter();
+	listenTofooterToggles();
 };
 
-document.addEventListener('DOMContentLoaded', init);
+document.addEventListener('DOMContentLoaded', initFooter);
 // #endregion
