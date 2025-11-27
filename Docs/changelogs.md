@@ -1,14 +1,16 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
-## [0.1.1] - 2025-11-26
+## [0.1.1] - 2025-11-27
 
 ### Added
 - Progress files on path `/api/progress`: `checkin.php`, `get.php` and `export.php`.
 - One quiz file on path `/api/quiz`: `submit.php`.
+- Index.html template on path `/templates/index.html`.
 
 ### Changed
 - File path in file with path: `/database/FaithGuardRepository.php`, changes made on line 2.
+- DOM preferences in file with path: `/assets/js/nav.js`.
 
 ### Deprecated
 - N/A

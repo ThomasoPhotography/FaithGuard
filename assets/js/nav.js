@@ -1,5 +1,5 @@
 // #region ***  DOM references                           ***********
-const navPlaceholder = document.querySelector('.c-nav');
+const navPlaceholder = document.querySelector('.c-nav .c-nav--placeholder');
 // #endregion
 
 // #region ***  Callback-Visualisation - show___         ***********
