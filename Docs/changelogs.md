@@ -6,11 +6,17 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Progress files on path `/api/progress`: `checkin.php`, `get.php` and `export.php`.
 - One quiz file on path `/api/quiz`: `submit.php`.
-- Index.html template on path `/templates/index.html`.
+- Index template on path `/templates/index.html`.
+- Nav template on path `/templates/nav.html`.
+- Community template on path `/templates/community.html`.
+- Progress template on path `/templates/progress.html`.
+- Resources template on path `/templates/resources.html`.
+- Resources Javascript on path `/assets/js/resources.js`.
 
 ### Changed
 - File path in file with path: `/database/FaithGuardRepository.php`, changes made on line 2.
 - DOM preferences in file with path: `/assets/js/nav.js`.
+- Class name in `progress.html`.
 
 ### Deprecated
 - N/A
@@ -19,7 +25,7 @@ All notable changes to this project will be documented in this file.
 - N/A
 
 ### Fixed
-- N/A
+- Favicon path to `<link rel="icon" href="/assets/uploads/favicon.ico" type="image/x-icon">` in all templates.
 
 ### Security
 - N/A
