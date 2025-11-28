@@ -4,7 +4,7 @@ class Database {
         $user = 'ID483117_faithguard';
         $pass = 'LowLeague13_';
         $host = 'ID483117_faithguard.db.webhosting.be';
-        $db_name = 'faithguard_db'; // Update to your DB name
+        $db_name = 'ID483117_faithguard'; // Update to your DB name
         $dsn = "mysql:host=$host;dbname=$db_name"; // For Postgres: "pgsql:host=$host;dbname=$db_name"
         $db = new PDO($dsn, $user, $pass);
         return $db;
