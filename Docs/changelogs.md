@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - Update require statements to use relative paths for database connections.
 - Correct require statement path in `login.php` for database connection.
+- Enhance debugging information and input validation in `login.php`.
 
 ### Deprecated
 - N/A
