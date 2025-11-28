@@ -7,7 +7,8 @@ All notable changes to this project will be documented in this file.
 - N/A
 
 ### Changed
-- Update require statements to use relative paths for database connections
+- Update require statements to use relative paths for database connections.
+- Correct require statement path in `login.php` for database connection.
 
 ### Deprecated
 - N/A
