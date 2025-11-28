@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 27, 2025 at 09:38 PM
+-- Generation Time: Nov 28, 2025 at 07:53 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -226,7 +226,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `email`, `password_hash`, `name`, `role`, `created_at`) VALUES
-(1, 'admin@faithguard.com', '$2y$10$examplehash', 'Admin', 'admin', '2025-11-26 22:42:51');
+(1, 'admin@faithguard.com', '$2y$10$ux5N/rYhmyHaVVKSbj.TSuzcZCe.7K1stENm.I2Qdqxj1pyTIhqvO\r\n', 'Admin', 'admin', '2025-11-26 22:42:51');
 
 --
 -- Indexes for dumped tables

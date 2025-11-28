@@ -1,7 +1,7 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
-## [0.1.1] - 2025-11-27
+## [0.1.1] - 2025-11-28
 
 ### Added
 - Progress files on path `/api/progress`: `checkin.php`, `get.php` and `export.php`.
@@ -20,6 +20,8 @@ All notable changes to this project will be documented in this file.
 - File path in file with path: `/database/FaithGuardRepository.php`, changes made on line 2.
 - DOM preferences in file with path: `/assets/js/nav.js`.
 - Class name in `progress.html`.
+- Database schema and SQL file minor changes.
+- Turned the main `index.html` into `index.php`.
 
 ### Deprecated
 - N/A
