@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 ## [0.1.2] - Current
 
 ### Added
-- N/A
+- Add newline at the end of `login.php` to comply with coding standards.
 
 ### Changed
 - Update require statements to use relative paths for database connections.
