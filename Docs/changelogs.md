@@ -22,6 +22,13 @@ All notable changes to this project will be documented in this file.
 - Class name in `progress.html`.
 - Database schema and SQL file minor changes.
 - Turned the main `index.html` into `index.php`.
+- Update require_once paths in `index.php`.
+- Comment out `debug.php` helper in `index.php`.
+- Update database connection for hosting.
+- Update database name in `database.php` for correct connection.
+- Correct path formatting for require_once statements in `index.php`.
+- Update require statements to use absolute paths for database connections.
+- Correct require statement path in login.php for database connection.
 
 ### Deprecated
 - N/A
