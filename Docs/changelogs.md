@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - Add newline at the end of `login.php` to comply with coding standards.
+- Expand `FaithGuardRepository.php` with additional methods for users, analytics, donations, messages, posts, prayers, progress logs, quiz questions, quiz results, resources, resource tags, roles, and sessions.
 
 ### Changed
 - Update require statements to use relative paths for database connections.
