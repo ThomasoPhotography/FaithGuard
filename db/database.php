@@ -1,9 +1,9 @@
 <?php
 class Database {
     private static function getConnection() {
-        $user = 'root';
-        $pass = '';
-        $host = 'localhost';
+        $user = 'ID483117_faithguard';
+        $pass = 'LowLeague13_';
+        $host = 'ID483117_faithguard.db.webhosting.be';
         $db_name = 'faithguard_db'; // Update to your DB name
         $dsn = "mysql:host=$host;dbname=$db_name"; // For Postgres: "pgsql:host=$host;dbname=$db_name"
         $db = new PDO($dsn, $user, $pass);
