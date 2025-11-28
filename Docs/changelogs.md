@@ -1,6 +1,27 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [0.1.2] - Current
+
+### Added
+- N/A
+
+### Changed
+- Update require statements to use relative paths for database connections
+
+### Deprecated
+- N/A
+
+### Removed
+- N/A
+
+### Fixed
+- N/A
+
+### Security
+- N/A
+
+
 ## [0.1.1] - 2025-11-28
 
 ### Added

@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../../db/database.php';
+require_once __DIR__ . '../../db/database.php';
 header('Content-Type: application/json');
 $data = json_decode(file_get_contents('php://input'), true);
 $user = Database::getSingleRow("SELECT * FROM users WHERE email = ?", [$data['email']]);

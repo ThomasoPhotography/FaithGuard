@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '/db/database.php';
+require_once __DIR__ . '../../db/database.php';
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     echo json_encode(['error' => 'Forbidden']);
     exit;
