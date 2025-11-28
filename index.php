@@ -1,7 +1,10 @@
 <?php
-require_once dirname(__FILE__) . "/src/helper/debug.php";
-require_once dirname(__FILE__) . "/src/helper/auth.php";
-require_once dirname(__FILE__) . "/src/repository/repository.php";
+require_once dirname(__FILE__) . "/api/helper/debug.php";
+require_once dirname(__FILE__) . "/api/auth/login.php";
+require_once dirname(__FILE__) . "/api/auth/logout.php";
+require_once dirname(__FILE__) . "/api/auth/register.php";
+require_once dirname(__FILE__) . "/database/FaithguardRepository.php";
+require_once dirname(__FILE__) . "/templates/index.html";
 ?>
 <!DOCTYPE html>
 <html lang="en">
