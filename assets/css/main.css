@@ -796,6 +796,12 @@ a:hover {
 .c-footer__links:hover {
   color: #5c352c;
 }
+.c-footer__links--mail:hover {
+  background-color: #e9b48a;
+  color: #3c3c34;
+  text-decoration: underline;
+  text-decoration-color: #5c352c;
+}
 .c-footer__logo {
   max-width: 100%;
   height: 5rem;
