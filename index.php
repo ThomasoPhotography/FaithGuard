@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . "api/helper/debug.php";
+// require_once __DIR__ . "api/helper/debug.php";
 require_once __DIR__ . "api/auth/login.php";
 require_once __DIR__ . "api/auth/logout.php";
 require_once __DIR__ . "api/auth/register.php";
