@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../../database/Database.php';
+require_once '/db/database.php';
 if (!isset($_SESSION['user_id'])) {
     echo json_encode(['error' => 'Unauthorized']);
     exit;
