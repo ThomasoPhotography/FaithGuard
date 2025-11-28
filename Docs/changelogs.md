@@ -28,6 +28,7 @@ All notable changes to this project will be documented in this file.
 - Update database name in `database.php` for correct connection.
 - Correct path formatting for require_once statements in `index.php`.
 - Update require statements to use absolute paths for database connections.
+- Correct require statement path in login.php for database connection.
 
 ### Deprecated
 - N/A
