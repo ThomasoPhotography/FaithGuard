@@ -25,6 +25,7 @@ All notable changes to this project will be documented in this file.
 - Update require statement to use relative path in `profile.php`.
 - Add padding to `.col-md-4` and `.col-md-6` classes in `main.scss`, compiled to `main.css`.
 - Enhance visualisation in community, messaging, resources, and quiz scripts.
+- Expand FaithGuardRepository with comprehensive CRUD methods for users, analytics, donations, messages, posts, replies, prayers, progress logs, quiz questions, quiz results, resources, resource tags, roles, and sessions
 
 ### Security
 - N/A
