@@ -16,7 +16,8 @@ All notable changes to this project will be documented in this file.
 - N/A
 
 ### Fixed
-- Update require statements in `login.php` and `register.php` for correct path resolution
+- Update require statements in `login.php` and `register.php` for correct path resolution.
+- Update require statements to use relative paths in message handling files.
 
 ### Security
 - N/A
