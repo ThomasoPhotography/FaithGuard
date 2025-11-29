@@ -1,6 +1,51 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [0.1.3-alpha] - Current
+
+### Added
+- N/A
+
+### Changed
+- N/A
+
+### Deprecated
+- N/A
+
+### Removed
+- N/A
+
+### Fixed
+- Update require statements in `login.php` and `register.php` for correct path resolution
+
+### Security
+- N/A
+
+
+## [0.1.2] - 2025-11-29
+
+### Added
+- Add newline at the end of `login.php` to comply with coding standards.
+- Expand `FaithGuardRepository.php` with additional methods for users, analytics, donations, messages, posts, prayers, progress logs, quiz questions, quiz results, resources, resource tags, roles, and sessions.
+
+### Changed
+- Update require statements to use relative paths for database connections.
+- Correct require statement path in `login.php` for database connection.
+- Enhance debugging information and input validation in `login.php`.
+
+### Deprecated
+- N/A
+
+### Removed
+- N/A
+
+### Fixed
+- N/A
+
+### Security
+- N/A
+
+
 ## [0.1.1] - 2025-11-28
 
 ### Added
