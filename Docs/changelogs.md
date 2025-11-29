@@ -22,6 +22,7 @@ All notable changes to this project will be documented in this file.
 - Update require statements to use relative paths in progress handling files.
 - Update require statement to use relative path in `submit.php`.
 - Update require statements to use relative paths in resource handling files.
+- Update require statement to use relative path in `profile.php`.
 
 ### Security
 - N/A
