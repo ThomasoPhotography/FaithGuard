@@ -1,5 +1,5 @@
 // #region ***  DOM references                           ***********
-const resourcesList = document.querySelector('.c-resources__list');
+const resourcesList = document.querySelectorAll('.c-resources__list');
 const searchInput = document.querySelector('.c-resources__search');
 const filterSelect = document.querySelector('.c-resources__filter');
 // #endregion
