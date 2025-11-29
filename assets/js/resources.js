@@ -6,7 +6,14 @@ const filterSelect = document.querySelector('.c-resources__filter');
 
 // #region ***  Callback-Visualisation - show___         ***********
 const showResources = (resources) => {
-	resourcesList.innerHTML = resources.map((r) => `<div class="card c-card"><h5>${r.title}</h5><p>${r.content}</p></div>`).join('');
+	resourcesList.innerHTML = resources
+		.map((r) => (
+			<div class='card c-card'>
+				<h5>${r.title}</h5>
+				<p>${r.content}</p>
+			</div>
+		))
+		.join('');
 };
 // #endregion
 
