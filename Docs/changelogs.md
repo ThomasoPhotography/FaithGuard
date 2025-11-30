@@ -20,6 +20,7 @@ All notable changes to this project will be documented in this file.
 - Full update of the file `nav.js` on path: `/assets/js/`.
 - Updated the `nav.js` file and `index.php` file.
 - Updated the `nav.php` template.
+- Added the `/helper/debug.php` file to `index.php`.
 
 ### Security
 - N/A
