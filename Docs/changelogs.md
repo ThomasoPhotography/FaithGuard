@@ -23,6 +23,7 @@ All notable changes to this project will be documented in this file.
 - Added the `/helper/debug.php` file to `index.php`.
 - Updated logging in function.
 - Updated the `login.php` so logging in works.
+- Updated several files on path: `/api/auth` and `index.php`.
 
 ### Security
 - N/A

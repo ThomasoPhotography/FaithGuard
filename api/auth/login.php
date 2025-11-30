@@ -1,7 +1,12 @@
 <?php
-/**
- * LOGIN ENDPOINT: Authenticates user and establishes a PHP session.
- */
+session_set_cookie_params([
+    'lifetime' => 86400, // 1 day
+    'path' => '/',       // CRITICAL: Make the cookie valid for the whole site
+    'domain' => $_SERVER['HTTP_HOST'],
+    'secure' => true,    // Recommended for live HTTPS site
+    'httponly' => true
+]);
+session_start();
 session_start();
 // The Database class is likely defined in database.php, 
 // but often the data access methods are in the repository.
