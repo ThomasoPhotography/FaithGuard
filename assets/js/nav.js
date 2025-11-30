@@ -17,6 +17,8 @@ const showNav = () => {
 		})
 		.then((data) => {
 			navPlaceholder.innerHTML = data;
+			// After loading nav, attach auth listeners
+			listenToAuth();
 		})
 		.catch((error) => {
 			console.error('Error loading nav:', error);
@@ -32,7 +34,58 @@ const showNav = () => {
 
 // #region ***  Event Listeners - listenTo___            ***********
 const listenToNavToggles = () => {
-	// Added when I want customised
+	// Custom toggles if needed
+};
+
+const listenToAuth = () => {
+	const authBtn = document.querySelector('.js-log');
+	if (!authBtn) return;
+
+	authBtn.addEventListener('click', async () => {
+		const email = document.getElementById('signupUsername').value.trim();
+		const password = document.getElementById('signupPassword').value.trim();
+
+		if (!email || !password) {
+			alert('Please enter both email and password.');
+			return;
+		}
+
+		// First, try login
+		try {
+			const loginResponse = await fetch('/api/auth/login.php', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ email, password }),
+			});
+			const loginData = await loginResponse.json();
+
+			if (loginData.success) {
+				alert('Login successful! Welcome back.');
+				location.reload(); // Reload to reflect logged-in state (e.g., update nav)
+				return;
+			} else if (loginData.error === 'Invalid credentials') {
+				// Login failed, try register
+				const registerResponse = await fetch('/api/auth/register.php', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({ email, password }),
+				});
+				const registerData = await registerResponse.json();
+
+				if (registerData.success) {
+					alert('Registration successful! You are now logged in.');
+					location.reload(); // Reload to reflect logged-in state
+				} else {
+					alert('Registration failed: ' + (registerData.error || 'Unknown error'));
+				}
+			} else {
+				alert('Login failed: ' + loginData.error);
+			}
+		} catch (error) {
+			console.error('Auth error:', error);
+			alert('An error occurred. Please try again.');
+		}
+	});
 };
 // #endregion
 
