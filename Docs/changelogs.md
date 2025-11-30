@@ -7,7 +7,7 @@ All notable changes to this project will be documented in this file.
 - N/A
 
 ### Changed
-- N/A
+- Changed `/templates/` from `nav.html` to `nav.php`.
 
 ### Deprecated
 - N/A
@@ -18,6 +18,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - Commented the command line in `index.php`: `require_once __DIR__ . "/api/auth/login.php";`.
 - Full update of the file `nav.js` on path: `/assets/js/`.
+- Updated the `nave.js` file and `index.php` file.
 
 ### Security
 - N/A
