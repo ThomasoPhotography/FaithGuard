@@ -1,6 +1,8 @@
 <?php
 session_start();
-require_once __DIR__ . '/../db/FaithGuardRepository.php';
+require_once __DIR__ . '/../db/FaithGuardRepository.php';  // Include repository for DB access
+
+// If logged in, get user data
 $user = null;
 $accountName = '';
 if (isset($_SESSION['user_id'])) {
@@ -36,11 +38,11 @@ if (isset($_SESSION['user_id'])) {
                     <a class="nav-link c-nav__link" href="templates/resources.html">Resources</a>
                 </li>
             </ul>
-            <?php if (isset($_SESSION['user_id'])): ?>
+            <?php if (isset($_SESSION['user_id']) && $user): ?>
                 <!-- Logged-in user menu -->
                 <div class="d-flex me-3 dropdown c-dropdown order-lg-3">
                     <button class="btn c-btn c-dropdown__btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="c-dropdown__icon bi bi-person-check"></i> Welcome <?php $accountName ?>
+                        <i class="c-dropdown__icon bi bi-person-check"></i> Welcome <?php echo $accountName; ?>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu" aria-labelledby="userDropdown">
                         <li><a class="dropdown-item" href="#" onclick="logout()">Logout</a></li>

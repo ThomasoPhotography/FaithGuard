@@ -18,7 +18,8 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - Commented the command line in `index.php`: `require_once __DIR__ . "/api/auth/login.php";`.
 - Full update of the file `nav.js` on path: `/assets/js/`.
-- Updated the `nave.js` file and `index.php` file.
+- Updated the `nav.js` file and `index.php` file.
+- Updated the `nav.php` template.
 
 ### Security
 - N/A
