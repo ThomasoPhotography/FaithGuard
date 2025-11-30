@@ -1,12 +1,19 @@
 // #region ***  DOM references                           ***********
-const resourcesList = document.querySelector('.c-resources__list');
+const resourcesList = document.querySelectorAll('.c-resources__list');
 const searchInput = document.querySelector('.c-resources__search');
 const filterSelect = document.querySelector('.c-resources__filter');
 // #endregion
 
 // #region ***  Callback-Visualisation - show___         ***********
 const showResources = (resources) => {
-	resourcesList.innerHTML = resources.map((r) => `<div class="card c-card"><h5>${r.title}</h5><p>${r.content}</p></div>`).join('');
+	resourcesList.innerHTML = resources
+		.map((r) => (
+			<div class='card c-card'>
+				<h5>${r.title}</h5>
+				<p>${r.content}</p>
+			</div>
+		))
+		.join('');
 };
 // #endregion
 

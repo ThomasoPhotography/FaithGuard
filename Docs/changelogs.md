@@ -1,7 +1,38 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
-## [0.1.2] - Current
+## [0.1.3-alpha] - Current
+
+### Added
+- N/A
+
+### Changed
+- N/A
+
+### Deprecated
+- N/A
+
+### Removed
+- N/A
+
+### Fixed
+- Update require statements in `login.php` and `register.php` for correct path resolution.
+- Update require statements to use relative paths in message handling files.
+- Update require statements to use relative paths in post handling files.
+- Update require statements to use relative paths in progress handling files.
+- Update require statement to use relative path in `submit.php`.
+- Update require statements to use relative paths in resource handling files.
+- Update require statement to use relative path in `profile.php`.
+- Add padding to `.col-md-4` and `.col-md-6` classes in `main.scss`, compiled to `main.css`.
+- Enhance visualisation in community, messaging, resources, and quiz scripts.
+- Expand FaithGuardRepository with comprehensive CRUD methods for users, analytics, donations, messages, posts, replies, prayers, progress logs, quiz questions, quiz results, resources, resource tags, roles, and sessions.
+- Update classnames, version and relese date in `index.php` and linking to `resources.js`.
+
+### Security
+- N/A
+
+
+## [0.1.2] - 2025-11-29
 
 ### Added
 - Add newline at the end of `login.php` to comply with coding standards.

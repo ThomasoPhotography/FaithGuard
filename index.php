@@ -19,15 +19,15 @@ require_once __DIR__ . "/db/FaithGuardRepository.php";  // Uncomment if needed f
     <meta name="author" content="WWTW - FaithGuard">
     <meta name="robots" content="noindex">
     <!-- Version -->
-    <meta name="version" content="0.1.1">
-    <meta name="release" content="2025-11-27">
+    <meta name="version" content="0.1.3">
+    <meta name="release" content="2025-11-29">
     <!-- Title -->
     <title>FaithGuard</title>
     <!-- Favicon -->
     <link rel="icon" href="assets/uploads/favicon.ico" type="image/x-icon">
     <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap.min.css">
     <!-- Stylesheet -->
     <link rel="stylesheet" href="assets/css/main.css">
 </head>
@@ -55,7 +55,7 @@ require_once __DIR__ . "/db/FaithGuardRepository.php";  // Uncomment if needed f
         </section>
         <section class="c-main__section mb-5">
             <h2 class="c-main__title">Featured Resources</h2>
-            <div class="row">
+            <div class="row c-resources__list">
                 <div class="col-md-4 col-12 mb-4">
                     <div class="card c-card">
                         <div class="card-body c-card__body">
@@ -84,7 +84,7 @@ require_once __DIR__ . "/db/FaithGuardRepository.php";  // Uncomment if needed f
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row c-resources__list">
                 <div class="col-md-4 col-12 mb-4">
                     <div class="card c-card">
                         <div class="card-body c-card__body">
