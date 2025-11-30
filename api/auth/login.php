@@ -1,4 +1,5 @@
 <?php
+// login.php
 session_set_cookie_params([
     'lifetime' => 86400, // 1 day
     'path' => '/',       // CRITICAL: Make the cookie valid for the whole site
@@ -7,11 +8,9 @@ session_set_cookie_params([
     'httponly' => true
 ]);
 session_start();
-session_start();
-// The Database class is likely defined in database.php, 
-// but often the data access methods are in the repository.
-require_once __DIR__ . '/../../db/database.php';
-require_once __DIR__ . '/../../db/FaithGuardRepository.php'; // <-- ADDED: Ensure repository is loaded
+// Removed second session_start() call
+// require_once __DIR__ . '/../../db/database.php'; // Included by repository
+require_once __DIR__ . '/../../db/FaithGuardRepository.php'; // Ensure repository is loaded
 
 header('Content-Type: application/json');
 
@@ -34,21 +33,17 @@ $email = filter_var($data['email'], FILTER_SANITIZE_EMAIL);
 $password = $data['password'];
 
 // --- 2. Authentication ---
-// Ensure getSingleRow is a valid static method in Database class
-$user = Database::getSingleRow("SELECT id, email, password_hash FROM users WHERE email = ?", [$email]);
+// CRITICAL FIX: Use the repository method
+$user = FaithGuardRepository::getUserByEmail($email);
 
 if ($user && password_verify($password, $user['password_hash'])) {
     
     // --- 3. SUCCESS: Set Session Flags ---
     
-    // 1. Clear any old session data first (best practice)
     $_SESSION = []; 
-    
-    // 2. Set the essential persistence flag (used by index.php)
     $_SESSION['logged_in'] = true; 
     $_SESSION['user_id'] = $user['id'];
     
-    // 3. (Optional) Regenerate session ID for security
     session_regenerate_id(true);
 
     // 4. Set the token (optional, but keep it for JS validation)
