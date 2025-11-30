@@ -25,6 +25,7 @@ All notable changes to this project will be documented in this file.
 - Updated the `login.php` so logging in works.
 - Updated several files on path: `/api/auth` and `index.php`.
 - Updated the database files on path: `/db/` and `login.php`.
+- Login shows to user in nav.
 
 ### Security
 - N/A

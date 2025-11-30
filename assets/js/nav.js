@@ -4,111 +4,59 @@ const navPlaceholder = document.querySelector('.c-nav--placeholder');
 
 // #region ***  Callback-Visualisation - show___         ***********
 const showNav = () => {
-	if (!navPlaceholder) {
-		console.error('c-nav--placeholder element not found in DOM');
-		return;
-	}
-	fetch('/templates/nav.html') // Note: Use relative path if running from root; adjust if needed (e.g., '/templates/nav.html' for absolute)
-	.then((response) => {
-		if (!response.ok) {
-			throw new Error('Failed to load nav.html: ' + response.status);
-		}
-		return response.text();
-	})
-	.then((data) => {
-		navPlaceholder.innerHTML = data;
-		// After loading nav, attach auth listeners
-		listenToAuth();
-	})
-	.catch((error) => {
-		console.error('Error loading nav:', error);
-	});
+    if (!navPlaceholder) {
+        console.error('c-nav--placeholder element not found in DOM');
+        return;
+    }
+    // CRITICAL FIX: Fetch the dynamic PHP file
+    fetch('/templates/nav.php') 
+    .then((response) => {
+        if (!response.ok) {
+            throw new Error('Failed to load nav.php: ' + response.status);
+        }
+        return response.text();
+    })
+    .then((data) => {
+        navPlaceholder.innerHTML = data;
+        // After loading nav, attach auth listeners (logout logic will be attached here)
+        listenToAuth();
+    })
+    .catch((error) => {
+        console.error('Error loading nav:', error);
+    });
 };
-
-// #region ***  Authentication Functions                   ***********
-
-const login = async (email, password) => {
-	try {
-		// 1. Try Login
-		const loginResponse = await fetch('/api/auth/login.php', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ email, password })
-		});
-		const loginData = await loginResponse.json();
-		if (loginData.success) {
-			alert('Login successful! Welcome back.');
-			location.reload();
-			return;
-		} else if (loginData.error === 'Invalid credentials' || loginData.error === 'User not found') {
-			// 2. Login failed, attempt Registration
-			const registerResponse = await fetch('/api/auth/register.php', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ email, password })
-			});
-			const registerData = await registerResponse.json();
-			if (registerData.success) {
-				alert('Registration successful! You are now logged in.');
-				location.reload();
-			} else {
-				alert('Registration failed: ' + (registerData.error || 'Unknown error'));
-			}
-		} else {
-			alert('Login failed: ' + (loginData.error || 'Unknown error'));
-		}
-	} catch (error) {
-		console.error('Auth error:', error);
-		alert('An error occurred during authentication. Please check network/server logs.');
-	}
-};
-
-const logout = async () => {
-try {
-	const response = await fetch('/api/auth/logout.php', { method: 'POST' });
-	const data = await response.json();
-	if (data.success) {
-		alert('Logged out successfully.');location.reload();
-	} else {
-		alert('Logout failed.');}
-	} catch (error) {
-		console.error('Logout error:', error);
-		alert('An error occurred during logout.');
-	}
-};
-// #endregion
-
-// #region ***  Callback-No Visualisation - callback___  ***********
-// #endregion
-
-// #region ***  Data Access - get___                     ***********
-// #endregion
-
-// #region ***  Event Listeners - listenTo___            ***********
-const listenToNavToggles = () => {
-// Custom toggles if needed
-};
-
+// ... (rest of the file remains the same)
+// ...
 const listenToAuth = () => {
-	const authBtn = document.querySelector('.js-log');
-	if (!authBtn) return;
-	authBtn.addEventListener('click', async () => {
-		const email = document.getElementById('signupUsername').value.trim();
-		const password = document.getElementById('signupPassword').value.trim();
-		if (!email || !password) {
-			alert('Please enter both email and password.');
-			return;
-		}
-		login(email, password);
-	});
+    const loginBtn = document.querySelector('.js-log');
+    const logoutBtn = document.querySelector('.js-logout-btn'); // New logout button selector
+    
+    // Attach Login logic
+    if (loginBtn) {
+        loginBtn.addEventListener('click', async () => {
+            const email = document.getElementById('signupUsername').value.trim();
+            const password = document.getElementById('signupPassword').value.trim();
+            if (!email || !password) {
+                alert('Please enter both email and password.');
+                return;
+            }
+            login(email, password);
+        });
+    }
+
+    // Attach Logout logic
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', logout);
+    }
 };
+
 // #endregion
 
 // #region ***  Init / DOMContentLoaded                  ***********
 const init = function () {
-	console.log('Page Loaded');
-	showNav();
-	listenToNavToggles();
+    console.log('Page Loaded');
+    showNav();
+    listenToNavToggles();
 };
 
 document.addEventListener('DOMContentLoaded', init);

@@ -1,19 +1,34 @@
 <?php
-session_start();
-require_once __DIR__ . '/../db/FaithGuardRepository.php';  // Include repository for DB access
+// /templates/nav.php
 
-// If logged in, get user data
+// 1. Session Check (CRITICAL: Required when fetched by JS)
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+// 2. Data Access (Fetch user data to make the navbar dynamic)
+// Note: This path assumes nav.php is in /templates/, so we go up two levels (../../) to reach /db/
+require_once __DIR__ . '/../../db/FaithGuardRepository.php';
+
+$is_logged_in = isset($_SESSION['user_id']);
 $user = null;
-$accountName = '';
-if (isset($_SESSION['user_id'])) {
-    $user = FaithGuardRepository::getUserById($_SESSION['user_id']);
-    if ($user) {
-        // Extract part before '@' from email
-        $emailParts = explode('@', $user['email']);
-        $accountName = htmlspecialchars($emailParts[0]);  // Sanitize for security
+$accountName = 'Guest';
+$user_role = 'user';
+
+if ($is_logged_in && isset($_SESSION['user_id'])) {
+    // Fetch the user data from the database
+    // We only need id, name (or email), and role to display the status
+    $user_data = FaithGuardRepository::getUserById("SELECT id, email, name, role FROM users WHERE id = ?", [$_SESSION['user_id']]);
+
+    if ($user_data) {
+        $user = true;
+        // Use 'name' if available, otherwise default to email
+        $accountName = htmlspecialchars($user_data['name'] ?? $user_data['email']);
+        $user_role = $user_data['role'] ?? 'user';
     }
 }
 ?>
+
 <nav class="navbar navbar-expand-lg navbar-light c-nav">
     <div class="container-fluid">
         <a class="navbar-brand c-nav__brand" href="index.php">
@@ -37,8 +52,14 @@ if (isset($_SESSION['user_id'])) {
                 <li class="nav-item">
                     <a class="nav-link c-nav__link" href="templates/resources.html">Resources</a>
                 </li>
+                <?php if ($user_role === 'admin'): ?>
+                    <li class="nav-item">
+                        <a class="btn btn-sm btn-warning c-nav__link" href="templates/admin/index.html">Admin Panel</a>
+                    </li>
+                <?php endif; ?>
             </ul>
-            <?php if (isset($_SESSION['user_id']) && $user): ?>
+            
+            <?php if ($is_logged_in && $user): ?>
                 <!-- Logged-in user menu -->
                 <div class="d-flex me-3 dropdown c-dropdown order-lg-3">
                     <button class="btn c-btn c-dropdown__btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
