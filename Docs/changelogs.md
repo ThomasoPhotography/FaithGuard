@@ -29,6 +29,7 @@ All notable changes to this project will be documented in this file.
 - Updated listenTo function in `nav.js`.
 - Database stablizing.
 - Nav inside `index.php`.
+- Update on user variables for nav in `index.php`.
 
 ### Security
 - N/A
