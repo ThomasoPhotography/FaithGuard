@@ -10,7 +10,7 @@ All notable changes to this project will be documented in this file.
 - Changed `/templates/` from `nav.html` to `nav.php`.
 
 ### Deprecated
-- N/A
+- `/templates/nav.php`.
 
 ### Removed
 - N/A
@@ -28,6 +28,7 @@ All notable changes to this project will be documented in this file.
 - Login shows to user in nav.
 - Updated listenTo function in `nav.js`.
 - Database stablizing.
+- Nav inside `index.php`.
 
 ### Security
 - N/A
