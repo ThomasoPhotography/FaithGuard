@@ -21,7 +21,8 @@ All notable changes to this project will be documented in this file.
 - Updated the `nav.js` file and `index.php` file.
 - Updated the `nav.php` template.
 - Added the `/helper/debug.php` file to `index.php`.
-- Updated logging in function
+- Updated logging in function.
+- Updated the `login.php` so logging in works.
 
 ### Security
 - N/A
