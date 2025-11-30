@@ -1,13 +1,11 @@
 <?php
 session_start();
-require_once __DIR__ . "/api/helper/debug.php";
-// require_once __DIR__ . "/api/auth/login.php";
-require_once __DIR__ . "/api/helper/debug.php";
+$is_logged_in = isset($_SESSION['user_id']);
+// --- Core App Requirements (Always required) ---
 require_once __DIR__ . "/db/database.php";
-require_once __DIR__ . "/db/FaithGuardRepository.php";  // Uncomment if needed for DB operations
-
-// If you need to include auth logic, do it conditionally or in functions, not at the top
-// For now, keeping it simple—add back only if essential
+require_once __DIR__ . "/db/FaithGuardRepository.php";
+// --- Optional Helper/Debug (Required, but note its function) ---
+require_once __DIR__ . "/api/helper/debug.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
