@@ -1,34 +1,31 @@
 <?php
-// /db/database.php
 class Database {
     private static function getConnection() {
+        // NOTE: Credentials provided by user. Ensure the password is correct.
         $user = 'ID483117_faithguard';
-        $pass = 'LowLeague13_';
+        $pass = 'LowLeague13_'; 
         $host = 'ID483117_faithguard.db.webhosting.be';
         $db_name = 'ID483117_faithguard';
         
-        $dsn = "mysql:host=$host;dbname=$db_name;charset=utf8mb4"; // Added character set
+        $dsn = "mysql:host=$host;dbname=$db_name;charset=utf8mb4";
         
         $options = [
-            // CRITICAL: Instruct PDO to throw exceptions on errors
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-            // Disable emulated prepared statements for security and stability
             PDO::ATTR_EMULATE_PREPARES => false,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
         ];
         
         try {
+            // CRITICAL: The execution chain will crash here if the password/host is wrong.
             $db = new PDO($dsn, $user, $pass, $options);
             return $db;
         } catch (PDOException $e) {
-            // Log the error and stop execution with a clear message
-            error_log("Database connection failed: " . $e->getMessage());
-            die("Database connection error. Please check server logs for details.");
+            // When fetched by JS, this text will be the only thing returned to the browser.
+            // This is the error message we need to see.
+            die("DATABASE_CONNECTION_FAILED: " . $e->getMessage()); 
         }
     }
     
-    // --- Added try/catch to core methods to better handle query errors ---
-
     public static function getRows($sql, $params = [], $type = null) {
         try {
             $conn = self::getConnection();
@@ -43,7 +40,7 @@ class Database {
             return $rows;
         } catch (PDOException $e) {
             error_log("Query error in getRows: " . $e->getMessage() . " SQL: " . $sql);
-            return []; // Return empty array on failure
+            return [];
         }
     }
     
@@ -62,7 +59,7 @@ class Database {
             return $row;
         } catch (PDOException $e) {
             error_log("Query error in getSingleRow: " . $e->getMessage() . " SQL: " . $sql);
-            return false; // Return false on failure
+            return false;
         }
     }
     
@@ -75,8 +72,7 @@ class Database {
             return $aantalRijen;
         } catch (PDOException $e) {
             error_log("Query error in execute: " . $e->getMessage() . " SQL: " . $sql);
-            return 0; // Return 0 on failure
+            return 0;
         }
     }
 }
-?>

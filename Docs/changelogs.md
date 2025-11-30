@@ -27,6 +27,7 @@ All notable changes to this project will be documented in this file.
 - Updated the database files on path: `/db/` and `login.php`.
 - Login shows to user in nav.
 - Updated listenTo function in `nav.js`.
+- Database stablizing.
 
 ### Security
 - N/A
