@@ -46,7 +46,7 @@ require_once __DIR__ . "/api/helper/debug.php";
     <meta name="author" content="WWTW - FaithGuard">
     <meta name="robots" content="noindex">
     <!-- Version -->
-    <meta name="version" content="0.1.1">
+    <meta name="version" content="0.1.3-beta">
     <meta name="release" content="2025-11-27">
     <!-- Title -->
     <title>FaithGuard</title>
@@ -85,7 +85,7 @@ require_once __DIR__ . "/api/helper/debug.php";
                     </li>
                     <?php if ($user_role === 'admin'): ?>
                     <li class="nav-item">
-                        <a class="btn btn-sm btn-warning c-nav__link" href="templates/admin/index.html">Admin Panel</a>
+                        <a class="btn btn-sm btn-warning c-nav__link" href="api/admin/profile.php">Admin Panel</a>
                     </li>
                     <?php endif; ?>
                 </ul>
@@ -96,7 +96,12 @@ require_once __DIR__ . "/api/helper/debug.php";
                         <i class="c-dropdown__icon bi bi-person-check"></i> Welcome <?php echo $accountName; ?>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu" aria-labelledby="userDropdown">
-                        <li><a class="dropdown-item" href="#" onclick="logout()">Logout</a></li>
+                        <li>
+                            <a class="dropdown-item" href="api/users//profile.php">Profile</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#" onclick="logout()">Logout</a>
+                    </li>
                         <!-- Add more user options here, e.g., Profile -->
                     </ul>
                 </div>

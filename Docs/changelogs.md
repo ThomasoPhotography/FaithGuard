@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 ## [0.1.3-beta] - Current
 
 ### Added
-- N/A
+- Temporary profile, in `api/admin/profile.php`.
 
 ### Changed
 - Changed `/templates/` from `nav.html` to `nav.php`.
