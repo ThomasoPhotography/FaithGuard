@@ -104,6 +104,7 @@ img {
 .c-nav__item {
   margin-right: 1rem;
   font-size: 1rem;
+  list-style-type: none;
 }
 @media (min-width: 576px) {
   .c-nav__item {

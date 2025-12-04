@@ -124,6 +124,7 @@ img {
 	&__item {
 		margin-right: 1rem;
 		font-size: 1rem;
+		list-style-type: none;
 
 		@media (min-width: 576px) {
 			font-size: 1.1rem;
