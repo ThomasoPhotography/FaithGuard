@@ -33,6 +33,9 @@ All notable changes to this project will be documented in this file.
 - Update on user variables for nav in `index.php`.
 - Logging in and quiz.
 - Updated `index.php`, `login.php` and `logout.php`.
+- SCSS + CSS
+- SCSS + CSS V2
+- SCSS + CSS V3
 
 ### Security
 - N/A
