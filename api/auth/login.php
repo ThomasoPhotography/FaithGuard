@@ -36,31 +36,3 @@ if ($user && password_verify($password, $user['password_hash'])) {
     echo json_encode(['error' => 'Invalid credentials']);
 }
 ?>
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="/">FaithGuard</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                </ul>
-            
-            <div class="d-flex">
-                <?php if ($is_logged_in): ?>
-                    <span class="navbar-text me-3 text-success">
-                        Logged in as: <strong><?php echo htmlspecialchars($username); ?></strong> 
-                        (<?php echo htmlspecialchars($user_role); ?>)
-                    </span>
-                    <?php if ($user_role === 'admin'): ?>
-                        <a href="/admin" class="btn btn-sm btn-warning me-2">Admin Panel</a>
-                    <?php endif; ?>
-                    <button class="btn btn-outline-danger js-logout-btn">Logout</button>
-                <?php else: ?>
-                    <button class="btn btn-outline-primary js-log">Login / Register</button>
-                <?php endif; ?>
-            </div>
-        </div>
-    </div>
-</nav>

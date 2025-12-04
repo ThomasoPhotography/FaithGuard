@@ -4,7 +4,8 @@ All notable changes to this project will be documented in this file.
 ## [0.1.3-beta] - Current
 
 ### Added
-- Temporary profile, in `api/admin/profile.php`.
+- Temporary profile, in `/api/admin/profile.php`.
+- `/assets/js/aut.js`.
 
 ### Changed
 - Changed `/templates/` from `nav.html` to `nav.php`.
@@ -13,7 +14,7 @@ All notable changes to this project will be documented in this file.
 - `/templates/nav.php`.
 
 ### Removed
-- N/A
+- `/assets/js/nav.js`.
 
 ### Fixed
 - Commented the command line in `index.php`: `require_once __DIR__ . "/api/auth/login.php";`.
@@ -31,6 +32,7 @@ All notable changes to this project will be documented in this file.
 - Nav inside `index.php`.
 - Update on user variables for nav in `index.php`.
 - Logging in and quiz.
+- Updated `index.php`, `login.php` and `logout.php`.
 
 ### Security
 - N/A

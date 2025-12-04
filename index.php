@@ -71,21 +71,21 @@ require_once __DIR__ . "/api/helper/debug.php";
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
+                    <li class="nav-item c-nav__item">
                         <a class="nav-link c-nav__link" href="templates/community.html">Community</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item c-nav__item">
                         <a class="nav-link c-nav__link" href="templates/progress.html">Progress</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item c-nav__item">
                         <a class="nav-link c-nav__link" href="templates/quiz.html">Quiz</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item c-nav__item">
                         <a class="nav-link c-nav__link" href="templates/resources.html">Resources</a>
                     </li>
                     <?php if ($user_role === 'admin'): ?>
-                    <li class="nav-item">
-                        <a class="btn btn-sm c-btn c-nav__link" href="api/admin/profile.php">Admin Panel</a>
+                    <li class="nav-item c-nav__item">
+                        <a class="nav-link c-nav__link" href="api/admin/profile.php">Admin Panel</a>
                     </li>
                     <?php endif; ?>
                 </ul>
@@ -97,9 +97,13 @@ require_once __DIR__ . "/api/helper/debug.php";
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu" aria-labelledby="userDropdown">
                         <?php if ($user_role === 'user'): ?>
-                        <li><a class="dropdown-item" href="api/users/profile.php">User Panel</a></li>
+                        <li class="nav-item c-nav__item">
+                            <a class="nav-link c-nav__link" href="api/users/profile.php">User Panel</a>
+                        </li>
                         <?php endif; ?>
-                        <li><a class="dropdown-item" href="#" onclick="logout()">Logout</a></li>
+                        <li class="nav-item c-nav__item">
+                            <a class="nav-link c-nav__link" href="#" onclick="logout()">Logout</a>
+                        </li>
                     </ul>
                 </div>
                 <?php else: ?>
@@ -236,18 +240,12 @@ require_once __DIR__ . "/api/helper/debug.php";
                         </div>
                     </div>
                 </div>
-                <!-- <div class="col-md-4 col-12 mb-4">
-                    <div class="card c-card">
-                        <div class="card-body c-card__body">
-                            <blockquote class="c-impact__quote"></blockquote>
-                            <cite class="c-impact__cite"></cite>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 col-12 mb-4">
-                    <div class="card c-card">
-                        <div class="card-body c-card__body">
-                            <blockquote class="c-impact__quote"></blockquote>
-                            <cite class="c-impact__cite"></cite>
-                        </div>
-                    </
+            </div>
+        </section>
+    </article>
+    <div class="c-footer--placeholder"></div>
+</body>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+      <script src="/assets/js/auth.js"></script>
+      <script src="/assets/js/footer.js"></script>
+</html>
