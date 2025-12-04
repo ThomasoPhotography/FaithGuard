@@ -30,6 +30,7 @@ All notable changes to this project will be documented in this file.
 - Database stablizing.
 - Nav inside `index.php`.
 - Update on user variables for nav in `index.php`.
+- Logging in and quiz.
 
 ### Security
 - N/A

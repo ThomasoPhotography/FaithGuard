@@ -1,27 +1,39 @@
 <?php
-// /templates/nav.php
-// Start session if not already started (safe check for files included via JS fetch)
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
+session_start();
+require_once __DIR__ . '/../../db/database.php';
+header('Content-Type: application/json');
+
+$debug = false;  // Set to true for debugging, then false for production
+
+$data = json_decode(file_get_contents('php://input'), true);
+if ($debug) {
+    error_log('Decoded data: ' . print_r($data, true));
 }
 
-// Ensure repository is loaded to fetch user details (assuming index.php did not load it)
-// Adjust path as necessary from /templates/ to /db/
-require_once __DIR__ . '/../../db/FaithGuardRepository.php'; 
-
-$is_logged_in = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
-$username = '';
-$user_role = '';
-
-if ($is_logged_in && isset($_SESSION['user_id'])) {
-    // Fetch user data to display name/role
-    $user_data = FaithGuardRepository::getUserById($_SESSION['user_id']); 
-    
-    if ($user_data) {
-        // Assuming your 'users' table has a 'name' or 'email' column and a 'role' column
-        $username = $user_data['name'] ?? $user_data['email']; 
-        $user_role = $user_data['role'] ?? 'User';
+if (!$data || json_last_error() !== JSON_ERROR_NONE || !isset($data['email'], $data['password'])) {
+    $response = ['error' => 'Invalid input'];
+    if ($debug) {
+        $response['debug'] = [
+            'json_error' => json_last_error_msg(),
+            'data' => $data
+        ];
     }
+    echo json_encode($response);
+    exit;
+}
+
+// Sanitize inputs
+$email = filter_var($data['email'], FILTER_SANITIZE_EMAIL);
+$password = $data['password'];
+
+$user = Database::getSingleRow("SELECT * FROM users WHERE email = ?", [$email]);
+if ($user && password_verify($password, $user['password_hash'])) {
+    $_SESSION['user_id'] = $user['id'];
+    $_SESSION['token'] = bin2hex(random_bytes(16));
+    $_SESSION['logged_in'] = true;  // ADD THIS
+    echo json_encode(['success' => true, 'token' => $_SESSION['token']]);
+} else {
+    echo json_encode(['error' => 'Invalid credentials']);
 }
 ?>
 

@@ -53,7 +53,7 @@ require_once __DIR__ . "/api/helper/debug.php";
     <!-- Favicon -->
     <link rel="icon" href="assets/uploads/favicon.ico" type="image/x-icon">
     <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <!-- Stylesheet -->
     <link rel="stylesheet" href="assets/css/main.css">
@@ -85,7 +85,7 @@ require_once __DIR__ . "/api/helper/debug.php";
                     </li>
                     <?php if ($user_role === 'admin'): ?>
                     <li class="nav-item">
-                        <a class="btn btn-sm btn-warning c-nav__link" href="api/admin/profile.php">Admin Panel</a>
+                        <a class="btn btn-sm c-btn c-nav__link" href="api/admin/profile.php">Admin Panel</a>
                     </li>
                     <?php endif; ?>
                 </ul>
@@ -93,16 +93,13 @@ require_once __DIR__ . "/api/helper/debug.php";
                 <!-- Logged-in user menu -->
                 <div class="d-flex me-3 dropdown c-dropdown order-lg-3">
                     <button class="btn c-btn c-dropdown__btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="c-dropdown__icon bi bi-person-check"></i> Welcome <?php echo $accountName; ?>
+                        <i class="c-dropdown__icon bi bi-person-check"></i> Welcome: <?php echo $accountName; ?>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu" aria-labelledby="userDropdown">
-                        <li>
-                            <a class="dropdown-item" href="api/users//profile.php">Profile</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="#" onclick="logout()">Logout</a>
-                    </li>
-                        <!-- Add more user options here, e.g., Profile -->
+                        <?php if ($user_role === 'user'): ?>
+                        <li><a class="dropdown-item" href="api/users/profile.php">User Panel</a></li>
+                        <?php endif; ?>
+                        <li><a class="dropdown-item" href="#" onclick="logout()">Logout</a></li>
                     </ul>
                 </div>
                 <?php else: ?>
@@ -126,7 +123,8 @@ require_once __DIR__ . "/api/helper/debug.php";
                         </li>
                     </ul>
                 </div>
-            <?php endif; ?>
+                <?php endif; ?>
+            </div>
         </div>
     </nav>
     <!-- Hero Content -->
@@ -136,7 +134,7 @@ require_once __DIR__ . "/api/helper/debug.php";
                 <h1 class="c-hero__title">Welcome to FaithGuard</h1>
                 <h2 class="c-hero__subtitle">Faith-Based Resources for Recovery</h2>
                 <p class="c-hero__text">Free, vetted resources to support your journey toward spiritual freedom. Rooted in Christian hope and redemption.</p>
-                <button class="btn c-btn c-hero__btn js-modal">Take the Quiz</button>
+                <a href="templates/quiz.html" class="btn c-btn c-hero__btn">Take the Quiz</a>  <!-- CHANGED TO LINK -->
             </div>
         </div>
     </header>
@@ -214,7 +212,7 @@ require_once __DIR__ . "/api/helper/debug.php";
             <p class="c-cta__text">Your journey to spiritual freedom starts here. Take our confidential quiz for personalized guidance, or sign up to access exclusive resources and community support.</p>
             <div class="row">
                 <div class="col-md-4 col-12 offset-md-2 mb-3">
-                    <button class="btn c-btn c-hero__btn js-modal">Take the Quiz</button>
+                    <a href="templates/quiz.html" class="btn c-btn c-hero__btn">Take the Quiz</a>  <!-- CHANGED TO LINK -->
                 </div>
                 <div class="col-md-4 col-12 mb-3">
                     <button class="btn c-btn c-hero__btn">Sign Up Now</button> <!-- Sign Up functionality to be implemented in php -->
@@ -252,18 +250,4 @@ require_once __DIR__ . "/api/helper/debug.php";
                             <blockquote class="c-impact__quote"></blockquote>
                             <cite class="c-impact__cite"></cite>
                         </div>
-                    </div>
-                </div> -->
-            </div>
-        </section>
-    </article>
-    <!-- Footer -->
-    <div class="c-footer--placeholder"></div>
-</body>
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-<!-- Custom JS -->
-<script src="assets/js/nav.js"></script>
-<script src="assets/js/footer.js"></script>
-<script src="assets/js/resources.js"></script>
-</html>
+                    </
