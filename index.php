@@ -47,14 +47,14 @@ require_once __DIR__ . "/api/helper/debug.php";
     <meta name="robots" content="noindex">
     <!-- Version -->
     <meta name="version" content="0.1.3-beta">
-    <meta name="release" content="2025-11-27">
+    <meta name="release" content="current">
     <!-- Title -->
     <title>FaithGuard</title>
     <!-- Favicon -->
     <link rel="icon" href="assets/uploads/favicon.ico" type="image/x-icon">
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap.min.css">
     <!-- Stylesheet -->
     <link rel="stylesheet" href="assets/css/main.css">
 </head>
@@ -138,7 +138,7 @@ require_once __DIR__ . "/api/helper/debug.php";
                 <h1 class="c-hero__title">Welcome to FaithGuard</h1>
                 <h2 class="c-hero__subtitle">Faith-Based Resources for Recovery</h2>
                 <p class="c-hero__text">Free, vetted resources to support your journey toward spiritual freedom. Rooted in Christian hope and redemption.</p>
-                <a href="templates/quiz.html" class="btn c-btn c-hero__btn">Take the Quiz</a>  <!-- CHANGED TO LINK -->
+                <button class="btn c-btn c-hero__btn js-modal">Take the Quiz</button>
             </div>
         </div>
     </header>
@@ -151,7 +151,7 @@ require_once __DIR__ . "/api/helper/debug.php";
         </section>
         <section class="c-main__section mb-5">
             <h2 class="c-main__title">Featured Resources</h2>
-            <div class="row">
+            <div class="row c-resources__list">
                 <div class="col-md-4 col-12 mb-4">
                     <div class="card c-card">
                         <div class="card-body c-card__body">
@@ -180,7 +180,7 @@ require_once __DIR__ . "/api/helper/debug.php";
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row c-resources__list">
                 <div class="col-md-4 col-12 mb-4">
                     <div class="card c-card">
                         <div class="card-body c-card__body">
@@ -216,7 +216,7 @@ require_once __DIR__ . "/api/helper/debug.php";
             <p class="c-cta__text">Your journey to spiritual freedom starts here. Take our confidential quiz for personalized guidance, or sign up to access exclusive resources and community support.</p>
             <div class="row">
                 <div class="col-md-4 col-12 offset-md-2 mb-3">
-                    <a href="templates/quiz.html" class="btn c-btn c-hero__btn">Take the Quiz</a>  <!-- CHANGED TO LINK -->
+                    <button class="btn c-btn c-hero__btn js-modal">Take the Quiz</button>
                 </div>
                 <div class="col-md-4 col-12 mb-3">
                     <button class="btn c-btn c-hero__btn">Sign Up Now</button> <!-- Sign Up functionality to be implemented in php -->
@@ -240,12 +240,32 @@ require_once __DIR__ . "/api/helper/debug.php";
                         </div>
                     </div>
                 </div>
+                <!-- <div class="col-md-4 col-12 mb-4">
+                    <div class="card c-card">
+                        <div class="card-body c-card__body">
+                            <blockquote class="c-impact__quote"></blockquote>
+                            <cite class="c-impact__cite"></cite>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-12 mb-4">
+                    <div class="card c-card">
+                        <div class="card-body c-card__body">
+                            <blockquote class="c-impact__quote"></blockquote>
+                            <cite class="c-impact__cite"></cite>
+                        </div>
+                    </div>
+                </div> -->
             </div>
         </section>
     </article>
+    <!-- Footer -->
     <div class="c-footer--placeholder"></div>
 </body>
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-      <script src="/assets/js/auth.js"></script>
-      <script src="/assets/js/footer.js"></script>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<!-- Custom JS -->
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/footer.js"></script>
+<script src="assets/js/resources.js"></script>
 </html>

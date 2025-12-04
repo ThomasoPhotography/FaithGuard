@@ -366,6 +366,8 @@ a:hover {
 }
 .c-dropdown__icon {
   font-size: 1.25rem;
+  background-color: transparent;
+  color: #3c3c34;
 }
 @media (min-width: 576px) {
   .c-dropdown__icon {

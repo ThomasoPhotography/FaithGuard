@@ -389,6 +389,8 @@ a {
 
 	&__icon {
 		font-size: 1.25rem;
+		background-color: transparent;
+		color: $text-dark;
 
 		@media (min-width: 576px) {
 			font-size: 1.5rem;
