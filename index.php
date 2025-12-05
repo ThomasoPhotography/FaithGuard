@@ -71,23 +71,22 @@ if ($is_logged_in && isset($_SESSION['user_id'])) {
             <!-- Left: Logo + Main Nav Links -->
             <a class="navbar-brand c-nav__brand" href="index.php">
                 <img src="assets/uploads/FaithGuard_Primary_Logo.svg" alt="FaithGuard Logo" class="c-nav__logo">
-                FaithGuard
             </a>
             <button class="navbar-toggler c-nav__toggler c-nav__toggler--btn" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
+                    <li class="nav-item c-nav__item">
                         <a class="nav-link c-nav__link" href="templates/community.html">Community</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item c-nav__item">
                         <a class="nav-link c-nav__link" href="templates/progress.html">Progress</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item c-nav__item">
                         <a class="nav-link c-nav__link" href="templates/quiz.html">Quiz</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item c-nav__item">
                         <a class="nav-link c-nav__link" href="templates/resources.html">Resources</a>
                     </li>
                 </ul>
@@ -99,9 +98,15 @@ if ($is_logged_in && isset($_SESSION['user_id'])) {
                         <i class="c-dropdown__icon bi bi-person-check"></i> Welcome: <?php echo $accountName; ?>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu" aria-labelledby="userDropdown">
-                        <li><a class="dropdown-item" href="<?php echo ($user_role === 'admin') ? 'api/admin/profile.php' : 'api/users/profile.php'; ?>">Profile</a></li>
-                        <li><a class="dropdown-item" href="#">Settings</a></li> <!-- Placeholder for settings page -->
-                        <li><a class="dropdown-item" href="#" onclick="logout()">Logout</a></li>
+                        <li>
+                            <a class="dropdown-item" href="<?php echo ($user_role === 'admin') ? 'api/admin/profile.php' : 'api/users/profile.php'; ?>">Profile</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#">Settings</a>
+                        </li> <!-- Placeholder for settings page -->
+                        <li>
+                            <a class="dropdown-item" href="#" onclick="logout()">Logout</a>
+                        </li>
                     </ul>
                 </div>
                 <?php else: ?>
