@@ -1,5 +1,7 @@
 <?php
 // index.php
+// NOTE: Assuming /db/database.php and /db/FaithGuardRepository.php are now correctly included.
+
 session_set_cookie_params([
     'lifetime' => 86400, // 1 day
     'path' => '/',       // CRITICAL: Make the cookie valid for the whole site
@@ -21,6 +23,7 @@ $is_logged_in = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true
 $user = null;
 $accountName = 'Guest';
 $user_role = 'user';
+$profile_link = ''; // Initialize profile link
 
 if ($is_logged_in && isset($_SESSION['user_id'])) {
     // Fetch user data using the repository method
@@ -31,6 +34,13 @@ if ($is_logged_in && isset($_SESSION['user_id'])) {
         // Assuming your 'users' table has a 'name' or 'email' column and a 'role' column
         $accountName = htmlspecialchars($user_data['name'] ?? $user_data['email']);
         $user_role = $user_data['role'] ?? 'user';
+
+        // --- Set Role-Based Profile Link ---
+        if ($user_role === 'admin') {
+            $profile_link = 'api/admin/profile.php';
+        } else {
+            $profile_link = 'api/users/profile.php';
+        }
     } else {
         // Logged-in session exists, but user not found in DB (session cleanup needed)
         unset($_SESSION['user_id']);
@@ -58,7 +68,7 @@ if ($is_logged_in && isset($_SESSION['user_id'])) {
     <!-- Favicon -->
     <link rel="icon" href="assets/uploads/favicon.ico" type="image/x-icon">
     <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <!-- Stylesheet -->
     <link rel="stylesheet" href="assets/css/main.css">
@@ -80,16 +90,16 @@ if ($is_logged_in && isset($_SESSION['user_id'])) {
             <div class="collapse navbar-collapse" id="navbarNav">
                 <!-- Main Navigation Links (CENTER/LEFT) -->
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
+                    <li class="nav-item c-nav__item">
                         <a class="nav-link c-nav__link" href="templates/community.html">Community</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item c-nav__item">
                         <a class="nav-link c-nav__link" href="templates/progress.html">Progress</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item c-nav__item">
                         <a class="nav-link c-nav__link" href="templates/quiz.html">Quiz</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item c-nav__item">
                         <a class="nav-link c-nav__link" href="templates/resources.html">Resources</a>
                     </li>
                 </ul>
@@ -106,10 +116,10 @@ if ($is_logged_in && isset($_SESSION['user_id'])) {
                         <li><h6 class="dropdown-header c-dropdown__header">Signed in as: <?php echo ucfirst($user_role); ?></h6></li>
                         <li><hr class="dropdown-divider"></li>
                         <!-- Profile Link (Role-Based) -->
-                        <li><a class="dropdown-item" href="<?php echo $profile_link; ?>">Profile / Dashboard</a></li>
-                        <li><a class="dropdown-item" href="templates/settings.html">Settings</a></li>
+                        <li><a class="dropdown-item" href="<?php echo $profile_link; ?>"><i class="bi bi-person-badge me-2"></i> Profile / Dashboard</a></li>
+                        <li><a class="dropdown-item" href="templates/settings.html"><i class="bi bi-gear me-2"></i> Settings</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item js-logout-btn" href="#" onclick="logout()">Logout</a></li>
+                        <li><a class="dropdown-item js-logout-btn" href="#" onclick="logout()"><i class="bi bi-box-arrow-right me-2"></i> Logout</a></li>
                     </ul>
                 </div>
                 <?php else: ?>
@@ -145,7 +155,7 @@ if ($is_logged_in && isset($_SESSION['user_id'])) {
                 <h1 class="c-hero__title">Welcome to FaithGuard</h1>
                 <h2 class="c-hero__subtitle">Faith-Based Resources for Recovery</h2>
                 <p class="c-hero__text">Free, vetted resources to support your journey toward spiritual freedom. Rooted in Christian hope and redemption.</p>
-                <a href="templates/quiz.html" class="btn c-btn c-hero__btn">Take the Quiz</a>  <!-- CHANGED TO LINK -->
+                <a href="templates/quiz.html" class="btn c-btn c-hero__btn">Take the Quiz</a> 
             </div>
         </div>
     </header>
@@ -223,7 +233,7 @@ if ($is_logged_in && isset($_SESSION['user_id'])) {
             <p class="c-cta__text">Your journey to spiritual freedom starts here. Take our confidential quiz for personalized guidance, or sign up to access exclusive resources and community support.</p>
             <div class="row">
                 <div class="col-md-4 col-12 offset-md-2 mb-3">
-                    <a href="templates/quiz.html" class="btn c-btn c-hero__btn">Take the Quiz</a>  <!-- CHANGED TO LINK -->
+                    <a href="templates/quiz.html" class="btn c-btn c-hero__btn">Take the Quiz</a>
                 </div>
                 <div class="col-md-4 col-12 mb-3">
                     <button class="btn c-btn c-hero__btn">Sign Up Now</button> <!-- Sign Up functionality to be implemented in php -->
@@ -247,22 +257,6 @@ if ($is_logged_in && isset($_SESSION['user_id'])) {
                         </div>
                     </div>
                 </div>
-                <!-- <div class="col-md-4 col-12 mb-4">
-                    <div class="card c-card">
-                        <div class="card-body c-card__body">
-                            <blockquote class="c-impact__quote"></blockquote>
-                            <cite class="c-impact__cite"></cite>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 col-12 mb-4">
-                    <div class="card c-card">
-                        <div class="card-body c-card__body">
-                            <blockquote class="c-impact__quote"></blockquote>
-                            <cite class="c-impact__cite"></cite>
-                        </div>
-                    </div>
-                </div> -->
             </div>
         </section>
     </article>
@@ -270,9 +264,9 @@ if ($is_logged_in && isset($_SESSION['user_id'])) {
     <div class="c-footer--placeholder"></div>
 </body>
 <!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" xintegrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 <!-- Custom JS -->
-<script src="assets/js/auth.js"></script>
+<script src="assets/js/nav.js"></script>
 <script src="assets/js/footer.js"></script>
 <script src="assets/js/resources.js"></script>
 </html>

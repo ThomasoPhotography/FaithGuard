@@ -42,6 +42,7 @@ All notable changes to this project will be documented in this file.
 - Nav V2.
 - Nav V3.
 - Nav V4.
+- Nav V5.
 
 ### Security
 - N/A
