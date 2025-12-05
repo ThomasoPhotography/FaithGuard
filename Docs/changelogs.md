@@ -1,7 +1,70 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
-## [0.1.3-alpha] - Current
+## [0.1.3-beta] - Current
+
+### Added
+- Temporary profile, in `/api/admin/profile.php`.
+- `/assets/js/aut.js`.
+
+### Changed
+- Changed `/templates/` from `nav.html` to `nav.php`.
+
+### Deprecated
+- `/templates/nav.php`.
+
+### Removed
+- `/assets/js/nav.js`.
+
+### Fixed
+- Commented the command line in `index.php`: `require_once __DIR__ . "/api/auth/login.php";`.
+- Full update of the file `nav.js` on path: `/assets/js/`.
+- Updated the `nav.js` file and `index.php` file.
+- Updated the `nav.php` template.
+- Added the `/helper/debug.php` file to `index.php`.
+- Updated logging in function.
+- Updated the `login.php` so logging in works.
+- Updated several files on path: `/api/auth` and `index.php`.
+- Updated the database files on path: `/db/` and `login.php`.
+- Login shows to user in nav.
+- Updated listenTo function in `nav.js`.
+- Database stablizing.
+- Nav inside `index.php`.
+- Update on user variables for nav in `index.php`.
+- Logging in and quiz.
+- Updated `index.php`, `login.php` and `logout.php`.
+- SCSS + CSS.
+- SCSS + CSS V2.
+- SCSS + CSS V3.
+- Nav inside `index.php`.
+- Updated db.
+- Nav if logged in.
+- Nav V2.
+- Nav V3.
+- Nav V4.
+- Nav V5.
+- Nav V6.
+- Nav styling.
+- Nav styling V2.
+- Login menu.
+- Nav styling V3.
+- Logged-out button styling.
+- Nav styling V4.
+- Nav styling V5.
+- Nav styling V6.
+- Nav styling V7.
+- Nav styling V8.
+- Nav styling V9.
+- Login button styling.
+- Login button styling V2.
+- Login button styling V3.
+- Nav formatting.
+
+### Security
+- N/A
+
+
+## [0.1.3-alpha] - 2025-11-30
 
 ### Added
 - N/A
@@ -30,7 +93,6 @@ All notable changes to this project will be documented in this file.
 
 ### Security
 - N/A
-
 
 ## [0.1.2] - 2025-11-29
 
@@ -294,21 +356,3 @@ All notable changes to this project will be documented in this file.
 - N/A
 
 ## [0.0.0] - 2025-11-14
-
-### Added
-- Initial release of the website.
-
-### Changed
-- N/A
-
-### Deprecated
-- N/A
-
-### Removed
-- N/A
-
-### Fixed
-- N/A
-
-### Security
-- N/A

@@ -2,4 +2,5 @@
 session_start();
 session_destroy();
 echo json_encode(['success' => true]);
+header("location:index.php");
 ?>

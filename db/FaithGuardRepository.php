@@ -1,10 +1,13 @@
 <?php
+// /db/FaithGuardRepository.php
+// FIX: Use single leading slash for pathing stability.
 require_once dirname(__FILE__) . "/database.php";
 
 class FaithGuardRepository {
     // Users table methods
     public static function getUserByEmail($email) {
-        return Database::getSingleRow("SELECT * FROM users WHERE email = ?", [$email]);
+        // Ensure only necessary fields are retrieved for password verification
+        return Database::getSingleRow("SELECT id, password_hash FROM users WHERE email = ?", [$email]);
     }
 
     public static function getUserById($id) {
@@ -12,6 +15,7 @@ class FaithGuardRepository {
     }
 
     public static function createUser($email, $passwordHash, $name = null, $role = 'user') {
+        // NOTE: If you need to retrieve the new user's ID, you must add $conn->lastInsertId(); in Database::execute
         return Database::execute("INSERT INTO users (email, password_hash, name, role) VALUES (?, ?, ?, ?)", [$email, $passwordHash, $name, $role]);
     }
 

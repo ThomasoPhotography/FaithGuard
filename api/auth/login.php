@@ -30,6 +30,7 @@ $user = Database::getSingleRow("SELECT * FROM users WHERE email = ?", [$email]);
 if ($user && password_verify($password, $user['password_hash'])) {
     $_SESSION['user_id'] = $user['id'];
     $_SESSION['token'] = bin2hex(random_bytes(16));
+    $_SESSION['logged_in'] = true;  // ADD THIS
     echo json_encode(['success' => true, 'token' => $_SESSION['token']]);
 } else {
     echo json_encode(['error' => 'Invalid credentials']);

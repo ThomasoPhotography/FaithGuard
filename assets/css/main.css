@@ -96,6 +96,7 @@ a:hover {
 .c-nav__item {
   margin-right: 1rem;
   font-size: 1rem;
+  list-style-type: none;
 }
 @media (min-width: 576px) {
   .c-nav__item {
@@ -140,11 +141,11 @@ a:hover {
   max-width: 100%;
   height: 8rem;
   margin: 1rem 2rem;
+  transition: box-shadow 0.3s ease, opacity 0.3s ease;
 }
 .c-nav__logo:hover {
-  background-color: #2a1717;
-  border-radius: 75%;
   opacity: 0.8;
+  box-shadow: 0 0 0.625rem 0.125rem rbga(#5c352c, 0.6);
 }
 .c-nav__btn {
   color: #3c3c34;
@@ -321,22 +322,28 @@ a:hover {
 .c-dropdown__btn {
   color: #3c3c34;
   border: none;
+  background-color: transparent;
   padding: 0.4rem 0.8rem;
+  transition: color 0.2s ease, background-color 0.2s ease;
 }
 @media (min-width: 576px) {
   .c-dropdown__btn {
     padding: 0.5rem 1rem;
   }
 }
-.c-dropdown__btn:hover {
-  color: #f5f5dc;
-  background-color: rgb(57.5, 33.125, 27.5);
+.c-dropdown__btn:hover, .c-dropdown__btn.show {
+  color: #f5f5dc !important;
+  background-color: #2a1717;
+}
+.c-dropdown__btn:hover .c-dropdown__icon, .c-dropdown__btn.show .c-dropdown__icon {
+  color: #f5f5dc !important;
 }
 .c-dropdown__menu {
   background-color: rgb(40.25, 23.1875, 19.25);
   border: none;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   min-width: 250px;
+  z-index: 1050;
 }
 @media (max-width: 575.98px) {
   .c-dropdown__menu {
@@ -372,6 +379,8 @@ a:hover {
 }
 .c-dropdown__icon {
   font-size: 1.25rem;
+  color: #3c3c34;
+  transition: color 0.2s ease;
 }
 @media (min-width: 576px) {
   .c-dropdown__icon {
@@ -384,6 +393,25 @@ a:hover {
 .c-dropdown__item:hover {
   background-color: rgb(57.5, 33.125, 27.5);
   color: #f5f5dc;
+}
+.c-dropdown__login {
+  color: rgb(100.9821428571, 100.9821428571, 87.5178571429);
+  border: none;
+  background-color: transparent;
+  padding: 0.4rem 0.8rem;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+@media (min-width: 576px) {
+  .c-dropdown__login {
+    padding: 0.5rem 1rem;
+  }
+}
+.c-dropdown__login:hover, .c-dropdown__login.show {
+  color: #f5f5dc !important;
+  background-color: #2a1717;
+}
+.c-dropdown__login:hover, .c-dropdown__login.show {
+  color: #f5f5dc !important;
 }
 
 .c-modal__content {
