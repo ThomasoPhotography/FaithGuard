@@ -31,7 +31,7 @@ const showFooter = () => {
 // #endregion
 
 // #region ***  Event Listeners - listenTo___            ***********
-const listenTofooterToggles = () => {
+const listenToFooterToggles = () => {
 	// Added when I want customised
 };
 // #endregion
@@ -40,7 +40,7 @@ const listenTofooterToggles = () => {
 const initFooter = function () {
 	console.log('Page Loaded');
 	showFooter();
-	listenTofooterToggles();
+	listenToFooterToggles();
 };
 
 document.addEventListener('DOMContentLoaded', initFooter);

@@ -356,21 +356,3 @@ All notable changes to this project will be documented in this file.
 - N/A
 
 ## [0.0.0] - 2025-11-14
-
-### Added
-- Initial release of the website.
-
-### Changed
-- N/A
-
-### Deprecated
-- N/A
-
-### Removed
-- N/A
-
-### Fixed
-- N/A
-
-### Security
-- N/A
