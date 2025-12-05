@@ -1,7 +1,28 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
-## [0.1.3-beta] - Current
+## [0.1.4-alpha] - Current
+
+### Added
+- N/A
+
+### Changed
+- N/A
+
+### Deprecated
+- N/A
+
+### Removed
+- `/templates/nav.php`.
+
+### Fixed
+- Logout function of php.
+
+### Security
+- N/A
+
+
+## [0.1.3-beta] - 2025-12-06
 
 ### Added
 - Temporary profile, in `/api/admin/profile.php`.
