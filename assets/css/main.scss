@@ -417,7 +417,7 @@ a {
 	}
 
 	&__login {
-		color: $text-dark;
+		color: lighten($text-dark, 5%);
 		border: none;
 		background-color: transparent;
 		padding: 0.4rem 0.8rem;
