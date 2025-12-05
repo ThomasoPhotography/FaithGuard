@@ -1,53 +1,53 @@
 <?php
-// index.php
-// NOTE: Assuming /db/database.php and /db/FaithGuardRepository.php are now correctly included.
+    // index.php
+    // NOTE: Assuming /db/database.php and /db/FaithGuardRepository.php are now correctly included.
 
-session_set_cookie_params([
-    'lifetime' => 86400, // 1 day
-    'path' => '/',       // CRITICAL: Make the cookie valid for the whole site
-    'domain' => $_SERVER['HTTP_HOST'] ?? '',
-    'secure' => true,    // Recommended for live HTTPS site
-    'httponly' => true
-]);
-session_start();
+    session_set_cookie_params([
+        'lifetime' => 86400, // 1 day
+        'path'     => '/',   // CRITICAL: Make the cookie valid for the whole site
+        'domain'   => $_SERVER['HTTP_HOST'] ?? '',
+        'secure'   => true, // Recommended for live HTTPS site
+        'httponly' => true,
+    ]);
+    session_start();
 
-// --- Core App Requirements (Always required) ---
-require_once __DIR__ . "/db/database.php";
-require_once __DIR__ . "/db/FaithGuardRepository.php";
-// --- Optional Helper/Debug (Required, but note its function) ---
-require_once __DIR__ . "/api/helper/debug.php";
+    // --- Core App Requirements (Always required) ---
+    require_once __DIR__ . "/db/database.php";
+    require_once __DIR__ . "/db/FaithGuardRepository.php";
+    // --- Optional Helper/Debug (Required, but note its function) ---
+    require_once __DIR__ . "/api/helper/debug.php";
 
-$is_logged_in = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
+    $is_logged_in = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
 
-// --- CRITICAL FIX: Define user variables needed for navigation bar ---
-$user = null;
-$accountName = 'Guest';
-$user_role = 'user';
-$profile_link = ''; // Initialize profile link
+    // --- CRITICAL FIX: Define user variables needed for navigation bar ---
+    $user         = null;
+    $accountName  = 'Guest';
+    $user_role    = 'user';
+    $profile_link = ''; // Initialize profile link
 
-if ($is_logged_in && isset($_SESSION['user_id'])) {
-    // Fetch user data using the repository method
-    $user_data = FaithGuardRepository::getUserById($_SESSION['user_id']); 
-    
-    if ($user_data) {
-        $user = true;
-        // Assuming your 'users' table has a 'name' or 'email' column and a 'role' column
-        $accountName = htmlspecialchars($user_data['name'] ?? $user_data['email']);
-        $user_role = $user_data['role'] ?? 'user';
+    if ($is_logged_in && isset($_SESSION['user_id'])) {
+        // Fetch user data using the repository method
+        $user_data = FaithGuardRepository::getUserById($_SESSION['user_id']);
 
-        // --- Set Role-Based Profile Link ---
-        if ($user_role === 'admin') {
-            $profile_link = 'api/admin/profile.php';
+        if ($user_data) {
+            $user = true;
+            // Assuming your 'users' table has a 'name' or 'email' column and a 'role' column
+            $accountName = htmlspecialchars($user_data['name'] ?? $user_data['email']);
+            $user_role   = $user_data['role'] ?? 'user';
+
+            // --- Set Role-Based Profile Link ---
+            if ($user_role === 'admin') {
+                $profile_link = 'api/admin/profile.php';
+            } else {
+                $profile_link = 'api/users/profile.php';
+            }
         } else {
-            $profile_link = 'api/users/profile.php';
+            // Logged-in session exists, but user not found in DB (session cleanup needed)
+            unset($_SESSION['user_id']);
+            unset($_SESSION['logged_in']);
+            $is_logged_in = false;
         }
-    } else {
-        // Logged-in session exists, but user not found in DB (session cleanup needed)
-        unset($_SESSION['user_id']);
-        unset($_SESSION['logged_in']);
-        $is_logged_in = false;
     }
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -85,7 +85,7 @@ if ($is_logged_in && isset($_SESSION['user_id'])) {
             <button class="navbar-toggler c-nav__toggler c-nav__toggler--btn" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            
+
             <div class="collapse navbar-collapse" id="navbarNav">
                 <!-- Main Navigation Links (CENTER/LEFT) -->
                 <ul class="navbar-nav me-auto">
@@ -102,17 +102,17 @@ if ($is_logged_in && isset($_SESSION['user_id'])) {
                         <a class="nav-link c-nav__link" href="templates/resources.html">Resources</a>
                     </li>
                 </ul>
-                
+
                 <!-- RIGHT SIDE: USER/LOGIN DROPDOWN -->
                 <?php if ($is_logged_in && $user): ?>
                 <!-- Logged-in user menu -->
                 <div class="d-flex dropdown c-dropdown">
                     <button class="btn c-btn c-dropdown__btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="c-dropdown__icon bi bi-person-check"></i> Welcome <?php echo $accountName; ?>
+                        <i class="c-dropdown__icon bi bi-person-check"></i> Welcome                                                                                    <?php echo $accountName; ?>
                     </button>
                     <!-- LOGGED-IN DROPDOWN MENU -->
                     <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu" aria-labelledby="userDropdown">
-                        <li><h6 class="dropdown-header c-dropdown__header">Signed in as: <?php echo ucfirst($user_role); ?></h6></li>
+                        <li><h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                         <?php echo ucfirst($user_role); ?></h6></li>
                         <li><hr class="dropdown-divider"></li>
                         <!-- Profile Link (Role-Based) -->
                         <li><a class="dropdown-item" href="<?php echo $profile_link; ?>"><i class="bi bi-person-badge me-2"></i> Profile / Dashboard</a></li>
@@ -125,7 +125,7 @@ if ($is_logged_in && isset($_SESSION['user_id'])) {
                 <!-- Guest login/register dropdown -->
                 <div class="d-flex dropdown c-dropdown">
                     <button class="btn c-btn c-dropdown__btn js-dropdown-btn dropdown-toggle" type="button" id="loginDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="c-dropdown__icon bi bi-person-circle"></i> Login / Register
+                        <i class="c-dropdown__icon c-dropdown__btn bi bi-person-circle"></i> Login / Register
                     </button>
                     <!-- LOGGED-OUT DROPDOWN MENU (Login Form) -->
                     <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu js-dropdown-menu" aria-labelledby="loginDropdown">
@@ -139,7 +139,7 @@ if ($is_logged_in && isset($_SESSION['user_id'])) {
                             <input type="password" id="signupPassword" class="form-control c-dropdown__info mb-2" placeholder="Password">
                         </li>
                         <li>
-                            <button class="btn c-btn c-dropdown__btn js-log btn-sm mb-2">Sign Up / Log In</button>
+                            <button class="btn c-btn c-dropdown__btn js-log mb-2">Sign Up / Log In</button>
                         </li>
                     </ul>
                 </div>
@@ -154,7 +154,7 @@ if ($is_logged_in && isset($_SESSION['user_id'])) {
                 <h1 class="c-hero__title">Welcome to FaithGuard</h1>
                 <h2 class="c-hero__subtitle">Faith-Based Resources for Recovery</h2>
                 <p class="c-hero__text">Free, vetted resources to support your journey toward spiritual freedom. Rooted in Christian hope and redemption.</p>
-                <a href="templates/quiz.html" class="btn c-btn c-hero__btn">Take the Quiz</a> 
+                <a href="templates/quiz.html" class="btn c-btn c-hero__btn">Take the Quiz</a>
             </div>
         </div>
     </header>
