@@ -388,6 +388,25 @@ a:hover {
   background-color: rgb(57.5, 33.125, 27.5);
   color: #f5f5dc;
 }
+.c-dropdown__login {
+  color: #3c3c34;
+  border: none;
+  background-color: transparent;
+  padding: 0.4rem 0.8rem;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+@media (min-width: 576px) {
+  .c-dropdown__login {
+    padding: 0.5rem 1rem;
+  }
+}
+.c-dropdown__login:hover, .c-dropdown__login.show {
+  color: #f5f5dc !important;
+  background-color: #2a1717;
+}
+.c-dropdown__login:hover, .c-dropdown__login.show {
+  color: #f5f5dc !important;
+}
 
 .c-modal__content {
   background-color: #e9b48a;

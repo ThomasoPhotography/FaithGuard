@@ -415,6 +415,29 @@ a {
 			color: $text-light;
 		}
 	}
+
+	&__login {
+		color: $text-dark;
+		border: none;
+		background-color: transparent;
+		padding: 0.4rem 0.8rem;
+		transition: color 0.2s ease, background-color 0.2s ease;
+
+		@media (min-width: 576px) {
+			padding: 0.5rem 1rem;
+		}
+
+		&:hover,
+		&.show {
+			color: $text-light !important;
+			background-color: $highlight;
+		}
+	}
+
+	&__login:hover,
+	&__login.show{
+		color: $text-light !important;
+	}
 }
 
 .c-modal {
