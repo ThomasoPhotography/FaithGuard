@@ -36,6 +36,7 @@ All notable changes to this project will be documented in this file.
 - SCSS + CSS
 - SCSS + CSS V2
 - SCSS + CSS V3
+- Nav inside `index.php`.
 
 ### Security
 - N/A
