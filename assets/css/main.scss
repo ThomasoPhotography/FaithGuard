@@ -46,6 +46,13 @@ body {
 		box-shadow: none;
 	}
 }
+
+.bi {
+	color: $text-dark;
+	&:hover {
+		color: $text-light;
+	}
+}
 /*---------------------------------------/*
  # ELEMENTS
 /*---------------------------------------*/
