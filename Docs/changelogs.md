@@ -17,6 +17,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 - Logout function of php.
+- Logout pathing.
 
 ### Security
 - N/A
