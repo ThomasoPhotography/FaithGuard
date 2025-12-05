@@ -51,6 +51,7 @@ All notable changes to this project will be documented in this file.
 - Logged-out button styling.
 - Nav styling V4.
 - Nav styling V5.
+- Nav styling V6.
 
 ### Security
 - N/A

@@ -135,7 +135,7 @@ a:hover {
   max-width: 100%;
   height: 8rem;
   margin: 1rem 2rem;
-  box-shadow: #5c352c;
+  box-shadow: 0.625rem 0.625rem #5c352c;
 }
 .c-nav__logo:hover {
   opacity: 0.8;
