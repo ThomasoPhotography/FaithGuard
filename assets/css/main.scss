@@ -334,19 +334,26 @@ a {
 
 .c-dropdown {
 	&__btn {
-		color: $text-light;
+		color: $text-dark;
 		border: none;
 		background-color: transparent;
 		padding: 0.4rem 0.8rem;
+		transition: color 0.2s ease, background-color 0.2s ease;
 
 		@media (min-width: 576px) {
 			padding: 0.5rem 1rem;
 		}
 
-		&:hover {
-			color: $text-light;
-			background-color: darken($accent, 10%);
+		&:hover,
+		&.show {
+			color: $text-light !important;
+			background-color: $highlight;
 		}
+	}
+
+	&__btn:hover &__icon,
+	&__btn.show &__icon {
+		color: $text-light !important;
 	}
 
 	&__menu {
@@ -354,6 +361,7 @@ a {
 		border: none;
 		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 		min-width: 250px;
+		z-index: 1050;
 
 		@media (max-width: 575.98px) {
 			min-width: 200px;
@@ -391,9 +399,7 @@ a {
 	&__icon {
 		font-size: 1.25rem;
 		color: $text-dark;
-		&:hover {
-			color: $text-light;
-		}
+		transition: color 0.2s ease;
 
 		@media (min-width: 576px) {
 			font-size: 1.5rem;
