@@ -109,32 +109,36 @@
                 <div class="d-flex dropdown c-dropdown">
                     <button class="btn c-btn c-dropdown__btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="c-dropdown__icon bi bi-person-check me-1"></i>
-                        <span class="c-dropdown__text">Welcome <?php echo $accountName; ?></span>
+                        <span class="c-dropdown__text">Welcome                                                               <?php echo $accountName; ?></span>
                     </button>
                     <!-- LOGGED-IN DROPDOWN MENU -->
                     <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu" aria-labelledby="userDropdown">
                         <li>
-                            <h6 class="dropdown-header c-dropdown__header">Signed in as: <?php echo ucfirst($user_role); ?></h6>
+                            <h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                         <?php echo ucfirst($user_role); ?></h6>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
                         <!-- Profile Link (Role-Based) -->
                         <li>
-                            <a class="dropdown-item" href="<?php echo $profile_link; ?>">
-                                <i class="bi bi-person-badge me-2"></i> Profile / Dashboard</a>
-                            </li>
+                            <a class="dropdown-item c-dropdown__item" href="<?php echo $profile_link; ?>">
+                                <i class="bi bi-person-badge me-2"></i>
+                                <span class="c-dropdown__text">Profile / Dashboard</span>
+                            </a>
+                        </li>
                         <li>
-                            <a class="dropdown-item" href="templates/settings.html">
-                                <i class="bi bi-gear me-2"></i> Settings
+                            <a class="dropdown-item c-dropdown__item" href="templates/settings.html">
+                                <i class="bi bi-gear me-2"></i>
+                                <span class="c-dropdown__text">Settings</span>
                             </a>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
                         <li>
-                            <a class="dropdown-item js-logout-btn" href="#" onclick="logout()">
-                                <i class="bi bi-box-arrow-right me-2"></i> Logout
+                            <a class="dropdown-item c-dropdown__item js-logout-btn" href="#" onclick="logout()">
+                                <i class="bi bi-box-arrow-right me-2"></i>
+                                <span class="c-dropdown__text">Logout</span>
                             </a>
                         </li>
                     </ul>
