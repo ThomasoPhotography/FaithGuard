@@ -52,6 +52,7 @@ All notable changes to this project will be documented in this file.
 - Nav styling V4.
 - Nav styling V5.
 - Nav styling V6.
+- Nav styling V7.
 
 ### Security
 - N/A
