@@ -39,6 +39,8 @@ All notable changes to this project will be documented in this file.
 - Nav inside `index.php`.
 - Updated db.
 - Nav if logged in.
+- Nav V2
+- Nav V3
 
 ### Security
 - N/A

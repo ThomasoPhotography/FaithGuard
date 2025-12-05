@@ -99,13 +99,13 @@ if ($is_logged_in && isset($_SESSION['user_id'])) {
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu" aria-labelledby="userDropdown">
                         <li>
-                            <a class="dropdown-item" href="<?php echo ($user_role === 'admin') ? 'api/admin/profile.php' : 'api/users/profile.php'; ?>">Profile</a>
+                            <a class="dropdown-item c-nav__item" href="<?php echo ($user_role === 'admin') ? 'api/admin/profile.php' : 'api/users/profile.php'; ?>">Profile</a>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="#">Settings</a>
+                            <a class="dropdown-item c-nav__item" href="#">Settings</a>
                         </li> <!-- Placeholder for settings page -->
                         <li>
-                            <a class="dropdown-item" href="#" onclick="logout()">Logout</a>
+                            <a class="dropdown-item c-nav__item" href="#" onclick="logout()">Logout</a>
                         </li>
                     </ul>
                 </div>
