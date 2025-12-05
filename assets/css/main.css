@@ -139,6 +139,7 @@ a:hover {
 }
 .c-nav__logo:hover {
   opacity: 0.8;
+  box-shadow: 0 0 0.625rem 0.125rem rbga(#5c352c, 0.6);
 }
 .c-nav__btn {
   color: #3c3c34;
