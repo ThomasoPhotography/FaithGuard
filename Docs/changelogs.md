@@ -49,6 +49,7 @@ All notable changes to this project will be documented in this file.
 - Login menu.
 - Nav styling V3.
 - Logged-out button styling.
+- Nav styling V4.
 
 ### Security
 - N/A
