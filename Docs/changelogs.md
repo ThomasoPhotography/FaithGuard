@@ -57,6 +57,7 @@ All notable changes to this project will be documented in this file.
 - Nav styling V9.
 - Login button styling.
 - Login button styling V2.
+- Login button styling V3.
 
 ### Security
 - N/A
