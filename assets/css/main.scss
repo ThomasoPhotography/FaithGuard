@@ -46,13 +46,6 @@ body {
 		box-shadow: none;
 	}
 }
-
-.bi {
-	color: $text-dark;
-	&:hover {
-		color: $text-light;
-	}
-}
 /*---------------------------------------/*
  # ELEMENTS
 /*---------------------------------------*/
@@ -397,9 +390,7 @@ a {
 
 	&__icon {
 		font-size: 1.25rem;
-		background-color: transparent;
 		color: $text-dark;
-
 		&:hover {
 			color: $text-light;
 		}

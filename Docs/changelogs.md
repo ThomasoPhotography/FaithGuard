@@ -47,6 +47,7 @@ All notable changes to this project will be documented in this file.
 - Nav styling.
 - Nav styling V2.
 - Login menu.
+- Nav styling V3.
 
 ### Security
 - N/A

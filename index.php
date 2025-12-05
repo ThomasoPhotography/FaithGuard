@@ -125,7 +125,7 @@
                 <!-- Guest login/register dropdown -->
                 <div class="d-flex dropdown c-dropdown">
                     <button class="btn c-btn c-dropdown__btn js-dropdown-btn dropdown-toggle" type="button" id="loginDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="c-dropdown__icon c-dropdown__btn bi bi-person-circle"></i> Login / Register
+                        <i class="c-dropdown__icon bi bi-person-circle"></i> Login / Register
                     </button>
                     <!-- LOGGED-OUT DROPDOWN MENU (Login Form) -->
                     <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu js-dropdown-menu" aria-labelledby="loginDropdown">
