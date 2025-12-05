@@ -135,10 +135,9 @@ a:hover {
   max-width: 100%;
   height: 8rem;
   margin: 1rem 2rem;
+  background-color: rgb(57.5, 33.125, 27.5);
 }
 .c-nav__logo:hover {
-  background-color: #2a1717;
-  border-radius: 75%;
   opacity: 0.8;
 }
 .c-nav__btn {
@@ -314,8 +313,9 @@ a:hover {
 }
 
 .c-dropdown__btn {
-  color: #3c3c34;
+  color: #f5f5dc;
   border: none;
+  background-color: transparent;
   padding: 0.4rem 0.8rem;
 }
 @media (min-width: 576px) {
@@ -369,6 +369,9 @@ a:hover {
   font-size: 1.25rem;
   background-color: transparent;
   color: #3c3c34;
+}
+.c-dropdown__icon:hover {
+  color: #f5f5dc;
 }
 @media (min-width: 576px) {
   .c-dropdown__icon {
