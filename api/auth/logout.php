@@ -16,6 +16,7 @@ if (ini_get("session.use_cookies")) {
 // Destroy the session
 session_destroy();
 
-// Redirect to index.php (fixed path: relative to go up two directories from api/auth/)
+// Redirect to index.php (relative path: up two directories from api/auth/ to root)
 header("Location: ../../index.php");
 exit();
+?>
