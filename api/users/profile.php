@@ -12,7 +12,6 @@
     $user         = null;
     $accountName  = 'Guest';
     $user_role    = 'user';
-    $profile_link = '';
     if ($is_logged_in && isset($_SESSION['user_id'])) {
         // Fetch user data using the repository method
         $user_data = FaithGuardRepository::getUserById($_SESSION['user_id']);
@@ -30,10 +29,10 @@
         }
     }
     // --- Core App Requirements (Always required) ---
-    require_once __DIR__ . "/db/database.php";
-    require_once __DIR__ . "/db/FaithGuardRepository.php";
+    require_once __DIR__ . "/../../db/database.php";
+    require_once __DIR__ . "/../../db/FaithGuardRepository.php";
     // --- Optional Helper/Debug (Required, but note its function) ---
-    require_once __DIR__ . "/api/helper/debug.php";
+    require_once __DIR__ . "/../../api/helper/debug.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -49,14 +48,14 @@
     <meta name="version" content="0.1.3-beta">
     <meta name="release" content="2025-11-27">
     <!-- Title -->
-    <title>FaithGuard</title>
+    <title>FaithGuard - Admin</title>
     <!-- Favicon -->
-    <link rel="icon" href="assets/uploads/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../../assets/uploads/favicon.ico" type="image/x-icon">
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <!-- Stylesheet -->
-    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/main.css">
 </head>
 <body>
     <!-- Navbar -->
@@ -64,7 +63,7 @@
         <div class="container-fluid">
             <!-- LEFT SIDE: LOGO + BRAND -->
             <a class="navbar-brand c-nav__brand" href="index.php">
-                <img src="assets/uploads/FaithGuard_Primary_Logo.svg" alt="FaithGuard Logo" class="c-nav__logo">
+                <img src="../../assets/uploads/FaithGuard_Primary_Logo.svg" alt="FaithGuard Logo" class="c-nav__logo">
             </a>
             <button class="navbar-toggler c-nav__toggler c-nav__toggler--btn" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -157,10 +156,18 @@
     <!-- Main -->
     <main class="c-main container my-5">
         <section class="c-profile">
-            <div class="c-profile__items div1"></div>
-            <div class="c-profile__items div2"></div>
-            <div class="c-profile__items div3"></div>
-            <div class="c-profile__items div4"></div>
+            <div class="c-profile__items div1">
+                <!-- TBD -->
+            </div>
+            <div class="c-profile__items div2">
+                <!-- TBD -->
+            </div>
+            <div class="c-profile__items div3">
+                <!-- TBD -->
+            </div>
+            <div class="c-profile__items div4">
+                <!-- Message box -->
+            </div>
         </section>
     </main>
     <!-- Footer -->
@@ -169,6 +176,5 @@
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" xintegrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 <!-- Custom JS -->
-<script src="assets/js/auth.js"></script>
-<script src="assets/js/footer.js"></script>
-</html>
+<script src="../../assets/js/auth.js"></script>
+<script src="../../assets/js/footer.js"></script>
