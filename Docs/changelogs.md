@@ -7,7 +7,7 @@ All notable changes to this project will be documented in this file.
 - N/A
 
 ### Changed
-- N/A
+- `README.md` file got a professional make-over.
 
 ### Deprecated
 - N/A
