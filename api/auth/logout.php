@@ -1,7 +1,10 @@
 <?php
 session_start();
+
+// Clear all session variables
 $_SESSION = [];
 
+// Delete the session cookie (if it exists)
 if (ini_get("session.use_cookies")) {
     $params = session_get_cookie_params();
     setcookie(session_name(), '', time() - 42000,
@@ -10,6 +13,9 @@ if (ini_get("session.use_cookies")) {
     );
 }
 
+// Destroy the session
 session_destroy();
-header("Location: /../../index.php");
+
+// Redirect to index.php (fixed path: relative to go up two directories from api/auth/)
+header("Location: ../../index.php");
 exit();

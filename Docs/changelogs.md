@@ -18,6 +18,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - Logout function of php.
 - Logout pathing.
+- Logging out function.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.

@@ -88,19 +88,8 @@ const listenToAuth = () => {
 
 const listenToLogout = () => {
 	// Logout is handled via onclick in HTML, but we can define the function here
-	window.logout = async () => {
-		try {
-			const data = await performLogout();
-			if (data.success) {
-				alert('Logged out successfully.');
-				location.reload();
-			} else {
-				showError('Logout failed.');
-			}
-		} catch (error) {
-			console.error('Logout error:', error);
-			showError('An error occurred during logout.');
-		}
+	window.logout = () => {
+		window.location.href = '/api/auth/logout.php';
 	};
 };
 // #endregion
