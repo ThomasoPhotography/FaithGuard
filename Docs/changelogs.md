@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 ## [0.1.4-alpha] - Current
 
 ### Added
-- N/A
+- Profile layouts for admins and users.
 
 ### Changed
 - `README.md` file got a professional make-over.
