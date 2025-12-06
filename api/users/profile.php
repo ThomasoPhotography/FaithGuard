@@ -2,7 +2,7 @@
     session_set_cookie_params([
         'lifetime' => 86400, // 1 day
         'path'     => '/',   // CRITICAL: Make the cookie valid for the whole site
-        'domain'   => $_SERVER['HTTP_HOST'],
+        'domain'   => $_SERVER['HTTP_HOST'] ?? '',
         'secure'   => true, // Recommended for live HTTPS site
         'httponly' => true,
     ]);
@@ -10,8 +10,9 @@
     // Nav bar user variables
     $is_logged_in = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
     $user         = null;
-    $accountName  = 'Guest';
-    $user_role    = 'user';
+    $accountName  = 'Admin';
+    $user_role    = 'admin';
+    $profile_link = ''; // Initialize profile link
     if ($is_logged_in && isset($_SESSION['user_id'])) {
         // Fetch user data using the repository method
         $user_data = FaithGuardRepository::getUserById($_SESSION['user_id']);
@@ -21,6 +22,13 @@
             // Assuming your 'users' table has a 'name' or 'email' column and a 'role' column
             $accountName = htmlspecialchars($user_data['name'] ?? $user_data['email']);
             $user_role   = $user_data['role'] ?? 'user';
+
+            // --- Set Role-Based Profile Link ---
+            if ($user_role === 'admin') {
+                $profile_link = 'api/admin/profile.php';  // Current page for admins
+            } else {
+                $profile_link = 'api/users/profile.php';
+            }
         } else {
             // Logged-in session exists, but user not found in DB (session cleanup needed)
             unset($_SESSION['user_id']);
@@ -45,8 +53,8 @@
     <meta name="author" content="WWTW - FaithGuard">
     <meta name="robots" content="noindex">
     <!-- Version -->
-    <meta name="version" content="0.1.3-beta">
-    <meta name="release" content="2025-11-27">
+    <meta name="version" content="0.1.4-alpha">
+    <meta name="release" content="current">
     <!-- Title -->
     <title>FaithGuard - Admin</title>
     <!-- Favicon -->
@@ -62,7 +70,7 @@
     <nav class="navbar navbar-expand-lg navbar-light c-nav">
         <div class="container-fluid">
             <!-- LEFT SIDE: LOGO + BRAND -->
-            <a class="navbar-brand c-nav__brand" href="index.php">
+            <a class="navbar-brand c-nav__brand" href="../../index.php">  <!-- Fixed path -->
                 <img src="../../assets/uploads/FaithGuard_Primary_Logo.svg" alt="FaithGuard Logo" class="c-nav__logo">
             </a>
             <button class="navbar-toggler c-nav__toggler c-nav__toggler--btn" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -92,12 +100,12 @@
                 <div class="d-flex dropdown c-dropdown">
                     <button class="btn c-btn c-dropdown__btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="c-dropdown__icon bi bi-person-check me-1"></i>
-                        <span class="c-dropdown__text">Welcome                                                                                                                                                                                           <?php echo $accountName; ?></span>
+                        <span class="c-dropdown__text">Welcome <?php echo $accountName; ?></span>  <!-- Cleaned spacing -->
                     </button>
                     <!-- LOGGED-IN DROPDOWN MENU -->
                     <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu" aria-labelledby="userDropdown">
                         <li>
-                            <h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                                                                                                                                                                                                         <?php echo ucfirst($user_role); ?></h6>
+                            <h6 class="dropdown-header c-dropdown__header">Signed in as: <?php echo ucfirst($user_role); ?></h6>  <!-- Cleaned spacing -->
                         </li>
                         <li>
                             <hr class="dropdown-divider">
@@ -110,7 +118,7 @@
                             </a>
                         </li>
                         <li>
-                            <a class="dropdown-item c-dropdown__item" href="templates/settings.html">
+                            <a class="dropdown-item c-dropdown__item" href="../../templates/settings.html">  <!-- Fixed path -->
                                 <i class="bi bi-gear me-2"></i>
                                 <span class="c-dropdown__text">Settings</span>
                             </a>
@@ -174,7 +182,8 @@
     <div class="c-footer--placeholder"></div>
 </body>
 <!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" xintegrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 <!-- Custom JS -->
 <script src="../../assets/js/auth.js"></script>
 <script src="../../assets/js/footer.js"></script>
+</html>
