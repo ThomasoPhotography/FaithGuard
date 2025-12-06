@@ -20,7 +20,7 @@ All notable changes to this project will be documented in this file.
 - Logout pathing.
 
 ### Security
-- N/A
+- Changing contact link from mailto: to page so the email won't get spammed.
 
 
 ## [0.1.3-beta] - 2025-12-06
