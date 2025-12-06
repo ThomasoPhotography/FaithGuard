@@ -89,9 +89,6 @@
                         <a class="nav-link c-nav__link" href="../../templates/progress.html">Progress</a>
                     </li>
                     <li class="nav-item c-nav__item">
-                        <a class="nav-link c-nav__link" href="../../templates/quiz.html">Quiz</a>
-                    </li>
-                    <li class="nav-item c-nav__item">
                         <a class="nav-link c-nav__link" href="../../templates/resources.html">Resources</a>
                     </li>
                 </ul>
