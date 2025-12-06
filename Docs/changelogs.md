@@ -23,6 +23,7 @@ All notable changes to this project will be documented in this file.
 - Linking the `auth.js` instead of the deleted `nav.js`.
 - Profile linking to other important files.
 - Profile changes.
+- Testing new code lines.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.

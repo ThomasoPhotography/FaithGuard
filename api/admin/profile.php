@@ -1,4 +1,11 @@
 <?php
+    // --- Core App Requirements (Always required) ---
+    // MOVE THESE TO THE TOP: Load classes BEFORE using them
+    require_once __DIR__ . "/../../db/database.php";
+    require_once __DIR__ . "/../../db/FaithGuardRepository.php";
+    // --- Optional Helper/Debug (Required, but note its function) ---
+    require_once __DIR__ . "/../../api/helper/debug.php";
+
     session_set_cookie_params([
         'lifetime' => 86400, // 1 day
         'path'     => '/',   // CRITICAL: Make the cookie valid for the whole site
@@ -36,11 +43,6 @@
             $is_logged_in = false;
         }
     }
-    // --- Core App Requirements (Always required) ---
-    require_once __DIR__ . "/../../db/database.php";
-    require_once __DIR__ . "/../../db/FaithGuardRepository.php";
-    // --- Optional Helper/Debug (Required, but note its function) ---
-    require_once __DIR__ . "/../../api/helper/debug.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
