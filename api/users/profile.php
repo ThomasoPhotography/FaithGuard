@@ -1,6 +1,5 @@
 <?php
     // --- Core App Requirements (Always required) ---
-    // NOTE: Path is correct: /api/users/profile.php (up two levels to reach /www/ and then into the folder)
     require_once __DIR__ . "/../../db/database.php";
     require_once __DIR__ . "/../../db/FaithGuardRepository.php";
     require_once __DIR__ . "/../helper/debug.php";
@@ -14,30 +13,32 @@
     ]);
     session_start();
 
-    // --- Access Check ---
+    // --- INITIALIZE VARIABLES ---
     $is_logged_in = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
+    $user_role    = 'user';
+    $user_data    = null;
+    $accountName  = '';
+    $profile_link = '';
 
-    if (! $is_logged_in || ! isset($_SESSION['user_id'])) {
-        header('Location: ../../index.php'); // Redirect non-logged-in users
-        exit;
+    if ($is_logged_in && isset($_SESSION['user_id'])) {
+        $user_data = FaithGuardRepository::getUserById($_SESSION['user_id']);
+        if ($user_data) {
+            $user_role   = $user_data['role'] ?? 'user';
+            $accountName = htmlspecialchars($user_data['name'] ?? $user_data['email']);
+
+            // Set Role-Based Profile Link (Correct for this file location)
+            if ($user_role === 'admin') {
+                $profile_link = 'api/admin/profile.php';
+            } else {
+                $profile_link = 'api/users/profile.php';
+            }
+        }
     }
 
-    $userId = $_SESSION['user_id'];
-
-    // --- Fetch User Data for Dashboard Display ---
-    $user_data = FaithGuardRepository::getUserById($userId);
-
-    if (! $user_data) {
-        // If user data can't be fetched (e.g., deleted user), destroy session
-        unset($_SESSION['user_id']);
-        unset($_SESSION['logged_in']);
+    if (! $is_logged_in || $user_role !== 'user' || ! $user_data) {
         header('Location: ../../index.php');
         exit;
     }
-
-    $accountName  = htmlspecialchars($user_data['name'] ?? $user_data['email']);
-    $user_role    = $user_data['role'] ?? 'user';
-    $profile_link = 'api/users/profile.php';
 
     // --- Fetch Dynamic Data for Dashboard DIVs ---
 
