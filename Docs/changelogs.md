@@ -45,6 +45,7 @@ All notable changes to this project will be documented in this file.
 - Layout styling V2.
 - Profile styling.
 - Profile styling V2.
+- Profile styling V3.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.

@@ -342,6 +342,8 @@ a {
 		color: $text-light;
 		&:hover {
 			background-color: lighten($highlight, 10%);
+			color: $text-light;
+			text-decoration: none;
 		}
 	}
 
@@ -546,6 +548,14 @@ a {
 	flex-direction: column;
 	&__title {
 		text-align: center;
+	}
+	&__card{
+		border-radius: 20%;
+
+		&:nth-last-child{
+			background-color: $primary-bg;
+			color: $text-light;
+		}
 	}
 }
 
