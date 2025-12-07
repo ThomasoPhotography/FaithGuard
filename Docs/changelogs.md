@@ -40,6 +40,7 @@ All notable changes to this project will be documented in this file.
 - Grid layout SCSS + CSS.
 - Grid layout HTML.
 - Grid styling.
+- Grid styling V2.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.

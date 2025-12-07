@@ -46,6 +46,8 @@ body {
 
 .div1__admin {
   grid-column: span 4/span 4;
+  grid-row: span 1;
+  grid-column-start: 1;
 }
 
 .div2__admin {
