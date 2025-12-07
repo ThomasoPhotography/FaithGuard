@@ -521,12 +521,12 @@ a:hover {
 .c-profile__title {
   text-align: center;
 }
-.c-profile__card__title {
-  font-weight: bold;
-}
 .c-profile__card--messages {
   background-color: #e9b48a;
   color: #3c3c34;
+}
+.c-profile__cardtitle {
+  font-weight: bold;
 }
 
 .c-impact {

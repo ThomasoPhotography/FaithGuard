@@ -546,17 +546,20 @@ a {
 .c-profile {
 	display: flex;
 	flex-direction: column;
+
 	&__title {
 		text-align: center;
 	}
+
 	&__card {
-		&__title {
-			font-weight: bold;
-		}
 		&--messages {
 			background-color: $primary-bg;
 			color: $text-dark;
 		}
+	}
+
+	&__cardtitle {
+		font-weight: bold;
 	}
 }
 
