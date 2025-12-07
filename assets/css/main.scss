@@ -51,51 +51,6 @@ body {
 	padding-left: 0.5rem;
 	padding-right: 0.5rem;
 }
-
-.div1,
-.div2,
-.div3,
-.div4,
-.div5 {
-    display: block !important;
-    margin-bottom: 1.5rem; 
-}
-@media (min-width: 992px) {
-    .div1 {
-        margin-bottom: 0;
-        grid-column: span 4 / span 4;
-        grid-row: span 1;
-        grid-column-start: 1;
-    }
-    .div2 {
-        margin-bottom: 0;
-        grid-column: span 2 / span 2;
-        grid-row: span 5 / span 5;
-        grid-column-start: 1;
-        grid-row-start: 2;
-    }
-    .div3 {
-        margin-bottom: 0;
-        grid-column: span 2 / span 2;
-        grid-row: span 5 / span 5;
-        grid-column-start: 3;
-        grid-row-start: 2;
-    }
-    .div4 {
-        margin-bottom: 0;
-        grid-column: span 3 / span 3;
-        grid-row: span 3 / span 3;
-        grid-column-start: 5;
-        grid-row-start: 1;
-    }
-    .div5 {
-        margin-bottom: 0;
-        grid-column: span 3 / span 3;
-        grid-row: span 3 / span 3;
-        grid-column-start: 5;
-        grid-row-start: 4;
-    }
-}
 /*---------------------------------------/*
  # ELEMENTS
 /*---------------------------------------*/
@@ -560,6 +515,10 @@ a {
 	}
 }
 
+.c-profile {
+	display: flex;
+}
+
 .c-impact {
 	background-color: $primary-bg;
 	padding: 1rem;
@@ -714,13 +673,6 @@ a {
 			color: $text-light;
 		}
 	}
-}
-
-.c-profile {
-	display: grid !important;
-	grid-template-columns: repeat(7, 1fr);
-	grid-template-rows: repeat(6, 1fr);
-	gap: 1.5rem;
 }
 
 .c-footer {

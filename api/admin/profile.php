@@ -119,12 +119,12 @@
                  <div class="d-flex dropdown c-dropdown">
                     <button class="btn c-btn c-dropdown__btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="c-dropdown__icon bi bi-person-check me-1"></i>
-                        <span class="c-dropdown__text">Welcome                                                                                                                                                                                                                                                         <?php echo $accountName; ?></span>
+                        <span class="c-dropdown__text">Welcome                                                                                                                                                                                                                                                                                                                       <?php echo $accountName; ?></span>
                     </button>
                     <!-- LOGGED-IN DROPDOWN MENU -->
                     <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu" aria-labelledby="userDropdown">
                         <li>
-                            <h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                                                                                                                                                                                                                                                                                                 <?php echo ucfirst($user_role); ?></h6>
+                            <h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                                                                                                                                                                                                                                                                                                                                                                                         <?php echo ucfirst($user_role); ?></h6>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
@@ -152,7 +152,11 @@
     <!-- Main -->
          <main class="c-main container my-5">
         <section class="c-profile">
-            <h2 class="c-profile__title">Admin Dashboard</h2>
+            <div class="row">
+                <div class="col-12">
+                    <h2 class="c-profile__title">Admin Dashboard</h2>
+                </div>
+            </div>
             <div class="row">
                 <!-- Flagged/Reported Posts -->
                 <div class="col-md-6 col-12 mb-4">
@@ -163,7 +167,7 @@
                             <?php if (! empty($reports)): ?>
                                 <?php foreach ($reports as $report): ?>
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        Post ID:                                                 <?php echo htmlspecialchars($report['post_id']); ?> - Reason:<?php echo htmlspecialchars($report['reason']); ?>
+                                        Post ID:                                                                                                 <?php echo htmlspecialchars($report['post_id']); ?> - Reason:<?php echo htmlspecialchars($report['reason']); ?>
                                         <button class="btn btn-sm btn-danger">Review</button>
                                     </li>
                                 <?php endforeach; ?>
@@ -185,7 +189,7 @@
                             <textarea name="content" class="form-control mb-2" placeholder="Content" rows="2" required></textarea>
                             <button type="submit" class="btn btn-success">Create Resource</button>
                         </form>
-                        <p><strong>Total Resources:</strong>                                                             <?php echo $resourceCount; ?></p>
+                        <p><strong>Total Resources:</strong>                                                                                                                         <?php echo $resourceCount; ?></p>
                         <a href="../resources/list.php" class="btn btn-secondary">Manage All Resources</a>
                     </div>
                 </div>
@@ -221,7 +225,7 @@
                                 <?php foreach ($recentMessages as $message): ?>
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <?php echo date('H:i', strtotime($message['created_at'])); ?>: "<?php echo htmlspecialchars(substr($message['content'], 0, 30)); ?>..."
-                                        <span class="badge bg-secondary">To:                                                                             <?php echo htmlspecialchars($message['receiver_id']); ?></span>
+                                        <span class="badge bg-secondary">To:                                                                                                                                                         <?php echo htmlspecialchars($message['receiver_id']); ?></span>
                                     </li>
                                 <?php endforeach; ?>
                             <?php else: ?>
