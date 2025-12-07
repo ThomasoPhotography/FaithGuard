@@ -549,12 +549,12 @@ a {
 	&__title {
 		text-align: center;
 	}
-	&__card{
+	&__card {
 		border-radius: 20%;
-
-		&:nth-last-child{
+		
+		&--messages{
 			background-color: $primary-bg;
-			color: $text-light;
+			color: $text-dark;
 		}
 	}
 }

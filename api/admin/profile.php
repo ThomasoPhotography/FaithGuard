@@ -216,7 +216,7 @@
                 </div>
                 <!-- Admin Message Box (Recent Activity) -->
                 <div class="col-md-6 col-12 mb-4">
-                    <div class="c-profile__items card c-profile__card">
+                    <div class="c-profile__items card c-profile__card c-profile__card--messages">
                         <h5 class="card-title c-profile__cardtitle">Recent Admin Messages</h5>
                         <p class="card-text c-profile__cardtext">Quickly view the last few messages sent by you (the admin).</p>
 

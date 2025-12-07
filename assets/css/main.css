@@ -524,9 +524,9 @@ a:hover {
 .c-profile__card {
   border-radius: 20%;
 }
-.c-profile__card:nth-last-child {
+.c-profile__card--messages {
   background-color: #e9b48a;
-  color: #f5f5dc;
+  color: #3c3c34;
 }
 
 .c-impact {
