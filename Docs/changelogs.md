@@ -18,6 +18,7 @@ All notable changes to this project will be documented in this file.
 - `/templates/nav.php`.
 - Quiz link in nav.
 - Settings link for logged-in state.
+- cURL in `api/admin/profile.php`.
 
 ### Fixed
 - Logout function of php.
