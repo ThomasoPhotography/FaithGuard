@@ -119,12 +119,12 @@
                  <div class="d-flex dropdown c-dropdown">
                     <button class="btn c-btn c-dropdown__btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="c-dropdown__icon bi bi-person-check me-1"></i>
-                        <span class="c-dropdown__text">Welcome                                                                                                                                                                                           <?php echo $accountName; ?></span>
+                        <span class="c-dropdown__text">Welcome                                                                                                                                                                                                                                                         <?php echo $accountName; ?></span>
                     </button>
                     <!-- LOGGED-IN DROPDOWN MENU -->
                     <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu" aria-labelledby="userDropdown">
                         <li>
-                            <h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                                                                                                                                                                                                         <?php echo ucfirst($user_role); ?></h6>
+                            <h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                                                                                                                                                                                                                                                                                                 <?php echo ucfirst($user_role); ?></h6>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
@@ -150,18 +150,13 @@
         </div>
     </nav>
     <!-- Main -->
-    <main class="c-main container my-5">
+         <main class="c-main container my-5">
         <section class="c-profile">
+            <h2 class="c-profile__title">Admin Dashboard</h2>
             <div class="row">
-                <!-- Grid Title -->
+                <!-- Flagged/Reported Posts -->
                 <div class="col-md-6 col-12 mb-4">
                     <div class="c-profile__items div1 div1__admin card">
-                        <h2 class="c-profile__title">Admin Dashboard</h2>
-                    </div>
-                </div>
-            </div>
-                <!-- Flagged/Reported Posts -->
-                    <div class="c-profile__items div2 div2__admin card">
                         <h5 class="card-title">Flagged/Reported Posts (<?php echo count($reports); ?> Pending)</h5>
                         <p class="card-text">Preview and moderate reported community posts to maintain a safe, faith-focused environment.</p>
                         <ul class="list-group list-group-flush">
@@ -178,8 +173,10 @@
                         </ul>
                         <a href="../admin/moderation.php" class="btn btn-primary mt-2">View All Reports</a>
                     </div>
+                </div>
                 <!-- Resource Management -->
-                    <div class="c-profile__items div3 div3__admin card">
+                <div class="col-md-6 col-12 mb-4">
+                    <div class="c-profile__items div2 div2__admin card">
                         <h5 class="card-title">Resource Management</h5>
                         <p class="card-text">Quickly create new resources or view total resources available for users.</p>
                         <!-- Example: Mini form and stats -->
@@ -191,8 +188,10 @@
                         <p><strong>Total Resources:</strong>                                                             <?php echo $resourceCount; ?></p>
                         <a href="../resources/list.php" class="btn btn-secondary">Manage All Resources</a>
                     </div>
+                </div>
                 <!-- Legal & Policy Updates -->
-                    <div class="c-profile__items div4 div4__admin card">
+                <div class="col-md-6 col-12 mb-4">
+                    <div class="c-profile__items div3 div3__admin card">
                         <h5 class="card-title">Legal & Policy Updates</h5>
                         <p class="card-text">Update Terms of Service and Privacy Policy to ensure compliance and user trust.</p>
 
@@ -210,8 +209,10 @@
                             <button type="submit" name="update_privacy" class="btn btn-warning">Update Privacy</button>
                         </form>
                     </div>
+                </div>
                 <!-- Admin Message Box (Recent Activity) -->
-                    <div class="c-profile__items div5 div5__admin card">
+                <div class="col-md-6 col-12 mb-4">
+                    <div class="c-profile__items div4 div4__admin card">
                         <h5 class="card-title">Recent Admin Messages</h5>
                         <p class="card-text">Quickly view the last few messages sent by you (the admin).</p>
 
@@ -230,6 +231,7 @@
 
                         <a href="../messages/send.php" class="btn btn-warning mt-2">Send New Message</a>
                     </div>
+                </div>
             </div>
         </section>
     </main>
