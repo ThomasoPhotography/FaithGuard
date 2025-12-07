@@ -179,7 +179,7 @@
         </section>
         <section class="c-main__section mb-5">
             <h2 class="c-main__title">Featured Resources</h2>
-            <div class="row">
+            <div class="row c-resources__list">
                 <?php if (! empty($resources)): ?>
                     <?php $count = 0; ?>
                     <?php foreach ($resources as $resource): ?>

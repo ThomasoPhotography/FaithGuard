@@ -31,6 +31,7 @@ All notable changes to this project will be documented in this file.
 - Moving required files to top.
 - Profile-linking.
 - Profile-linking logic.
+- Resources list in `index.php` and `/assets/js/resources.js`.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.
