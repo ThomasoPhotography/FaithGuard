@@ -111,11 +111,11 @@
                 <div class="d-flex dropdown c-dropdown">
                     <button class="btn c-btn c-dropdown__btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="c-dropdown__icon bi bi-person-check me-1"></i>
-                        <span class="c-dropdown__text">Welcome                                                               <?php echo $accountName; ?></span>
+                        <span class="c-dropdown__text">Welcome                                                                                                                                                                                           <?php echo $accountName; ?></span>
                     </button>
                     <!-- LOGGED-IN DROPDOWN MENU -->
                     <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu" aria-labelledby="userDropdown">
-                        <li><h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                         <?php echo ucfirst($user_role); ?></h6></li>
+                        <li><h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                                                                                                                                                                                                         <?php echo ucfirst($user_role); ?></h6></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item c-dropdown__item" href="<?php echo $profile_link; ?>"><i class="bi bi-person-badge me-2"></i> Profile / Dashboard</a></li>
                         <li><hr class="dropdown-divider"></li>
@@ -128,34 +128,49 @@
     <!-- Main -->
 <!-- Main Content -->
     <main class="c-main container my-5">
-        <h2 class="c-main__title">Welcome Back, <?php echo $accountName; ?></h2>
+        <h2 class="c-main__title">Welcome Back,                                                <?php echo $accountName; ?></h2>
         <p class="text-muted">This is your personal dashboard for tracking progress and accessing core tools.</p>
 
         <section class="c-profile row">
 
             <!-- Personal Profile and Stats -->
             <div class="col-md-6 col-12 mb-4">
-                <div class="c-profile__items div1 card h-100">
+                <div class="c-profile__items card h-100">
                     <div class="card-body">
-                        <h5 class="card-title"><i class="bi bi-person-circle me-2"></i> Account Summary</h5>
+                        <h5 class="card-title">
+                            <i class="bi bi-person-circle me-2"></i>
+                            <span>Account Summary</span>
+                        </h5>
                         <ul class="list-group list-group-flush mt-3">
-                            <li class="list-group-item"><strong>Email:</strong>                                                                                <?php echo htmlspecialchars($user_data['email']); ?></li>
-                            <li class="list-group-item"><strong>Member Since:</strong>                                                                                       <?php echo $memberSince; ?></li>
-                            <li class="list-group-item"><strong>Total Posts:</strong>                                                                                      <?php echo $totalPosts; ?></li>
-                            <li class="list-group-item"><strong>Role:</strong>                                                                               <?php echo ucfirst($user_role); ?></li>
+                            <li class="list-group-item">
+                                <strong>Name:</strong>
+                                <?php echo ucfirst($user_data['name']); ?>
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Email:</strong>
+                                <?php echo htmlspecialchars($user_data['email']); ?>
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Member Since:</strong>
+                                <?php echo $memberSince; ?>
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Total Posts:</strong>
+                                <?php echo $totalPosts; ?>
+                            </li>
                         </ul>
-                    </div>
-                    <div class="card-footer">
-                        <a href="../../templates/settings.html" class="btn btn-sm btn-primary">Edit Profile</a>
                     </div>
                 </div>
             </div>
 
             <!-- Progress Log (Required Section) -->
             <div class="col-md-6 col-12 mb-4">
-                <div class="c-profile__items div2 card h-100">
+                <div class="c-profile__items card h-100">
                     <div class="card-body">
-                        <h5 class="card-title"><i class="bi bi-clipboard-check me-2"></i> Accountability Progress</h5>
+                        <h5 class="card-title">
+                            <i class="bi bi-clipboard-check me-2"></i>
+                            <span>Accountability Progress</span>
+                        </h5>
                         <p class="card-text text-muted">You have recorded **<?php echo $totalCheckins; ?>** check-ins so far.</p>
 
                         <ul class="list-group list-group-flush">
@@ -163,8 +178,10 @@
                                 <?php foreach ($recentCheckins as $log): ?>
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <span class="text-success fw-bold">Check-in:</span>
-                                        <?php echo date('M d, Y', strtotime($log['checkin_date'])); ?>
-                                        <span class="badge bg-secondary"><?php echo htmlspecialchars($log['milestone'] ?? 'Standard'); ?></span>
+                                        <?php echo date('d/M/Y', strtotime($log['checkin_date'])); ?>
+                                        <span class="badge bg-secondary">
+                                            <?php echo htmlspecialchars($log['milestone'] ?? 'Standard'); ?>
+                                        </span>
                                     </li>
                                 <?php endforeach; ?>
                             <?php else: ?>
@@ -181,19 +198,22 @@
 
             <!-- Latest Quiz Results and Recommendation -->
             <div class="col-md-6 col-12 mb-4">
-                <div class="c-profile__items div3 card h-100">
+                <div class="c-profile__items card h-100">
                     <div class="card-body">
-                        <h5 class="card-title"><i class="bi bi-journal-check me-2"></i> Latest Assessment</h5>
+                        <h5 class="card-title">
+                            <i class="bi bi-journal-check me-2"></i>
+                            <span>Latest Assessment</span>
+                        </h5>
 
                         <?php if ($latestQuizResult): ?>
                             <p class="card-text mb-1">
-                                **Last Quiz Taken:**                                                     <?php echo date('M d, Y', strtotime($latestQuizResult['created_at'])); ?>
+                                **Last Quiz Taken:**                                                                                                                                                             <?php echo date('d/M/Y', strtotime($latestQuizResult['created_at'])); ?>
                             </p>
                             <p class="card-text mb-1">
                                 **Score:** <span class="fw-bold"><?php echo htmlspecialchars($latestQuizResult['total_score']); ?></span>
                             </p>
                             <p class="card-text text-danger">
-                                **Identified Area:**                                                     <?php echo htmlspecialchars($latestQuizResult['addiction_type']); ?>
+                                **Identified Area:**<?php echo htmlspecialchars($latestQuizResult['addiction_type']); ?>
                             </p>
                             <p class="mt-3">
                                 <a href="../../templates/resources.html" class="btn btn-sm btn-info">View Recommended Resources</a>
@@ -207,9 +227,12 @@
             </div>
             <!-- Recent Messaging (INBOX) -->
             <div class="col-md-6 col-12 mb-4">
-                <div class="c-profile__items div4 card h-100">
+                <div class="c-profile__items card h-100">
                     <div class="card-body">
-                        <h5 class="card-title"><i class="bi bi-envelope-open me-2"></i> Recent Messages</h5>
+                        <h5 class="card-title">
+                            <i class="bi bi-envelope-open me-2"></i>
+                            <span>Recent Messages</span>
+                        </h5>
                         <p class="card-text">Quick view of your last 5 messages received from the community or admin.</p>
 
                         <ul class="list-group list-group-flush">
@@ -224,7 +247,7 @@
                                         <span>
                                             <i class="bi bi-person me-2"></i> From: **<?php echo $senderName; ?>**
                                         </span>
-                                        <small class="text-muted"><?php echo date('M d', strtotime($message['created_at'])); ?></small>
+                                        <small class="text-muted"><?php echo date('d/M', strtotime($message['created_at'])); ?></small>
                                     </li>
                                     <li class="list-group-item py-1 small text-truncate">
                                         <?php echo $contentPreview; ?>
