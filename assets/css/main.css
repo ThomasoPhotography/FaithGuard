@@ -36,10 +36,16 @@ body {
   padding-right: 0.5rem;
 }
 
+.div1 {
+  display: grid;
+}
 .div1__admin {
   grid-column: span 4/span 4;
 }
 
+.div2 {
+  display: grid;
+}
 .div2__admin {
   grid-column: span 2/span 2;
   grid-row: span 5/span 5;
@@ -47,6 +53,9 @@ body {
   grid-row-start: 2;
 }
 
+.div3 {
+  display: grid;
+}
 .div3__admin {
   grid-column: span 2/span 2;
   grid-row: span 5/span 5;
@@ -54,6 +63,9 @@ body {
   grid-row-start: 2;
 }
 
+.div4 {
+  display: grid;
+}
 .div4__admin {
   grid-column: span 3/span 3;
   grid-row: span 3/span 3;
@@ -61,6 +73,9 @@ body {
   grid-row-start: 1;
 }
 
+.div5 {
+  display: grid;
+}
 .div5__admin {
   grid-column: span 3/span 3;
   grid-row: span 3/span 3;
@@ -680,14 +695,10 @@ a:hover {
 }
 
 .c-profile {
-  display: grid;
+  display: grid !important;
   grid-template-columns: repeat(7, 1fr);
   grid-template-rows: repeat(6, 1fr);
   gap: 1.5rem;
-}
-.c-profile__items {
-  display: flex;
-  justify-content: center;
 }
 
 .c-footer {
