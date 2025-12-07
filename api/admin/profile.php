@@ -15,9 +15,9 @@
 
     // --- INITIALIZE VARIABLES ---
     $is_logged_in = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
-    $user_role    = 'user';
+    $user_role    = 'admin';
     $user_data    = null;
-    $accountName  = 'Admin';
+    $accountName  = 'admin';
     $profile_link = '';
 
     if ($is_logged_in && isset($_SESSION['user_id'])) {
