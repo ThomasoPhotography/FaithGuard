@@ -60,7 +60,7 @@
     $recentInboxMessages = array_slice($recentInboxMessages, 0, 5); // Limit to 5 recent
 
     // General Stats
-    $memberSince = date('M d, Y', strtotime($user_data['created_at']));
+    $memberSince = date('d/M/Y', strtotime($user_data['created_at']));
 ?>
 <!DOCTYPE html>
 <html lang="en">
