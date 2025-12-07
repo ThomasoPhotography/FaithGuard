@@ -517,6 +517,10 @@ a {
 
 .c-profile {
 	display: flex;
+	flex-direction: column;
+	&__title {
+		text-align: center;
+	}
 }
 
 .c-impact {
