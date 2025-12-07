@@ -37,6 +37,10 @@
             $is_logged_in = false;
         }
     }
+
+                                                              // --- Fetch Resources for Dynamic Display ---
+    $resources     = FaithGuardRepository::getAllResources(); // Fetch all resources from DB
+    $max_resources = 6;                                       // Limit to 6 for display (adjust as needed)
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -95,7 +99,7 @@
                 <div class="d-flex dropdown c-dropdown">
                     <button class="btn c-btn c-dropdown__btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="c-dropdown__icon bi bi-person-check me-1"></i>
-                        <span class="c-dropdown__text">Welcome                                                               <?php echo $accountName; ?></span>
+                        <span class="c-dropdown__text">Welcome                                                                                                                             <?php echo $accountName; ?></span>
                     </button>
                     <!-- LOGGED-IN DROPDOWN MENU -->
                     <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu" aria-labelledby="userDropdown">
@@ -168,65 +172,37 @@
             <h2 class="c-main__title">Our Mission</h2>
             <p class="c-main__text">At FaithGuard, we are dedicated to providing resources and tools to help individuals regain and protect their faith from digital influenced addictions like porn.</p>
         </section>
+        <!-- Resource Section -->
+        <section class="c-main__section mb-5">
+            <h2 class="c-main__title">Our Mission</h2>
+            <p class="c-main__text">At FaithGuard, we are dedicated to providing resources and tools to help individuals regain and protect their faith from digital influenced addictions like porn.</p>
+        </section>
         <section class="c-main__section mb-5">
             <h2 class="c-main__title">Featured Resources</h2>
             <div class="row">
-                <div class="col-md-4 col-12 mb-4">
-                    <div class="card c-card">
-                        <div class="card-body c-card__body">
-                            <h5 class="card-title c-card__title">Devotional: Overcoming Temptation</h5>
-                            <p class="card-text c-card__text">Daily readings with Bible verses on purity and strength.</p>
-                            <a href="Resources.html" class="btn c-btn c-card__btn">Learn More</a>
+                <?php if (! empty($resources)): ?>
+                    <?php $count = 0; ?>
+                    <?php foreach ($resources as $resource): ?>
+                        <?php if ($count >= $max_resources) {
+                                break;
+                            }
+                        // Limit to max_resources ?>
+                        <div class="col-md-4 col-12 mb-4">
+                            <div class="card c-card">
+                                <div class="card-body c-card__body">
+                                    <h5 class="card-title c-card__title"><?php echo htmlspecialchars($resource['title']); ?></h5>
+                                    <p class="card-text c-card__text"><?php echo htmlspecialchars(substr($resource['content'], 0, 100)) . (strlen($resource['content']) > 100 ? '...' : ''); ?></p>
+                                    <a href="templates/resources.html?id=<?php echo $resource['id']; ?>" class="btn c-btn c-card__btn">Learn More</a>
+                                </div>
+                            </div>
                         </div>
+                        <?php $count++; ?>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <div class="col-12">
+                        <p class="text-center">No resources available yet. Check back soon!</p>
                     </div>
-                </div>
-                <div class="col-md-4 col-12 mb-4">
-                    <div class="card c-card">
-                        <div class="card-body c-card__body">
-                            <h5 class="card-title c-card__title">Prayer Guide for Accountability</h5>
-                            <p class="card-text c-card__text">Sample prayers for forgiveness and spiritual warfare.</p>
-                            <a href="Resources.html" class="btn c-btn c-card__btn">Learn More</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 col-12 mb-4">
-                    <div class="card c-card">
-                        <div class="card-body c-card__body">
-                            <h5 class="card-title c-card__title">Bible Verses on Purity</h5>
-                            <p class="card-text c-card__text">Curated scriptures for encouragement and reflection.</p>
-                            <a href="Resources.html" class="btn c-btn c-card__btn">Learn More</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 col-12 mb-4">
-                    <div class="card c-card">
-                        <div class="card-body c-card__body">
-                            <h5 class="card-title c-card__title">Accountability Partner Tips</h5>
-                            <p class="card-text c-card__text">Guidance on building supportive relationships for recovery.</p>
-                            <a href="Resources.html" class="btn c-btn c-card__btn">Learn More</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 col-12 mb-4">
-                    <div class="card c-card">
-                        <div class="card-body c-card__body">
-                            <h5 class="card-title c-card__title">Digital Detox Strategies</h5>
-                            <p class="card-text c-card__text">Practical steps to reduce screen time and focus on faith.</p>
-                            <a href="Resources.html" class="btn c-btn c-card__btn">Learn More</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 col-12 mb-4">
-                    <div class="card c-card">
-                        <div class="card-body c-card__body">
-                            <h5 class="card-title c-card__title">Testimonies of Hope</h5>
-                            <p class="card-text c-card__text">Stories of redemption and strength from the community.</p>
-                            <a href="Resources.html" class="btn c-btn c-card__btn">Learn More</a>
-                        </div>
-                    </div>
-                </div>
+                <?php endif; ?>
             </div>
         </section>
         <!-- CTA Section -->
