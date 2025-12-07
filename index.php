@@ -1,7 +1,4 @@
 <?php
-    // index.php
-    // NOTE: Assuming /db/database.php and /db/FaithGuardRepository.php are now correctly included.
-
     session_set_cookie_params([
         'lifetime' => 86400, // 1 day
         'path'     => '/',   // CRITICAL: Make the cookie valid for the whole site
@@ -20,10 +17,9 @@
     $is_logged_in = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
 
     // --- CRITICAL FIX: Define user variables needed for navigation bar ---
-    $user         = null;
-    $accountName  = 'Guest';
-    $user_role    = 'user';
-    $profile_link = ''; // Initialize profile link
+    $user        = null;
+    $accountName = 'Guest';
+    $user_role   = 'user';
 
     if ($is_logged_in && isset($_SESSION['user_id'])) {
         // Fetch user data using the repository method
@@ -34,13 +30,6 @@
             // Assuming your 'users' table has a 'name' or 'email' column and a 'role' column
             $accountName = htmlspecialchars($user_data['name'] ?? $user_data['email']);
             $user_role   = $user_data['role'] ?? 'user';
-
-            // --- Set Role-Based Profile Link ONCE after fetching user data ---
-            if ($user_role === 'admin') {
-                $profile_link = 'api/admin/profile.php';
-            } else {
-                $profile_link = 'api/users/profile.php';
-            }
         } else {
             // Logged-in session exists, but user not found in DB (session cleanup needed)
             unset($_SESSION['user_id']);
@@ -61,7 +50,7 @@
     <meta name="author" content="WWTW - FaithGuard">
     <meta name="robots" content="noindex">
     <!-- Version -->
-    <meta name="version" content="0.1.3-beta">
+    <meta name="version" content="0.1.4-alpha">
     <meta name="release" content="current">
     <!-- Title -->
     <title>FaithGuard</title>
@@ -106,19 +95,19 @@
                 <div class="d-flex dropdown c-dropdown">
                     <button class="btn c-btn c-dropdown__btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="c-dropdown__icon bi bi-person-check me-1"></i>
-                        <span class="c-dropdown__text">Welcome                                                                                                                                                                                           <?php echo $accountName; ?></span>
+                        <span class="c-dropdown__text">Welcome                                                               <?php echo $accountName; ?></span>
                     </button>
                     <!-- LOGGED-IN DROPDOWN MENU -->
                     <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu" aria-labelledby="userDropdown">
                         <li>
-                            <h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                                                                                                                                                                                                         <?php echo ucfirst($user_role); ?></h6>
+                            <h6 class="dropdown-header c-dropdown__header">Signed in as:<?php echo ucfirst($user_role); ?></h6>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
                         <!-- Profile Link (Role-Based) -->
                         <li>
-                            <a class="dropdown-item c-dropdown__item" href="<?php echo $profile_link; ?>">
+                            <a class="dropdown-item c-dropdown__item" href="<?php echo($user_role === 'admin') ? 'api/admin/profile.php' : 'api/users/profile.php'; ?>">
                                 <i class="bi bi-person-badge me-2"></i>
                                 <span class="c-dropdown__text">Profile / Dashboard</span>
                             </a>
