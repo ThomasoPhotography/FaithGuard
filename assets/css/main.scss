@@ -52,15 +52,19 @@ body {
 	padding-right: 0.5rem;
 }
 
+.div1,
+.div2,
+.div3,
+.div4,
+.div5 {
+	display: grid !important;
+}
 .div1 {
-	display: grid;
 	&__admin {
 		grid-column: span 4 / span 4;
 	}
 }
-
 .div2 {
-	display: grid;
 	&__admin {
 		grid-column: span 2 / span 2;
 		grid-row: span 5 / span 5;
@@ -68,9 +72,7 @@ body {
 		grid-row-start: 2;
 	}
 }
-
 .div3 {
-	display: grid;
 	&__admin {
 		grid-column: span 2 / span 2;
 		grid-row: span 5 / span 5;
@@ -79,7 +81,6 @@ body {
 	}
 }
 .div4 {
-	display: grid;
 	&__admin {
 		grid-column: span 3 / span 3;
 		grid-row: span 3 / span 3;
@@ -88,7 +89,6 @@ body {
 	}
 }
 .div5 {
-	display: grid;
 	&__admin {
 		grid-column: span 3 / span 3;
 		grid-row: span 3 / span 3;

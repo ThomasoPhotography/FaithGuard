@@ -36,16 +36,18 @@ body {
   padding-right: 0.5rem;
 }
 
-.div1 {
-  display: grid;
+.div1,
+.div2,
+.div3,
+.div4,
+.div5 {
+  display: grid !important;
 }
+
 .div1__admin {
   grid-column: span 4/span 4;
 }
 
-.div2 {
-  display: grid;
-}
 .div2__admin {
   grid-column: span 2/span 2;
   grid-row: span 5/span 5;
@@ -53,9 +55,6 @@ body {
   grid-row-start: 2;
 }
 
-.div3 {
-  display: grid;
-}
 .div3__admin {
   grid-column: span 2/span 2;
   grid-row: span 5/span 5;
@@ -63,9 +62,6 @@ body {
   grid-row-start: 2;
 }
 
-.div4 {
-  display: grid;
-}
 .div4__admin {
   grid-column: span 3/span 3;
   grid-row: span 3/span 3;
@@ -73,9 +69,6 @@ body {
   grid-row-start: 1;
 }
 
-.div5 {
-  display: grid;
-}
 .div5__admin {
   grid-column: span 3/span 3;
   grid-row: span 3/span 3;
