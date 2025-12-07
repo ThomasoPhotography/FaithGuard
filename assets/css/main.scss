@@ -550,9 +550,10 @@ a {
 		text-align: center;
 	}
 	&__card {
-		border-radius: 20%;
-		
-		&--messages{
+		&__title {
+			font-weight: bold;
+		}
+		&--messages {
 			background-color: $primary-bg;
 			color: $text-dark;
 		}
