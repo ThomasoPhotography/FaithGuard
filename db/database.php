@@ -10,22 +10,24 @@ class Database {
         $dsn = "mysql:host=$host;dbname=$db_name;charset=utf8mb4";
         
         $options = [
+            // CRITICAL FIX: Set a low connection timeout (e.g., 5 seconds)
+            PDO::ATTR_TIMEOUT => 5, 
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_EMULATE_PREPARES => false,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
         ];
         
         try {
-            // CRITICAL: The execution chain will crash here if the password/host is wrong.
             $db = new PDO($dsn, $user, $pass, $options);
             return $db;
         } catch (PDOException $e) {
-            // When fetched by JS, this text will be the only thing returned to the browser.
-            // This is the error message we need to see.
+            // Log the error and stop execution with a clear message
+            error_log("Database connection failed: " . $e->getMessage());
             die("DATABASE_CONNECTION_FAILED: " . $e->getMessage()); 
         }
     }
     
+    // ... (rest of the class methods remain unchanged) ...
     public static function getRows($sql, $params = [], $type = null) {
         try {
             $conn = self::getConnection();
