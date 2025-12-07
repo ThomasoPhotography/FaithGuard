@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 ### Removed
 - `/templates/nav.php`.
 - Quiz link in nav.
+- Settings link for logged-in state.
 
 ### Fixed
 - Logout function of php.

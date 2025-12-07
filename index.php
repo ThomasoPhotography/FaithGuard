@@ -124,12 +124,6 @@
                             </a>
                         </li>
                         <li>
-                            <a class="dropdown-item c-dropdown__item" href="templates/settings.html">
-                                <i class="bi bi-gear me-2"></i>
-                                <span class="c-dropdown__text">Settings</span>
-                            </a>
-                        </li>
-                        <li>
                             <hr class="dropdown-divider">
                         </li>
                         <li>
