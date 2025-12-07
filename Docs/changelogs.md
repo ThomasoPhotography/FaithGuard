@@ -36,6 +36,7 @@ All notable changes to this project will be documented in this file.
 - Timeout reset `database.php`.
 - Initializing variables in `/api/admin/profile.php`.
 - Initializing variables in `/api/users/profile.php`.
+- Grid layout in `/api/admin/profile.php`.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.

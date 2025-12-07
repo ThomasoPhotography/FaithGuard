@@ -152,11 +152,18 @@
     <!-- Main -->
     <main class="c-main container my-5">
         <section class="c-profile">
-            <h2 class="c-profile__title">Admin Dashboard</h2>
+            <div class="row">
+                <!-- Grid Title -->
+                <div class="col-md-6 col-12 mb-4">
+                    <div class="c-profile__items div1 div1__admin card">
+                        <h2 class="c-profile__title">Admin Dashboard</h2>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <!-- Flagged/Reported Posts -->
                 <div class="col-md-6 col-12 mb-4">
-                    <div class="c-profile__items div1 card">
+                    <div class="c-profile__items div2 div2__admin card">
                         <h5 class="card-title">Flagged/Reported Posts (<?php echo count($reports); ?> Pending)</h5>
                         <p class="card-text">Preview and moderate reported community posts to maintain a safe, faith-focused environment.</p>
                         <ul class="list-group list-group-flush">
@@ -176,7 +183,7 @@
                 </div>
                 <!-- Resource Management -->
                 <div class="col-md-6 col-12 mb-4">
-                    <div class="c-profile__items div2 card">
+                    <div class="c-profile__items div3 div3__admin card">
                         <h5 class="card-title">Resource Management</h5>
                         <p class="card-text">Quickly create new resources or view total resources available for users.</p>
                         <!-- Example: Mini form and stats -->
@@ -191,7 +198,7 @@
                 </div>
                 <!-- Legal & Policy Updates -->
                 <div class="col-md-6 col-12 mb-4">
-                    <div class="c-profile__items div3 card">
+                    <div class="c-profile__items div4 div4__admin card">
                         <h5 class="card-title">Legal & Policy Updates</h5>
                         <p class="card-text">Update Terms of Service and Privacy Policy to ensure compliance and user trust.</p>
                         
@@ -212,7 +219,7 @@
                 </div>
                 <!-- Admin Message Box (Recent Activity) -->
                 <div class="col-md-6 col-12 mb-4">
-                    <div class="c-profile__items div4 card">
+                    <div class="c-profile__items div5 div5__admin card">
                         <h5 class="card-title">Recent Admin Messages</h5>
                         <p class="card-text">Quickly view the last few messages sent by you (the admin).</p>
                         
