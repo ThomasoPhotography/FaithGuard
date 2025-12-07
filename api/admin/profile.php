@@ -46,15 +46,15 @@
         ['post_id' => 901, 'reason' => 'Hate speech'],
         ['post_id' => 902, 'reason' => 'Spam link'],
         ['post_id' => 903, 'reason' => 'Inappropriate content'],
-    ]; 
-    $reports = array_slice($reports, 0, 5); 
+    ];
+    $reports = array_slice($reports, 0, 5);
 
     // --- Resource Count ---
-    $allResources = FaithGuardRepository::getAllResources();
+    $allResources  = FaithGuardRepository::getAllResources();
     $resourceCount = count($allResources);
 
     // --- Legal texts ---
-    $tosText = 'Terms of Service text fetched successfully and rendered here.';
+    $tosText     = 'Terms of Service text fetched successfully and rendered here.';
     $privacyText = 'Privacy Policy content fetched successfully and rendered here.';
 
     // --- Recent messages ---
@@ -62,7 +62,7 @@
         $recentMessages = FaithGuardRepository::getMessagesByUserId($_SESSION['user_id']);
         $recentMessages = array_slice($recentMessages, 0, 5);
     }
-    
+
     // Nav bar variables
     $memberSince = date('d/M/Y', strtotime($user_data['created_at']));
 ?>
@@ -119,12 +119,12 @@
                  <div class="d-flex dropdown c-dropdown">
                     <button class="btn c-btn c-dropdown__btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="c-dropdown__icon bi bi-person-check me-1"></i>
-                        <span class="c-dropdown__text">Welcome                                                                                                                             <?php echo $accountName; ?></span>
+                        <span class="c-dropdown__text">Welcome                                                                                                                                                                                           <?php echo $accountName; ?></span>
                     </button>
                     <!-- LOGGED-IN DROPDOWN MENU -->
                     <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu" aria-labelledby="userDropdown">
                         <li>
-                            <h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                                                                                                                 <?php echo ucfirst($user_role); ?></h6>
+                            <h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                                                                                                                                                                                                         <?php echo ucfirst($user_role); ?></h6>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
@@ -160,17 +160,15 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
                 <!-- Flagged/Reported Posts -->
-                <div class="col-md-6 col-12 mb-4">
                     <div class="c-profile__items div2 div2__admin card">
                         <h5 class="card-title">Flagged/Reported Posts (<?php echo count($reports); ?> Pending)</h5>
                         <p class="card-text">Preview and moderate reported community posts to maintain a safe, faith-focused environment.</p>
                         <ul class="list-group list-group-flush">
-                            <?php if (!empty($reports)): ?>
+                            <?php if (! empty($reports)): ?>
                                 <?php foreach ($reports as $report): ?>
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        Post ID: <?php echo htmlspecialchars($report['post_id']); ?> - Reason: <?php echo htmlspecialchars($report['reason']); ?>
+                                        Post ID:                                                 <?php echo htmlspecialchars($report['post_id']); ?> - Reason:<?php echo htmlspecialchars($report['reason']); ?>
                                         <button class="btn btn-sm btn-danger">Review</button>
                                     </li>
                                 <?php endforeach; ?>
@@ -180,9 +178,7 @@
                         </ul>
                         <a href="../admin/moderation.php" class="btn btn-primary mt-2">View All Reports</a>
                     </div>
-                </div>
                 <!-- Resource Management -->
-                <div class="col-md-6 col-12 mb-4">
                     <div class="c-profile__items div3 div3__admin card">
                         <h5 class="card-title">Resource Management</h5>
                         <p class="card-text">Quickly create new resources or view total resources available for users.</p>
@@ -192,23 +188,21 @@
                             <textarea name="content" class="form-control mb-2" placeholder="Content" rows="2" required></textarea>
                             <button type="submit" class="btn btn-success">Create Resource</button>
                         </form>
-                        <p><strong>Total Resources:</strong> <?php echo $resourceCount; ?></p>
+                        <p><strong>Total Resources:</strong>                                                             <?php echo $resourceCount; ?></p>
                         <a href="../resources/list.php" class="btn btn-secondary">Manage All Resources</a>
                     </div>
-                </div>
                 <!-- Legal & Policy Updates -->
-                <div class="col-md-6 col-12 mb-4">
                     <div class="c-profile__items div4 div4__admin card">
                         <h5 class="card-title">Legal & Policy Updates</h5>
                         <p class="card-text">Update Terms of Service and Privacy Policy to ensure compliance and user trust.</p>
-                        
+
                         <!-- ToS Form -->
                         <form class="mb-3" action="../admin/legal.php" method="POST">
                             <label for="tos">Terms of Service</label>
                             <textarea name="tos_content" id="tos" class="form-control mb-2" rows="3"><?php echo htmlspecialchars($tosText); ?></textarea>
                             <button type="submit" name="update_tos" class="btn btn-warning">Update ToS</button>
                         </form>
-                        
+
                         <!-- Privacy Form -->
                         <form action="../admin/legal.php" method="POST">
                             <label for="privacy">Privacy Policy</label>
@@ -216,29 +210,26 @@
                             <button type="submit" name="update_privacy" class="btn btn-warning">Update Privacy</button>
                         </form>
                     </div>
-                </div>
                 <!-- Admin Message Box (Recent Activity) -->
-                <div class="col-md-6 col-12 mb-4">
                     <div class="c-profile__items div5 div5__admin card">
                         <h5 class="card-title">Recent Admin Messages</h5>
                         <p class="card-text">Quickly view the last few messages sent by you (the admin).</p>
-                        
+
                         <ul class="list-group list-group-flush">
-                            <?php if (!empty($recentMessages)): ?>
+                            <?php if (! empty($recentMessages)): ?>
                                 <?php foreach ($recentMessages as $message): ?>
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <?php echo date('H:i', strtotime($message['created_at'])); ?>: "<?php echo htmlspecialchars(substr($message['content'], 0, 30)); ?>..."
-                                        <span class="badge bg-secondary">To: <?php echo htmlspecialchars($message['receiver_id']); ?></span>
+                                        <span class="badge bg-secondary">To:                                                                             <?php echo htmlspecialchars($message['receiver_id']); ?></span>
                                     </li>
                                 <?php endforeach; ?>
                             <?php else: ?>
                                 <li class="list-group-item">No recent messages sent.</li>
                             <?php endif; ?>
                         </ul>
-                        
+
                         <a href="../messages/send.php" class="btn btn-warning mt-2">Send New Message</a>
                     </div>
-                </div>
             </div>
         </section>
     </main>
