@@ -318,6 +318,29 @@ a:hover {
     font-size: 1rem;
   }
 }
+.c-btn__dashboard {
+  background-color: #614338;
+  color: #f5f5dc;
+}
+.c-btn__dashboard:hover {
+  background-color: rgb(74.9538461538, 41.0461538462, 41.0461538462);
+}
+.c-btn__create {
+  background-color: #5c352c;
+  color: #f5f5dc;
+}
+.c-btn__create:hover {
+  background-color: #e9b48a;
+  color: #3c3c34;
+}
+.c-btn__update {
+  background-color: #e9b48a;
+  color: #3c3c34;
+}
+.c-btn__update:hover {
+  background-color: #5c352c;
+  color: #f5f5dc;
+}
 
 .c-cta {
   background-color: #e9b48a;

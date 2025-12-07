@@ -150,7 +150,7 @@
         </div>
     </nav>
     <!-- Main -->
-         <main class="c-main container my-5">
+    <main class="c-main container my-5">
         <section class="c-profile">
             <div class="row">
                 <div class="col-12">
@@ -160,9 +160,9 @@
             <div class="row">
                 <!-- Flagged/Reported Posts -->
                 <div class="col-md-6 col-12 mb-4">
-                    <div class="c-profile__items div1 div1__admin card">
-                        <h5 class="card-title">Flagged/Reported Posts (<?php echo count($reports); ?> Pending)</h5>
-                        <p class="card-text">Preview and moderate reported community posts to maintain a safe, faith-focused environment.</p>
+                    <div class="c-profile__items card c-profile__card">
+                        <h5 class="card-title c-profile__cardtitle">Flagged/Reported Posts (<?php echo count($reports); ?> Pending)</h5>
+                        <p class="card-text c-profile__cardtext">Preview and moderate reported community posts to maintain a safe, faith-focused environment.</p>
                         <ul class="list-group list-group-flush">
                             <?php if (! empty($reports)): ?>
                                 <?php foreach ($reports as $report): ?>
@@ -175,50 +175,50 @@
                                 <li class="list-group-item">No pending reports.</li>
                             <?php endif; ?>
                         </ul>
-                        <a href="../admin/moderation.php" class="btn btn-primary mt-2">View All Reports</a>
+                        <a href="../admin/moderation.php" class="btn c-btn c-btn__dashboard mt-2">View All Reports</a>
                     </div>
                 </div>
                 <!-- Resource Management -->
                 <div class="col-md-6 col-12 mb-4">
-                    <div class="c-profile__items div2 div2__admin card">
-                        <h5 class="card-title">Resource Management</h5>
-                        <p class="card-text">Quickly create new resources or view total resources available for users.</p>
+                    <div class="c-profile__items card c-profile__card">
+                        <h5 class="card-title c-profile__cardtitle">Resource Management</h5>
+                        <p class="card-text c-profile__cardtext">Quickly create new resources or view total resources available for users.</p>
                         <!-- Example: Mini form and stats -->
                         <form class="mb-3" action="../resources/create.php" method="POST">
                             <input type="text" name="title" class="form-control mb-2" placeholder="Resource Title" required>
                             <textarea name="content" class="form-control mb-2" placeholder="Content" rows="2" required></textarea>
-                            <button type="submit" class="btn btn-success">Create Resource</button>
+                            <button type="submit" class="btn c-btn c-btn__create">Create Resource</button>
                         </form>
                         <p><strong>Total Resources:</strong>                                                                                                                         <?php echo $resourceCount; ?></p>
-                        <a href="../resources/list.php" class="btn btn-secondary">Manage All Resources</a>
+                        <a href="../resources/list.php" class="btn c-btn c-btn__dashboard">Manage All Resources</a>
                     </div>
                 </div>
                 <!-- Legal & Policy Updates -->
                 <div class="col-md-6 col-12 mb-4">
-                    <div class="c-profile__items div3 div3__admin card">
-                        <h5 class="card-title">Legal & Policy Updates</h5>
-                        <p class="card-text">Update Terms of Service and Privacy Policy to ensure compliance and user trust.</p>
+                    <div class="c-profile__items card c-profile__card">
+                        <h5 class="card-title c-profile__cardtitle">Legal & Policy Updates</h5>
+                        <p class="card-text c-profile__cardtext">Update Terms of Service and Privacy Policy to ensure compliance and user trust.</p>
 
                         <!-- ToS Form -->
                         <form class="mb-3" action="../admin/legal.php" method="POST">
                             <label for="tos">Terms of Service</label>
                             <textarea name="tos_content" id="tos" class="form-control mb-2" rows="3"><?php echo htmlspecialchars($tosText); ?></textarea>
-                            <button type="submit" name="update_tos" class="btn btn-warning">Update ToS</button>
+                            <button type="submit" name="update_tos" class="btn c-btn c-btn__update">Update ToS</button>
                         </form>
 
                         <!-- Privacy Form -->
                         <form action="../admin/legal.php" method="POST">
                             <label for="privacy">Privacy Policy</label>
                             <textarea name="privacy_content" id="privacy" class="form-control mb-2" rows="3"><?php echo htmlspecialchars($privacyText); ?></textarea>
-                            <button type="submit" name="update_privacy" class="btn btn-warning">Update Privacy</button>
+                            <button type="submit" name="update_privacy" class="btn c-btn c-btn__update">Update Privacy</button>
                         </form>
                     </div>
                 </div>
                 <!-- Admin Message Box (Recent Activity) -->
                 <div class="col-md-6 col-12 mb-4">
-                    <div class="c-profile__items div4 div4__admin card">
-                        <h5 class="card-title">Recent Admin Messages</h5>
-                        <p class="card-text">Quickly view the last few messages sent by you (the admin).</p>
+                    <div class="c-profile__items card c-profile__card">
+                        <h5 class="card-title c-profile__cardtitle">Recent Admin Messages</h5>
+                        <p class="card-text c-profile__cardtext">Quickly view the last few messages sent by you (the admin).</p>
 
                         <ul class="list-group list-group-flush">
                             <?php if (! empty($recentMessages)): ?>
@@ -233,7 +233,7 @@
                             <?php endif; ?>
                         </ul>
 
-                        <a href="../messages/send.php" class="btn btn-warning mt-2">Send New Message</a>
+                        <a href="../messages/send.php" class="btn c-btn c-btn__dashboard mt-2">Send New Message</a>
                     </div>
                 </div>
             </div>
