@@ -1,48 +1,105 @@
 <?php
     // --- Core App Requirements (Always required) ---
-    // MOVE THESE TO THE TOP: Load classes BEFORE using them
+    // NOTE: Path correction: /api/helper/debug.php is in /api/helper/ (up one level from /admin/)
     require_once __DIR__ . "/../../db/database.php";
     require_once __DIR__ . "/../../db/FaithGuardRepository.php";
-    // --- Optional Helper/Debug (Required, but note its function) ---
-    require_once __DIR__ . "/../../api/helper/debug.php";
+    require_once __DIR__ . "/../helper/debug.php"; // CORRECTED PATH: /api/helper/debug.php (up one level)
 
     session_set_cookie_params([
         'lifetime' => 86400, // 1 day
-        'path'     => '/',   // CRITICAL: Make the cookie valid for the whole site
+        'path'     => '/', 
         'domain'   => $_SERVER['HTTP_HOST'] ?? '',
-        'secure'   => true, // Recommended for live HTTPS site
+        'secure'   => true, 
         'httponly' => true,
     ]);
     session_start();
-    // Nav bar user variables
+
+    // --- Admin-Only Access Check ---
     $is_logged_in = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
-    $user         = null;
-    $accountName  = 'Admin';
-    $user_role    = 'admin';
-    $profile_link = ''; // Initialize profile link
+    $user_role = 'user';
+    $user_data = null;
+    $accountName = 'Admin';
+    $profile_link = '';
+
     if ($is_logged_in && isset($_SESSION['user_id'])) {
-        // Fetch user data using the repository method
         $user_data = FaithGuardRepository::getUserById($_SESSION['user_id']);
-
         if ($user_data) {
-            $user = true;
-            // Assuming your 'users' table has a 'name' or 'email' column and a 'role' column
+            $user_role = $user_data['role'] ?? 'user';
             $accountName = htmlspecialchars($user_data['name'] ?? $user_data['email']);
-            $user_role   = $user_data['role'] ?? 'user';
-
-            // --- Set Role-Based Profile Link ---
             if ($user_role === 'admin') {
-                $profile_link = 'api/admin/profile.php';  // Current page for admins
+                $profile_link = 'api/admin/profile.php';
             } else {
+                // This file is admin-only, but defining the link is safe
                 $profile_link = 'api/users/profile.php';
             }
-        } else {
-            // Logged-in session exists, but user not found in DB (session cleanup needed)
-            unset($_SESSION['user_id']);
-            unset($_SESSION['logged_in']);
-            $is_logged_in = false;
         }
     }
+    
+    if (!$is_logged_in || $user_role !== 'admin') {
+        header('Location: ../../index.php'); 
+        exit;
+    }
+
+    // --- Fetch Dynamic Data ---
+    $reports = [];
+    $resourceCount = 0;
+    $tosText = 'Loading...';
+    $privacyText = 'Loading...';
+    $recentMessages = [];
+    
+    // Determine base URL (essential for cURL calls)
+    $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
+    $baseUrl = $protocol . '://' . $_SERVER['HTTP_HOST'];
+    
+    // --- REPLACED MULTIPLE CURL BLOCKS WITH SINGLE REUSABLE HELPER ---
+    function fetch_api_data($url, $sessionId) {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Cookie: PHPSESSID=' . $sessionId]); 
+        
+        $response = curl_exec($ch);
+        // Cleaned: Removed manual curl_close in favor of cleaner structure
+        
+        if (curl_errno($ch)) {
+            error_log("cURL Error fetching {$url}: " . curl_error($ch));
+            curl_close($ch);
+            return null;
+        }
+        curl_close($ch); // Close handle here
+        
+        if ($response) {
+            return json_decode($response, true);
+        }
+        return null;
+    }
+
+    // div1: Fetch reports from /api/admin/moderation.php
+    $reportsData = fetch_api_data($baseUrl . '/api/admin/moderation.php', session_id());
+    $reports = $reportsData['reports'] ?? [];
+    $reports = array_slice($reports, 0, 5); 
+
+    // div2: Fetch resource count from /api/resources/list.php
+    $resourcesData = fetch_api_data($baseUrl . '/api/resources/list.php', session_id());
+    if ($resourcesData && is_array($resourcesData)) {
+        $resourceCount = count($resourcesData);
+    }
+
+    // div3: Fetch legal texts from /api/admin/legal.php (GET request)
+    $legalData = fetch_api_data($baseUrl . '/api/admin/legal.php', session_id());
+    if ($legalData) {
+        $tosText = $legalData['tos'] ?? 'No ToS set.';
+        $privacyText = $legalData['privacy'] ?? 'No Privacy Policy set.';
+    }
+
+    // div4: Fetch recent messages sent by admin (from DB)
+    if (isset($_SESSION['user_id'])) {
+        $recentMessages = FaithGuardRepository::getMessagesByUserId($_SESSION['user_id']);
+        $recentMessages = array_slice($recentMessages, 0, 5);
+    }
+
+    // Nav bar variables
+    $memberSince = date('M d, Y', strtotime($user_data['created_at']));
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -94,32 +151,23 @@
                 </ul>
 
                 <!-- RIGHT SIDE: USER/LOGIN DROPDOWN -->
-                <?php if ($is_logged_in && $user): ?>
-                <!-- Logged-in user menu -->
-                <div class="d-flex dropdown c-dropdown">
+                 <div class="d-flex dropdown c-dropdown">
                     <button class="btn c-btn c-dropdown__btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="c-dropdown__icon bi bi-person-check me-1"></i>
-                        <span class="c-dropdown__text">Welcome <?php echo $accountName; ?></span>  <!-- Cleaned spacing -->
+                        <span class="c-dropdown__text">Welcome                                                               <?php echo $accountName; ?></span>
                     </button>
                     <!-- LOGGED-IN DROPDOWN MENU -->
                     <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu" aria-labelledby="userDropdown">
                         <li>
-                            <h6 class="dropdown-header c-dropdown__header">Signed in as: <?php echo ucfirst($user_role); ?></h6>  <!-- Cleaned spacing -->
+                            <h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                         <?php echo ucfirst($user_role); ?></h6>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <!-- Profile Link (Role-Based) -->
                         <li>
                             <a class="dropdown-item c-dropdown__item" href="<?php echo $profile_link; ?>">
                                 <i class="bi bi-person-badge me-2"></i>
                                 <span class="c-dropdown__text">Profile / Dashboard</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item c-dropdown__item" href="../../templates/settings.html">  <!-- Fixed path -->
-                                <i class="bi bi-gear me-2"></i>
-                                <span class="c-dropdown__text">Settings</span>
                             </a>
                         </li>
                         <li>
@@ -133,47 +181,92 @@
                         </li>
                     </ul>
                 </div>
-                <?php else: ?>
-                <!-- Guest login/register dropdown -->
-                <div class="d-flex dropdown c-dropdown">
-                    <button class="btn c-btn c-dropdown__btn js-dropdown-btn dropdown-toggle" type="button" id="loginDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="c-dropdown__icon bi bi-person-circle me-1"></i>
-                        <span class="c-dropdown__text">Login / Register</span>
-                    </button>
-                    <!-- LOGGED-OUT DROPDOWN MENU (Login Form) -->
-                    <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu js-dropdown-menu" aria-labelledby="loginDropdown">
-                        <li>
-                            <h6 class="dropdown-header c-dropdown__header">Sign Up / Log In</h6>
-                        </li>
-                        <li>
-                            <input type="email" id="signupUsername" class="form-control c-dropdown__info mb-2" placeholder="Email">
-                        </li>
-                        <li>
-                            <input type="password" id="signupPassword" class="form-control c-dropdown__info mb-2" placeholder="Password">
-                        </li>
-                        <li>
-                            <button class="btn c-btn c-dropdown__login js-log mb-2">Sign Up / Log In</button>
-                        </li>
-                    </ul>
-                </div>
-                <?php endif; ?>
             </div>
         </div>
     </nav>
     <!-- Main -->
     <main class="c-main container my-5">
         <section class="c-profile">
-            <div class="c-profile__items div1">
-                <!-- Preview flagged/reported posts -->
-            </div>
-            <div class="c-profile__items div2">
-                <!-- Small version of creating resources / resource amount -->
-            </div>
-            <div class="c-profile__items div3">
-                <!-- TBD -->
-            </div>
-            <div class="c-profile__items div4">
-                <!-- Message box -->
+            <h2 class="c-profile__title">Admin Dashboard</h2>
+            <div class="row">
+                <!-- Flagged/Reported Posts -->
+                <div class="col-md-6 col-12 mb-4">
+                    <div class="c-profile__items div1 card">
+                        <h5 class="card-title">Flagged/Reported Posts (<?php echo count($reports); ?> Pending)</h5>
+                        <p class="card-text">Preview and moderate reported community posts to maintain a safe, faith-focused environment.</p>
+                        <ul class="list-group list-group-flush">
+                            <?php if (!empty($reports)): ?>
+                                <?php foreach ($reports as $report): ?>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Post ID: <?php echo htmlspecialchars($report['post_id']); ?> - Reason: <?php echo htmlspecialchars($report['reason']); ?>
+                                        <button class="btn btn-sm btn-danger">Review</button>
+                                    </li>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <li class="list-group-item">No pending reports.</li>
+                            <?php endif; ?>
+                        </ul>
+                        <a href="../admin/moderation.php" class="btn btn-primary mt-2">View All Reports</a>
+                    </div>
+                </div>
+                <!-- Resource Management -->
+                <div class="col-md-6 col-12 mb-4">
+                    <div class="c-profile__items div2 card">
+                        <h5 class="card-title">Resource Management</h5>
+                        <p class="card-text">Quickly create new resources or view total resources available for users.</p>
+                        <!-- Example: Mini form and stats -->
+                        <form class="mb-3" action="../resources/create.php" method="POST">
+                            <input type="text" name="title" class="form-control mb-2" placeholder="Resource Title" required>
+                            <textarea name="content" class="form-control mb-2" placeholder="Content" rows="2" required></textarea>
+                            <button type="submit" class="btn btn-success">Create Resource</button>
+                        </form>
+                        <p><strong>Total Resources:</strong> <?php echo $resourceCount; ?></p>
+                        <a href="../resources/list.php" class="btn btn-secondary">Manage All Resources</a>
+                    </div>
+                </div>
+                <!-- Legal & Policy Updates -->
+                <div class="col-md-6 col-12 mb-4">
+                    <div class="c-profile__items div3 card">
+                        <h5 class="card-title">Legal & Policy Updates</h5>
+                        <p class="card-text">Update Terms of Service and Privacy Policy to ensure compliance and user trust.</p>
+                        
+                        <!-- ToS Form -->
+                        <form class="mb-3" action="../admin/legal.php" method="POST">
+                            <label for="tos">Terms of Service</label>
+                            <textarea name="tos_content" id="tos" class="form-control mb-2" rows="3"><?php echo htmlspecialchars($tosText); ?></textarea>
+                            <button type="submit" name="update_tos" class="btn btn-warning">Update ToS</button>
+                        </form>
+                        
+                        <!-- Privacy Form -->
+                        <form action="../admin/legal.php" method="POST">
+                            <label for="privacy">Privacy Policy</label>
+                            <textarea name="privacy_content" id="privacy" class="form-control mb-2" rows="3"><?php echo htmlspecialchars($privacyText); ?></textarea>
+                            <button type="submit" name="update_privacy" class="btn btn-warning">Update Privacy</button>
+                        </form>
+                    </div>
+                </div>
+                <!-- Admin Message Box (Recent Activity) -->
+                <div class="col-md-6 col-12 mb-4">
+                    <div class="c-profile__items div4 card">
+                        <h5 class="card-title">Recent Admin Messages</h5>
+                        <p class="card-text">Quickly view the last few messages sent by you (the admin).</p>
+                        
+                        <ul class="list-group list-group-flush">
+                            <?php if (!empty($recentMessages)): ?>
+                                <?php foreach ($recentMessages as $message): ?>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <?php echo date('H:i', strtotime($message['created_at'])); ?>: "<?php echo htmlspecialchars(substr($message['content'], 0, 30)); ?>..."
+                                        <span class="badge bg-secondary">To: <?php echo htmlspecialchars($message['receiver_id']); ?></span>
+                                    </li>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <li class="list-group-item">No recent messages sent.</li>
+                            <?php endif; ?>
+                        </ul>
+                        
+                        <a href="../messages/send.php" class="btn btn-warning mt-2">Send New Message</a>
+                    </div>
+                </div>
             </div>
         </section>
     </main>

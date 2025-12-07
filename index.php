@@ -255,7 +255,7 @@
                     <a href="templates/quiz.html" class="btn c-btn c-hero__btn">Take the Quiz</a>
                 </div>
                 <div class="col-md-4 col-12 mb-3">
-                    <button class="btn c-btn c-hero__btn">Sign Up Now</button> <!-- Sign Up functionality to be implemented in php -->
+                    <button class="btn c-btn c-hero__btn">Sign Up Now</button> <!-- Register page + functionality to be implemented in php -->
                 </div>
             </div>
             <p class="c-cta__verse"><em>"Therefore, if anyone is in Christ, the new creation has come: The old has gone, the new is here!" - 2 Corinthians 5:17</em></p>

@@ -1,48 +1,66 @@
 <?php
     // --- Core App Requirements (Always required) ---
-    // MOVE THESE TO THE TOP: Load classes BEFORE using them
+    // NOTE: Path is correct: /api/users/profile.php (up two levels to reach /www/ and then into the folder)
     require_once __DIR__ . "/../../db/database.php";
     require_once __DIR__ . "/../../db/FaithGuardRepository.php";
-    // --- Optional Helper/Debug (Required, but note its function) ---
-    require_once __DIR__ . "/../../api/helper/debug.php";
+    require_once __DIR__ . "/../helper/debug.php";
 
     session_set_cookie_params([
         'lifetime' => 86400, // 1 day
-        'path'     => '/',   // CRITICAL: Make the cookie valid for the whole site
+        'path'     => '/',
         'domain'   => $_SERVER['HTTP_HOST'] ?? '',
-        'secure'   => true, // Recommended for live HTTPS site
+        'secure'   => true,
         'httponly' => true,
     ]);
     session_start();
-    // Nav bar user variables
+
+    // --- Access Check ---
     $is_logged_in = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
-    $user         = null;
-    $accountName  = 'Admin';
-    $user_role    = 'admin';
-    $profile_link = ''; // Initialize profile link
-    if ($is_logged_in && isset($_SESSION['user_id'])) {
-        // Fetch user data using the repository method
-        $user_data = FaithGuardRepository::getUserById($_SESSION['user_id']);
 
-        if ($user_data) {
-            $user = true;
-            // Assuming your 'users' table has a 'name' or 'email' column and a 'role' column
-            $accountName = htmlspecialchars($user_data['name'] ?? $user_data['email']);
-            $user_role   = $user_data['role'] ?? 'user';
-
-            // --- Set Role-Based Profile Link ---
-            if ($user_role === 'admin') {
-                $profile_link = 'api/admin/profile.php';  // Current page for admins
-            } else {
-                $profile_link = 'api/users/profile.php';
-            }
-        } else {
-            // Logged-in session exists, but user not found in DB (session cleanup needed)
-            unset($_SESSION['user_id']);
-            unset($_SESSION['logged_in']);
-            $is_logged_in = false;
-        }
+    if (! $is_logged_in || ! isset($_SESSION['user_id'])) {
+        header('Location: ../../index.php'); // Redirect non-logged-in users
+        exit;
     }
+
+    $userId = $_SESSION['user_id'];
+
+    // --- Fetch User Data for Dashboard Display ---
+    $user_data = FaithGuardRepository::getUserById($userId);
+
+    if (! $user_data) {
+        // If user data can't be fetched (e.g., deleted user), destroy session
+        unset($_SESSION['user_id']);
+        unset($_SESSION['logged_in']);
+        header('Location: ../../index.php');
+        exit;
+    }
+
+    $accountName  = htmlspecialchars($user_data['name'] ?? $user_data['email']);
+    $user_role    = $user_data['role'] ?? 'user';
+    $profile_link = 'api/users/profile.php';
+
+    // --- Fetch Dynamic Data for Dashboard DIVs ---
+
+    // DIV 1: Progress Log (Recent Check-ins)
+    $progressLogs   = FaithGuardRepository::getProgressLogsByUserId($userId);
+    $recentCheckins = array_slice($progressLogs, 0, 5);
+    $totalCheckins  = count($progressLogs);
+
+    // DIV 2: Latest Quiz Result
+    $latestQuizResult = FaithGuardRepository::getQuizResultsByUserId($userId);
+    $latestQuizResult = $latestQuizResult[0] ?? null;
+
+    // DIV 3: User Activity (Posts and Prayers) - Keeping the logic for compatibility, although it won't be displayed in DIV 4
+    $recentPosts   = FaithGuardRepository::getPostsByUserId($userId);
+    $recentPrayers = FaithGuardRepository::getPrayersByUserId($userId);
+    $totalPosts    = count($recentPosts);
+
+    // DIV 4: Messaging - Fetch recent INBOX messages
+    $recentInboxMessages = FaithGuardRepository::getInboxByUserId($userId);
+    $recentInboxMessages = array_slice($recentInboxMessages, 0, 5); // Limit to 5 recent
+
+    // General Stats
+    $memberSince = date('M d, Y', strtotime($user_data['created_at']));
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -72,8 +90,9 @@
     <nav class="navbar navbar-expand-lg navbar-light c-nav">
         <div class="container-fluid">
             <!-- LEFT SIDE: LOGO + BRAND -->
-            <a class="navbar-brand c-nav__brand" href="../../index.php">  <!-- Fixed path -->
+            <a class="navbar-brand c-nav__brand" href="../../index.php">
                 <img src="../../assets/uploads/FaithGuard_Primary_Logo.svg" alt="FaithGuard Logo" class="c-nav__logo">
+                FaithGuard
             </a>
             <button class="navbar-toggler c-nav__toggler c-nav__toggler--btn" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -82,98 +101,144 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <!-- Main Navigation Links (CENTER/LEFT) -->
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item c-nav__item">
-                        <a class="nav-link c-nav__link" href="../../templates/community.html">Community</a>
-                    </li>
-                    <li class="nav-item c-nav__item">
-                        <a class="nav-link c-nav__link" href="../../templates/progress.html">Progress</a>
-                    </li>
-                    <li class="nav-item c-nav__item">
-                        <a class="nav-link c-nav__link" href="../../templates/resources.html">Resources</a>
-                    </li>
+                    <li class="nav-item c-nav__item"><a class="nav-link c-nav__link" href="../../templates/community.html">Community</a></li>
+                    <li class="nav-item c-nav__item"><a class="nav-link c-nav__link" href="../../templates/progress.html">Progress</a></li>
+                    <li class="nav-item c-nav__item"><a class="nav-link c-nav__link" href="../../templates/resources.html">Resources</a></li>
                 </ul>
 
-                <!-- RIGHT SIDE: USER/LOGIN DROPDOWN -->
-                <?php if ($is_logged_in && $user): ?>
-                <!-- Logged-in user menu -->
+                <!-- RIGHT SIDE: USER DROPDOWN (Assuming user is logged in here) -->
                 <div class="d-flex dropdown c-dropdown">
                     <button class="btn c-btn c-dropdown__btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="c-dropdown__icon bi bi-person-check me-1"></i>
-                        <span class="c-dropdown__text">Welcome <?php echo $accountName; ?></span>  <!-- Cleaned spacing -->
+                        <span class="c-dropdown__text">Welcome                                                               <?php echo $accountName; ?></span>
                     </button>
                     <!-- LOGGED-IN DROPDOWN MENU -->
                     <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu" aria-labelledby="userDropdown">
-                        <li>
-                            <h6 class="dropdown-header c-dropdown__header">Signed in as: <?php echo ucfirst($user_role); ?></h6>  <!-- Cleaned spacing -->
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <!-- Profile Link (Role-Based) -->
-                        <li>
-                            <a class="dropdown-item c-dropdown__item" href="<?php echo $profile_link; ?>">
-                                <i class="bi bi-person-badge me-2"></i>
-                                <span class="c-dropdown__text">Profile / Dashboard</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item c-dropdown__item" href="../../templates/settings.html">  <!-- Fixed path -->
-                                <i class="bi bi-gear me-2"></i>
-                                <span class="c-dropdown__text">Settings</span>
-                            </a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li>
-                            <a class="dropdown-item c-dropdown__item js-logout-btn" href="#" onclick="logout()">
-                                <i class="bi bi-box-arrow-right me-2"></i>
-                                <span class="c-dropdown__text">Logout</span>
-                            </a>
-                        </li>
+                        <li><h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                         <?php echo ucfirst($user_role); ?></h6></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item c-dropdown__item" href="<?php echo $profile_link; ?>"><i class="bi bi-person-badge me-2"></i> Profile / Dashboard</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item c-dropdown__item js-logout-btn" href="#" onclick="logout()"><i class="bi bi-box-arrow-right me-2"></i> Logout</a></li>
                     </ul>
                 </div>
-                <?php else: ?>
-                <!-- Guest login/register dropdown -->
-                <div class="d-flex dropdown c-dropdown">
-                    <button class="btn c-btn c-dropdown__btn js-dropdown-btn dropdown-toggle" type="button" id="loginDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="c-dropdown__icon bi bi-person-circle me-1"></i>
-                        <span class="c-dropdown__text">Login / Register</span>
-                    </button>
-                    <!-- LOGGED-OUT DROPDOWN MENU (Login Form) -->
-                    <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu js-dropdown-menu" aria-labelledby="loginDropdown">
-                        <li>
-                            <h6 class="dropdown-header c-dropdown__header">Sign Up / Log In</h6>
-                        </li>
-                        <li>
-                            <input type="email" id="signupUsername" class="form-control c-dropdown__info mb-2" placeholder="Email">
-                        </li>
-                        <li>
-                            <input type="password" id="signupPassword" class="form-control c-dropdown__info mb-2" placeholder="Password">
-                        </li>
-                        <li>
-                            <button class="btn c-btn c-dropdown__login js-log mb-2">Sign Up / Log In</button>
-                        </li>
-                    </ul>
-                </div>
-                <?php endif; ?>
             </div>
         </div>
     </nav>
     <!-- Main -->
+<!-- Main Content -->
     <main class="c-main container my-5">
-        <section class="c-profile">
-            <div class="c-profile__items div1">
-                <!-- TBD -->
+        <h2 class="c-main__title">Welcome Back, <?php echo $accountName; ?></h2>
+        <p class="text-muted">This is your personal dashboard for tracking progress and accessing core tools.</p>
+
+        <section class="c-profile row">
+
+            <!-- Personal Profile and Stats -->
+            <div class="col-md-6 col-12 mb-4">
+                <div class="c-profile__items div1 card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="bi bi-person-circle me-2"></i> Account Summary</h5>
+                        <ul class="list-group list-group-flush mt-3">
+                            <li class="list-group-item"><strong>Email:</strong>                                                                                <?php echo htmlspecialchars($user_data['email']); ?></li>
+                            <li class="list-group-item"><strong>Member Since:</strong>                                                                                       <?php echo $memberSince; ?></li>
+                            <li class="list-group-item"><strong>Total Posts:</strong>                                                                                      <?php echo $totalPosts; ?></li>
+                            <li class="list-group-item"><strong>Role:</strong>                                                                               <?php echo ucfirst($user_role); ?></li>
+                        </ul>
+                    </div>
+                    <div class="card-footer">
+                        <a href="../../templates/settings.html" class="btn btn-sm btn-primary">Edit Profile</a>
+                    </div>
+                </div>
             </div>
-            <div class="c-profile__items div2">
-                <!-- TBD -->
+
+            <!-- Progress Log (Required Section) -->
+            <div class="col-md-6 col-12 mb-4">
+                <div class="c-profile__items div2 card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="bi bi-clipboard-check me-2"></i> Accountability Progress</h5>
+                        <p class="card-text text-muted">You have recorded **<?php echo $totalCheckins; ?>** check-ins so far.</p>
+
+                        <ul class="list-group list-group-flush">
+                            <?php if (! empty($recentCheckins)): ?>
+                                <?php foreach ($recentCheckins as $log): ?>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span class="text-success fw-bold">Check-in:</span>
+                                        <?php echo date('M d, Y', strtotime($log['checkin_date'])); ?>
+                                        <span class="badge bg-secondary"><?php echo htmlspecialchars($log['milestone'] ?? 'Standard'); ?></span>
+                                    </li>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <li class="list-group-item">No progress logs recorded yet.</li>
+                            <?php endif; ?>
+                        </ul>
+                    </div>
+                    <div class="card-footer">
+                        <a href="../../templates/progress.html" class="btn btn-sm btn-success">View Full Progress</a>
+                        <a href="../../api/progress/checkin.php" class="btn btn-sm btn-warning">New Check-in</a>
+                    </div>
+                </div>
             </div>
-            <div class="c-profile__items div3">
-                <!-- TBD -->
+
+            <!-- Latest Quiz Results and Recommendation -->
+            <div class="col-md-6 col-12 mb-4">
+                <div class="c-profile__items div3 card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="bi bi-journal-check me-2"></i> Latest Assessment</h5>
+
+                        <?php if ($latestQuizResult): ?>
+                            <p class="card-text mb-1">
+                                **Last Quiz Taken:**                                                     <?php echo date('M d, Y', strtotime($latestQuizResult['created_at'])); ?>
+                            </p>
+                            <p class="card-text mb-1">
+                                **Score:** <span class="fw-bold"><?php echo htmlspecialchars($latestQuizResult['total_score']); ?></span>
+                            </p>
+                            <p class="card-text text-danger">
+                                **Identified Area:**                                                     <?php echo htmlspecialchars($latestQuizResult['addiction_type']); ?>
+                            </p>
+                            <p class="mt-3">
+                                <a href="../../templates/resources.html" class="btn btn-sm btn-info">View Recommended Resources</a>
+                            </p>
+                        <?php else: ?>
+                            <p class="card-text">Take the initial quiz to unlock personalized resource recommendations and tools.</p>
+                            <a href="../../templates/quiz.html" class="btn btn-sm btn-warning">Take Quiz Now</a>
+                        <?php endif; ?>
+                    </div>
+                </div>
             </div>
-            <div class="c-profile__items div4">
-                <!-- Message box -->
+            <!-- Recent Messaging (INBOX) -->
+            <div class="col-md-6 col-12 mb-4">
+                <div class="c-profile__items div4 card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="bi bi-envelope-open me-2"></i> Recent Messages</h5>
+                        <p class="card-text">Quick view of your last 5 messages received from the community or admin.</p>
+
+                        <ul class="list-group list-group-flush">
+                            <?php if (! empty($recentInboxMessages)): ?>
+                                <?php foreach ($recentInboxMessages as $message): ?>
+                                    <?php
+                                        // You might need a helper method to resolve the sender ID to a name/email for display
+                                        $senderName     = $message['sender_id'] === $userId ? 'You' : 'User ' . $message['sender_id'];
+                                        $contentPreview = htmlspecialchars(substr($message['content'], 0, 40)) . '...';
+                                    ?>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span>
+                                            <i class="bi bi-person me-2"></i> From: **<?php echo $senderName; ?>**
+                                        </span>
+                                        <small class="text-muted"><?php echo date('M d', strtotime($message['created_at'])); ?></small>
+                                    </li>
+                                    <li class="list-group-item py-1 small text-truncate">
+                                        <?php echo $contentPreview; ?>
+                                    </li>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <li class="list-group-item">Your inbox is empty!</li>
+                            <?php endif; ?>
+                        </ul>
+                    </div>
+                    <div class="card-footer">
+                        <a href="../../templates/community.html#messages" class="btn btn-sm btn-primary">View Full Inbox</a>
+                        <a href="../../api/messages/send.php" class="btn btn-sm btn-secondary">Send Message</a>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
