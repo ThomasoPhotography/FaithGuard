@@ -65,6 +65,7 @@ All notable changes to this project will be documented in this file.
 - Update resource management styling for improved layout and consistency.
 - Update resource management styling with importance.
 - Improve spacing and formatting in user profile dropdown and dashboard.
+- Enhance quiz functionality with scoring weights and improved HTML structure.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.

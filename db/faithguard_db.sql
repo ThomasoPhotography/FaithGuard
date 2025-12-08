@@ -151,14 +151,15 @@ CREATE TABLE `quiz_questions` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `question` TEXT NOT NULL,
   `options` LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (JSON_VALID(`options`)),
+  `weights` LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (JSON_VALID(`weights`)),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `quiz_questions`
 --
-INSERT INTO `quiz_questions` (`id`, `question`, `options`) VALUES
-(1, 'How often do you pray?', '["Daily", "Weekly", "Rarely"]');
+INSERT INTO `quiz_questions` (`id`, `question`, `options`, `weights`) VALUES
+(1, 'How often do you pray?', '["Daily", "Weekly", "Rarely"]', '[3, 2, 1]');
 
 --
 -- Table structure for table `quiz_results`
