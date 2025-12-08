@@ -568,6 +568,12 @@ a {
 	&__cardtitle {
 		font-weight: bold;
 	}
+
+	&__count {
+		font-size: 2rem;
+		font-weight: bold;
+		color: $accent;
+	}
 }
 
 .c-progress {
