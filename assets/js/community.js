@@ -7,6 +7,23 @@ const newPostTextarea = document.getElementById('newPost');
 const showPosts = (posts) => {
 	postsList.innerHTML = posts.map((p) => `<div class="card c-card"><div class="c-card__body"><h5 class="c-card__title">${p.content}</h5><button onclick="replyToPost(${p.id})">Reply</button><button onclick="reportPost(${p.id})">Report</button></div></div>`).join('');
 };
+
+const reportPost = async (postId) => {
+	// Prompt user for reason (optional, but improves UX)
+	const reason = prompt('Please provide a reason for reporting this post (optional):') || 'No reason provided';
+	
+	const response = await fetch('/api/posts/report.php', {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+		body: new URLSearchParams({ post_id: postId, reason: reason }),
+	});
+	const result = await response.json();
+	if (result.success) {
+		alert('Report submitted!');
+	} else {
+		alert(result.error);
+	}
+};
 // #endregion
 
 // #region ***  Callback-No Visualisation - callback___  ***********

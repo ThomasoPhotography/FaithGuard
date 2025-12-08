@@ -55,6 +55,7 @@ All notable changes to this project will be documented in this file.
 - Update profile layout and enhance styling for progress, quiz, and message sections.
 - Enhance profile layout and add styling for user dashboard, progress, quiz, and message sections with enchancing profile layout for admin dashboard.
 - Update profile layout and styling for resource management section, including new resource count display.
+- Enhance reporting functionality by adding user input for report reasons and improving session validation.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.
