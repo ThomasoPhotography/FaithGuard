@@ -538,11 +538,6 @@ a:hover {
   font-weight: bold;
   color: #5c352c;
 }
-.c-profile__resourcecount {
-  display: flex !important;
-  flex-direction: row !important;
-  gap: 1rem !important;
-}
 
 .c-progress {
   background-color: #e9b48a;
