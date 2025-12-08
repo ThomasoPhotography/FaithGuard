@@ -58,6 +58,7 @@ All notable changes to this project will be documented in this file.
 - Enhance reporting functionality by adding user input for report reasons and improving session validation.
 - Update reports handling by fetching reported posts dynamically and adding reports table structure to the database.
 - Improve user greeting display and handle potential undefined user data.
+- Redirect to registration page if email does not exist during login and clarify default user role in registration.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.

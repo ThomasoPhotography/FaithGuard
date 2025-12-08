@@ -27,7 +27,15 @@ $email = filter_var($data['email'], FILTER_SANITIZE_EMAIL);
 $password = $data['password'];
 
 $user = Database::getSingleRow("SELECT * FROM users WHERE email = ?", [$email]);
-if ($user && password_verify($password, $user['password_hash'])) {
+
+// If email doesn't exist, redirect to register.php
+if (!$user) {
+    header('Location: /register.php');  // Adjust path if register.php is not at root
+    exit;
+}
+
+// If email exists, check password
+if (password_verify($password, $user['password_hash'])) {
     $_SESSION['user_id'] = $user['id'];
     $_SESSION['token'] = bin2hex(random_bytes(16));
     $_SESSION['logged_in'] = true;  // ADD THIS
