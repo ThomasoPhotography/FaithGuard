@@ -175,8 +175,10 @@
                 <div class="col-md-6 col-12 mb-4">
                     <div class="c-profile__items card c-profile__card">
                         <h5 class="card-title c-profile__cardtitle">Resource Management</h5>
-                        <p class="card-text c-profile__cardtext">Current resources available for users:</p>
-                        <p class="card-text c-profile__cardtext c-profile__count"><?php echo $resourceCount; ?></p>
+                        <div class="c-profile__resource-count">
+                            <p class="card-text c-profile__cardtext">Current resources available for users:</p>
+                            <p class="card-text c-profile__cardtext c-profile__count"><?php echo $resourceCount; ?></p>
+                        </div>
                         <!-- Example: Mini form and stats -->
                         <form class="mb-3" action="../resources/create.php" method="POST">
                             <input type="text" name="title" class="form-control mb-2" placeholder="Resource Title" required>
