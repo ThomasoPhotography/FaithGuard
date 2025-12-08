@@ -57,6 +57,7 @@ All notable changes to this project will be documented in this file.
 - Update profile layout and styling for resource management section, including new resource count display.
 - Enhance reporting functionality by adding user input for report reasons and improving session validation.
 - Update reports handling by fetching reported posts dynamically and adding reports table structure to the database.
+- Improve user greeting display and handle potential undefined user data.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.
