@@ -85,7 +85,6 @@
             <!-- LEFT SIDE: LOGO + BRAND -->
             <a class="navbar-brand c-nav__brand" href="../../index.php">
                 <img src="../../assets/uploads/FaithGuard_Primary_Logo.svg" alt="FaithGuard Logo" class="c-nav__logo">
-                FaithGuard
             </a>
             <button class="navbar-toggler c-nav__toggler c-nav__toggler--btn" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -103,11 +102,11 @@
                 <div class="d-flex dropdown c-dropdown">
                     <button class="btn c-btn c-dropdown__btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="c-dropdown__icon bi bi-person-check me-1"></i>
-                        <span class="c-dropdown__text">Welcome                                                                                                                                                                                                                                                         <?php echo $accountName; ?></span>
+                        <span class="c-dropdown__text">Welcome                                                                                                                                                                                                                                                                                                                       <?php echo $accountName; ?></span>
                     </button>
                     <!-- LOGGED-IN DROPDOWN MENU -->
                     <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu" aria-labelledby="userDropdown">
-                        <li><h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                                                                                                                                                                                                                                                                                                 <?php echo ucfirst($user_role); ?></h6></li>
+                        <li><h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                                                                                                                                                                                                                                                                                                                                                                                         <?php echo ucfirst($user_role); ?></h6></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item c-dropdown__item" href="<?php echo $profile_link; ?>"><i class="bi bi-person-badge me-2"></i> Profile / Dashboard</a></li>
                         <li><hr class="dropdown-divider"></li>
@@ -118,9 +117,8 @@
         </div>
     </nav>
     <!-- Main -->
-<!-- Main Content -->
     <main class="c-main container my-5">
-        <h2 class="c-main__title">Welcome Back,                                                                                               <?php echo $accountName; ?></h2>
+        <h2 class="c-main__title">Welcome Back,                                                                                                                                              <?php echo $accountName; ?></h2>
         <p class="text-muted">This is your personal dashboard for tracking progress and accessing core tools.</p>
 
         <section class="c-profile row">
@@ -157,13 +155,13 @@
 
             <!-- Progress Log (Required Section) -->
             <div class="col-md-6 col-12 mb-4">
-                <div class="c-profile__items card h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">
+                <div class="c-profile__items card c-progress__card h-100">
+                    <div class="card-body c-progress__cardbody">
+                        <h5 class="card-title c-progress__cardtitle">
                             <i class="bi bi-clipboard-check me-2"></i>
                             <span>Accountability Progress</span>
                         </h5>
-                        <p class="card-text text-muted">You have recorded **<?php echo $totalCheckins; ?>** check-ins so far.</p>
+                        <p class="card-text text-muted">You have recorded</p><span class="c-progress__count"><?php echo $totalCheckins; ?></span> <p class="card-text text-muted">check-ins so far.</p>
 
                         <ul class="list-group list-group-flush">
                             <?php if (! empty($recentCheckins)): ?>
@@ -182,50 +180,50 @@
                         </ul>
                     </div>
                     <div class="card-footer">
-                        <a href="../../templates/progress.html" class="btn btn-sm btn-success">View Full Progress</a>
-                        <a href="../../api/progress/checkin.php" class="btn btn-sm btn-warning">New Check-in</a>
+                        <a href="../../templates/progress.html" class="btn btn-sm c-btn c-btn__dashboard">View Full Progress</a>
+                        <a href="../../api/progress/checkin.php" class="btn btn-sm c-btn c-btn__create">New Check-in</a>
                     </div>
                 </div>
             </div>
 
             <!-- Latest Quiz Results and Recommendation -->
             <div class="col-md-6 col-12 mb-4">
-                <div class="c-profile__items card h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">
+                <div class="c-profile__items card c-quiz__card h-100">
+                    <div class="card-body c-quiz__cardbody">
+                        <h5 class="card-title c-quiz__cardtitle">
                             <i class="bi bi-journal-check me-2"></i>
                             <span>Latest Assessment</span>
                         </h5>
 
                         <?php if ($latestQuizResult): ?>
-                            <p class="card-text mb-1">
-                                **Last Quiz Taken:**                                                                                                                                                                                                                 <?php echo date('d/M/Y', strtotime($latestQuizResult['created_at'])); ?>
+                            <p class="card-text c-quiz__cardtext mb-1">
+                                **Last Quiz Taken:** <span class="c-quiz__infograph"><?php echo date('d/M/Y', strtotime($latestQuizResult['created_at'])); ?></span>
                             </p>
-                            <p class="card-text mb-1">
-                                **Score:** <span class="fw-bold"><?php echo htmlspecialchars($latestQuizResult['total_score']); ?></span>
+                            <p class="card-text c-quiz__cardtext mb-1">
+                                **Score:** <span class="fw-bold c-quiz__infograph"><?php echo htmlspecialchars($latestQuizResult['total_score']); ?></span>
                             </p>
-                            <p class="card-text text-danger">
-                                **Identified Area:**<?php echo htmlspecialchars($latestQuizResult['addiction_type']); ?>
+                            <p class="card-text text-danger c-quiz__cardtext mb-3">
+                                **Identified Area:** <span class="c-quiz__infograph"><?php echo htmlspecialchars($latestQuizResult['addiction_type']); ?></span>
                             </p>
                             <p class="mt-3">
-                                <a href="../../templates/resources.html" class="btn btn-sm btn-info">View Recommended Resources</a>
+                                <a href="../../templates/resources.html" class="btn btn-sm c-quiz__btn">View Recommended Resources</a>
                             </p>
                         <?php else: ?>
-                            <p class="card-text">Take the initial quiz to unlock personalized resource recommendations and tools.</p>
-                            <a href="../../templates/quiz.html" class="btn btn-sm btn-warning">Take Quiz Now</a>
+                            <p class="card-text c-quiz__cardtext">Take the initial quiz to unlock personalized resource recommendations and tools.</p>
+                            <a href="../../templates/quiz.html" class="btn btn-sm c-btn c-btn__dashboard">Take Quiz Now</a>
                         <?php endif; ?>
                     </div>
                 </div>
             </div>
             <!-- Recent Messaging (INBOX) -->
             <div class="col-md-6 col-12 mb-4">
-                <div class="c-profile__items card h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">
+                <div class="c-profile__items card c-message__card h-100">
+                    <div class="card-body c-message__cardbody">
+                        <h5 class="card-title c-message__cardtitle">
                             <i class="bi bi-envelope-open me-2"></i>
                             <span>Recent Messages</span>
                         </h5>
-                        <p class="card-text">Quick view of your last 5 messages received from the community or admin.</p>
+                        <p class="card-text c-message__cardtext">Quick view of your last 5 messages received from the community or admin.</p>
 
                         <ul class="list-group list-group-flush">
                             <?php if (! empty($recentInboxMessages)): ?>
@@ -237,7 +235,7 @@
                                     ?>
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <span>
-                                            <i class="bi bi-person me-2"></i> From: **<?php echo $senderName; ?>**
+                                            <i class="bi bi-person me-2"></i> From: <span class="c-message__sender"><?php echo $senderName; ?></span>
                                         </span>
                                         <small class="text-muted"><?php echo date('d/M', strtotime($message['created_at'])); ?></small>
                                     </li>
@@ -251,8 +249,8 @@
                         </ul>
                     </div>
                     <div class="card-footer">
-                        <a href="../../templates/community.html#messages" class="btn btn-sm btn-primary">View Full Inbox</a>
-                        <a href="../../api/messages/send.php" class="btn btn-sm btn-secondary">Send Message</a>
+                        <a href="../../templates/community.html#messages" class="btn btn-sm c-btn c-btn__dashboard">View Full Inbox</a>
+                        <a href="../../api/messages/send.php" class="btn btn-sm c-btn c-btn__create">Send Message</a>
                     </div>
                 </div>
             </div>
