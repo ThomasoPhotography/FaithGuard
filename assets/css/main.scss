@@ -547,6 +547,13 @@ a {
 	display: flex;
 	flex-direction: column;
 
+	&__users,
+	&__admin {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+	}
+
 	&__title {
 		text-align: center;
 	}
@@ -563,7 +570,7 @@ a {
 	}
 }
 
-.c-progress{
+.c-progress {
 	background-color: $primary-bg;
 	padding: 1rem;
 
@@ -602,7 +609,7 @@ a {
 	}
 }
 
-.c-quiz{
+.c-quiz {
 	background-color: $primary-bg;
 	padding: 1rem;
 
@@ -637,7 +644,7 @@ a {
 	}
 }
 
-.c-message{
+.c-message {
 	background-color: $primary-bg;
 	padding: 1rem;
 

@@ -119,12 +119,12 @@
                  <div class="d-flex dropdown c-dropdown">
                     <button class="btn c-btn c-dropdown__btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="c-dropdown__icon bi bi-person-check me-1"></i>
-                        <span class="c-dropdown__text">Welcome                                                                                                                                                                                                                                                                                                                                                                                     <?php echo $accountName; ?></span>
+                        <span class="c-dropdown__text">Welcome                                                                                                                                                                                                                                                                                                                                                                                                                                                   <?php echo $accountName; ?></span>
                     </button>
                     <!-- LOGGED-IN DROPDOWN MENU -->
                     <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu" aria-labelledby="userDropdown">
                         <li>
-                            <h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 <?php echo ucfirst($user_role); ?></h6>
+                            <h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         <?php echo ucfirst($user_role); ?></h6>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
@@ -151,13 +151,11 @@
     </nav>
     <!-- Main -->
     <main class="c-main container my-5">
-        <section class="c-profile">
-            <div class="row">
-                <div class="col-12">
-                    <h2 class="c-profile__title">Admin Dashboard</h2>
-                </div>
+        <section class="c-profile row">
+            <div class="col-12">
+                <h2 class="c-profile__title">Admin Dashboard</h2>
             </div>
-            <div class="row">
+            <div class="c-profile__admin row">
                 <!-- Flagged/Reported Posts -->
                 <div class="col-md-6 col-12 mb-4">
                     <div class="c-profile__items card c-profile__card">
@@ -167,7 +165,7 @@
                             <?php if (! empty($reports)): ?>
                                 <?php foreach ($reports as $report): ?>
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        Post ID:                                                                                                                                                 <?php echo htmlspecialchars($report['post_id']); ?> - Reason:<?php echo htmlspecialchars($report['reason']); ?>
+                                        Post ID:                                                                                                                                                                                                 <?php echo htmlspecialchars($report['post_id']); ?> - Reason:<?php echo htmlspecialchars($report['reason']); ?>
                                         <a class="btn btn-sm btn-danger" href="<?php echo $report['post_id'] ?>">Review</a>
                                     </li>
                                 <?php endforeach; ?>
@@ -189,23 +187,27 @@
                             <textarea name="content" class="form-control mb-2" placeholder="Content" rows="2" required></textarea>
                             <button type="submit" class="btn c-btn c-btn__create">Create Resource</button>
                         </form>
-                        <p><strong>Total Resources:</strong>                                                                                                                                                                                     <?php echo $resourceCount; ?></p>
+                        <p><strong>Total Resources:</strong>                                                                                                                                                                                                                                                 <?php echo $resourceCount; ?></p>
                         <a href="../resources/list.php" class="btn c-btn c-btn__dashboard">Manage All Resources</a>
                     </div>
                 </div>
                 <!-- Legal & Policy Updates -->
                 <div class="col-md-6 col-12 mb-4">
                     <div class="c-profile__items card c-profile__card">
-                        <h5 class="card-title c-profile__cardtitle">Legal & Policy Updates</h5>
-                        <p class="card-text c-profile__cardtext">Update Terms of Service and Privacy Policy to ensure compliance and user trust.</p>
-
+                        <h5 class="card-title c-profile__cardtitle">Legal Updates</h5>
+                        <p class="card-text c-profile__cardtext">Update Terms of Service to ensure compliance and user trust.</p>
                         <!-- ToS Form -->
                         <form class="mb-3" action="../admin/legal.php" method="POST">
                             <label for="tos">Terms of Service</label>
                             <textarea name="tos_content" id="tos" class="form-control mb-2" rows="3"><?php echo htmlspecialchars($tosText); ?></textarea>
                             <button type="submit" name="update_tos" class="btn c-btn c-btn__update">Update ToS</button>
                         </form>
-
+                    </div>
+                </div>
+                <div class="col-md-6 col-12 mb-4">
+                    <div class="c-profile__items card c-profile__card">
+                        <h5 class="card-title c-profile__cardtitle">Privacy Updates</h5>
+                        <p class="card-text c-profile__cardtext">Update Privacy Policy to ensure compliance and user trust.</p>
                         <!-- Privacy Form -->
                         <form action="../admin/legal.php" method="POST">
                             <label for="privacy">Privacy Policy</label>
@@ -225,7 +227,7 @@
                                 <?php foreach ($recentMessages as $message): ?>
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <?php echo date('H:i', strtotime($message['created_at'])); ?>: "<?php echo htmlspecialchars(substr($message['content'], 0, 30)); ?>..."
-                                        <span class="badge bg-secondary">To:                                                                                                                                                                                                                                     <?php echo htmlspecialchars($message['receiver_id']); ?></span>
+                                        <span class="badge bg-secondary">To:                                                                                                                                                                                                                                                                                                                 <?php echo htmlspecialchars($message['receiver_id']); ?></span>
                                     </li>
                                 <?php endforeach; ?>
                             <?php else: ?>

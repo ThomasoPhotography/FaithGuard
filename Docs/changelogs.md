@@ -53,6 +53,7 @@ All notable changes to this project will be documented in this file.
 - User dashboard layout.
 - Defining variable `$userId` in `api/users/profile.php`.
 - Update profile layout and enhance styling for progress, quiz, and message sections.
+- Enhance profile layout and add styling for user dashboard, progress, quiz, and message sections with enchancing profile layout for admin dashboard.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.

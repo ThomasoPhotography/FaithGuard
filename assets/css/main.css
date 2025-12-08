@@ -518,6 +518,11 @@ a:hover {
   display: flex;
   flex-direction: column;
 }
+.c-profile__users, .c-profile__admin {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
 .c-profile__title {
   text-align: center;
 }
@@ -527,6 +532,118 @@ a:hover {
 }
 .c-profile__cardtitle {
   font-weight: bold;
+}
+
+.c-progress {
+  background-color: #e9b48a;
+  padding: 1rem;
+}
+@media (min-width: 576px) {
+  .c-progress {
+    padding: 1.5rem;
+  }
+}
+.c-progress__title {
+  color: rgb(19.0178571429, 19.0178571429, 16.4821428571);
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  padding-top: 1rem;
+  font-weight: bold;
+}
+@media (min-width: 576px) {
+  .c-progress__title {
+    font-size: 1.75rem;
+  }
+}
+@media (min-width: 768px) {
+  .c-progress__title {
+    font-size: 2rem;
+  }
+}
+.c-progress__count {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #5c352c;
+}
+.c-progress__cardbody {
+  padding: 1rem;
+}
+.c-progress__cardtitle {
+  font-weight: bold;
+}
+
+.c-quiz {
+  background-color: #e9b48a;
+  padding: 1rem;
+}
+@media (min-width: 576px) {
+  .c-quiz {
+    padding: 1.5rem;
+  }
+}
+.c-quiz__title {
+  color: rgb(19.0178571429, 19.0178571429, 16.4821428571);
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  padding-top: 1rem;
+  font-weight: bold;
+}
+@media (min-width: 576px) {
+  .c-quiz__title {
+    font-size: 1.75rem;
+  }
+}
+@media (min-width: 768px) {
+  .c-quiz__title {
+    font-size: 2rem;
+  }
+}
+.c-quiz__question {
+  color: #3c3c34;
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+}
+@media (min-width: 576px) {
+  .c-quiz__question {
+    font-size: 1.1rem;
+  }
+}
+
+.c-message {
+  background-color: #e9b48a;
+  padding: 1rem;
+}
+@media (min-width: 576px) {
+  .c-message {
+    padding: 1.5rem;
+  }
+}
+.c-message__title {
+  color: rgb(19.0178571429, 19.0178571429, 16.4821428571);
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  padding-top: 1rem;
+  font-weight: bold;
+}
+@media (min-width: 576px) {
+  .c-message__title {
+    font-size: 1.75rem;
+  }
+}
+@media (min-width: 768px) {
+  .c-message__title {
+    font-size: 2rem;
+  }
+}
+.c-message__question {
+  color: #3c3c34;
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+}
+@media (min-width: 576px) {
+  .c-message__question {
+    font-size: 1.1rem;
+  }
 }
 
 .c-impact {
