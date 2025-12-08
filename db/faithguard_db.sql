@@ -176,6 +176,21 @@ CREATE TABLE `quiz_results` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Table structure for table `reports`
+--
+DROP TABLE IF EXISTS `reports`;
+CREATE TABLE `reports` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `post_id` INT(11) NOT NULL,
+  `user_id` INT(11) NOT NULL,
+  `reason` TEXT DEFAULT NULL,
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP(),
+  PRIMARY KEY (`id`),
+  KEY `post_id` (`post_id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
 -- Table structure for table `resources`
 --
 DROP TABLE IF EXISTS `resources`;
@@ -259,6 +274,10 @@ ALTER TABLE `progress_logs`
 
 ALTER TABLE `quiz_results`
   ADD CONSTRAINT `quiz_results_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+
+ALTER TABLE `reports`
+  ADD CONSTRAINT `reports_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`),
+  ADD CONSTRAINT `reports_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 ALTER TABLE `resource_tags`
   ADD CONSTRAINT `resource_tags_ibfk_1` FOREIGN KEY (`resource_id`) REFERENCES `resources` (`id`);

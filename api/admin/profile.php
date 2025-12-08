@@ -42,12 +42,7 @@
 
     // --- Fetch Dynamic Data ---
     // --- Flagged Reports ---
-    $reports = [
-        ['post_id' => 901, 'reason' => 'Hate speech'],
-        ['post_id' => 902, 'reason' => 'Spam link'],
-        ['post_id' => 903, 'reason' => 'Inappropriate content'],
-    ];
-    $reports = array_slice($reports, 0, 5);
+    $reports = FaithGuardRepository::getAllReportedPosts();
 
     // --- Resource Count ---
     $allResources  = FaithGuardRepository::getAllResources();
