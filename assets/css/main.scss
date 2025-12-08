@@ -576,12 +576,9 @@ a {
 	}
 
 	&__resourcecount {
-		display: flex;
-		flex-direction: row;
-		gap: 1rem;
-		font-size: 2rem;
-		font-weight: bold;
-		color: $accent;
+		display: flex !important;
+		flex-direction: row !important;
+		gap: 1rem !important;
 	}
 }
 

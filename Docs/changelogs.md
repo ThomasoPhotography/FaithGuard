@@ -62,6 +62,7 @@ All notable changes to this project will be documented in this file.
 - Renaming of Admin Resource Management item.
 - Enhance resource management display with improved styling and structure.
 - Update resource management styling for improved layout and consistency.
+- Update resource management styling with importance.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.
