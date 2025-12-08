@@ -3,7 +3,6 @@
     require_once __DIR__ . "/../../db/database.php";
     require_once __DIR__ . "/../../db/FaithGuardRepository.php";
     require_once __DIR__ . "/../helper/debug.php";
-
     session_set_cookie_params([
         'lifetime' => 86400, // 1 day
         'path'     => '/',
@@ -12,20 +11,17 @@
         'httponly' => true,
     ]);
     session_start();
-
     // --- INITIALIZE VARIABLES ---
     $is_logged_in = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
     $user_role    = 'user';
     $user_data    = null;
     $accountName  = '';
     $profile_link = '';
-
     if ($is_logged_in && isset($_SESSION['user_id'])) {
         $user_data = FaithGuardRepository::getUserById($_SESSION['user_id']);
         if ($user_data) {
             $user_role   = $user_data['role'] ?? 'user';
             $accountName = htmlspecialchars($user_data['name'] ?? $user_data['email']);
-
             // Set Role-Based Profile Link (Correct for this file location)
             if ($user_role === 'admin') {
                 $profile_link = 'api/admin/profile.php';
@@ -34,33 +30,29 @@
             }
         }
     }
-
     if (! $is_logged_in || $user_role !== 'user' || ! $user_data) {
         header('Location: ../../index.php');
         exit;
     }
+    // --- Fetch $userId from session ---
+    $userId = $_SESSION['user_id'];
 
     // --- Fetch Dynamic Data for Dashboard DIVs ---
-
-    // DIV 1: Progress Log (Recent Check-ins)
+    //Progress Log (Recent Check-ins)
     $progressLogs   = FaithGuardRepository::getProgressLogsByUserId($userId);
     $recentCheckins = array_slice($progressLogs, 0, 5);
     $totalCheckins  = count($progressLogs);
-
-    // DIV 2: Latest Quiz Result
+    //Latest Quiz Result
     $latestQuizResult = FaithGuardRepository::getQuizResultsByUserId($userId);
     $latestQuizResult = $latestQuizResult[0] ?? null;
-
-    // DIV 3: User Activity (Posts and Prayers) - Keeping the logic for compatibility, although it won't be displayed in DIV 4
+    //User Activity (Posts and Prayers) - Keeping the logic for compatibility, although it won't be displayed in DIV 4
     $recentPosts   = FaithGuardRepository::getPostsByUserId($userId);
     $recentPrayers = FaithGuardRepository::getPrayersByUserId($userId);
     $totalPosts    = count($recentPosts);
-
-    // DIV 4: Messaging - Fetch recent INBOX messages
+    //Messaging - Fetch recent INBOX messages
     $recentInboxMessages = FaithGuardRepository::getInboxByUserId($userId);
     $recentInboxMessages = array_slice($recentInboxMessages, 0, 5); // Limit to 5 recent
-
-    // General Stats
+                                                                    // General Stats
     $memberSince = date('d/M/Y', strtotime($user_data['created_at']));
 ?>
 <!DOCTYPE html>
@@ -111,11 +103,11 @@
                 <div class="d-flex dropdown c-dropdown">
                     <button class="btn c-btn c-dropdown__btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="c-dropdown__icon bi bi-person-check me-1"></i>
-                        <span class="c-dropdown__text">Welcome                                                                                                                                                                                           <?php echo $accountName; ?></span>
+                        <span class="c-dropdown__text">Welcome                                                                                                                                                                                                                                                         <?php echo $accountName; ?></span>
                     </button>
                     <!-- LOGGED-IN DROPDOWN MENU -->
                     <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu" aria-labelledby="userDropdown">
-                        <li><h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                                                                                                                                                                                                         <?php echo ucfirst($user_role); ?></h6></li>
+                        <li><h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                                                                                                                                                                                                                                                                                                 <?php echo ucfirst($user_role); ?></h6></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item c-dropdown__item" href="<?php echo $profile_link; ?>"><i class="bi bi-person-badge me-2"></i> Profile / Dashboard</a></li>
                         <li><hr class="dropdown-divider"></li>
@@ -128,7 +120,7 @@
     <!-- Main -->
 <!-- Main Content -->
     <main class="c-main container my-5">
-        <h2 class="c-main__title">Welcome Back,                                                <?php echo $accountName; ?></h2>
+        <h2 class="c-main__title">Welcome Back,                                                                                               <?php echo $accountName; ?></h2>
         <p class="text-muted">This is your personal dashboard for tracking progress and accessing core tools.</p>
 
         <section class="c-profile row">
@@ -207,7 +199,7 @@
 
                         <?php if ($latestQuizResult): ?>
                             <p class="card-text mb-1">
-                                **Last Quiz Taken:**                                                                                                                                                             <?php echo date('d/M/Y', strtotime($latestQuizResult['created_at'])); ?>
+                                **Last Quiz Taken:**                                                                                                                                                                                                                 <?php echo date('d/M/Y', strtotime($latestQuizResult['created_at'])); ?>
                             </p>
                             <p class="card-text mb-1">
                                 **Score:** <span class="fw-bold"><?php echo htmlspecialchars($latestQuizResult['total_score']); ?></span>

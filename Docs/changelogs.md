@@ -51,6 +51,7 @@ All notable changes to this project will be documented in this file.
 - Profile styling V6.
 - Review buttons.
 - User dashboard layout.
+- Defining variable `$userId` in `api/users/profile.php`.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.
