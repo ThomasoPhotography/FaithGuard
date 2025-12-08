@@ -61,6 +61,7 @@ All notable changes to this project will be documented in this file.
 - Redirect to registration page if email does not exist during login and clarify default user role in registration.
 - Renaming of Admin Resource Management item.
 - Enhance resource management display with improved styling and structure.
+- Update resource management styling for improved layout and consistency.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.

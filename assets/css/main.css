@@ -538,10 +538,10 @@ a:hover {
   font-weight: bold;
   color: #5c352c;
 }
-.c-profile__resource-count {
+.c-profile__resourcecount {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: row;
+  gap: 1rem;
   font-size: 2rem;
   font-weight: bold;
   color: #5c352c;
