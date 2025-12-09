@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 - Profile layouts for admins and users.
 - Admin and User features, for admins: 'Reported post section, Resource management section, Legal & Policy Updates and Messaging', for users: 'Personal Profile and Stats, Progress Log, Latest Quiz Results and Recommendation and Messaging'.
 - Resource listing.
+- Implement user registration with input validation and modal display.
 
 ### Changed
 - `README.md` file got a professional make-over.

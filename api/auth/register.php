@@ -1,66 +1,129 @@
 <?php
 session_start();
-header('Content-Type: application/json');
-
-// --- IMPORTANT: FIX PATHS ---
-// Assumes this file is in /api/auth/, so we go up two levels (../../) to reach /www/, then into /db/
 require_once __DIR__ . '/../../db/database.php';
-require_once __DIR__ . '/../../db/FaithGuardRepository.php'; // Include repository for data access
+require_once __DIR__ . '/../../db/FaithGuardRepository.php';
 
-// --- 1. Input Handling and Validation ---
-$json_data = file_get_contents('php://input');
-$data = json_decode($json_data, true);
+// Handle form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    header('Content-Type: application/json');
 
-if (!isset($data['email'], $data['password']) || empty($data['email']) || empty($data['password'])) {
-    echo json_encode(['success' => false, 'error' => 'Missing email or password.']);
-    exit;
-}
+    $name = trim($_POST['name'] ?? '');
+    $email = filter_var($_POST['email'] ?? '', FILTER_SANITIZE_EMAIL);
+    $password = $_POST['password'] ?? '';
 
-$email = filter_var($data['email'], FILTER_SANITIZE_EMAIL);
-$password = $data['password'];
-
-if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    echo json_encode(['success' => false, 'error' => 'Invalid email format.']);
-    exit;
-}
-
-// --- 2. Check for Existing User ---
-// Assuming FaithGuardRepository or Database has a method to fetch a user by email
-$existing_user = Database::getSingleRow("SELECT id FROM users WHERE email = ?", [$email]);
-
-if ($existing_user) {
-    // If the user already exists, prevent re-registration
-    echo json_encode(['success' => false, 'error' => 'User already exists.']);
-    exit;
-}
-
-// --- 3. Hash Password and Insert ---
-$hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-$result = Database::execute("INSERT INTO users (email, password_hash) VALUES (?, ?)", [$email, $hashed_password]);
-
-if ($result > 0) {
-    // --- 4. SUCCESS: Get User ID and Establish Session ---
-    
-    // Fetch the newly created user's ID
-    // (This requires another quick DB call or using lastInsertId, but this is safer)
-    $new_user = Database::getSingleRow("SELECT id FROM users WHERE email = ?", [$email]);
-
-    if ($new_user) {
-        // Clear potential old session data and set new login state
-        $_SESSION = [];
-        $_SESSION['user_id'] = $new_user['id'];
-        $_SESSION['logged_in'] = true;
-        session_regenerate_id(true);
-        
-        echo json_encode(['success' => true]);
-        
-    } else {
-        // Registration successful but unable to fetch user for login (DB issue)
-        echo json_encode(['success' => false, 'error' => 'Registration succeeded, but failed to log in.']);
+    // Validation
+    if (empty($name) || empty($email) || empty($password)) {
+        echo json_encode(['success' => false, 'error' => 'All fields are required.']);
+        exit;
     }
-} else {
-    // Failure to insert user into the database
-    echo json_encode(['success' => false, 'error' => 'Database insert failed.']);
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        echo json_encode(['success' => false, 'error' => 'Invalid email format.']);
+        exit;
+    }
+    if (strlen($password) < 8) {
+        echo json_encode(['success' => false, 'error' => 'Password must be at least 8 characters.']);
+        exit;
+    }
+
+    // Check for existing user
+    $existing_user = Database::getSingleRow("SELECT id FROM users WHERE email = ?", [$email]);
+    if ($existing_user) {
+        echo json_encode(['success' => false, 'error' => 'User already exists.']);
+        exit;
+    }
+
+    // Hash password and insert
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+    $result = Database::execute("INSERT INTO users (name, email, password_hash, role) VALUES (?, ?, ?, 'user')", [$name, $email, $hashed_password]);
+
+    if ($result > 0) {
+        $new_user = Database::getSingleRow("SELECT id FROM users WHERE email = ?", [$email]);
+        if ($new_user) {
+            $_SESSION = [];
+            $_SESSION['user_id'] = $new_user['id'];
+            $_SESSION['logged_in'] = true;
+            session_regenerate_id(true);
+            echo json_encode(['success' => true]);
+        } else {
+            echo json_encode(['success' => false, 'error' => 'Registration succeeded, but failed to log in.']);
+        }
+    } else {
+        echo json_encode(['success' => false, 'error' => 'Database insert failed.']);
+    }
+    exit;
 }
+
+// Display HTML page with modal
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FaithGuard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Welcome to FaithGuard</h2>
+        <p>Please register to continue.</p>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="registerModalLabel">Register</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="registerForm">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Register</button>
+                    </form>
+                    <div id="message" class="mt-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Show modal on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            const modal = new bootstrap.Modal(document.getElementById('registerModal'));
+            modal.show();
+        });
+
+        // Handle form submission
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const response = await fetch('/api/auth/register.php', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+            const messageDiv = document.getElementById('message');
+            if (result.success) {
+                messageDiv.innerHTML = '<div class="alert alert-success">Registration successful! Redirecting...</div>';
+                setTimeout(() => window.location.href = '/', 2000);
+            } else {
+                messageDiv.innerHTML = `<div class="alert alert-danger">${result.error}</div>`;
+            }
+        });
+    </script>
+</body>
+</html>
