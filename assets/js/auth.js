@@ -1,10 +1,11 @@
-// #region ***  DOM references                           ***********
+// #region ***  DOM references                           ***********
 const authBtn = document.querySelector('.js-log');
 const emailInput = document.getElementById('signupUsername');
 const passwordInput = document.getElementById('signupPassword');
+const nameInput = document.getElementById('signupName');
 // #endregion
 
-// #region ***  Callback-Visualisation - show___         ***********
+// #region ***  Callback-Visualisation - show___         ***********
 const showLoginSuccess = () => {
 	alert('Login successful! Welcome back.');
 	location.reload(); // Reload to show logged-in nav
@@ -20,10 +21,10 @@ const showError = (message) => {
 };
 // #endregion
 
-// #region ***  Callback-No Visualisation - callback___  ***********
+// #region ***  Callback-No Visualisation - callback___  ***********
 // #endregion
 
-// #region ***  Data Access - get___                     ***********
+// #region ***  Data Access - get___                     ***********
 const attemptLogin = async (email, password) => {
 	const response = await fetch('/api/auth/login.php', {
 		method: 'POST',
@@ -34,7 +35,6 @@ const attemptLogin = async (email, password) => {
 };
 
 const attemptRegister = async (email, password, name) => {
-	// Note: Role is set to 'user' by default server-side; only admins can change it
 	const response = await fetch('/api/auth/register.php', {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
@@ -49,7 +49,7 @@ const performLogout = async () => {
 };
 // #endregion
 
-// #region ***  Event Listeners - listenTo___            ***********
+// #region ***  Event Listeners - listenTo___            ***********
 const listenToAuth = () => {
 	if (!authBtn) return; // Skip if logged in (button won't exist)
 
@@ -63,13 +63,19 @@ const listenToAuth = () => {
 		}
 
 		try {
+			// 1. Try to Login first
 			const loginData = await attemptLogin(email, password);
 
 			if (loginData.success) {
 				showLoginSuccess();
 				return;
 			} else if (loginData.error === 'Invalid credentials') {
-				// Try register
+				// If invalid credentials, it means user exists but wrong password.
+				// Do NOT register.
+				showError('Login failed: Invalid credentials');
+			} else if (loginData.error === 'User not found') {
+				// 2. If user does not exist, attempt Register automatically
+				// We don't have a name field in the dropdown, so we let the backend default it or send a placeholder
 				const registerData = await attemptRegister(email, password);
 
 				if (registerData.success) {
@@ -78,6 +84,7 @@ const listenToAuth = () => {
 					showError('Registration failed: ' + (registerData.error || 'Unknown error'));
 				}
 			} else {
+				// Other errors (database, server, etc.)
 				showError('Login failed: ' + loginData.error);
 			}
 		} catch (error) {
@@ -88,14 +95,24 @@ const listenToAuth = () => {
 };
 
 const listenToLogout = () => {
-	// Logout is handled via onclick in HTML, but we can define the function here
-	window.logout = () => {
-		window.location.href = '/api/auth/logout.php';
+	window.logout = async () => {
+		try {
+			const data = await performLogout();
+			if (data.success) {
+				alert('Logged out successfully.');
+				location.reload();
+			} else {
+				alert('Logout failed.');
+			}
+		} catch (error) {
+			console.error('Logout error:', error);
+			alert('An error occurred during logout.');
+		}
 	};
 };
 // #endregion
 
-// #region ***  Init / DOMContentLoaded                  ***********
+// #region ***  Init / DOMContentLoaded                  ***********
 const init = function () {
 	console.log('Page loaded with Auth');
 	listenToAuth();
@@ -103,5 +120,4 @@ const init = function () {
 };
 
 document.addEventListener('DOMContentLoaded', init);
-
 // #endregion

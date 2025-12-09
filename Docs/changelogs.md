@@ -70,6 +70,7 @@ All notable changes to this project will be documented in this file.
 - Enhance quiz functionality with scoring weights and improved HTML structure.
 - Correct redirect path for user registration in login process.
 - Refactor registration process; move modal handling to auth.js and update registration function to include name.
+- Standardize comment formatting and improve error handling in authentication flow.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.
