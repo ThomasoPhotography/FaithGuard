@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 - Admin and User features, for admins: 'Reported post section, Resource management section, Legal & Policy Updates and Messaging', for users: 'Personal Profile and Stats, Progress Log, Latest Quiz Results and Recommendation and Messaging'.
 - Resource listing.
 - Implement user registration with input validation and modal display.
+- Enhance login session management and error handling; update register.php to remove unnecessary PHP tag.
 
 ### Changed
 - `README.md` file got a professional make-over.

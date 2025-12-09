@@ -146,7 +146,7 @@
                             <input type="password" id="signupPassword" class="form-control c-dropdown__info mb-2" placeholder="Password">
                         </li>
                         <li>
-                            <button class="btn c-btn c-dropdown__login js-log mb-2">Sign Up / Log In</button>
+                            <button class="btn c-btn c-dropdown__login js-log mb-2">Log In</button>
                         </li>
                     </ul>
                 </div>
