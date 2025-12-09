@@ -29,8 +29,8 @@ $password = $data['password'];
 $user = Database::getSingleRow("SELECT * FROM users WHERE email = ?", [$email]);
 
 // If email doesn't exist, redirect to register.php
-if (!$user) {
-    header('Location: /register.php');
+if (! $user) {
+    header('Location: /api/auth/register.php');
     exit;
 }
 
