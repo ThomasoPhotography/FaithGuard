@@ -99,30 +99,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Show modal on page load
-        document.addEventListener('DOMContentLoaded', () => {
-            const modal = new bootstrap.Modal(document.getElementById('registerModal'));
-            modal.show();
-        });
-
-        // Handle form submission
-        document.getElementById('registerForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const formData = new FormData(e.target);
-            const response = await fetch('/api/auth/register.php', {
-                method: 'POST',
-                body: formData
-            });
-            const result = await response.json();
-            const messageDiv = document.getElementById('message');
-            if (result.success) {
-                messageDiv.innerHTML = '<div class="alert alert-success">Registration successful! Redirecting...</div>';
-                setTimeout(() => window.location.href = '/', 2000);
-            } else {
-                messageDiv.innerHTML = `<div class="alert alert-danger">${result.error}</div>`;
-            }
-        });
-    </script>
+    <script src="../../assets/js/auth.js"></script>
 </body>
 </html>

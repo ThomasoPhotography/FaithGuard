@@ -33,12 +33,12 @@ const attemptLogin = async (email, password) => {
 	return await response.json();
 };
 
-const attemptRegister = async (email, password) => {
+const attemptRegister = async (email, password, name) => {
 	// Note: Role is set to 'user' by default server-side; only admins can change it
 	const response = await fetch('/api/auth/register.php', {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify({ email, password }),
+		body: JSON.stringify({ email, password, name }),
 	});
 	return await response.json();
 };
