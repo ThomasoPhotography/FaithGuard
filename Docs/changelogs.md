@@ -84,6 +84,7 @@ All notable changes to this project will be documented in this file.
 - Refactored resource links in user and admin profiles for consistency.
 - Standardize formatting and improve readability in `cookie-banner.js`.
 - Update hover color for footer links to improve accessibility and consistency.
+- Enhance logout functionality and improve user feedback in `auth.js`.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.

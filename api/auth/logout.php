@@ -1,10 +1,16 @@
 <?php
+session_set_cookie_params([
+    'lifetime' => 86400,
+    'path'     => '/',
+    'domain'   => $_SERVER['HTTP_HOST'] ?? '',
+    'secure'   => true,
+    'httponly' => true,
+]);
+
 session_start();
 
-// Clear all session variables
 $_SESSION = [];
 
-// Delete the session cookie (if it exists)
 if (ini_get("session.use_cookies")) {
     $params = session_get_cookie_params();
     setcookie(session_name(), '', time() - 42000,
@@ -13,10 +19,8 @@ if (ini_get("session.use_cookies")) {
     );
 }
 
-// Destroy the session
 session_destroy();
 
-// Redirect to index.php (relative path: up two directories from api/auth/ to root)
-header("Location: ../../index.php");
-exit();
-?>
+header('Content-Type: application/json');
+echo json_encode(['success' => true]);
+exit;
