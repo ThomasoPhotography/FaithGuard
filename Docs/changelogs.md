@@ -27,6 +27,7 @@ All notable changes to this project will be documented in this file.
 - Settings link for logged-in state.
 - cURL in `api/admin/profile.php`.
 - Info stacking and styling for info stack.
+- `faithguard_db.sql` V1 as part of database restructuring.
 
 ### Fixed
 - Logout function of php.
