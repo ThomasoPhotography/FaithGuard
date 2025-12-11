@@ -72,6 +72,7 @@ All notable changes to this project will be documented in this file.
 - Refactor registration process; move modal handling to auth.js and update registration function to include name.
 - Standardize formatting and improve error handling in authentication flow.
 - Standardize formatting and improve user registration handling in authentication flow.
+- Improve code readability by standardizing comments and updating section titles in `index.php`.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.

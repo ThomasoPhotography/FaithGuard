@@ -38,9 +38,11 @@
         }
     }
 
-                                                              // --- Fetch Resources for Dynamic Display ---
-    $resources     = FaithGuardRepository::getAllResources(); // Fetch all resources from DB
-    $max_resources = 6;                                       // Limit to 6 for display (adjust as needed)
+    // --- Fetch Resources for Dynamic Display ---
+    // Fetch all resources from DB
+    $resources     = FaithGuardRepository::getAllResources();
+    // Limit to 6 for display (adjust as needed)
+    $max_resources = 6;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -175,11 +177,7 @@
             <h2 class="c-main__title">Our Mission</h2>
             <p class="c-main__text">At FaithGuard, we are dedicated to providing resources and tools to help individuals regain and protect their faith from digital influenced addictions like porn.</p>
         </section>
-        <!-- Resource Section -->
-        <section class="c-main__section mb-5">
-            <h2 class="c-main__title">Our Mission</h2>
-            <p class="c-main__text">At FaithGuard, we are dedicated to providing resources and tools to help individuals regain and protect their faith from digital influenced addictions like porn.</p>
-        </section>
+        <!-- Featured Resources Section -->
         <section class="c-main__section mb-5">
             <h2 class="c-main__title">Featured Resources</h2>
             <div class="row c-resources__list">
@@ -207,20 +205,6 @@
                     </div>
                 <?php endif; ?>
             </div>
-        </section>
-        <!-- CTA Section -->
-        <section class="c-main__section c-cta mb-5 text-center">
-            <h2 class="c-cta__title">Take the First Step Toward Redemption</h2>
-            <p class="c-cta__text">Your journey to spiritual freedom starts here. Take our confidential quiz for personalized guidance, or sign up to access exclusive resources and community support.</p>
-            <div class="row">
-                <div class="col-md-4 col-12 offset-md-2 mb-3">
-                    <a href="templates/quiz.html" class="btn c-btn c-hero__btn">Take the Quiz</a>
-                </div>
-                <div class="col-md-4 col-12 mb-3">
-                    <button class="btn c-btn c-hero__btn">Sign Up Now</button> <!-- Register page + functionality to be implemented in php -->
-                </div>
-            </div>
-            <p class="c-cta__verse"><em>"Therefore, if anyone is in Christ, the new creation has come: The old has gone, the new is here!" - 2 Corinthians 5:17</em></p>
         </section>
     </main>
     <!-- Community Impact Section -->
