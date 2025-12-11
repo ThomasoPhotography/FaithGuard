@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 - Created user profile page displaying account summary, progress logs, quiz results, and recent messages.
 - Introduced API endpoints for creating, deleting, retrieving, listing, and updating policies.
 - Integrated cookie consent banner for enhanced user experience.
+- `faithguard_db.sql` V2 as certain properties changed for `faithguard_db.sql` V1.
 
 ### Changed
 - `README.md` file got a professional make-over.
