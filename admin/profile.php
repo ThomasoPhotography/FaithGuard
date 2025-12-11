@@ -1,8 +1,8 @@
 <?php
     // --- Core App Requirements (Always required) ---
-    require_once __DIR__ . "/../../db/database.php";
-    require_once __DIR__ . "/../../db/FaithGuardRepository.php";
-    require_once __DIR__ . "/../helper/debug.php";
+    require_once __DIR__ . "/../db/database.php";
+    require_once __DIR__ . "/../db/FaithGuardRepository.php";
+    require_once __DIR__ . "/../api/helper/debug.php";
 
     session_set_cookie_params([
         'lifetime' => 86400, // 1 day
@@ -28,15 +28,15 @@
 
             // Set Role-Based Profile Link (Correct for this file location)
             if ($user_role === 'admin') {
-                $profile_link = 'api/admin/profile.php';
+                $profile_link = 'admin/profile.php';
             } else {
-                $profile_link = 'api/users/profile.php';
+                $profile_link = 'users/profile.php';
             }
         }
     }
 
     if (! $is_logged_in || $user_role !== 'admin' || ! $user_data) {
-        header('Location: ../../index.php');
+        header('Location: ../index.php');
         exit;
     }
 
@@ -77,20 +77,20 @@
     <!-- Title -->
     <title>FaithGuard - Admin</title>
     <!-- Favicon -->
-    <link rel="icon" href="../../assets/uploads/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../assets/uploads/favicon.ico" type="image/x-icon">
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <!-- Stylesheet -->
-    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/main.css">
 </head>
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light c-nav">
         <div class="container-fluid">
             <!-- LEFT SIDE: LOGO + BRAND -->
-            <a class="navbar-brand c-nav__brand" href="../../index.php">  <!-- Fixed path -->
-                <img src="../../assets/uploads/FaithGuard_Primary_Logo.svg" alt="FaithGuard Logo" class="c-nav__logo">
+            <a class="navbar-brand c-nav__brand" href="../index.php">  <!-- Fixed path -->
+                <img src="../assets/uploads/FaithGuard_Primary_Logo.svg" alt="FaithGuard Logo" class="c-nav__logo">
             </a>
             <button class="navbar-toggler c-nav__toggler c-nav__toggler--btn" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -100,18 +100,18 @@
                 <!-- Main Navigation Links (CENTER/LEFT) -->
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item c-nav__item">
-                        <a class="nav-link c-nav__link" href="../../templates/community.html">Community</a>
+                        <a class="nav-link c-nav__link" href="../templates/community.html">Community</a>
                     </li>
                     <li class="nav-item c-nav__item">
-                        <a class="nav-link c-nav__link" href="../../templates/progress.html">Progress</a>
+                        <a class="nav-link c-nav__link" href="../templates/progress.html">Progress</a>
                     </li>
                     <li class="nav-item c-nav__item">
-                        <a class="nav-link c-nav__link" href="../../templates/resources.html">Resources</a>
+                        <a class="nav-link c-nav__link" href="../templates/resources.html">Resources</a>
                     </li>
                 </ul>
 
                 <!-- RIGHT SIDE: USER/LOGIN DROPDOWN -->
-                 <div class="d-flex dropdown c-dropdown">
+                <div class="d-flex dropdown c-dropdown">
                     <button class="btn c-btn c-dropdown__btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="c-dropdown__icon bi bi-person-check me-1"></i>
                         <span class="c-dropdown__text">Welcome                                                               <?php echo $accountName; ?></span>
@@ -160,7 +160,7 @@
                             <?php if (! empty($reports)): ?>
                                 <?php foreach ($reports as $report): ?>
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        Post ID:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 <?php echo htmlspecialchars($report['post_id']); ?> - Reason:<?php echo htmlspecialchars($report['reason']); ?>
+                                        Post ID:<?php echo htmlspecialchars($report['post_id']); ?> - Reason:<?php echo htmlspecialchars($report['reason']); ?>
                                         <a class="btn btn-sm btn-danger" href="<?php echo $report['post_id'] ?>">Review</a>
                                     </li>
                                 <?php endforeach; ?>
@@ -168,7 +168,7 @@
                                 <li class="list-group-item">No pending reports.</li>
                             <?php endif; ?>
                         </ul>
-                        <a href="../admin/moderation.php" class="btn c-btn c-btn__dashboard mt-2">View All Reports</a>
+                        <a href="../moderation.php" class="btn c-btn c-btn__dashboard mt-2">View All Reports</a>
                     </div>
                 </div>
                 <!-- Resource Management -->
@@ -177,7 +177,7 @@
                         <h5 class="card-title c-profile__cardtitle">Resource Management</h5>
                         <p class="card-text c-profile__cardtext">Current resources available for users:<?php echo $resourceCount; ?></p>
                         <!-- Example: Mini form and stats -->
-                        <form class="mb-3" action="../resources/create.php" method="POST">
+                        <form class="mb-3" action="../api/resources/create.php" method="POST">
                             <input type="text" name="title" class="form-control mb-2" placeholder="Resource Title" required>
                             <textarea name="content" class="form-control mb-2" placeholder="Content" rows="2" required></textarea>
                             <button type="submit" class="btn c-btn c-btn__create">Create Resource</button>
@@ -191,7 +191,7 @@
                         <h5 class="card-title c-profile__cardtitle">Legal Updates</h5>
                         <p class="card-text c-profile__cardtext">Update Terms of Service to ensure compliance and user trust.</p>
                         <!-- ToS Form -->
-                        <form class="mb-3" action="../admin/legal.php" method="POST">
+                        <form class="mb-3" action="../legal.php" method="POST">
                             <label for="tos">Terms of Service</label>
                             <textarea name="tos_content" id="tos" class="form-control mb-2" rows="3"><?php echo htmlspecialchars($tosText); ?></textarea>
                             <button type="submit" name="update_tos" class="btn c-btn c-btn__update">Update ToS</button>
@@ -203,7 +203,7 @@
                         <h5 class="card-title c-profile__cardtitle">Privacy Updates</h5>
                         <p class="card-text c-profile__cardtext">Update Privacy Policy to ensure compliance and user trust.</p>
                         <!-- Privacy Form -->
-                        <form action="../admin/legal.php" method="POST">
+                        <form action="../legal.php" method="POST">
                             <label for="privacy">Privacy Policy</label>
                             <textarea name="privacy_content" id="privacy" class="form-control mb-2" rows="3"><?php echo htmlspecialchars($privacyText); ?></textarea>
                             <button type="submit" name="update_privacy" class="btn c-btn c-btn__update">Update Privacy</button>
@@ -221,7 +221,7 @@
                                 <?php foreach ($recentMessages as $message): ?>
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <?php echo date('H:i', strtotime($message['created_at'])); ?>: "<?php echo htmlspecialchars(substr($message['content'], 0, 30)); ?>..."
-                                        <span class="badge bg-secondary">To:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         <?php echo htmlspecialchars($message['receiver_id']); ?></span>
+                                        <span class="badge bg-secondary">To: <?php echo htmlspecialchars($message['receiver_id']); ?></span>
                                     </li>
                                 <?php endforeach; ?>
                             <?php else: ?>
@@ -229,7 +229,7 @@
                             <?php endif; ?>
                         </ul>
 
-                        <a href="../messages/send.php" class="btn c-btn c-btn__dashboard mt-2">Send New Message</a>
+                        <a href="../api/messages/send.php" class="btn c-btn c-btn__dashboard mt-2">Send New Message</a>
                     </div>
                 </div>
             </div>
@@ -241,6 +241,6 @@
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 <!-- Custom JS -->
-<script src="../../assets/js/auth.js"></script>
-<script src="../../assets/js/footer.js"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/footer.js"></script>
 </html>

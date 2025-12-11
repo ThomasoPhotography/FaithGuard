@@ -40,7 +40,7 @@
 
     // --- Fetch Resources for Dynamic Display ---
     // Fetch all resources from DB
-    $resources     = FaithGuardRepository::getAllResources();
+    $resources = FaithGuardRepository::getAllResources();
     // Limit to 6 for display (adjust as needed)
     $max_resources = 6;
 ?>
@@ -101,7 +101,7 @@
                 <div class="d-flex dropdown c-dropdown">
                     <button class="btn c-btn c-dropdown__btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="c-dropdown__icon bi bi-person-check me-1"></i>
-                        <span class="c-dropdown__text">Welcome                                                                                                                                                                                                                                                         <?php echo $accountName; ?></span>
+                        <span class="c-dropdown__text">Welcome                                                                                                                                                                                                                                                                                                                                                                                     <?php echo $accountName; ?></span>
                     </button>
                     <!-- LOGGED-IN DROPDOWN MENU -->
                     <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu" aria-labelledby="userDropdown">
@@ -113,7 +113,7 @@
                         </li>
                         <!-- Profile Link (Role-Based) -->
                         <li>
-                            <a class="dropdown-item c-dropdown__item" href="<?php echo($user_role === 'admin') ? 'api/admin/profile.php' : 'api/users/profile.php'; ?>">
+                            <a class="dropdown-item c-dropdown__item" href="<?php echo($user_role === 'admin') ? 'admin/profile.php' : 'users/profile.php'; ?>">
                                 <i class="bi bi-person-badge me-2"></i>
                                 <span class="c-dropdown__text">Profile / Dashboard</span>
                             </a>
@@ -229,8 +229,9 @@
     <div class="c-footer--placeholder"></div>
 </body>
 <!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" xintegrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 <!-- Custom JS -->
+<script src="assets/js/cookie-banner.js"></script>
 <script src="assets/js/auth.js"></script>
 <script src="assets/js/footer.js"></script>
 <script src="assets/js/resources.js"></script>

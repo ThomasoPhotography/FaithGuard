@@ -1,8 +1,9 @@
 <?php
     // --- Core App Requirements (Always required) ---
-    require_once __DIR__ . "/../../db/database.php";
-    require_once __DIR__ . "/../../db/FaithGuardRepository.php";
-    require_once __DIR__ . "/../helper/debug.php";
+    require_once __DIR__ . "/../db/database.php";
+    require_once __DIR__ . "/../db/FaithGuardRepository.php";
+    require_once __DIR__ . "/../api/helper/debug.php";
+
     session_set_cookie_params([
         'lifetime' => 86400, // 1 day
         'path'     => '/',
@@ -11,6 +12,7 @@
         'httponly' => true,
     ]);
     session_start();
+
     // --- INITIALIZE VARIABLES ---
     $is_logged_in = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
     $user_role    = 'user';
@@ -31,7 +33,7 @@
         }
     }
     if (! $is_logged_in || $user_role !== 'user' || ! $user_data) {
-        header('Location: ../../index.php');
+        header('Location: ../index.php');
         exit;
     }
     // --- Fetch $userId from session ---
@@ -71,20 +73,20 @@
     <!-- Title -->
     <title>FaithGuard</title>
     <!-- Favicon -->
-    <link rel="icon" href="../../assets/uploads/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../assets/uploads/favicon.ico" type="image/x-icon">
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <!-- Stylesheet -->
-    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/main.css">
 </head>
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light c-nav">
         <div class="container-fluid">
             <!-- LEFT SIDE: LOGO + BRAND -->
-            <a class="navbar-brand c-nav__brand" href="../../index.php">
-                <img src="../../assets/uploads/FaithGuard_Primary_Logo.svg" alt="FaithGuard Logo" class="c-nav__logo">
+            <a class="navbar-brand c-nav__brand" href="../index.php">
+                <img src="../assets/uploads/FaithGuard_Primary_Logo.svg" alt="FaithGuard Logo" class="c-nav__logo">
             </a>
             <button class="navbar-toggler c-nav__toggler c-nav__toggler--btn" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -93,20 +95,20 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <!-- Main Navigation Links (CENTER/LEFT) -->
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item c-nav__item"><a class="nav-link c-nav__link" href="../../templates/community.html">Community</a></li>
-                    <li class="nav-item c-nav__item"><a class="nav-link c-nav__link" href="../../templates/progress.html">Progress</a></li>
-                    <li class="nav-item c-nav__item"><a class="nav-link c-nav__link" href="../../templates/resources.html">Resources</a></li>
+                    <li class="nav-item c-nav__item"><a class="nav-link c-nav__link" href="../templates/community.html">Community</a></li>
+                    <li class="nav-item c-nav__item"><a class="nav-link c-nav__link" href="../templates/progress.html">Progress</a></li>
+                    <li class="nav-item c-nav__item"><a class="nav-link c-nav__link" href="../templates/resources.html">Resources</a></li>
                 </ul>
 
                 <!-- RIGHT SIDE: USER DROPDOWN (Assuming user is logged in here) -->
                 <div class="d-flex dropdown c-dropdown">
                     <button class="btn c-btn c-dropdown__btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="c-dropdown__icon bi bi-person-check me-1"></i>
-                        <span class="c-dropdown__text">Welcome                                                               <?php echo $accountName; ?></span>
+                        <span class="c-dropdown__text">Welcome                                                                                                                             <?php echo $accountName; ?></span>
                     </button>
                     <!-- LOGGED-IN DROPDOWN MENU -->
                     <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu" aria-labelledby="userDropdown">
-                        <li><h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                         <?php echo ucfirst($user_role); ?></h6></li>
+                        <li><h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                                                                                                                 <?php echo ucfirst($user_role); ?></h6></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item c-dropdown__item" href="profile.php"><i class="bi bi-person-badge me-2"></i> Profile / Dashboard</a></li>
                         <li><hr class="dropdown-divider"></li>
@@ -118,7 +120,7 @@
     </nav>
     <!-- Main -->
     <main class="c-main container my-5">
-        <h2 class="c-main__title">Welcome Back,                                                <?php echo $accountName; ?></h2>
+        <h2 class="c-main__title">Welcome Back,                                                                                               <?php echo $accountName; ?></h2>
         <p class="text-muted">This is your personal dashboard for tracking progress and accessing core tools.</p>
 
         <section class="c-profile c-profile__users row">
@@ -180,8 +182,8 @@
                         </ul>
                     </div>
                     <div class="card-footer">
-                        <a href="../../templates/progress.html" class="btn btn-sm c-btn c-btn__dashboard">View Full Progress</a>
-                        <a href="../../api/progress/checkin.php" class="btn btn-sm c-btn c-btn__create">New Check-in</a>
+                        <a href="../templates/progress.html" class="btn btn-sm c-btn c-btn__dashboard">View Full Progress</a>
+                        <a href="../api/progress/checkin.php" class="btn btn-sm c-btn c-btn__create">New Check-in</a>
                     </div>
                 </div>
             </div>
@@ -206,11 +208,11 @@
                                 **Identified Area:** <span class="c-quiz__infograph"><?php echo htmlspecialchars($latestQuizResult['addiction_type']); ?></span>
                             </p>
                             <p class="mt-3">
-                                <a href="../../templates/resources.html" class="btn btn-sm c-quiz__btn">View Recommended Resources</a>
+                                <a href="../templates/resources.html" class="btn btn-sm c-quiz__btn">View Recommended Resources</a>
                             </p>
                         <?php else: ?>
                             <p class="card-text c-quiz__cardtext">Take the initial quiz to unlock personalized resource recommendations and tools.</p>
-                            <a href="../../templates/quiz.html" class="btn btn-sm c-btn c-btn__dashboard">Take Quiz Now</a>
+                            <a href="../templates/quiz.html" class="btn btn-sm c-btn c-btn__dashboard">Take Quiz Now</a>
                         <?php endif; ?>
                     </div>
                 </div>
@@ -249,8 +251,8 @@
                         </ul>
                     </div>
                     <div class="card-footer">
-                        <a href="../../templates/community.html#messages" class="btn btn-sm c-btn c-btn__dashboard">View Full Inbox</a>
-                        <a href="../../api/messages/send.php" class="btn btn-sm c-btn c-btn__create">Send Message</a>
+                        <a href="../templates/community.html#messages" class="btn btn-sm c-btn c-btn__dashboard">View Full Inbox</a>
+                        <a href="../api/messages/send.php" class="btn btn-sm c-btn c-btn__create">Send Message</a>
                     </div>
                 </div>
             </div>
@@ -262,6 +264,6 @@
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 <!-- Custom JS -->
-<script src="../../assets/js/auth.js"></script>
-<script src="../../assets/js/footer.js"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/footer.js"></script>
 </html>

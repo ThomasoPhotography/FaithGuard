@@ -1,32 +1,24 @@
 --
--- Database: `ID483117_faithguard` (The name from your Combell control panel)
--- 
--- This script creates all tables and inserts initial data (quiz questions and admin user).
---
--- Host: 127.0.0.1 (Local development host reference, adjust if necessary)
+-- Database: `ID483117_faithguard`
+-- Full schema including policies table
 -- Generation Time: Nov 28, 2025
--- Server version: MariaDB
--- PHP Version: 8.2
+--
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET FOREIGN_KEY_CHECKS = 0; /* Temporarily disable FK checks for creation */
+SET FOREIGN_KEY_CHECKS = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
+ /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+ /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+ /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+ /*!40101 SET NAMES utf8mb4 */;
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
---
--- Database: `ID483117_faithguard`
---
 USE `ID483117_faithguard`;
 
---
--- Table structure for table `users`
---
+----------------------------------------------------------
+-- USERS
+----------------------------------------------------------
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
@@ -40,16 +32,13 @@ CREATE TABLE `users` (
   KEY `idx_users_email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `users`
---
--- NOTE: Password hash for 'admin@faithguard.com' is stored here.
-INSERT INTO `users` (`id`, `email`, `password_hash`, `name`, `role`, `created_at`) VALUES
+INSERT INTO `users` 
+(`id`, `email`, `password_hash`, `name`, `role`, `created_at`) VALUES
 (1, 'admin@faithguard.com', '$2y$10$ymjkffZvp1ckE/ttWlml2.9fw8jrKCmefQIUft6xIUZF7463qn.sa', 'Admin', 'admin', '2025-11-26 22:42:51');
 
---
--- Table structure for table `analytics`
---
+----------------------------------------------------------
+-- ANALYTICS
+----------------------------------------------------------
 DROP TABLE IF EXISTS `analytics`;
 CREATE TABLE `analytics` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
@@ -61,9 +50,9 @@ CREATE TABLE `analytics` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Table structure for table `donations`
---
+----------------------------------------------------------
+-- DONATIONS
+----------------------------------------------------------
 DROP TABLE IF EXISTS `donations`;
 CREATE TABLE `donations` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
@@ -74,9 +63,9 @@ CREATE TABLE `donations` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Table structure for table `messages`
---
+----------------------------------------------------------
+-- MESSAGES
+----------------------------------------------------------
 DROP TABLE IF EXISTS `messages`;
 CREATE TABLE `messages` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
@@ -89,9 +78,9 @@ CREATE TABLE `messages` (
   KEY `idx_messages_receiver` (`receiver_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Table structure for table `posts`
---
+----------------------------------------------------------
+-- POSTS
+----------------------------------------------------------
 DROP TABLE IF EXISTS `posts`;
 CREATE TABLE `posts` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
@@ -102,9 +91,9 @@ CREATE TABLE `posts` (
   KEY `idx_posts_user` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Table structure for table `post_replies`
---
+----------------------------------------------------------
+-- POST REPLIES
+----------------------------------------------------------
 DROP TABLE IF EXISTS `post_replies`;
 CREATE TABLE `post_replies` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
@@ -117,9 +106,9 @@ CREATE TABLE `post_replies` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Table structure for table `prayers`
---
+----------------------------------------------------------
+-- PRAYERS
+----------------------------------------------------------
 DROP TABLE IF EXISTS `prayers`;
 CREATE TABLE `prayers` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
@@ -130,9 +119,9 @@ CREATE TABLE `prayers` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Table structure for table `progress_logs`
---
+----------------------------------------------------------
+-- PROGRESS LOGS
+----------------------------------------------------------
 DROP TABLE IF EXISTS `progress_logs`;
 CREATE TABLE `progress_logs` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
@@ -143,9 +132,9 @@ CREATE TABLE `progress_logs` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Table structure for table `quiz_questions`
---
+----------------------------------------------------------
+-- QUIZ QUESTIONS
+----------------------------------------------------------
 DROP TABLE IF EXISTS `quiz_questions`;
 CREATE TABLE `quiz_questions` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
@@ -153,17 +142,14 @@ CREATE TABLE `quiz_questions` (
   `options` LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (JSON_VALID(`options`)),
   `weights` LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (JSON_VALID(`weights`)),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `quiz_questions`
---
 INSERT INTO `quiz_questions` (`id`, `question`, `options`, `weights`) VALUES
 (1, 'How often do you pray?', '["Daily", "Weekly", "Rarely"]', '[3, 2, 1]');
 
---
--- Table structure for table `quiz_results`
---
+----------------------------------------------------------
+-- QUIZ RESULTS
+----------------------------------------------------------
 DROP TABLE IF EXISTS `quiz_results`;
 CREATE TABLE `quiz_results` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
@@ -176,9 +162,9 @@ CREATE TABLE `quiz_results` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Table structure for table `reports`
---
+----------------------------------------------------------
+-- REPORTS
+----------------------------------------------------------
 DROP TABLE IF EXISTS `reports`;
 CREATE TABLE `reports` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
@@ -191,9 +177,9 @@ CREATE TABLE `reports` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Table structure for table `resources`
---
+----------------------------------------------------------
+-- RESOURCES
+----------------------------------------------------------
 DROP TABLE IF EXISTS `resources`;
 CREATE TABLE `resources` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
@@ -202,17 +188,14 @@ CREATE TABLE `resources` (
   `tags` LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (JSON_VALID(`tags`)),
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `resources`
---
 INSERT INTO `resources` (`id`, `title`, `content`, `tags`, `created_at`) VALUES
 (1, 'Daily Prayer', 'Sample content', '["prayer"]', '2025-11-26 22:42:51');
 
---
--- Table structure for table `resource_tags`
---
+----------------------------------------------------------
+-- RESOURCE TAGS
+----------------------------------------------------------
 DROP TABLE IF EXISTS `resource_tags`;
 CREATE TABLE `resource_tags` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
@@ -222,9 +205,9 @@ CREATE TABLE `resource_tags` (
   KEY `resource_id` (`resource_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Table structure for table `roles`
---
+----------------------------------------------------------
+-- ROLES
+----------------------------------------------------------
 DROP TABLE IF EXISTS `roles`;
 CREATE TABLE `roles` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
@@ -233,9 +216,9 @@ CREATE TABLE `roles` (
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Table structure for table `sessions`
---
+----------------------------------------------------------
+-- SESSIONS
+----------------------------------------------------------
 DROP TABLE IF EXISTS `sessions`;
 CREATE TABLE `sessions` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
@@ -247,14 +230,41 @@ CREATE TABLE `sessions` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Constraints for dumped tables (Foreign Keys)
---
+----------------------------------------------------------
+-- POLICIES (NEW)
+----------------------------------------------------------
+DROP TABLE IF EXISTS `policies`;
+CREATE TABLE `policies` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `title` VARCHAR(255) NOT NULL,
+  `slug` VARCHAR(255) NOT NULL,
+  `content` LONGTEXT NOT NULL,
+  `version` VARCHAR(20) DEFAULT '1.0',
+  `created_by` INT(11) NOT NULL,
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP(),
+  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP(),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `slug` (`slug`),
+  KEY `created_by` (`created_by`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Default policy documents
+INSERT INTO `policies` (`title`, `slug`, `content`, `version`, `created_by`)
+VALUES
+('Privacy Policy', 'privacy-policy', '<h1>Privacy Policy</h1><p>Content here.</p>', '1.0', 1),
+('Terms of Service', 'terms-of-service', '<h1>Terms of Service</h1><p>Content here.</p>', '1.0', 1),
+('Community Guidelines', 'community-guidelines', '<h1>Community Guidelines</h1><p>Content here.</p>', '1.0', 1);
+
+----------------------------------------------------------
+-- FOREIGN KEYS
+----------------------------------------------------------
 ALTER TABLE `analytics`
-  ADD CONSTRAINT `analytics_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `analytics_ibfk_1`
+  FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 ALTER TABLE `donations`
-  ADD CONSTRAINT `donations_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `donations_ibfk_1`
+  FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 ALTER TABLE `messages`
   ADD CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`),
@@ -286,9 +296,12 @@ ALTER TABLE `resource_tags`
 ALTER TABLE `sessions`
   ADD CONSTRAINT `sessions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
-SET FOREIGN_KEY_CHECKS = 1; /* Re-enable FK checks */
+ALTER TABLE `policies`
+  ADD CONSTRAINT `policies_ibfk_1` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`);
+
+SET FOREIGN_KEY_CHECKS = 1;
 COMMIT;
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+ /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+ /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+ /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

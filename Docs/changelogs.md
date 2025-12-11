@@ -9,6 +9,11 @@ All notable changes to this project will be documented in this file.
 - Resource listing.
 - Implement user registration with input validation and modal display.
 - Enhance login session management and error handling; update register.php to remove unnecessary PHP tag.
+- Implement admin and user profile pages with dynamic data fetching
+- Added admin profile page with functionality to manage flagged reports, resources, and legal updates.
+- Created user profile page displaying account summary, progress logs, quiz results, and recent messages.
+- Introduced API endpoints for creating, deleting, retrieving, listing, and updating policies.
+- Integrated cookie consent banner for enhanced user experience.
 
 ### Changed
 - `README.md` file got a professional make-over.
@@ -73,6 +78,8 @@ All notable changes to this project will be documented in this file.
 - Standardize formatting and improve error handling in authentication flow.
 - Standardize formatting and improve user registration handling in authentication flow.
 - Improve code readability by standardizing comments and updating section titles in `index.php`.
+- Updated navigation and dropdown menus for better user interaction.
+- Refactored resource links in user and admin profiles for consistency
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.
