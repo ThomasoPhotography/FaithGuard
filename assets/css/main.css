@@ -21,7 +21,7 @@ body {
 }
 
 .text-muted {
-  color: rgb(114.6428571429, 114.6428571429, 99.3571428571) !important;
+  color: #3c3c34 !important;
   font-size: 0.9rem;
 }
 
@@ -145,7 +145,7 @@ a:hover {
 }
 .c-nav__logo:hover {
   opacity: 0.8;
-  box-shadow: 0 0 0.625rem 0.125rem rbga(#5c352c, 0.6);
+  box-shadow: 0 0 0.625rem 0.125rem rgba(92, 53, 44, 0.6);
 }
 .c-nav__btn {
   color: #3c3c34;
@@ -160,7 +160,7 @@ a:hover {
   }
 }
 .c-nav__btn:hover {
-  background-color: rgb(57.5, 33.125, 27.5);
+  background-color: #5c352c;
   color: #f5f5dc;
   text-decoration: none;
 }
@@ -185,7 +185,7 @@ a:hover {
   background-color: #5c352c;
   color: #f5f5dc;
   outline: none;
-  box-shadow: 0 0 5px rgb(161, 92.75, 77);
+  box-shadow: 0 0 5px #5c352c;
 }
 
 .c-hero {
@@ -227,7 +227,7 @@ a:hover {
 }
 .c-hero__subtitle {
   font-size: 1rem;
-  color: rgb(73.6607142857, 73.6607142857, 63.8392857143);
+  color: #3c3c34;
 }
 @media (min-width: 576px) {
   .c-hero__subtitle {
@@ -323,7 +323,17 @@ a:hover {
   color: #f5f5dc;
 }
 .c-btn__dashboard:hover {
-  background-color: rgb(74.9538461538, 41.0461538462, 41.0461538462);
+  background-color: #2a1717;
+  color: #f5f5dc;
+  text-decoration: none;
+}
+.c-btn__dashboard--outline {
+  background-color: transparent;
+  border: 2px solid #614338;
+  color: #614338;
+}
+.c-btn__dashboard--outline:hover {
+  background-color: #614338;
   color: #f5f5dc;
   text-decoration: none;
 }
@@ -362,7 +372,7 @@ a:hover {
   }
 }
 .c-cta__title {
-  color: rgb(32.6785714286, 32.6785714286, 28.3214285714);
+  color: #3c3c34;
   font-size: 1.5rem;
   margin-bottom: 1rem;
   font-weight: 600;
@@ -439,7 +449,7 @@ a:hover {
   color: #f5f5dc !important;
 }
 .c-dropdown__menu {
-  background-color: rgb(40.25, 23.1875, 19.25);
+  background-color: #5c352c;
   border: none;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   min-width: 250px;
@@ -460,7 +470,7 @@ a:hover {
 .c-dropdown__info {
   width: 100%;
   padding: 0.5rem;
-  background-color: rgb(57.5, 33.125, 27.5);
+  background-color: #5c352c;
   border: none;
   color: #f5f5dc;
   font-size: 0.9rem;
@@ -475,7 +485,7 @@ a:hover {
   background-color: #5c352c;
   color: #f5f5dc;
   outline: none;
-  box-shadow: 0 0 5px rgb(161, 92.75, 77);
+  box-shadow: 0 0 5px #5c352c;
 }
 .c-dropdown__icon {
   font-size: 1.25rem;
@@ -491,11 +501,11 @@ a:hover {
   color: #f5f5dc;
 }
 .c-dropdown__item:hover {
-  background-color: rgb(57.5, 33.125, 27.5);
+  background-color: #5c352c;
   color: #f5f5dc;
 }
 .c-dropdown__login {
-  color: rgb(100.9821428571, 100.9821428571, 87.5178571429);
+  color: #3c3c34;
   border: none;
   background-color: transparent;
   padding: 0.4rem 0.8rem;
@@ -549,7 +559,7 @@ a:hover {
   }
 }
 .c-progress__title {
-  color: rgb(19.0178571429, 19.0178571429, 16.4821428571);
+  color: #3c3c34;
   font-size: 1.5rem;
   margin-bottom: 1rem;
   padding-top: 1rem;
@@ -587,7 +597,7 @@ a:hover {
   }
 }
 .c-quiz__title {
-  color: rgb(19.0178571429, 19.0178571429, 16.4821428571);
+  color: #3c3c34;
   font-size: 1.5rem;
   margin-bottom: 1rem;
   padding-top: 1rem;
@@ -624,7 +634,7 @@ a:hover {
   }
 }
 .c-message__title {
-  color: rgb(19.0178571429, 19.0178571429, 16.4821428571);
+  color: #3c3c34;
   font-size: 1.5rem;
   margin-bottom: 1rem;
   padding-top: 1rem;

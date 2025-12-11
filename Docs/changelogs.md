@@ -79,7 +79,8 @@ All notable changes to this project will be documented in this file.
 - Standardize formatting and improve user registration handling in authentication flow.
 - Improve code readability by standardizing comments and updating section titles in `index.php`.
 - Updated navigation and dropdown menus for better user interaction.
-- Refactored resource links in user and admin profiles for consistency
+- Refactored resource links in user and admin profiles for consistency.
+- Standardize formatting and improve readability in `cookie-banner.js`.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.

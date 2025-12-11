@@ -35,7 +35,7 @@ body {
 }
 
 .text-muted {
-	color: color.adjust($text-dark, $lightness: 20%) !important;
+	color: $text-dark !important;
 	font-size: 0.9rem;
 }
 
@@ -184,7 +184,7 @@ a {
 		}
 
 		&:hover {
-			background-color: color.adjust($accent, $lightness: -10%);
+			background-color: $accent;
 			color: $text-light;
 			text-decoration: none;
 		}
@@ -207,7 +207,7 @@ a {
 			background-color: $accent;
 			color: $text-light;
 			outline: none;
-			box-shadow: 0 0 5px color.adjust($accent, $lightness: 20%);
+			box-shadow: 0 0 5px $accent;
 		}
 	}
 }
@@ -249,7 +249,7 @@ a {
 
 	&__subtitle {
 		font-size: 1rem;
-		color: color.adjust($text-dark, $lightness: 5%);
+		color: $text-dark;
 
 		@media (min-width: 576px) {
 			font-size: 1.1rem;
@@ -341,9 +341,20 @@ a {
 		background-color: $secondary-bg;
 		color: $text-light;
 		&:hover {
-			background-color: color.adjust($highlight, $lightness: 10%);
+			background-color: $highlight;
 			color: $text-light;
 			text-decoration: none;
+		}
+
+		&--outline {
+			background-color: transparent;
+			border: 2px solid $secondary-bg;
+			color: $secondary-bg;
+			&:hover {
+				background-color: $secondary-bg;
+				color: $text-light;
+				text-decoration: none;
+			}
 		}
 	}
 
@@ -382,7 +393,7 @@ a {
 	}
 
 	&__title {
-		color: color.adjust($text-dark, $lightness: -10%);
+		color: $text-dark;
 		font-size: 1.5rem;
 		margin-bottom: 1rem;
 		font-weight: 600;
@@ -461,7 +472,7 @@ a {
 	}
 
 	&__menu {
-		background-color: color.adjust($accent, $lightness: -15%);
+		background-color: $accent;
 		border: none;
 		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 		min-width: 250px;
@@ -483,7 +494,7 @@ a {
 	&__info {
 		width: 100%;
 		padding: 0.5rem;
-		background-color: color.adjust($accent, $lightness: -10%);
+		background-color: $accent;
 		border: none;
 		color: $text-light;
 		font-size: 0.9rem;
@@ -496,7 +507,7 @@ a {
 			background-color: $accent;
 			color: $text-light;
 			outline: none;
-			box-shadow: 0 0 5px color.adjust($accent, $lightness: 20%);
+			box-shadow: 0 0 5px $accent;
 		}
 	}
 
@@ -514,13 +525,13 @@ a {
 		color: $text-light;
 
 		&:hover {
-			background-color: color.adjust($accent, $lightness: -10%);
+			background-color: $accent;
 			color: $text-light;
 		}
 	}
 
 	&__login {
-		color: color.adjust($text-dark, $lightness: 15%);
+		color: $text-dark;
 		border: none;
 		background-color: transparent;
 		padding: 0.4rem 0.8rem;
@@ -585,7 +596,7 @@ a {
 	}
 
 	&__title {
-		color: color.adjust($text-dark, $lightness: -15%);
+		color: $text-dark;
 		font-size: 1.5rem;
 		margin-bottom: 1rem;
 		padding-top: 1rem;
@@ -624,7 +635,7 @@ a {
 	}
 
 	&__title {
-		color: color.adjust($text-dark, $lightness: -15%);
+		color: $text-dark;
 		font-size: 1.5rem;
 		margin-bottom: 1rem;
 		padding-top: 1rem;
@@ -659,7 +670,7 @@ a {
 	}
 
 	&__title {
-		color: color.adjust($text-dark, $lightness: -15%);
+		color: $text-dark;
 		font-size: 1.5rem;
 		margin-bottom: 1rem;
 		padding-top: 1rem;
