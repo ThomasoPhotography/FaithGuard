@@ -900,7 +900,7 @@ a {
 		}
 
 		&:hover {
-			color: $accent;
+			color: rgba($text-light, 0.6);
 		}
 
 		&--mail {
