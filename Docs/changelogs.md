@@ -14,7 +14,7 @@ All notable changes to this project will be documented in this file.
 - `README.md` file got a professional make-over.
 
 ### Deprecated
-- N/A
+- replace lighten/darken functions with color.adjust for consistent color manipulation in `main.scss`.
 
 ### Removed
 - `/templates/nav.php`.

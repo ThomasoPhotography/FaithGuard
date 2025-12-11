@@ -35,7 +35,7 @@ body {
 }
 
 .text-muted {
-	color: lighten($text-dark, 20%) !important;
+	color: color.adjust($text-dark, $lightness: 20%) !important;
 	font-size: 0.9rem;
 }
 
@@ -168,7 +168,7 @@ a {
 
 		&:hover {
 			opacity: 0.8;
-			box-shadow: 0 0 0.625rem 0.125rem rbga($accent, 0.6);
+			box-shadow: 0 0 0.625rem 0.125rem rgba($accent, 0.6); // Fixed typo: rbga -> rgba
 		}
 	}
 
@@ -184,7 +184,7 @@ a {
 		}
 
 		&:hover {
-			background-color: darken($accent, 10%);
+			background-color: color.adjust($accent, $lightness: -10%);
 			color: $text-light;
 			text-decoration: none;
 		}
@@ -207,7 +207,7 @@ a {
 			background-color: $accent;
 			color: $text-light;
 			outline: none;
-			box-shadow: 0 0 5px lighten($accent, 20%);
+			box-shadow: 0 0 5px color.adjust($accent, $lightness: 20%);
 		}
 	}
 }
@@ -249,7 +249,7 @@ a {
 
 	&__subtitle {
 		font-size: 1rem;
-		color: lighten($text-dark, 5%);
+		color: color.adjust($text-dark, $lightness: 5%);
 
 		@media (min-width: 576px) {
 			font-size: 1.1rem;
@@ -341,7 +341,7 @@ a {
 		background-color: $secondary-bg;
 		color: $text-light;
 		&:hover {
-			background-color: lighten($highlight, 10%);
+			background-color: color.adjust($highlight, $lightness: 10%);
 			color: $text-light;
 			text-decoration: none;
 		}
@@ -382,7 +382,7 @@ a {
 	}
 
 	&__title {
-		color: darken($text-dark, 10%);
+		color: color.adjust($text-dark, $lightness: -10%);
 		font-size: 1.5rem;
 		margin-bottom: 1rem;
 		font-weight: 600;
@@ -461,7 +461,7 @@ a {
 	}
 
 	&__menu {
-		background-color: darken($accent, 15%);
+		background-color: color.adjust($accent, $lightness: -15%);
 		border: none;
 		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 		min-width: 250px;
@@ -483,7 +483,7 @@ a {
 	&__info {
 		width: 100%;
 		padding: 0.5rem;
-		background-color: darken($accent, 10%);
+		background-color: color.adjust($accent, $lightness: -10%);
 		border: none;
 		color: $text-light;
 		font-size: 0.9rem;
@@ -496,7 +496,7 @@ a {
 			background-color: $accent;
 			color: $text-light;
 			outline: none;
-			box-shadow: 0 0 5px lighten($accent, 20%);
+			box-shadow: 0 0 5px color.adjust($accent, $lightness: 20%);
 		}
 	}
 
@@ -514,13 +514,13 @@ a {
 		color: $text-light;
 
 		&:hover {
-			background-color: darken($accent, 10%);
+			background-color: color.adjust($accent, $lightness: -10%);
 			color: $text-light;
 		}
 	}
 
 	&__login {
-		color: lighten($text-dark, 15%);
+		color: color.adjust($text-dark, $lightness: 15%);
 		border: none;
 		background-color: transparent;
 		padding: 0.4rem 0.8rem;
@@ -585,7 +585,7 @@ a {
 	}
 
 	&__title {
-		color: darken($text-dark, 15%);
+		color: color.adjust($text-dark, $lightness: -15%);
 		font-size: 1.5rem;
 		margin-bottom: 1rem;
 		padding-top: 1rem;
@@ -624,7 +624,7 @@ a {
 	}
 
 	&__title {
-		color: darken($text-dark, 15%);
+		color: color.adjust($text-dark, $lightness: -15%);
 		font-size: 1.5rem;
 		margin-bottom: 1rem;
 		padding-top: 1rem;
@@ -659,7 +659,7 @@ a {
 	}
 
 	&__title {
-		color: darken($text-dark, 15%);
+		color: color.adjust($text-dark, $lightness: -15%);
 		font-size: 1.5rem;
 		margin-bottom: 1rem;
 		padding-top: 1rem;
