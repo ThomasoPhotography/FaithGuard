@@ -587,6 +587,62 @@ a {
 	}
 }
 
+.c-admin {
+	&__profile {
+		display: grid;
+		grid-template-columns: repeat(9, 1fr);
+		grid-template-rows: repeat(8, 1fr);
+		gap: calc($spacing/2);
+	}
+
+	&__item {
+		&--1 {
+			grid-column: span 9 / span 9;
+		}
+		&--2 {
+			grid-column: span 3 / span 3;
+			grid-row: span 3 / span 3;
+			grid-row-start: 2;
+		}
+		&--3 {
+			grid-column: span 3 / span 3;
+			grid-row: span 4 / span 4;
+			grid-column-start: 1;
+			grid-row-start: 5;
+		}
+		&--4 {
+			grid-column: span 2 / span 2;
+			grid-row: span 4 / span 4;
+			grid-column-start: 4;
+			grid-row-start: 2;
+		}
+		&--5 {
+			grid-column: span 2 / span 2;
+			grid-row: span 4 / span 4;
+			grid-column-start: 6;
+			grid-row-start: 2;
+		}
+		&--6 {
+			grid-column: span 2 / span 2;
+			grid-row: span 4 / span 4;
+			grid-column-start: 8;
+			grid-row-start: 2;
+		}
+		&--7 {
+			grid-column: span 4 / span 4;
+			grid-row: span 3 / span 3;
+			grid-column-start: 4;
+			grid-row-start: 6;
+		}
+		&--8 {
+			grid-column: span 2 / span 2;
+			grid-row: span 3 / span 3;
+			grid-column-start: 8;
+			grid-row-start: 6;
+		}
+	}
+}
+
 .c-progress {
 	background-color: $primary-bg;
 	padding: 1rem;

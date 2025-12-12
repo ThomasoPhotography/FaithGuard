@@ -114,12 +114,12 @@
                 <div class="d-flex dropdown c-dropdown">
                     <button class="btn c-btn c-dropdown__btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="c-dropdown__icon bi bi-person-check me-1"></i>
-                        <span class="c-dropdown__text">Welcome                                                               <?php echo $accountName; ?></span>
+                        <span class="c-dropdown__text">Welcome                                                                                                                                                                                           <?php echo $accountName; ?></span>
                     </button>
                     <!-- LOGGED-IN DROPDOWN MENU -->
                     <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu" aria-labelledby="userDropdown">
                         <li>
-                            <h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                         <?php echo ucfirst($user_role); ?></h6>
+                            <h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                                                                                                                                                                                                         <?php echo ucfirst($user_role); ?></h6>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
@@ -146,14 +146,14 @@
     </nav>
     <!-- Main -->
     <main class="c-main container my-5">
-        <section class="c-profile row">
-            <div class="col-12">
+        <section class="c-admin__profile">
+            <div class="c-admin__item c-admin__item--1">
                 <h2 class="c-profile__title">Admin Dashboard</h2>
             </div>
-            <div class="c-profile__admin row">
+            <div class="c-admin__profile">
                 <!-- Flagged/Reported Posts -->
-                <div class="col-md-6 col-12 mb-4">
-                    <div class="c-profile__items card c-profile__card">
+                <div class="c-admin__item c-admin__item--2">
+                    <div class="card c-profile__card">
                         <h5 class="card-title c-profile__cardtitle">Flagged/Reported Posts (<?php echo count($reports); ?> Pending)</h5>
                         <p class="card-text c-profile__cardtext">Preview and moderate reported community posts to maintain a safe, faith-focused environment.</p>
                         <ul class="list-group list-group-flush">
@@ -172,7 +172,7 @@
                     </div>
                 </div>
                 <!-- Resource Management -->
-                <div class="col-md-6 col-12 mb-4">
+                <div class="c-admin__item c-admin__item--3">
                     <div class="c-profile__items card c-profile__card">
                         <h5 class="card-title c-profile__cardtitle">Resource Management</h5>
                         <p class="card-text c-profile__cardtext">Current resources available for users:<?php echo $resourceCount; ?></p>
@@ -186,7 +186,8 @@
                     </div>
                 </div>
                 <!-- Legal & Policy Updates -->
-                <div class="col-md-6 col-12 mb-4">
+                <!-- Terms of Service -->
+                <div class="c-admin__item c-admin__item--4">
                     <div class="c-profile__items card c-profile__card">
                         <h5 class="card-title c-profile__cardtitle">Legal Updates</h5>
                         <p class="card-text c-profile__cardtext">Update Terms of Service to ensure compliance and user trust.</p>
@@ -198,7 +199,8 @@
                         </form>
                     </div>
                 </div>
-                <div class="col-md-6 col-12 mb-4">
+                <!-- Privacy Policy -->
+                <div class="c-admin__item c-admin__item--5">
                     <div class="c-profile__items card c-profile__card">
                         <h5 class="card-title c-profile__cardtitle">Privacy Updates</h5>
                         <p class="card-text c-profile__cardtext">Update Privacy Policy to ensure compliance and user trust.</p>
@@ -210,8 +212,21 @@
                         </form>
                     </div>
                 </div>
+                <!-- Cookie Policy -->
+                <div class="c-admin__item c-admin__item--6">
+                    <div class="c-profile__items card c-profile__card">
+                        <h5 class="card-title c-profile__cardtitle">Cookie Updates</h5>
+                        <p class="card-text c-profile__cardtext">Update Privacy Policy to ensure compliance and user trust.</p>
+                        <!-- Privacy Form -->
+                        <form action="../legal.php" method="POST">
+                            <label for="privacy">Privacy Policy</label>
+                            <textarea name="privacy_content" id="privacy" class="form-control mb-2" rows="3"><?php echo htmlspecialchars($privacyText); ?></textarea>
+                            <button type="submit" name="update_privacy" class="btn c-btn c-btn__update">Update Privacy</button>
+                        </form>
+                    </div>
+                </div>
                 <!-- Admin Message Box (Recent Activity) -->
-                <div class="col-md-6 col-12 mb-4">
+                <div class="c-admin__item c-admin__item--7">
                     <div class="c-profile__items card c-profile__card c-profile__card--messages">
                         <h5 class="card-title c-profile__cardtitle">Recent Admin Messages</h5>
                         <p class="card-text c-profile__cardtext">Quickly view the last few messages sent by you (the admin).</p>
@@ -221,7 +236,7 @@
                                 <?php foreach ($recentMessages as $message): ?>
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <?php echo date('H:i', strtotime($message['created_at'])); ?>: "<?php echo htmlspecialchars(substr($message['content'], 0, 30)); ?>..."
-                                        <span class="badge bg-secondary">To: <?php echo htmlspecialchars($message['receiver_id']); ?></span>
+                                        <span class="badge bg-secondary">To:                                                                                                                                                         <?php echo htmlspecialchars($message['receiver_id']); ?></span>
                                     </li>
                                 <?php endforeach; ?>
                             <?php else: ?>
@@ -230,6 +245,13 @@
                         </ul>
 
                         <a href="../api/messages/send.php" class="btn c-btn c-btn__dashboard mt-2">Send New Message</a>
+                    </div>
+                </div>
+                <!-- Upcoming Feature -->
+                <div class="c-admin__item c-admin__item--8">
+                    <div class="c-profile__items card c-profile__card c-profile__card--messages">
+                        <h5 class="card-title c-profile__cardtitle">Coming Soon</h5>
+                        <p class="card-text c-profile__cardtext">This spot is for an upcoming feature.</p>
                     </div>
                 </div>
             </div>

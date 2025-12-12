@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file.
 - Introduced API endpoints for creating, deleting, retrieving, listing, and updating policies.
 - Integrated cookie consent banner for enhanced user experience.
 - `faithguard_db.sql` V2 as certain properties changed for `faithguard_db.sql` V1.
+- Implement grid layout for admin profile page and add new sections for legal updates and upcoming features.
 
 ### Changed
 - `README.md` file got a professional make-over.
