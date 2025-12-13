@@ -32,6 +32,7 @@ All notable changes to this project will be documented in this file.
 - cURL in `api/admin/profile.php`.
 - Info stacking and styling for info stack.
 - `faithguard_db.sql` V1 as part of database restructuring.
+- Placeholder background image from hero section in `main.css`.
 
 ### Fixed
 - Logout function of php.
