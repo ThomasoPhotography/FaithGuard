@@ -1,3 +1,4 @@
+<?php
 session_start();
 require_once __DIR__ . '/../../db/database.php';
 require_once __DIR__ . '/../../db/FaithGuardRepository.php';
@@ -44,9 +45,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             session_regenerate_id(true);
             echo json_encode(['success' => true]);
         } else {
+            error_log('Registration: User inserted but not found for session setup.');
             echo json_encode(['success' => false, 'error' => 'Registration succeeded, but failed to log in.']);
         }
     } else {
+        error_log('Registration: Database insert failed for email: ' . $email);
         echo json_encode(['success' => false, 'error' => 'Database insert failed.']);
     }
     exit;
@@ -99,6 +102,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../../assets/js/auth.js"></script>
 </body>
 </html>

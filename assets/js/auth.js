@@ -35,10 +35,11 @@ const attemptLogin = async (email, password) => {
 };
 
 const attemptRegister = async (email, password, name) => {
+	// Note: Role is set to 'user' by default server-side; only admins can change it
 	const response = await fetch('/api/auth/register.php', {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify({ email, password, name }),
+		body: JSON.stringify({ email, password }),
 	});
 	return await response.json();
 };
@@ -51,37 +52,32 @@ const performLogout = async () => {
 
 // #region ***  Event Listeners - listenTo___            ***********
 const listenToAuth = () => {
-	if (!authBtn) return;
-
+	if (!authBtn) return; // Skip if logged in (button won't exist)
 	authBtn.addEventListener('click', async () => {
 		const email = emailInput.value.trim();
 		const password = passwordInput.value.trim();
-		const name = nameInput ? nameInput.value.trim() : 'New User';
-
 		if (!email || !password) {
 			showError('Please enter both email and password.');
 			return;
 		}
-
 		try {
 			const loginData = await attemptLogin(email, password);
-
 			if (loginData.success) {
 				showLoginSuccess();
 				return;
+			} else if (loginData.redirect) {
+				// Redirect to register page
+				window.location.href = loginData.redirect;
+				return;
 			} else if (loginData.error === 'Invalid credentials') {
-				showError('Login failed: Invalid credentials');
-			} else if (loginData.error === 'User not found') {
-				// 2. If user does not exist, attempt Register automatically
-				const registerData = await attemptRegister(email, password, name);
-
+				// Try register (fallback, though redirect should handle it)
+				const registerData = await attemptRegister(email, password);
 				if (registerData.success) {
 					showRegisterSuccess();
 				} else {
 					showError('Registration failed: ' + (registerData.error || 'Unknown error'));
 				}
 			} else {
-				// Other errors (database, server, etc.)
 				showError('Login failed: ' + loginData.error);
 			}
 		} catch (error) {
