@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 - Integrated cookie consent banner for enhanced user experience.
 - `faithguard_db.sql` V2 as certain properties changed for `faithguard_db.sql` V1.
 - Implement grid layout for admin profile page and add new sections for legal updates and upcoming features.
+- Moderation and policies pages
 
 ### Changed
 - `README.md` file got a professional make-over.
@@ -86,6 +87,7 @@ All notable changes to this project will be documented in this file.
 - Standardize formatting and improve readability in `cookie-banner.js`.
 - Update hover color for footer links to improve accessibility and consistency.
 - Enhance logout functionality and improve user feedback in `auth.js`.
+- Update navigation links and dropdowns for user profile and admin dashboard.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.
