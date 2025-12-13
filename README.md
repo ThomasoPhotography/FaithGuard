@@ -2,7 +2,7 @@
 
 ![HTML](https://img.shields.io/badge/HTML-E34F26?style=for-the-badge&logo=html5&logoColor=white) ![SCSS](https://img.shields.io/badge/SCSS-CC6699?style=for-the-badge&logo=sass&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black) ![PHP](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white) ![SQL](https://img.shields.io/badge/SQL-336791?style=for-the-badge&logoColor=white) ![Markdown](https://img.shields.io/badge/Markdown-000000?style=for-the-badge&logo=markdown&logoColor=white)
 
-FaithGuard is a **full-stack, responsive landing page** built with PHP, JS, SQL and SCSS. It delivers a clean web presence and a simple development workflow. Customize styles, add assets, and deploy in seconds.
+FaithGuard is a **full-stack, responsive web application** built with PHP, JS, SQL and SCSS. It delivers a clean web presence and a simple development workflow. Customize styles, add assets, and deploy in seconds.
 
 ## 🎯 Features
 

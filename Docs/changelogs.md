@@ -92,6 +92,8 @@ All notable changes to this project will be documented in this file.
 - Update hover color for footer links to improve accessibility and consistency.
 - Enhance logout functionality and improve user feedback in `auth.js`.
 - Update navigation links and dropdowns for user profile and admin dashboard.
+- Update README to reflect application type and improve resource rendering in `resources.js`.
+- Enhance user dropdown display in `index.php`.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.

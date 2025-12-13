@@ -7,23 +7,23 @@ const filterSelect = document.querySelector('.c-resources__filter');
 // #region ***  Callback-Visualisation - show___         ***********
 const showResources = (resources) => {
 	// Check if the container exists
-	if (!resourcesListContainer) {
+	if (!resourcesList) {
 		console.error('Resource list container not found.');
 		return;
 	}
 
-	// FIXED: Using backticks (`) for template literals and using the container reference
-	resourcesListContainer.innerHTML = resources
+	// Render resources as cards
+	resourcesList.innerHTML = resources
 		.map(
 			(r) => `
-            <div class="card c-card mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">${r.title}</h5>
-                    <p class="card-text">${r.content}</p>
-                    <span class="badge c-card__badge c-card__badge--tag">${r.tags}</span>
-                </div>
-            </div>
-        `
+				<div class="card c-card mb-3">
+					<div class="card-body">
+						<h5 class="card-title">${r.title}</h5>
+						<p class="card-text">${r.content}</p>
+						<span class="badge c-card__badge c-card__badge--tag">${r.tags}</span>
+					</div>
+				</div>
+			`
 		)
 		.join('');
 };
@@ -38,7 +38,6 @@ const getResources = (query = '', tag = '') => {
 	fetch(url)
 		.then((response) => {
 			if (!response.ok) {
-				// Added better error handling for API call status
 				throw new Error('API failed with status: ' + response.status);
 			}
 			return response.json();
@@ -46,8 +45,8 @@ const getResources = (query = '', tag = '') => {
 		.then(showResources)
 		.catch((error) => {
 			console.error('Error fetching resources:', error);
-			if (resourcesListContainer) {
-				resourcesListContainer.innerHTML = '<p class="text-danger">Failed to load resources. Check console for details.</p>';
+			if (resourcesList) {
+				resourcesList.innerHTML = '<p class="text-danger">Failed to load resources. Check console for details.</p>';
 			}
 		});
 };
@@ -57,17 +56,17 @@ const getResources = (query = '', tag = '') => {
 const listenToSearch = () => {
 	// Added null checks for safety since elements might not exist on all pages
 	if (searchInput) {
-		searchInput.addEventListener('input', () => getResources(searchInput.value, filterSelect.value));
+		searchInput.addEventListener('input', () => getResources(searchInput.value, filterSelect ? filterSelect.value : ''));
 	}
 	if (filterSelect) {
-		filterSelect.addEventListener('change', () => getResources(searchInput.value, filterSelect.value));
+		filterSelect.addEventListener('change', () => getResources(searchInput ? searchInput.value : '', filterSelect.value));
 	}
 };
 // #endregion
 
 // #region ***  Init / DOMContentLoaded                  ***********
 const initResources = () => {
-	if (searchInput || resourcesListContainer) {
+	if (resourcesList) {
 		getResources();
 		listenToSearch();
 	}
