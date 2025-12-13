@@ -18,6 +18,7 @@ All notable changes to this project will be documented in this file.
 - Implement grid layout for admin profile page and add new sections for legal updates and upcoming features.
 - Moderation and policies pages.
 - Enhance registration process with error logging and simplify API call in `auth.js`.
+- refactor admin profile layout to improve responsiveness and structure in `main.scss` and `main.css`.
 
 ### Changed
 - `README.md` file got a professional make-over.
