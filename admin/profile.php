@@ -5,9 +5,9 @@
     require_once __DIR__ . "/../api/helper/debug.php";
 
     session_set_cookie_params([
-        'lifetime' => 86400, // 1 day
+        'lifetime' => 302400, // 3.5 days (84 hours)
         'path'     => '/',
-        'domain'   => $_SERVER['HTTP_HOST'] ?? '',
+        'domain'   => $_SERVER['SERVER_NAME'] ?? '',
         'secure'   => true,
         'httponly' => true,
     ]);

@@ -97,6 +97,7 @@ All notable changes to this project will be documented in this file.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.
+- Update session cookie parameters for improved security and consistency across profile pages.
 
 
 ## [0.1.3-beta] - 2025-12-06
