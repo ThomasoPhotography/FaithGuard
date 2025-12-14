@@ -96,6 +96,7 @@ All notable changes to this project will be documented in this file.
 - Enhance user dropdown display in `index.php`.
 - Improve user profile layout and add null user variable for consistency.
 - Adjust badge styles for better visibility.
+- Update image source path for logo in user and admin profile pages for consistency.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.
