@@ -84,9 +84,9 @@ CREATE TABLE `policies` (
 --
 
 INSERT INTO `policies` (`id`, `title`, `slug`, `content`, `version`, `created_by`, `created_at`, `updated_at`) VALUES
-(1, 'Privacy Policy', 'privacy-policy', '<h1>Privacy Policy</h1><p>Content here.</p>', '1.0', 1, '2025-12-11 19:14:00', '2025-12-11 19:14:00'),
-(2, 'Terms of Service', 'terms-of-service', '<h1>Terms of Service</h1><p>Content here.</p>', '1.0', 1, '2025-12-11 19:14:00', '2025-12-11 19:14:00'),
-(3, 'Community Guidelines', 'community-guidelines', '<h1>Community Guidelines</h1><p>Content here.</p>', '1.0', 1, '2025-12-11 19:14:00', '2025-12-11 19:14:00');
+(1, 'Privacy Policy', 'privacy', '<h1>Privacy Policy</h1><p>Content here.</p>', '1.0', 1, '2025-12-11 19:14:00', '2025-12-11 19:14:00'),
+(2, 'Terms of Service', 'ToS', '<h1>Terms of Service</h1><p>Content here.</p>', '1.0', 1, '2025-12-11 19:14:00', '2025-12-11 19:14:00'),
+(3, 'Cookie Policy', 'cookie', '<h1>Cookie Policy</h1><p>Content here.</p>', '1.0', 1, '2025-12-11 19:14:00', '2025-12-11 19:14:00');
 
 -- --------------------------------------------------------
 

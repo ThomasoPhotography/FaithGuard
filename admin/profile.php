@@ -50,9 +50,9 @@
     $resourceCount = count($allResources);
 
     // --- Legal texts ---
-    $tosText     = 'Terms of Service text fetched successfully and rendered here.';
-    $privacyText = 'Privacy Policy content fetched successfully and rendered here.';
-    $cookieText  = 'Cookie Policy content fetched successfully and rendered here.';
+    $tosText     = FaithGuardRepository::getPolicyBySlug('ToS');
+    $privacyText = FaithGuardRepository::getPolicyBySlug('privacy');
+    $cookieText  = FaithGuardRepository::getPolicyBySlug('cookie');
 
     // --- Recent messages ---
     if (isset($_SESSION['user_id'])) {
@@ -174,7 +174,7 @@
         </div>
     </nav>
     <!-- Main -->
-<main class="c-main container my-5">
+    <main class="c-main container my-5">
         <section class="c-admin__profile">
             <div class="c-admin__item c-admin__item--1">
                 <h2 class="c-profile__title">Admin Dashboard</h2>
@@ -189,7 +189,7 @@
                             <?php if (! empty($reports)): ?>
                                 <?php foreach ($reports as $report): ?>
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        Post ID:                                                                                                                                                 <?php echo htmlspecialchars($report['post_id']); ?> - Reason:<?php echo htmlspecialchars($report['reason']); ?>
+                                        Post ID:                                                                                                                                                                                                 <?php echo htmlspecialchars($report['post_id']); ?> - Reason:<?php echo htmlspecialchars($report['reason']); ?>
                                         <button class="btn btn-sm c-btn c-btn__outline">Review</button>
                                     </li>
                                 <?php endforeach; ?>
@@ -282,7 +282,7 @@
                                 <?php foreach ($recentMessages as $message): ?>
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <?php echo date('H:i', strtotime($message['created_at'])); ?>: "<?php echo htmlspecialchars(substr($message['content'], 0, 30)); ?>..."
-                                        <span class="badge bg-secondary">To:                                                                                                                                                                                                                                     <?php echo htmlspecialchars($message['receiver_id']); ?></span>
+                                        <span class="badge bg-secondary">To:                                                                                                                                                                                                                                                                                                                 <?php echo htmlspecialchars($message['receiver_id']); ?></span>
                                     </li>
                                 <?php endforeach; ?>
                             <?php else: ?>
