@@ -99,6 +99,7 @@ All notable changes to this project will be documented in this file.
 - Update image source path for logo in user and admin profile pages for consistency.
 - Update logo link in user and admin profile pages for consistent navigation.
 - Standardize formatting in admin profile styles for improved readability.
+- Refactor admin profile layout for improved organization and readability; update class names for consistency.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.
