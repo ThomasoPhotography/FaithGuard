@@ -588,17 +588,16 @@ a {
 }
 
 .c-admin {
-    &__profile {
-        display: block; 
-        
-        @media (min-width: 992px) {
-            display: grid;
-            grid-template-columns: repeat(9, 1fr);
-            grid-template-rows: repeat(8, auto);
-            gap: 1.5rem;
-        }
-    }
-
+	&__profile {
+		display: block;
+		
+		@media (min-width: 992px) {
+			display: grid;
+			grid-template-columns: repeat(9, 1fr);
+			grid-template-rows: repeat(8, auto);
+			gap: 1.5rem;
+		}
+	}
     &__item {
         margin-bottom: 1.5rem;
         
