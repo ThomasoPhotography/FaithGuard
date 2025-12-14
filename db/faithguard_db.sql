@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: com-linweb938.srv.combell-ops.net:3306
--- Generation Time: Dec 11, 2025 at 08:39 PM
+-- Generation Time: Dec 14, 2025 at 10:34 PM
 -- Server version: 8.0.36-28
 -- PHP Version: 7.4.33
 
@@ -84,9 +84,9 @@ CREATE TABLE `policies` (
 --
 
 INSERT INTO `policies` (`id`, `title`, `slug`, `content`, `version`, `created_by`, `created_at`, `updated_at`) VALUES
-(1, 'Privacy Policy', 'privacy', '<h1>Privacy Policy</h1><p>Content here.</p>', '1.0', 1, '2025-12-11 19:14:00', '2025-12-11 19:14:00'),
-(2, 'Terms of Service', 'ToS', '<h1>Terms of Service</h1><p>Content here.</p>', '1.0', 1, '2025-12-11 19:14:00', '2025-12-11 19:14:00'),
-(3, 'Cookie Policy', 'cookie', '<h1>Cookie Policy</h1><p>Content here.</p>', '1.0', 1, '2025-12-11 19:14:00', '2025-12-11 19:14:00');
+(1, 'Privacy Policy', 'privacy', '<h1>Privacy Policy</h1><p>Content here.</p>', '1.0', 1, '2025-12-11 19:14:00', '2025-12-14 22:15:43'),
+(2, 'Terms of Service', 'ToS', '<h1>Terms of Service</h1><p>Content here.</p>', '1.0', 1, '2025-12-11 19:14:00', '2025-12-14 22:16:16'),
+(3, 'Cookie Policy', 'cookie', '<h1>Cookie Policy</h1><p>Content here.</p>', '1.0', 1, '2025-12-11 19:14:00', '2025-12-14 22:19:36');
 
 -- --------------------------------------------------------
 
