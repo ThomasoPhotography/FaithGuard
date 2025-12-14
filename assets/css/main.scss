@@ -888,21 +888,27 @@ a {
 	}
 
 	&__badge {
-		padding: 0.5rem 1rem;
-		border-radius: 2rem;
+		padding: 0.25rem 0.75rem; /* Smaller padding for tags */
+        border-radius: 2rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        display: inline-block;
+        margin-right: 0.5rem;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
 
-		&--Beginner {
-			background-color: $beginner;
-			color: $text-light;
-		}
-		&--Intermediate {
-			background-color: $intermediate;
-			color: $text-light;
-		}
-		&--Advanced {
-			background-color: $advanced;
-			color: $text-light;
-		}
+        /* Default Tag Style */
+        &--tag {
+            background-color: lighten($secondary-bg, 10%); 
+            color: $text-light;
+            border: 1px solid $accent;
+            
+            &:hover {
+                background-color: $accent;
+                cursor: default; /* Or pointer if clickable */
+            }
+        }
 	}
 }
 

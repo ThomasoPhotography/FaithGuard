@@ -854,20 +854,25 @@ a:hover {
   }
 }
 .c-card__badge {
-  padding: 0.5rem 1rem;
+  padding: 0.25rem 0.75rem; /* Smaller padding for tags */
   border-radius: 2rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: inline-block;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  /* Default Tag Style */
 }
-.c-card__badge--Beginner {
-  background-color: #0b4a14;
+.c-card__badge--tag {
+  background-color: rgb(129.3333333333, 89.3333333333, 74.6666666667);
   color: #f5f5dc;
+  border: 1px solid #5c352c;
 }
-.c-card__badge--Intermediate {
-  background-color: #ba6f0e;
-  color: #f5f5dc;
-}
-.c-card__badge--Advanced {
-  background-color: #750716;
-  color: #f5f5dc;
+.c-card__badge--tag:hover {
+  background-color: #5c352c;
+  cursor: default; /* Or pointer if clickable */
 }
 
 .c-footer {

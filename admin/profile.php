@@ -19,6 +19,7 @@
     $user_data    = null;
     $accountName  = 'admin';
     $profile_link = '';
+    $user         = null;
 
     if ($is_logged_in && isset($_SESSION['user_id'])) {
         $user_data = FaithGuardRepository::getUserById($_SESSION['user_id']);
@@ -184,10 +185,10 @@
                             <h5 class="card-title">Flagged/Reported Posts (<?php echo count($reports); ?> Pending)</h5>
                             <p class="card-text">Preview and moderate reported community posts to maintain a safe, faith-focused environment.</p>
                             <ul class="list-group list-group-flush">
-                                <?php if (!empty($reports)): ?>
+                                <?php if (! empty($reports)): ?>
                                     <?php foreach ($reports as $report): ?>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            Post ID: <?php echo htmlspecialchars($report['post_id']); ?> - Reason: <?php echo htmlspecialchars($report['reason']); ?>
+                                            Post ID:                                                     <?php echo htmlspecialchars($report['post_id']); ?> - Reason:<?php echo htmlspecialchars($report['reason']); ?>
                                             <button class="btn btn-sm btn-danger">Review</button>
                                         </li>
                                     <?php endforeach; ?>
@@ -201,7 +202,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- div2: Resource Management -->
                 <div class="col-md-6 col-12 mb-4">
                     <!-- Removed custom grid class div2__admin -->
@@ -215,14 +216,14 @@
                                 <textarea name="content" class="form-control mb-2" placeholder="Content" rows="2" required></textarea>
                                 <button type="submit" class="btn btn-success">Create Resource</button>
                             </form>
-                            <p><strong>Total Resources:</strong> <?php echo $resourceCount; ?></p>
+                            <p><strong>Total Resources:</strong>                                                                 <?php echo $resourceCount; ?></p>
                         </div>
                         <div class="card-footer">
                             <a href="../resources/list.php" class="btn btn-secondary">Manage All Resources</a>
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- div3: Legal & Policy Updates -->
                 <div class="col-md-6 col-12 mb-4">
                     <!-- Removed custom grid class div3__admin -->
@@ -230,14 +231,14 @@
                         <div class="card-body">
                             <h5 class="card-title">Legal & Policy Updates</h5>
                             <p class="card-text">Update Terms of Service and Privacy Policy to ensure compliance and user trust.</p>
-                            
+
                             <!-- ToS Form -->
                             <form class="mb-3" action="../admin/legal.php" method="POST">
                                 <label for="tos">Terms of Service</label>
                                 <textarea name="tos_content" id="tos" class="form-control mb-2" rows="3"><?php echo htmlspecialchars($tosText); ?></textarea>
                                 <button type="submit" name="update_tos" class="btn btn-warning">Update ToS</button>
                             </form>
-                            
+
                             <!-- Privacy Form -->
                             <form action="../admin/legal.php" method="POST">
                                 <label for="privacy">Privacy Policy</label>
@@ -247,7 +248,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- div4: Admin Message Box (Recent Activity) -->
                 <div class="col-md-6 col-12 mb-4">
                     <!-- Removed custom grid class div4__admin -->
@@ -255,13 +256,13 @@
                         <div class="card-body">
                             <h5 class="card-title">Recent Admin Messages</h5>
                             <p class="card-text">Quickly view the last few messages sent by you (the admin).</p>
-                            
+
                             <ul class="list-group list-group-flush">
-                                <?php if (!empty($recentMessages)): ?>
+                                <?php if (! empty($recentMessages)): ?>
                                     <?php foreach ($recentMessages as $message): ?>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             <?php echo date('H:i', strtotime($message['created_at'])); ?>: "<?php echo htmlspecialchars(substr($message['content'], 0, 30)); ?>..."
-                                            <span class="badge bg-secondary">To: <?php echo htmlspecialchars($message['receiver_id']); ?></span>
+                                            <span class="badge bg-secondary">To:                                                                                 <?php echo htmlspecialchars($message['receiver_id']); ?></span>
                                         </li>
                                     <?php endforeach; ?>
                                 <?php else: ?>

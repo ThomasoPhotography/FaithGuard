@@ -19,6 +19,7 @@
     $user_data    = null;
     $accountName  = '';
     $profile_link = '';
+    $user         = null;
     if ($is_logged_in && isset($_SESSION['user_id'])) {
         $user_data = FaithGuardRepository::getUserById($_SESSION['user_id']);
         if ($user_data) {
@@ -169,7 +170,7 @@
     </nav>
     <!-- Main -->
     <main class="c-main container my-5">
-        <h2 class="c-main__title">Welcome Back,                                                                                                                                                                                             <?php echo $accountName; ?></h2>
+        <h2 class="c-main__title">Welcome Back,                                                                                                                                                                                                                                            <?php echo $accountName; ?></h2>
         <p class="text-muted">This is your personal dashboard for tracking progress and accessing core tools.</p>
 
         <section class="c-profile c-profile__users row">

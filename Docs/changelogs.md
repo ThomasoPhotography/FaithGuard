@@ -94,6 +94,8 @@ All notable changes to this project will be documented in this file.
 - Update navigation links and dropdowns for user profile and admin dashboard.
 - Update README to reflect application type and improve resource rendering in `resources.js`.
 - Enhance user dropdown display in `index.php`.
+- Improve user profile layout and add null user variable for consistency.
+- Adjust badge styles for better visibility.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.
