@@ -50,19 +50,18 @@
     $resourceCount = count($allResources);
 
     // --- Legal texts ---
-    $tosText = FaithGuardRepository::getAllPolicies('Tos');
-if (is_array($tosText)) {
-    $tosText = $tosText['content'] ?? 'Policy content not available.';
-}
-$privacyText = FaithGuardRepository::getAllPolicies('privacy');
-if (is_array($privacyText)) {
-    $privacyText = $privacyText['content'] ?? 'Policy content not available.';
-}
-$cookieText = FaithGuardRepository::getAllPolicies('cookie');
-if (is_array($cookieText)) {
-    $cookieText = $cookieText['content'] ?? 'Policy content not available.';
-}
-
+    $tosText = FaithGuardRepository::getPolicyContent('ToS');
+    if (!$tosText) {
+        $tosText = 'Policy content not available.';
+    }
+    $privacyText = FaithGuardRepository::getPolicyContent('privacy');
+    if (!$privacyText) {
+        $privacyText = 'Policy content not available.';
+    }
+    $cookieText = FaithGuardRepository::getPolicyContent('cookie');
+    if (!$cookieText) {
+        $cookieText = 'Policy content not available.';
+    }
     // --- Recent messages ---
     if (isset($_SESSION['user_id'])) {
         $recentMessages = FaithGuardRepository::getMessagesByUserId($_SESSION['user_id']);

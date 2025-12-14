@@ -392,19 +392,18 @@ class FaithGuardRepository
     {
         return Database::getSingleRow("SELECT * FROM policies WHERE id = ?", [$id]);
     }
+    public static function getPolicyContent($type)
+    {
+        $result = Database::getSingleRow("SELECT content FROM policies WHERE type = ?", [$type]);
+        return $result ? $result['content'] : null; // Return content or null if not found
+    }
     public static function createPolicy($title, $slug, $content, $version, $createdBy)
     {
-        return Database::execute(
-            "INSERT INTO policies (title, slug, content, version, created_by) VALUES (?, ?, ?, ?, ?)",
-            [$title, $slug, $content, $version, $createdBy]
-        );
+        return Database::execute("INSERT INTO policies (title, slug, content, version, created_by) VALUES (?, ?, ?, ?, ?)", [$title, $slug, $content, $version, $createdBy]);
     }
     public static function updatePolicy($id, $title, $slug, $content, $version)
     {
-        return Database::execute(
-            "UPDATE policies SET title = ?, slug = ?, content = ?, version = ? WHERE id = ?",
-            [$title, $slug, $content, $version, $id]
-        );
+        return Database::execute("UPDATE policies SET title = ?, slug = ?, content = ?, version = ? WHERE id = ?", [$title, $slug, $content, $version, $id]);
     }
     public static function deletePolicy($id)
     {

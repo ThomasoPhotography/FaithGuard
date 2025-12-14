@@ -20,6 +20,7 @@ All notable changes to this project will be documented in this file.
 - Enhance registration process with error logging and simplify API call in `auth.js`.
 - Refactor admin profile layout to improve responsiveness and structure in `main.scss` and `main.css`.
 - Restructure admin profile layout for improved organization and responsiveness in `admin/profile.php`.
+- Method to retrieve policy content by type.
 
 ### Changed
 - `README.md` file got a professional make-over.
@@ -105,6 +106,7 @@ All notable changes to this project will be documented in this file.
 - Update policy text retrieval to use new database structure; adjust policy slugs for consistency.
 - Improve spacing for better readability in report and message display sections.
 - Update policy text retrieval to use new method; ensure content availability check.
+- Streamline policy creation and update queries.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.
