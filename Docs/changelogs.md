@@ -97,6 +97,7 @@ All notable changes to this project will be documented in this file.
 - Improve user profile layout and add null user variable for consistency.
 - Adjust badge styles for better visibility.
 - Update image source path for logo in user and admin profile pages for consistency.
+- Update logo link in user and admin profile pages for consistent navigation.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.
