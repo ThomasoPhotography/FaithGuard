@@ -103,6 +103,7 @@ All notable changes to this project will be documented in this file.
 - Add cookie policy text variable and update related form.
 - Improve spacing for better readability.
 - Update policy text retrieval to use new database structure; adjust policy slugs for consistency.
+- Improve spacing for better readability in report and message display sections.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.
