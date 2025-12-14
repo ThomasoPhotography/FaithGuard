@@ -52,6 +52,7 @@
     // --- Legal texts ---
     $tosText     = 'Terms of Service text fetched successfully and rendered here.';
     $privacyText = 'Privacy Policy content fetched successfully and rendered here.';
+    $cookieText  = 'Cookie Policy content fetched successfully and rendered here.';
 
     // --- Recent messages ---
     if (isset($_SESSION['user_id'])) {
@@ -188,7 +189,7 @@
                             <?php if (! empty($reports)): ?>
                                 <?php foreach ($reports as $report): ?>
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        Post ID:                                                 <?php echo htmlspecialchars($report['post_id']); ?> - Reason:<?php echo htmlspecialchars($report['reason']); ?>
+                                        Post ID:                                                                                                                                                 <?php echo htmlspecialchars($report['post_id']); ?> - Reason:<?php echo htmlspecialchars($report['reason']); ?>
                                         <button class="btn btn-sm c-btn c-btn__outline">Review</button>
                                     </li>
                                 <?php endforeach; ?>
@@ -214,7 +215,10 @@
                             <textarea name="content" class="form-control mb-2" placeholder="Content" rows="2" required></textarea>
                             <button type="submit" class="btn c-btn c-btn__create">Create Resource</button>
                         </form>
-                        <p><strong>Total Resources:</strong>                                                             <?php echo $resourceCount; ?></p>
+                        <p>
+                            <strong>Total Resources:</strong>
+                            <?php echo $resourceCount; ?>
+                        </p>
                     </div>
                     <div class="card-footer">
                         <a href="../resources/list.php" class="btn c-btn c-btn__dashboard">Manage All Resources</a>
@@ -261,7 +265,7 @@
                         <!-- Cookie Form -->
                         <form action="../admin/legal.php" method="POST">
                             <label for="cookie">Cookie Policy</label>
-                            <textarea name="cookie_content" id="cookie" class="form-control mb-2" rows="3"><?php echo htmlspecialchars($privacyText); ?></textarea>
+                            <textarea name="cookie_content" id="cookie" class="form-control mb-2" rows="3"><?php echo htmlspecialchars($cookieText); ?></textarea>
                             <button type="submit" name="update_cookie" class="btn c-btn c-btn__dashboard">Update Cookie</button>
                         </form>
                     </div>
@@ -278,7 +282,7 @@
                                 <?php foreach ($recentMessages as $message): ?>
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <?php echo date('H:i', strtotime($message['created_at'])); ?>: "<?php echo htmlspecialchars(substr($message['content'], 0, 30)); ?>..."
-                                        <span class="badge bg-secondary">To:                                                                             <?php echo htmlspecialchars($message['receiver_id']); ?></span>
+                                        <span class="badge bg-secondary">To:                                                                                                                                                                                                                                     <?php echo htmlspecialchars($message['receiver_id']); ?></span>
                                     </li>
                                 <?php endforeach; ?>
                             <?php else: ?>
