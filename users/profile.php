@@ -15,30 +15,34 @@
 
     // --- INITIALIZE VARIABLES ---
     $is_logged_in = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
-    $user_role    = 'user';
-    $user_data    = null;
-    $accountName  = '';
-    $profile_link = '';
-    $user         = null;
+
+    // --- CRITICAL FIX: Define user variables needed for navigation bar ---
+    $user        = null;
+    $accountName = '';
+    $user_role   = 'user';
+    $user_data   = null;
+    $userId      = $_SESSION['user_id'] ?? null;
+    $user_link    = '';
+
     if ($is_logged_in && isset($_SESSION['user_id'])) {
+        // Fetch user data using the repository method
         $user_data = FaithGuardRepository::getUserById($_SESSION['user_id']);
+
         if ($user_data) {
-            $user_role   = $user_data['role'] ?? 'user';
+            $user = true;
+            // Assuming your 'users' table has a 'name' or 'email' column and a 'role' column
             $accountName = htmlspecialchars($user_data['name'] ?? $user_data['email']);
-            // Set Role-Based Profile Link (Correct for this file location)
-            if ($user_role === 'admin') {
-                $profile_link = 'api/admin/profile.php';
-            } else {
-                $profile_link = 'api/users/profile.php';
-            }
+            $user_role   = $user_data['role'] ?? 'user';
+            $user_link   = ($user_role === 'admin') ? '../admin/profile.php' : 'profile.php';
+        } else {
+            // Logged-in session exists, but user not found in DB (session cleanup needed)
+            unset($_SESSION['user_id']);
+            unset($_SESSION['logged_in']);
+            $is_logged_in = false;
+            header("Location: ../api/auth/register.php");
+            exit();
         }
     }
-    if (! $is_logged_in || $user_role !== 'user' || ! $user_data) {
-        header('Location: ../index.php');
-        exit;
-    }
-    // --- Fetch $userId from session ---
-    $userId = $_SESSION['user_id'];
 
     // --- Fetch Dynamic Data for Dashboard DIVs ---
     //Progress Log (Recent Check-ins)

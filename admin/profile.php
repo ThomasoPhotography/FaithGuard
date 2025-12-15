@@ -15,30 +15,33 @@
 
     // --- INITIALIZE VARIABLES ---
     $is_logged_in = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
-    $user_role    = 'admin';
-    $user_data    = null;
-    $accountName  = 'admin';
-    $profile_link = '';
-    $user         = '';
+
+    // --- CRITICAL FIX: Define user variables needed for navigation bar ---
+    $user        = null;
+    $accountName = '';
+    $user_role   = 'admin';
+    $user_data   = null;
+    $userId      = $_SESSION['user_id'] ?? null;
+    $user_link    = '';
 
     if ($is_logged_in && isset($_SESSION['user_id'])) {
+        // Fetch user data using the repository method
         $user_data = FaithGuardRepository::getUserById($_SESSION['user_id']);
+
         if ($user_data) {
-            $user_role   = $user_data['role'] ?? 'user';
+            $user = true;
+            // Assuming your 'users' table has a 'name' or 'email' column and a 'role' column
             $accountName = htmlspecialchars($user_data['name'] ?? $user_data['email']);
-
-            // Set Role-Based Profile Link (Correct for this file location)
-            if ($user_role === 'admin') {
-                $profile_link = 'admin/profile.php';
-            } else {
-                $profile_link = 'users/profile.php';
-            }
+            $user_role   = $user_data['role'] ?? 'admin';
+            $user_link   = ($user_role === 'user') ? '../users/profile.php' : 'profile.php';
+        } else {
+            // Logged-in session exists, but user not found in DB (session cleanup needed)
+            unset($_SESSION['user_id']);
+            unset($_SESSION['logged_in']);
+            $is_logged_in = false;
+            header("Location: ../api/auth/register.php");
+            exit();
         }
-    }
-
-    if (! $is_logged_in || $user_role !== 'admin' || ! $user_data) {
-        header('Location: ../index.php');
-        exit;
     }
 
     // --- Fetch Dynamic Data ---
@@ -99,8 +102,8 @@
     <nav class="navbar navbar-expand-lg navbar-light c-nav">
         <div class="container-fluid">
             <!-- LEFT SIDE: LOGO + BRAND -->
-            <a class="navbar-brand c-nav__brand" href="../index.php">
-                <img src="../assets/uploads/FaithGuard_Primary_Logo.svg" alt="FaithGuard Logo" class="c-nav__logo">
+            <a class="navbar-brand c-nav__brand" href="index.php">
+                <img src="assets/uploads/FaithGuard_Primary_Logo.svg" alt="FaithGuard Logo" class="c-nav__logo">
             </a>
             <button class="navbar-toggler c-nav__toggler c-nav__toggler--btn" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -126,8 +129,7 @@
                 <div class="d-flex dropdown c-dropdown">
                     <button class="btn c-btn c-dropdown__btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="c-dropdown__icon bi bi-person-check me-1"></i>
-                        <span class="c-dropdown__text">Welcome<?php echo $accountName; ?></span>
-                    </button>
+                        <span class="c-dropdown__text">Welcome                                                                                                                             <?php echo $accountName; ?></span>                    </button>
                     <!-- LOGGED-IN DROPDOWN MENU -->
                     <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu" aria-labelledby="userDropdown">
                         <li>
