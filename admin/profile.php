@@ -141,7 +141,7 @@
                 <div class="d-flex dropdown c-dropdown">
                     <button class="btn c-btn c-dropdown__btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="c-dropdown__icon bi bi-person-check me-1"></i>
-                        <span class="c-dropdown__text">Welcome                                                                                                                                                                                                                                                                                                                                                                                     <?php echo $accountName; ?></span>                    </button>
+                        <span class="c-dropdown__text">Welcome                                                                                                                                                                                                                                                                                                                                                                                                                                                   <?php echo $accountName; ?></span>                    </button>
                     <!-- LOGGED-IN DROPDOWN MENU -->
                     <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu" aria-labelledby="userDropdown">
                         <li>
@@ -211,7 +211,7 @@
                             <?php if (! empty($reports)): ?>
                                 <?php foreach ($reports as $report): ?>
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        Post ID:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 <?php echo htmlspecialchars($report['post_id']); ?> - Reason:<?php echo htmlspecialchars($report['reason']); ?>
+                                        Post ID:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 <?php echo htmlspecialchars($report['post_id']); ?> - Reason:<?php echo htmlspecialchars($report['reason']); ?>
                                         <button class="btn btn-sm c-btn c-btn__outline">Review</button>
                                     </li>
                                 <?php endforeach; ?>
@@ -308,7 +308,7 @@
                         <p class="card-text">Update Cookie Policy to ensure compliance and user trust.</p>
                         <!-- Cookie Form -->
                         <form action="policies.php" method="POST">
-                            <input type="hidden" name="slug" value="cookie">
+                            <input type="hidden" name="slug" value="privacy">
                             <div class="mb-3">
                                 <label for="cookie_title">Title</label>
                                 <input type="text" name="content_title" id="cookie_title" class="form-control" value="
@@ -318,10 +318,10 @@
                             <div class="mb-3">
                                 <label for="cookie_text">Content</label>
                                 <textarea name="content_text" id="cookie_text" class="form-control" rows="3">
-                                <?php echo htmlspecialchars($cookieText); ?>
+                                    <?php echo htmlspecialchars($cookieText); ?>
                                 </textarea>
                             </div>
-                            <button type="submit" class="btn c-btn c-btn__dashboard">Update Cookie</button>
+                            <button type="submit" class="btn c-btn c-btn__dashboard">Update Privacy</button>
                         </form>
                     </div>
                 </div>
