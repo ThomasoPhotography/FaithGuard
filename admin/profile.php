@@ -50,7 +50,7 @@
     $resourceCount = count($allResources);
 
     // --- Legal texts ---
-    $tosText = FaithGuardRepository::getPolicyContent('ToS');
+    $tosText = FaithGuardRepository::getPolicyContent('terms');
     if (!$tosText) {
         $tosText = 'Policy content not available.';
     }

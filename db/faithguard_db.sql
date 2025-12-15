@@ -2,8 +2,8 @@
 -- version 5.2.2
 -- https://www.phpmyadmin.net/
 --
--- Host: com-linweb938.srv.combell-ops.net:3306
--- Generation Time: Dec 14, 2025 at 10:34 PM
+-- Host: ID483117_faithguard.db.webhosting.be
+-- Generation Time: Dec 15, 2025 at 05:56 PM
 -- Server version: 8.0.36-28
 -- PHP Version: 7.4.33
 
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `ID483117_faithguard`
 --
+CREATE DATABASE IF NOT EXISTS `ID483117_faithguard` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+USE `ID483117_faithguard`;
 
 -- --------------------------------------------------------
 
@@ -85,7 +87,7 @@ CREATE TABLE `policies` (
 
 INSERT INTO `policies` (`id`, `title`, `slug`, `content`, `version`, `created_by`, `created_at`, `updated_at`) VALUES
 (1, 'Privacy Policy', 'privacy', '<h1>Privacy Policy</h1><p>Content here.</p>', '1.0', 1, '2025-12-11 19:14:00', '2025-12-14 22:15:43'),
-(2, 'Terms of Service', 'ToS', '<h1>Terms of Service</h1><p>Content here.</p>', '1.0', 1, '2025-12-11 19:14:00', '2025-12-14 22:16:16'),
+(2, 'Terms of Service', 'terms', '<h1>Terms of Service</h1><p>Content here.</p>', '1.0', 1, '2025-12-11 19:14:00', '2025-12-15 17:52:52'),
 (3, 'Cookie Policy', 'cookie', '<h1>Cookie Policy</h1><p>Content here.</p>', '1.0', 1, '2025-12-11 19:14:00', '2025-12-14 22:19:36');
 
 -- --------------------------------------------------------

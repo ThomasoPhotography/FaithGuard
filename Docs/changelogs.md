@@ -108,6 +108,7 @@ All notable changes to this project will be documented in this file.
 - Update policy text retrieval to use new method; ensure content availability check.
 - Streamline policy creation and update queries.
 - Update generation time and timestamps for policy entries in database.
+- Update database connections.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.
