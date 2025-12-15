@@ -53,17 +53,29 @@
     $resourceCount = count($allResources);
 
     // --- Legal texts ---
-    $tosText = FaithGuardRepository::getPolicyContent('terms');
-    if (! $tosText) {
-        $tosText = 'Policy content not available.';
+    $tosPolicy = FaithGuardRepository::getPolicyContent('terms');
+    if (! $tosPolicy) {
+        $tosTitle = 'Terms of Service';
+        $tosText  = 'Policy content not available.';
+    } else {
+        $tosTitle = $tosPolicy ? $tosPolicy['content_title'] : 'Terms of Service';
+        $tosText  = $tosPolicy ? $tosPolicy['content_text'] : 'Policy content not available.';
     }
-    $privacyText = FaithGuardRepository::getPolicyContent('privacy');
-    if (! $privacyText) {
-        $privacyText = 'Policy content not available.';
+    $privacyPolicy = FaithGuardRepository::getPolicyContent('privacy');
+    if (! $privacyPolicy) {
+        $privacyTitle = 'Privacy Policy';
+        $privacyText  = 'Policy content not available.';
+    } else {
+        $privacyTitle = $privacyPolicy ? $privacyPolicy['content_title'] : 'Privacy Policy';
+        $privacyText  = $privacyPolicy ? $privacyPolicy['content_text'] : 'Policy content not available.';
     }
-    $cookieText = FaithGuardRepository::getPolicyContent('cookie');
-    if (! $cookieText) {
-        $cookieText = 'Policy content not available.';
+    $cookiePolicy = FaithGuardRepository::getPolicyContent('cookie');
+    if (! $cookiePolicy) {
+        $cookieTitle = 'Cookie Policy';
+        $cookieText  = 'Policy content not available.';
+    } else {
+        $cookieTitle = $cookiePolicy ? $cookiePolicy['content_title'] : 'Cookie Policy';
+        $cookieText  = $cookiePolicy ? $cookiePolicy['content_text'] : 'Policy content not available.';
     }
     // --- Recent messages ---
     if (isset($_SESSION['user_id'])) {
@@ -102,7 +114,7 @@
     <nav class="navbar navbar-expand-lg navbar-light c-nav">
         <div class="container-fluid">
             <!-- LEFT SIDE: LOGO + BRAND -->
-            <a class="navbar-brand c-nav__brand" href="index.php">
+            <a class="navbar-brand c-nav__brand" href="../index.php">
                 <img src="../assets/uploads/FaithGuard_Primary_Logo.svg" alt="FaithGuard Logo" class="c-nav__logo">
             </a>
             <button class="navbar-toggler c-nav__toggler c-nav__toggler--btn" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -129,7 +141,7 @@
                 <div class="d-flex dropdown c-dropdown">
                     <button class="btn c-btn c-dropdown__btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="c-dropdown__icon bi bi-person-check me-1"></i>
-                        <span class="c-dropdown__text">Welcome                                                                                                                                                                                                                                                         <?php echo $accountName; ?></span>                    </button>
+                        <span class="c-dropdown__text">Welcome                                                                                                                                                                                                                                                                                                                                                                                     <?php echo $accountName; ?></span>                    </button>
                     <!-- LOGGED-IN DROPDOWN MENU -->
                     <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu" aria-labelledby="userDropdown">
                         <li>
@@ -199,7 +211,7 @@
                             <?php if (! empty($reports)): ?>
                                 <?php foreach ($reports as $report): ?>
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        Post ID:                                                                                                                                                                                                                                                                                                                                                                                                 <?php echo htmlspecialchars($report['post_id']); ?> - Reason:<?php echo htmlspecialchars($report['reason']); ?>
+                                        Post ID:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 <?php echo htmlspecialchars($report['post_id']); ?> - Reason:<?php echo htmlspecialchars($report['reason']); ?>
                                         <button class="btn btn-sm c-btn c-btn__outline">Review</button>
                                     </li>
                                 <?php endforeach; ?>
@@ -245,10 +257,18 @@
                         <!-- ToS Form -->
                         <form action="policies.php" method="POST">
                             <input type="hidden" name="slug" value="terms">
-                            <label for="tos">Terms of Service</label>
-                            <textarea name="content" id="tos" class="form-control mb-2" rows="3">
-                                <?php echo htmlspecialchars($tosText); ?>
-                            </textarea>
+                            <div class="mb-3">
+                                <label for="tos_title">Title</label>
+                                <input type="text" name="content_title" id="tos_title" class="form-control" value="
+                                    <?php echo htmlspecialchars($tosTitle); ?>
+                                ">
+                            </div>
+                            <div class="mb-3">
+                                <label for="tos_text">Content</label>
+                                <textarea name="content_text" id="tos_text" class="form-control" rows="3">
+                                    <?php echo htmlspecialchars($tosText); ?>
+                                </textarea>
+                            </div>
                             <button type="submit" class="btn c-btn c-btn__dashboard">Update ToS</button>
                         </form>
                     </div>
@@ -263,10 +283,18 @@
                         <!-- Privacy Form -->
                         <form action="policies.php" method="POST">
                             <input type="hidden" name="slug" value="privacy">
-                            <label for="privacy">Privacy Policy</label>
-                            <textarea name="content" id="privacy" class="form-control mb-2" rows="3">
-                                <?php echo htmlspecialchars($privacyText); ?>
-                            </textarea>
+                            <div class="mb-3">
+                                <label for="privacy_title">Title</label>
+                                <input type="text" name="content_title" id="privacy_title" class="form-control" value="
+                                <?php echo htmlspecialchars($privacyTitle); ?>
+                                ">
+                            </div>
+                            <div class="mb-3">
+                                <label for="privacy_text">Content</label>
+                                <textarea name="content_text" id="privacy_text" class="form-control" rows="3">
+                                    <?php echo htmlspecialchars($privacyText); ?>
+                                </textarea>
+                            </div>
                             <button type="submit" class="btn c-btn c-btn__dashboard">Update Privacy</button>
                         </form>
                     </div>
@@ -279,10 +307,21 @@
                         <h5 class="card-title">Cookie Updates</h5>
                         <p class="card-text">Update Cookie Policy to ensure compliance and user trust.</p>
                         <!-- Cookie Form -->
-                        <form action="../admin/policies.php#cookie" method="POST">
-                            <label for="cookie">Cookie Policy</label>
-                            <textarea name="cookie_content" id="cookie" class="form-control mb-2" rows="3"><?php echo htmlspecialchars($cookieText); ?></textarea>
-                            <button type="submit" name="update_cookie" class="btn c-btn c-btn__dashboard">Update Cookie</button>
+                        <form action="policies.php" method="POST">
+                            <input type="hidden" name="slug" value="cookie">
+                            <div class="mb-3">
+                                <label for="cookie_title">Title</label>
+                                <input type="text" name="content_title" id="cookie_title" class="form-control" value="
+                                <?php echo htmlspecialchars($cookieTitle); ?>
+                                ">
+                            </div>
+                            <div class="mb-3">
+                                <label for="cookie_text">Content</label>
+                                <textarea name="content_text" id="cookie_text" class="form-control" rows="3">
+                                <?php echo htmlspecialchars($cookieText); ?>
+                                </textarea>
+                            </div>
+                            <button type="submit" class="btn c-btn c-btn__dashboard">Update Cookie</button>
                         </form>
                     </div>
                 </div>

@@ -394,16 +394,16 @@ class FaithGuardRepository
     }
     public static function getPolicyContent($slug)
     {
-        $result = Database::getSingleRow("SELECT content FROM policies WHERE slug = ?", [$slug]);
-        return $result ? $result['content'] : null; // Return content or null if not found
+        $result = Database::getSingleRow("SELECT content_title, content_text FROM policies WHERE slug = ?", [$slug]);
+        return $result ? $result : null;
     }
-    public static function createPolicy($title, $slug, $content, $version, $createdBy)
+    public static function createPolicy($title, $slug, $contentTitle, $contentText, $version, $createdBy)
     {
-        return Database::execute("INSERT INTO policies (title, slug, content, version, created_by) VALUES (?, ?, ?, ?, ?)", [$title, $slug, $content, $version, $createdBy]);
+        return Database::execute("INSERT INTO policies (title, slug, content_title, content_text, version, created_by) VALUES (?, ?, ?, ?, ?, ?)", [$title, $slug, $contentTitle, $contentText, $version, $createdBy]);
     }
-    public static function updatePolicy($id, $title, $slug, $content, $version)
+    public static function updatePolicy($id, $title, $slug, $contentTitle, $contentText, $version)
     {
-        return Database::execute("UPDATE policies SET title = ?, slug = ?, content = ?, version = ? WHERE id = ?", [$title, $slug, $content, $version, $id]);
+        return Database::execute("UPDATE policies SET title = ?, slug = ?, content_title = ?, content_text = ?, version = ? WHERE id = ?", [$title, $slug, $contentTitle, $contentText, $version, $id]);
     }
     public static function deletePolicy($id)
     {

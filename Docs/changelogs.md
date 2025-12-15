@@ -112,6 +112,7 @@ All notable changes to this project will be documented in this file.
 - Update database connections.
 - User types.
 - Role linking and logging in.
+- Updated the policy handling methods.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.

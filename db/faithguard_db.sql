@@ -71,24 +71,22 @@ CREATE TABLE `messages` (
 --
 
 CREATE TABLE `policies` (
-  `id` int NOT NULL,
-  `title` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `slug` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `content` longtext COLLATE utf8mb4_general_ci NOT NULL,
-  `version` varchar(20) COLLATE utf8mb4_general_ci DEFAULT '1.0',
-  `created_by` int NOT NULL,
-  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `title` VARCHAR(255) NOT NULL,
+  `slug` VARCHAR(255) NOT NULL,
+  `content_title` VARCHAR(255) NOT NULL,
+  `content_text` LONGTEXT NOT NULL,
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `slug` (`slug`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `policies`
 --
 
-INSERT INTO `policies` (`id`, `title`, `slug`, `content`, `version`, `created_by`, `created_at`, `updated_at`) VALUES
-(1, 'Privacy Policy', 'privacy', '<h1>Privacy Policy</h1><p>Content here.</p>', '1.0', 1, '2025-12-11 19:14:00', '2025-12-14 22:15:43'),
-(2, 'Terms of Service', 'terms', '<h1>Terms of Service</h1><p>Content here.</p>', '1.0', 1, '2025-12-11 19:14:00', '2025-12-15 17:52:52'),
-(3, 'Cookie Policy', 'cookie', '<h1>Cookie Policy</h1><p>Content here.</p>', '1.0', 1, '2025-12-11 19:14:00', '2025-12-14 22:19:36');
+INSERT INTO `policies` (`id`, `title`, `slug`, `content_title`, `content_text`, `created_at`, `updated_at`) VALUES ('1', 'Terms of Service', 'terms', 'Terms of Service', 'Policy content will show here.', '2025-12-15 21:01:44', CURRENT_TIMESTAMP), ('2', 'Privacy Policy', 'privacy', 'Privacy Policy', 'Policy content will show here.', '2025-12-15 21:01:44', CURRENT_TIMESTAMP), ('3', 'Cookie Policy', 'cookie', 'Cookie Policy', 'Policy content will show here.', '2025-12-15 21:01:44', CURRENT_TIMESTAMP);
 
 -- --------------------------------------------------------
 

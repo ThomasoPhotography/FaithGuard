@@ -17,16 +17,21 @@ if (!$user_data || $user_data['role'] !== 'admin') {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $slug = $_POST['slug'] ?? '';
-    $content = $_POST['content'] ?? '';
+    $content_text = $_POST['content_text'] ?? '';
 
-    if (in_array($slug, ['terms', 'privacy', 'cookie']) && !empty($content)) {
-        // Update the policy content
-        Database::execute("UPDATE policies SET content = ? WHERE slug = ?", [$content, $slug]);
-        // Redirect back with success
-        header('Location: profile.php?updated=' . $slug);
-        exit;
+    if (in_array($slug, ['terms', 'privacy', 'cookie']) && !empty($content_text)) {
+        // Get existing policy to preserve other fields
+        $existing = FaithGuardRepository::getPolicyBySlug($slug);
+        if ($existing) {
+            // Update content_text (and optionally content_title if needed)
+            Database::execute("UPDATE policies SET content_text = ? WHERE slug = ?", [$content_text, $slug]);
+            header('Location: profile.php?updated=' . $slug);
+            exit;
+        } else {
+            header('Location: profile.php?error=notfound');
+            exit;
+        }
     } else {
-        // Redirect back with error
         header('Location: profile.php?error=invalid');
         exit;
     }
