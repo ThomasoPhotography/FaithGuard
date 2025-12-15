@@ -295,7 +295,7 @@
                                     <?php echo htmlspecialchars($privacyText); ?>
                                 </textarea>
                             </div>
-                            <button type="submit" class="btn c-btn c-btn__dashboard">Update Privacy</button>
+                            <button type="submit" class="btn c-btn c-btn__dashboard">Update Privacy Policy</button>
                         </form>
                     </div>
                 </div>
@@ -308,7 +308,7 @@
                         <p class="card-text">Update Cookie Policy to ensure compliance and user trust.</p>
                         <!-- Cookie Form -->
                         <form action="policies.php" method="POST">
-                            <input type="hidden" name="slug" value="privacy">
+                            <input type="hidden" name="slug" value="cookie">
                             <div class="mb-3">
                                 <label for="cookie_title">Title</label>
                                 <input type="text" name="content_title" id="cookie_title" class="form-control" value="
@@ -321,7 +321,7 @@
                                     <?php echo htmlspecialchars($cookieText); ?>
                                 </textarea>
                             </div>
-                            <button type="submit" class="btn c-btn c-btn__dashboard">Update Privacy</button>
+                            <button type="submit" class="btn c-btn c-btn__dashboard">Update Cookie Policy</button>
                         </form>
                     </div>
                 </div>

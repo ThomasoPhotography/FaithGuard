@@ -114,6 +114,7 @@ All notable changes to this project will be documented in this file.
 - Role linking and logging in.
 - Updated the policy handling methods.
 - Cookie Policy Handling.
+- Policy cards.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.
