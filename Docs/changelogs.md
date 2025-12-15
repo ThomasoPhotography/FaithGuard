@@ -22,6 +22,7 @@ All notable changes to this project will be documented in this file.
 - Restructure admin profile layout for improved organization and responsiveness in `admin/profile.php`.
 - Method to retrieve policy content by type.
 - Policy updates handled by slug.
+- Public policies.
 
 ### Changed
 - `README.md` file got a professional make-over.
@@ -115,7 +116,7 @@ All notable changes to this project will be documented in this file.
 - Updated the policy handling methods.
 - Cookie Policy Handling.
 - Policy cards.
-- Public policies.
+- Footer template.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.
