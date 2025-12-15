@@ -115,6 +115,7 @@ All notable changes to this project will be documented in this file.
 - Updated the policy handling methods.
 - Cookie Policy Handling.
 - Policy cards.
+- Public policies.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.

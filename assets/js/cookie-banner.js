@@ -13,11 +13,11 @@ const showCookieBanner = () => {
                 <div class="row align-items-center">
                     <div class="col-md-8 col-12">
                         <p class="mb-0">
-                            We use cookies to enhance your experience on FaithGuard. By continuing, you agree to our 
-                            <a href="#" target="_blank" class="alert-link">Cookie Policy</a>, 
-                            <a href="#" target="_blank" class="alert-link">Privacy Policy</a>, and 
-                            <a href="#" target="_blank" class="alert-link">Terms of Service</a>.
-                        </p>
+                    		We use cookies to enhance your experience on FaithGuard. By continuing, you agree to our 
+                    		<a href="../../policies.php?slug=cookie" target="_blank" class="alert-link">Cookie Policy</a>, 
+                    		<a href="../../policies.php?slug=privacy" target="_blank" class="alert-link">Privacy Policy</a>, and 
+                    		<a href="../../policies.php?slug=terms" target="_blank" class="alert-link">Terms of Service</a>.
+                		</p>
                     </div>
                     <div class="col-md-4 col-12 text-md-end mt-2 mt-md-0">
                         <button id="accept-cookies" class="btn c-btn c-btn__dashboard btn-sm me-2">Accept</button>
