@@ -22,7 +22,7 @@
     $user_role   = 'admin';
     $user_data   = null;
     $userId      = $_SESSION['user_id'] ?? null;
-    $user_link    = '';
+    $user_link   = '';
 
     if ($is_logged_in && isset($_SESSION['user_id'])) {
         // Fetch user data using the repository method
@@ -103,7 +103,7 @@
         <div class="container-fluid">
             <!-- LEFT SIDE: LOGO + BRAND -->
             <a class="navbar-brand c-nav__brand" href="index.php">
-                <img src="assets/uploads/FaithGuard_Primary_Logo.svg" alt="FaithGuard Logo" class="c-nav__logo">
+                <img src="../assets/uploads/FaithGuard_Primary_Logo.svg" alt="FaithGuard Logo" class="c-nav__logo">
             </a>
             <button class="navbar-toggler c-nav__toggler c-nav__toggler--btn" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -129,7 +129,7 @@
                 <div class="d-flex dropdown c-dropdown">
                     <button class="btn c-btn c-dropdown__btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="c-dropdown__icon bi bi-person-check me-1"></i>
-                        <span class="c-dropdown__text">Welcome                                                                                                                             <?php echo $accountName; ?></span>                    </button>
+                        <span class="c-dropdown__text">Welcome                                                                                                                                                                                                                                                         <?php echo $accountName; ?></span>                    </button>
                     <!-- LOGGED-IN DROPDOWN MENU -->
                     <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu" aria-labelledby="userDropdown">
                         <li>
@@ -199,7 +199,7 @@
                             <?php if (! empty($reports)): ?>
                                 <?php foreach ($reports as $report): ?>
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        Post ID:                                                                                                                                                                                                                                                                                                 <?php echo htmlspecialchars($report['post_id']); ?> - Reason:<?php echo htmlspecialchars($report['reason']); ?>
+                                        Post ID:                                                                                                                                                                                                                                                                                                                                                                                                 <?php echo htmlspecialchars($report['post_id']); ?> - Reason:<?php echo htmlspecialchars($report['reason']); ?>
                                         <button class="btn btn-sm c-btn c-btn__outline">Review</button>
                                     </li>
                                 <?php endforeach; ?>
@@ -243,10 +243,13 @@
                         <h5 class="card-title">Legal Updates</h5>
                         <p class="card-text">Update Terms of Service to ensure compliance and user trust.</p>
                         <!-- ToS Form -->
-                        <form class="mb-3" action="../admin/legal.php" method="POST">
+                        <form action="policies.php" method="POST">
+                            <input type="hidden" name="slug" value="terms">
                             <label for="tos">Terms of Service</label>
-                            <textarea name="tos_content" id="tos" class="form-control mb-2" rows="3"><?php echo htmlspecialchars($tosText); ?></textarea>
-                            <button type="submit" name="update_tos" class="btn c-btn c-btn__dashboard">Update ToS</button>
+                            <textarea name="content" id="tos" class="form-control mb-2" rows="3">
+                                <?php echo htmlspecialchars($tosText); ?>
+                            </textarea>
+                            <button type="submit" class="btn c-btn c-btn__dashboard">Update ToS</button>
                         </form>
                     </div>
                 </div>
@@ -258,10 +261,13 @@
                         <h5 class="card-title">Privacy Updates</h5>
                         <p class="card-text">Update Privacy Policy to ensure compliance and user trust.</p>
                         <!-- Privacy Form -->
-                        <form action="../admin/legal.php" method="POST">
+                        <form action="policies.php" method="POST">
+                            <input type="hidden" name="slug" value="privacy">
                             <label for="privacy">Privacy Policy</label>
-                            <textarea name="privacy_content" id="privacy" class="form-control mb-2" rows="3"><?php echo htmlspecialchars($privacyText); ?></textarea>
-                            <button type="submit" name="update_privacy" class="btn c-btn c-btn__dashboard">Update Privacy</button>
+                            <textarea name="content" id="privacy" class="form-control mb-2" rows="3">
+                                <?php echo htmlspecialchars($privacyText); ?>
+                            </textarea>
+                            <button type="submit" class="btn c-btn c-btn__dashboard">Update Privacy</button>
                         </form>
                     </div>
                 </div>
@@ -273,7 +279,7 @@
                         <h5 class="card-title">Cookie Updates</h5>
                         <p class="card-text">Update Cookie Policy to ensure compliance and user trust.</p>
                         <!-- Cookie Form -->
-                        <form action="../admin/legal.php" method="POST">
+                        <form action="../admin/policies.php#cookie" method="POST">
                             <label for="cookie">Cookie Policy</label>
                             <textarea name="cookie_content" id="cookie" class="form-control mb-2" rows="3"><?php echo htmlspecialchars($cookieText); ?></textarea>
                             <button type="submit" name="update_cookie" class="btn c-btn c-btn__dashboard">Update Cookie</button>
@@ -282,26 +288,20 @@
                 </div>
             </div>
             <!-- Admin Message Box (Recent Activity) -->
-            <div class="c-admin__item c-admin__item--7">
+            <div class="c-admin__item c-admin__item--6">
                 <div class="c-profile__items card h-100">
                     <div class="card-body">
-                        <h5 class="card-title">Recent Admin Messages</h5>
-                        <p class="card-text">Quickly view the last few messages sent by you (the admin).</p>
-                        <ul class="list-group list-group-flush">
-                            <?php if (! empty($recentMessages)): ?>
-                                <?php foreach ($recentMessages as $message): ?>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <?php echo date('H:i', strtotime($message['created_at'])); ?>: "<?php echo htmlspecialchars(substr($message['content'], 0, 30)); ?>..."
-                                        <span class="badge bg-secondary">To:                                                                                                                                                                                                                                                                                                                                                                                                                                                                         <?php echo htmlspecialchars($message['receiver_id']); ?></span>
-                                    </li>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <li class="list-group-item">No recent messages sent.</li>
-                            <?php endif; ?>
-                        </ul>
-                    </div>
-                    <div class="card-footer">
-                        <a href="../messages/send.php" class="btn c-btn c-btn__dashboard mt-2">Send New Message</a>
+                        <h5 class="card-title">Cookie Updates</h5>
+                        <p class="card-text">Update Cookie Policy to ensure compliance and user trust.</p>
+                        <!-- Cookie Form -->
+                        <form action="policies.php" method="POST">
+                            <input type="hidden" name="slug" value="cookie">
+                            <label for="cookie">Cookie Policy</label>
+                            <textarea name="content" id="cookie" class="form-control mb-2" rows="3">
+                                <?php echo htmlspecialchars($cookieText); ?>
+                            </textarea>
+                            <button type="submit" class="btn c-btn c-btn__dashboard">Update Cookie</button>
+                        </form>
                     </div>
                 </div>
             </div>

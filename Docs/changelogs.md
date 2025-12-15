@@ -21,6 +21,7 @@ All notable changes to this project will be documented in this file.
 - Refactor admin profile layout to improve responsiveness and structure in `main.scss` and `main.css`.
 - Restructure admin profile layout for improved organization and responsiveness in `admin/profile.php`.
 - Method to retrieve policy content by type.
+- Policy updates handled by slug.
 
 ### Changed
 - `README.md` file got a professional make-over.

@@ -392,9 +392,9 @@ class FaithGuardRepository
     {
         return Database::getSingleRow("SELECT * FROM policies WHERE id = ?", [$id]);
     }
-    public static function getPolicyContent($type)
+    public static function getPolicyContent($slug)
     {
-        $result = Database::getSingleRow("SELECT content FROM policies WHERE type = ?", [$type]);
+        $result = Database::getSingleRow("SELECT content FROM policies WHERE slug = ?", [$slug]);
         return $result ? $result['content'] : null; // Return content or null if not found
     }
     public static function createPolicy($title, $slug, $content, $version, $createdBy)
