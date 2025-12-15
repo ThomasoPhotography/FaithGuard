@@ -899,6 +899,12 @@ a:hover {
     text-align: left;
   }
 }
+.c-footer__nav {
+  list-style-type: none;
+}
+.c-footer__nav--nested {
+  color: #f5f5dc;
+}
 .c-footer__item {
   list-style: none;
   padding: 0;
