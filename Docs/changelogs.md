@@ -120,6 +120,7 @@ All notable changes to this project will be documented in this file.
 - Footer template.
 - Footer includes the links to all policies.
 - Static coded Footer.
+- Static coded Footer V2.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.

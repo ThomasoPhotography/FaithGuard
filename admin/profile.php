@@ -356,11 +356,51 @@
         </section>
     </main>
     <!-- Footer -->
-    <div class="c-footer--placeholder"></div>
+    <footer class="c-footer">
+        <div class="container">
+            <div class="row">
+                <!-- Footer Content: Left -->
+                <div class="col-md-6 col-12">
+                    <img class="c-footer__logo" src="../assets/uploads/FaithGuard_Secondary_Logo.svg" alt="Secondary Logo">
+                    <p class="c-footer__text">&copy; 2025 FaithGuard. All rights reserved. Overcoming addiction through Christ &amp; Protecting your digital faith with hope and redemption.</p>
+                </div>
+                <!-- Footer Content: Right -->
+                <div class="col-md-6 col-12 text-md-end">
+                    <ul class="footer-nav c-footer__nav">
+                        <li class="c-footer__item">
+                            <a class="c-footer__links" href="../index.php">Home</a>
+                        </li>
+                        <li class="c-footer__item">
+                            <a class="c-footer__links" href="../templates/resources.html">Resources</a>
+                        </li>
+                        <li class="c-footer__item">
+                            <ul class="footer-nav c-footer__nav c-footer__nav--nested">
+                                <li class="c-footer__item">
+                                    <a class="c-footer__links" href="../policies.php?slug=terms">Terms of Service</a>
+                                </li>
+                                <li class="c-footer__item">
+                                    <a class="c-footer__links" href="../policies.php?slug=privacy">Privacy Policy</a>
+                                </li>
+                                <li class="c-footer__item">
+                                    <a class="c-footer__links" href="../policies.php?slug=cookie">Cookie Policy</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="c-footer__item">
+                            <a class="c-footer__links" href="../templates/about.html">About</a>
+                        </li>
+                        <li class="c-footer__item">
+                            <a class="c-footer__links" href="../contact.php">Contact</a>
+                        </li> <!-- Will be added once I upload it to a webhost -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
 </body>
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 <!-- Custom JS -->
 <script src="../assets/js/auth.js"></script>
-<script src="../assets/js/footer.js"></script>
+<script src="../assets/js/cookie-banner.js"></script>
 </html>
