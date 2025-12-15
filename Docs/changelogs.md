@@ -38,6 +38,7 @@ All notable changes to this project will be documented in this file.
 - Info stacking and styling for info stack.
 - `faithguard_db.sql` V1 as part of database restructuring.
 - Placeholder background image from hero section in `main.css`.
+- Both `/templates/footer.html` and `/assets/js/footer.js`.
 
 ### Fixed
 - Logout function of php.
