@@ -934,7 +934,7 @@ a:hover {
   }
 }
 .c-footer__dropdown--menu {
-  background-color: #2a1717;
+  background-color: #2a1717 !important;
   color: #f5f5dc;
 }
 .c-footer__icon {
@@ -958,6 +958,8 @@ a:hover {
 }
 .c-footer__links:hover {
   color: rgba(245, 245, 220, 0.6);
+  text-decoration: underline;
+  text-decoration-color: #e9b48a;
 }
 .c-footer__links--mail:hover {
   background-color: #e9b48a;

@@ -970,7 +970,7 @@ a {
 		}
 
 		&--menu {
-			background-color: $highlight;
+			background-color: $highlight !important;
 			color: $text-light;
 		}
 	}
@@ -997,6 +997,8 @@ a {
 
 		&:hover {
 			color: rgba($text-light, 0.6);
+			text-decoration: underline;
+			text-decoration-color: $primary-bg;
 		}
 
 		&--mail {
