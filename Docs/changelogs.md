@@ -23,6 +23,7 @@ All notable changes to this project will be documented in this file.
 - Method to retrieve policy content by type.
 - Policy updates handled by slug.
 - Public policies.
+- Registering logic.
 
 ### Changed
 - `README.md` file got a professional make-over.
