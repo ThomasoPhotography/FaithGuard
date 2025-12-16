@@ -52,9 +52,12 @@ body {
 	padding-right: 0.5rem;
 }
 
-.dropdown-menu.dropdown-menu-end.c-footer__dropdown--menu.show {
-	background-color: $highlight;
-	color: $text-light;
+.dropdown-item {
+	color: white;
+	&:hover {
+		background-color: $primary-bg;
+		color: $text-dark;
+	}
 }
 /*---------------------------------------/*
  # ELEMENTS
@@ -962,6 +965,7 @@ a {
 	}
 
 	&__dropdown {
+		position: relative;
 		margin-right: 0rem;
 
 		&:hover {
@@ -975,8 +979,13 @@ a {
 		}
 
 		&--menu {
-			background-color: $highlight !important;
+			background-color: $highlight;
+			border: 1px solid lighten($secondary-bg, 10%);
+			border-radius: 0.375rem;
+			box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
 			color: $text-light;
+			min-width: 12.5rem;
+			z-index: 1050;
 		}
 	}
 

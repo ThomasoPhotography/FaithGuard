@@ -36,9 +36,12 @@ body {
   padding-right: 0.5rem;
 }
 
-.dropdown-menu.dropdown-menu-end.c-footer__dropdown--menu.show {
-  background-color: #2a1717;
-  color: #f5f5dc;
+.dropdown-item {
+  color: white;
+}
+.dropdown-item:hover {
+  background-color: #e9b48a;
+  color: #3c3c34;
 }
 
 /*---------------------------------------/*
@@ -926,6 +929,7 @@ a:hover {
   }
 }
 .c-footer__dropdown {
+  position: relative;
   margin-right: 0rem;
 }
 .c-footer__dropdown:hover {
@@ -939,8 +943,13 @@ a:hover {
   }
 }
 .c-footer__dropdown--menu {
-  background-color: #2a1717 !important;
+  background-color: #2a1717;
+  border: 1px solid rgb(129.3333333333, 89.3333333333, 74.6666666667);
+  border-radius: 0.375rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
   color: #f5f5dc;
+  min-width: 12.5rem;
+  z-index: 1050;
 }
 .c-footer__icon {
   font-size: 0.8rem;

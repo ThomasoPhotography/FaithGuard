@@ -128,6 +128,7 @@ All notable changes to this project will be documented in this file.
 - Footer styling V4.
 - Footer styling V5.
 - Footer styling V6.
+- Footer styling V7.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.
