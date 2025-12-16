@@ -36,6 +36,11 @@ body {
   padding-right: 0.5rem;
 }
 
+.dropdown-menu.dropdown-menu-end.c-footer__dropdown--menu.show {
+  background-color: #2a1717;
+  color: #f5f5dc;
+}
+
 /*---------------------------------------/*
  # ELEMENTS
 /*---------------------------------------*/

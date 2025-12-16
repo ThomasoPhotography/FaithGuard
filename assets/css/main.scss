@@ -51,6 +51,11 @@ body {
 	padding-left: 0.5rem;
 	padding-right: 0.5rem;
 }
+
+.dropdown-menu.dropdown-menu-end.c-footer__dropdown--menu.show {
+	background-color: $highlight;
+	color: $text-light;
+}
 /*---------------------------------------/*
  # ELEMENTS
 /*---------------------------------------*/
