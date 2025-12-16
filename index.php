@@ -242,7 +242,7 @@
                             <a class="c-footer__links" href="resources.html">Resources</a>
                         </li>
                         <li class="c-footer__item c-footer__dropdown">
-                            <button class="btn btn-link c-footer__links c-footer__dropdown--toggle" type="button" id="policiesDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button class="btn btn-link c-footer__links dropdown--toggle" type="button" id="policiesDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                             Policies
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end c-footer__dropdown--menu" aria-labelledby="policiesDropdown">
