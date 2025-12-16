@@ -959,8 +959,10 @@ a {
 	&__dropdown {
 		margin-right: 0rem;
 
-		&:hover{
+		&:hover {
 			color: $primary-bg;
+			text-decoration: underline;
+			text-decoration-color: $primary-bg;
 		}
 
 		@media (min-width: 768px) {
@@ -970,6 +972,17 @@ a {
 		&--menu {
 			background-color: $highlight;
 			color: $text-light;
+		}
+	}
+
+	&__icon {
+		font-size: 0.8rem;
+		color: $text-light;
+
+		&:hover {
+			color: $primary-bg;
+			text-decoration: underline;
+			text-decoration-color: $primary-bg;
 		}
 	}
 

@@ -925,6 +925,8 @@ a:hover {
 }
 .c-footer__dropdown:hover {
   color: #e9b48a;
+  text-decoration: underline;
+  text-decoration-color: #e9b48a;
 }
 @media (min-width: 768px) {
   .c-footer__dropdown {
@@ -934,6 +936,15 @@ a:hover {
 .c-footer__dropdown--menu {
   background-color: #2a1717;
   color: #f5f5dc;
+}
+.c-footer__icon {
+  font-size: 0.8rem;
+  color: #f5f5dc;
+}
+.c-footer__icon:hover {
+  color: #e9b48a;
+  text-decoration: underline;
+  text-decoration-color: #e9b48a;
 }
 .c-footer__links {
   color: #f5f5dc;

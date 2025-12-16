@@ -376,7 +376,7 @@
                         <li class="c-footer__item c-footer__dropdown">
                             <button class="btn btn-link c-footer__links dropdown--toggle" type="button" id="policiesDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                                 <span class="c-dropdown__text">Policies</span>
-                                <i class="c-dropdown__icon bi bi-caret-down-fill me-1"></i>
+                                <i class="c-footer__icon bi bi-caret-down-fill me-1"></i>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end c-footer__dropdown--menu" aria-labelledby="policiesDropdown">
                                 <li class="c-footer__item">
