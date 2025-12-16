@@ -956,6 +956,14 @@ a {
 		}
 	}
 
+	&__dropdown {
+		margin-right: -1rem;
+		&--menu {
+			background-color: $highlight;
+			color: $text-light;
+		}
+	}
+
 	&__links {
 		color: $text-light;
 		text-decoration: none;

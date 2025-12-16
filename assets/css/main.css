@@ -920,6 +920,13 @@ a:hover {
     gap: 1rem;
   }
 }
+.c-footer__dropdown {
+  margin-right: -1rem;
+}
+.c-footer__dropdown--menu {
+  background-color: #2a1717;
+  color: #f5f5dc;
+}
 .c-footer__links {
   color: #f5f5dc;
   text-decoration: none;
