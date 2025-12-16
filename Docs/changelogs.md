@@ -130,6 +130,7 @@ All notable changes to this project will be documented in this file.
 - Footer styling V6.
 - Footer styling V7.
 - Footer styling V8.
+- Policy footer.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.

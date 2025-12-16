@@ -157,22 +157,6 @@
                         <li class="c-footer__item">
                             <a class="c-footer__links" href="resources.html">Resources</a>
                         </li>
-                        <li class="c-footer__item dropdown">
-                            <button class="btn btn-link c-footer__links dropdown-toggle" type="button" id="policiesDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            Policies
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="policiesDropdown">
-                                <li class="c-footer__item">
-                                    <a class="dropdown-item c-footer__links" href="policies.php?slug=terms">Terms of Service</a>
-                                </li>
-                                <li class="c-footer__item">
-                                    <a class="dropdown-item c-footer__links" href="policies.php?slug=privacy">Privacy Policy</a>
-                                </li>
-                                <li class="c-footer__item">
-                                    <a class="dropdown-item c-footer__links" href="policies.php?slug=cookie">Cookie Policy</a>
-                                </li>
-                            </ul>
-                        </li>
                         <li class="c-footer__item">
                             <a class="c-footer__links" href="about.html">About</a>
                     </li>
@@ -181,6 +165,23 @@
                     </li>
                 </ul>
             </div>
+            <!-- Footer Content: Policies -->
+            <div class="row">
+                <div class="col-md-3">
+                    <li class="c-footer__item">
+                            <a class="c-footer__links" href="policies.php?slug=terms">Terms of Service</a>
+                        </li>
+                </div>
+                <div class="col-md-3">
+                    <li class="c-footer__item">
+                            <a class="c-footer__links" href="policies.php?slug=privacy">Privacy Policy</a>
+                        </li>
+                </div>
+                <div class="col-md-3">
+                    <li class="c-footer__item">
+                            <a class="c-footer__links" href="policies.php?slug=cookie">Cookie Policy</a>
+                        </li>
+                </div>
             </div>
         </div>
     </footer>
