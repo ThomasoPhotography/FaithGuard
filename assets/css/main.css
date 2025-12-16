@@ -36,14 +36,6 @@ body {
   padding-right: 0.5rem;
 }
 
-.dropdown-item {
-  color: white;
-}
-.dropdown-item:hover {
-  background-color: #e9b48a;
-  color: #3c3c34;
-}
-
 /*---------------------------------------/*
  # ELEMENTS
 /*---------------------------------------*/
@@ -927,38 +919,6 @@ a:hover {
     justify-content: flex-end;
     gap: 1rem;
   }
-}
-.c-footer__dropdown {
-  position: relative;
-  margin-right: 0rem;
-}
-.c-footer__dropdown:hover {
-  color: #e9b48a;
-  text-decoration: underline;
-  text-decoration-color: #e9b48a;
-}
-@media (min-width: 768px) {
-  .c-footer__dropdown {
-    margin-right: -1rem;
-  }
-}
-.c-footer__dropdown--menu {
-  background-color: #2a1717;
-  border: 1px solid rgb(129.3333333333, 89.3333333333, 74.6666666667);
-  border-radius: 0.375rem;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-  color: #f5f5dc;
-  min-width: 12.5rem;
-  z-index: 1050;
-}
-.c-footer__icon {
-  font-size: 0.8rem;
-  color: #f5f5dc;
-}
-.c-footer__icon:hover {
-  color: #e9b48a;
-  text-decoration: underline;
-  text-decoration-color: #e9b48a;
 }
 .c-footer__links {
   color: #f5f5dc;
