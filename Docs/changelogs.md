@@ -124,6 +124,7 @@ All notable changes to this project will be documented in this file.
 - Static coded Footer V3.
 - Footer styling.
 - Footer styling V2.
+- Footer styling V3.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.

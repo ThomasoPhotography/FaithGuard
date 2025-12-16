@@ -957,7 +957,16 @@ a {
 	}
 
 	&__dropdown {
-		margin-right: -1rem;
+		margin-right: 0rem;
+
+		&:hover{
+			color: $primary-bg;
+		}
+
+		@media (min-width: 768px) {
+			margin-right: -1rem;
+		}
+
 		&--menu {
 			background-color: $highlight;
 			color: $text-light;
