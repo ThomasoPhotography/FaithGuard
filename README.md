@@ -86,4 +86,14 @@ This roadmap highlights key versions from the initial commit to the current dyna
 - **v0.1.3** – Polishing dynamic behavior and fixing issues.  
 - **v0.1.4-alpha** – Current dynamic backend alpha stage.  
 
+## 🗺️ TO DO
+
+This TODO list is to keep track with certain things/ideas the website needs in the near future:
+- Quiz integration
+- Query URL's
+- Resource Content
+- Recommend resources from Quiz Answers
+- Progress
+- Prayers (Personal and whenever I post on TikTok).
+
 ---

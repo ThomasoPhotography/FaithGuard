@@ -27,6 +27,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 - `README.md` file got a professional make-over.
+- Updated `README.md` file to include a TODO list.
 
 ### Deprecated
 - replace lighten/darken functions with color.adjust for consistent color manipulation in `main.scss`.
