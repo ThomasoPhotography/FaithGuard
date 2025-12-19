@@ -154,7 +154,7 @@
                             <hr class="dropdown-divider">
                         </li>
                         <li>
-                            <a class="dropdown-item c-dropdown__item" href="register.php">
+                            <a class="dropdown-item c-dropdown__item" href="api/auth/register.php">
                                 <i class="bi bi-person-plus me-2"></i>
                                 <span class="c-dropdown__text js-create">Create Account</span>
                             </a>
