@@ -133,7 +133,14 @@ All notable changes to this project will be documented in this file.
 - Footer styling V8.
 - Policy footer.
 - Resource list.
-- Implement user dashboard grid layout and dynamic data display
+- Implement user dashboard grid layout and dynamic data display.
+- Implement authentication flow, dynamic dashboards, and responsive layouts:
+  - Auth: Update login, register, and logout APIs to handle JSON/Sessions correctly.
+  - Auth: Implement dynamic registration modal in JS for 'User not found' flow.
+  - UI: Refactor Admin and User dashboards to use responsive Bootstrap grids.
+  - Perf: Replace cURL with direct Repository calls in Admin profile to fix 504 errors.
+  - Fix: Resolve undefined variables and pathing issues in profile pages.
+  - Style: Update SCSS for profile grids, card tags, and navigation states.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.

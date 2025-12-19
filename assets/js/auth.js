@@ -1,12 +1,9 @@
 // #region ***  DOM references                           ***********
 const authBtn = document.querySelector('.js-log');
+const createBtn = document.querySelector('.js-create');
 const emailInput = document.getElementById('signupUsername');
 const passwordInput = document.getElementById('signupPassword');
 const nameInput = document.getElementById('signupName');
-// #endregion
-
-// #region ***  State Management                         ***********
-let failedLoginAttempts = 0;
 // #endregion
 
 // #region ***  Callback-Visualisation - show___         ***********
@@ -126,56 +123,56 @@ const performLogout = async () => {
 
 // #region ***  Event Listeners - listenTo___            ***********
 const listenToAuth = () => {
-	if (!authBtn) return;
-	authBtn.addEventListener('click', async () => {
-		const email = emailInput?.value.trim() || '';
-		const password = passwordInput?.value.trim() || '';
-		const name = nameInput?.value.trim() || '';
-		if (!email || !password) {
-			showError('Please enter both email and password.');
-			return;
-		}
+    // 1. Handle Login Button Click
+    if (authBtn) {
+        authBtn.addEventListener('click', async () => {
+            const email = emailInput.value.trim();
+            const password = passwordInput.value.trim();
 
-		try {
-			// 1. Try to Login first
-            const loginData = await attemptLogin(email, password);
-
-            if (loginData.success) {
-                showLoginSuccess();
-                failedLoginAttempts = 0; // Reset counter
+            if (!email || !password) {
+                showError('Please enter both email and password.');
                 return;
             }
 
-			// 2. Check errors
-            if (loginData.error === 'Invalid credentials') {
-                // User exists but password is wrong -> Do NOT register
-                showError('Login failed: Invalid credentials');
-            }else if (loginData.error === 'User not found') {
-                // User does not exist -> Increment counter
-                failedLoginAttempts++;
-                console.log(`Failed login attempts (User not found): ${failedLoginAttempts}`);
+            try {
+                const loginData = await attemptLogin(email, password);
 
-                if (failedLoginAttempts >= 3) {
-                    // Inject and Show Register Modal
-                    injectRegisterModal(email, password);
-                    
-                    const modalElement = document.getElementById('registerModal');
-                    const modal = new bootstrap.Modal(modalElement);
-                    modal.show();
-                    
-                    failedLoginAttempts = 0; // Reset counter
-                } else {
-                    showError('User not found. Please check your email.');
+                if (loginData.success) {
+                    showLoginSuccess();
+                    return;
+                } 
+                
+                // Show errors directly (no auto-register loop)
+                if (loginData.error === 'Invalid credentials') {
+                    showError('Login failed: Invalid credentials');
+                } 
+                else if (loginData.error === 'User not found') {
+                    showError('User not found. Please click "Create Account" to register.');
+                } 
+                else {
+                    showError('Login failed: ' + loginData.error);
                 }
-            }else {
-                // Fallback for other errors
-                showError('Login failed: ' + loginData.error);
+            } catch (error) {
+                console.error('Auth error:', error);
+                showError('An error occurred. Please try again.');
             }
-		} catch (error) {
-			console.error('Auth error:', error);
-			showError('An error occurred. Please check your connection and try again.');
-		}
-	});
+        });
+    }
+
+    // 2. Handle "Create Account" Click (Trigger Modal)
+    // Note: createBtn corresponds to .js-create class
+    if (createBtn) {
+        createBtn.addEventListener('click', (e) => {
+            e.preventDefault(); // Stop navigation to register.php if wrapped in <a>
+            e.stopPropagation(); // Prevent dropdown from closing immediately if needed
+
+            // Inject and Show Modal
+            injectRegisterModal();
+            const modalElement = document.getElementById('registerModal');
+            const modal = new bootstrap.Modal(modalElement);
+            modal.show();
+        });
+    }
 };
 
 const listenToLogout = () => {

@@ -76,13 +76,12 @@
     <nav class="navbar navbar-expand-lg navbar-light c-nav">
         <div class="container-fluid">
             <!-- LEFT SIDE: LOGO + BRAND -->
-            <a class="navbar-brand c-nav__brand" href="index.php">
+            <a class="navbar-brand c-nav__brand" href="../index.php">
                 <img src="assets/uploads/FaithGuard_Primary_Logo.svg" alt="FaithGuard Logo" class="c-nav__logo">
             </a>
             <button class="navbar-toggler c-nav__toggler c-nav__toggler--btn" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
             <div class="collapse navbar-collapse" id="navbarNav">
                 <!-- Main Navigation Links (CENTER/LEFT) -->
                 <ul class="navbar-nav me-auto">
@@ -96,18 +95,18 @@
                         <a class="nav-link c-nav__link" href="templates/resources.html">Resources</a>
                     </li>
                 </ul>
-
                 <!-- RIGHT SIDE: USER/LOGIN DROPDOWN -->
                 <?php if ($is_logged_in && $user): ?>
                 <!-- Logged-in user menu -->
                 <div class="d-flex dropdown c-dropdown">
                     <button class="btn c-btn c-dropdown__btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="c-dropdown__icon bi bi-person-check me-1"></i>
-                        <span class="c-dropdown__text">Welcome                                                                                                                                                                                                                                                                                                                       <?php echo $accountName; ?></span>                    </button>
+                        <span class="c-dropdown__text">Welcome <?php echo $accountName; ?></span>
+                    </button>
                     <!-- LOGGED-IN DROPDOWN MENU -->
                     <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu" aria-labelledby="userDropdown">
                         <li>
-                            <h6 class="dropdown-header c-dropdown__header">Signed in as:<?php echo ucfirst($user_role); ?></h6>
+                            <h6 class="dropdown-header c-dropdown__header">Signed in as: <?php echo ucfirst($user_role); ?></h6>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
@@ -149,7 +148,16 @@
                             <input type="password" id="signupPassword" class="form-control c-dropdown__info mb-2" placeholder="Password">
                         </li>
                         <li>
-                            <button class="btn c-btn c-dropdown__login js-log mb-2">Login / Register</button>
+                            <button class="btn c-btn c-dropdown__login js-log mb-2">Login</button>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <a class="dropdown-item c-dropdown__item" href="register.php">
+                                <i class="bi bi-person-plus me-2"></i>
+                                <span class="c-dropdown__text js-create">Create Account</span>
+                            </a>
                         </li>
                     </ul>
                 </div>

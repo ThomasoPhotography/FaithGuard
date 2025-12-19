@@ -46,8 +46,8 @@
 
     // --- Fetch User Data for Dashboard Display ---
     $user_data = FaithGuardRepository::getUserById($userId);
-    
-    if (!$user_data) {
+
+    if (! $user_data) {
         unset($_SESSION['user_id']);
         unset($_SESSION['logged_in']);
         header('Location: ../../index.php');
@@ -55,29 +55,29 @@
     }
 
     $accountName = htmlspecialchars($user_data['name'] ?? $user_data['email']);
-    $user_role = $user_data['role'] ?? 'user';
-    
+    $user_role   = $user_data['role'] ?? 'user';
+
     // Navbar link logic
     $profile_link = ($user_role === 'admin') ? 'api/admin/profile.php' : 'api/users/profile.php';
 
     // --- Fetch Dynamic Data ---
-    
+
     // DIV 1: Progress Log
-    $progressLogs = FaithGuardRepository::getProgressLogsByUserId($userId);
+    $progressLogs   = FaithGuardRepository::getProgressLogsByUserId($userId);
     $recentCheckins = array_slice($progressLogs, 0, 5);
-    $totalCheckins = count($progressLogs);
+    $totalCheckins  = count($progressLogs);
 
     // DIV 2: Latest Quiz Result
     $latestQuizResult = FaithGuardRepository::getQuizResultsByUserId($userId);
-    $latestQuizResult = $latestQuizResult[0] ?? null; 
+    $latestQuizResult = $latestQuizResult[0] ?? null;
 
     // DIV 3: Recent Inbox Messages
     $recentInboxMessages = FaithGuardRepository::getInboxByUserId($userId);
-    $recentInboxMessages = array_slice($recentInboxMessages, 0, 5); 
+    $recentInboxMessages = array_slice($recentInboxMessages, 0, 5);
 
     // Stats
     $recentPosts = FaithGuardRepository::getPostsByUserId($userId);
-    $totalPosts = count($recentPosts);
+    $totalPosts  = count($recentPosts);
     $memberSince = date('d M, Y', strtotime($user_data['created_at']));
 ?>
 <!DOCTYPE html>
@@ -114,7 +114,6 @@
             <button class="navbar-toggler c-nav__toggler c-nav__toggler--btn" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
             <div class="collapse navbar-collapse" id="navbarNav">
                 <!-- Main Navigation Links (CENTER/LEFT) -->
                 <ul class="navbar-nav me-auto">
@@ -128,19 +127,18 @@
                         <a class="nav-link c-nav__link" href="templates/resources.html">Resources</a>
                     </li>
                 </ul>
-
                 <!-- RIGHT SIDE: USER/LOGIN DROPDOWN -->
                 <?php if ($is_logged_in && $user): ?>
                 <!-- Logged-in user menu -->
                 <div class="d-flex dropdown c-dropdown">
                     <button class="btn c-btn c-dropdown__btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="c-dropdown__icon bi bi-person-check me-1"></i>
-                        <span class="c-dropdown__text">Welcome<?php echo $accountName; ?></span>
+                        <span class="c-dropdown__text">Welcome                                                               <?php echo $accountName; ?></span>
                     </button>
                     <!-- LOGGED-IN DROPDOWN MENU -->
                     <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu" aria-labelledby="userDropdown">
                         <li>
-                            <h6 class="dropdown-header c-dropdown__header">Signed in as:<?php echo ucfirst($user_role); ?></h6>
+                            <h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                         <?php echo ucfirst($user_role); ?></h6>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
@@ -182,7 +180,16 @@
                             <input type="password" id="signupPassword" class="form-control c-dropdown__info mb-2" placeholder="Password">
                         </li>
                         <li>
-                            <button class="btn c-btn c-dropdown__login js-log mb-2">Login / Register</button>
+                            <button class="btn c-btn c-dropdown__login js-log mb-2">Login</button>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <a class="dropdown-item c-dropdown__item" href="register.php">
+                                <i class="bi bi-person-plus me-2"></i>
+                                <span class="c-dropdown__text js-create">Create Account</span>
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -204,10 +211,10 @@
                     <div class="card-body">
                         <h5 class="card-title"><i class="bi bi-person-circle me-2"></i> Account Summary</h5>
                         <ul class="list-group list-group-flush mt-3">
-                            <li class="list-group-item"><strong>Email:</strong> <?php echo htmlspecialchars($user_data['email']); ?></li>
-                            <li class="list-group-item"><strong>Member Since:</strong> <?php echo $memberSince; ?></li>
-                            <li class="list-group-item"><strong>Total Posts:</strong> <?php echo $totalPosts; ?></li>
-                            <li class="list-group-item"><strong>Role:</strong> <?php echo ucfirst($user_role); ?></li>
+                            <li class="list-group-item"><strong>Email:</strong>                                                                                                                                                               <?php echo htmlspecialchars($user_data['email']); ?></li>
+                            <li class="list-group-item"><strong>Member Since:</strong>                                                                                                                                                                             <?php echo $memberSince; ?></li>
+                            <li class="list-group-item"><strong>Total Posts:</strong>                                                                                                                                                                           <?php echo $totalPosts; ?></li>
+                            <li class="list-group-item"><strong>Role:</strong>                                                                                                                                                             <?php echo ucfirst($user_role); ?></li>
                         </ul>
                     </div>
                 </div>
@@ -219,7 +226,7 @@
                         <h5 class="card-title"><i class="bi bi-clipboard-check me-2"></i> Accountability Progress</h5>
                         <p class="card-text text-muted">You have recorded <strong><?php echo $totalCheckins; ?></strong> check-ins.</p>
                         <ul class="list-group list-group-flush">
-                            <?php if (!empty($recentCheckins)): ?>
+                            <?php if (! empty($recentCheckins)): ?>
                                 <?php foreach ($recentCheckins as $log): ?>
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <span><?php echo date('d/M/Y', strtotime($log['checkin_date'])); ?></span>
@@ -237,16 +244,16 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- GRID AREA: QUIZ (Latest Result) -->
             <div class="c-user__item c-user__item--quiz">
                 <div class="c-profile__items card c-profile__card h-100">
                     <div class="card-body">
                         <h5 class="card-title"><i class="bi bi-journal-check me-2"></i> Latest Assessment</h5>
                         <?php if ($latestQuizResult): ?>
-                            <p class="mb-1"><strong>Date:</strong> <?php echo date('d/M/Y', strtotime($latestQuizResult['created_at'])); ?></p>
-                            <p class="mb-1"><strong>Score:</strong> <?php echo htmlspecialchars($latestQuizResult['total_score']); ?></p>
-                            <p class="text-danger mb-3"><strong>Focus Area:</strong> <?php echo htmlspecialchars($latestQuizResult['addiction_type']); ?></p>
+                            <p class="mb-1"><strong>Date:</strong><?php echo date('d/M/Y', strtotime($latestQuizResult['created_at'])); ?></p>
+                            <p class="mb-1"><strong>Score:</strong>                                                                                                                                       <?php echo htmlspecialchars($latestQuizResult['total_score']); ?></p>
+                            <p class="text-danger mb-3"><strong>Focus Area:</strong>                                                                                                                                                                         <?php echo htmlspecialchars($latestQuizResult['addiction_type']); ?></p>
                             <a href="../templates/resources.html" class="btn btn-sm btn-info">Recommended Resources</a>
                         <?php else: ?>
                             <p class="card-text">Take the quiz to get personalized recommendations.</p>
@@ -255,18 +262,18 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- GRID AREA: MESSAGES (Inbox) -->
             <div class="c-user__item c-user__item--messages">
                 <div class="c-profile__items card c-profile__card h-100">
                     <div class="card-body">
                         <h5 class="card-title"><i class="bi bi-envelope-open me-2"></i> Recent Messages</h5>
                         <ul class="list-group list-group-flush">
-                            <?php if (!empty($recentInboxMessages)): ?>
+                            <?php if (! empty($recentInboxMessages)): ?>
                                 <?php foreach ($recentInboxMessages as $message): ?>
                                     <li class="list-group-item">
                                         <div class="d-flex justify-content-between">
-                                            <strong>From: User <?php echo htmlspecialchars($message['sender_id']); ?></strong>
+                                            <strong>From: User                                                                                                                             <?php echo htmlspecialchars($message['sender_id']); ?></strong>
                                             <small class="text-muted"><?php echo date('d/M', strtotime($message['created_at'])); ?></small>
                                         </div>
                                         <small class="text-muted d-block text-truncate"><?php echo htmlspecialchars($message['content']); ?></small>

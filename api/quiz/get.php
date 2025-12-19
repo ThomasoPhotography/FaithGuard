@@ -1,6 +1,6 @@
 <?php
 /**
- * POST ENDPOINT: Receives quiz answers, calculates score, and saves result.
+ * GET ENDPOINT: Fetches all quiz questions and options.
  */
 
 // --- Core App Requirements ---
@@ -43,6 +43,7 @@ try {
         throw new Exception("Invalid input format. 'addiction_type' and 'answers' array are required.");
     }
 
+    // Replace deprecated FILTER_SANITIZE_STRING with htmlspecialchars()
     $addictionType = htmlspecialchars($data['addiction_type'], ENT_QUOTES, 'UTF-8');
     $answers       = $data['answers']; // Array of objects like {question_id: 1, score: 3} or just scores
 
@@ -66,9 +67,7 @@ try {
     );
 
     if ($result) {
-                                             // 6. Success Response
-                                             // You can add logic here to return specific resource tags based on the score/type
-        $recommendedTags = [$addictionType]; // Basic recommendation logic
+        $recommendedTags = [$addictionType];
 
         echo json_encode([
             'success'          => true,
