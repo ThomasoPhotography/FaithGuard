@@ -44,23 +44,41 @@
         }
     }
 
-    // --- Fetch Dynamic Data for Dashboard DIVs ---
-    //Progress Log (Recent Check-ins)
-    $progressLogs   = FaithGuardRepository::getProgressLogsByUserId($userId);
+    // --- Fetch User Data for Dashboard Display ---
+    $user_data = FaithGuardRepository::getUserById($userId);
+    
+    if (!$user_data) {
+        unset($_SESSION['user_id']);
+        unset($_SESSION['logged_in']);
+        header('Location: ../../index.php');
+        exit;
+    }
+
+    $accountName = htmlspecialchars($user_data['name'] ?? $user_data['email']);
+    $user_role = $user_data['role'] ?? 'user';
+    
+    // Navbar link logic
+    $profile_link = ($user_role === 'admin') ? 'api/admin/profile.php' : 'api/users/profile.php';
+
+    // --- Fetch Dynamic Data ---
+    
+    // DIV 1: Progress Log
+    $progressLogs = FaithGuardRepository::getProgressLogsByUserId($userId);
     $recentCheckins = array_slice($progressLogs, 0, 5);
-    $totalCheckins  = count($progressLogs);
-    //Latest Quiz Result
+    $totalCheckins = count($progressLogs);
+
+    // DIV 2: Latest Quiz Result
     $latestQuizResult = FaithGuardRepository::getQuizResultsByUserId($userId);
-    $latestQuizResult = $latestQuizResult[0] ?? null;
-    //User Activity (Posts and Prayers) - Keeping the logic for compatibility, although it won't be displayed in DIV 4
-    $recentPosts   = FaithGuardRepository::getPostsByUserId($userId);
-    $recentPrayers = FaithGuardRepository::getPrayersByUserId($userId);
-    $totalPosts    = count($recentPosts);
-    //Messaging - Fetch recent INBOX messages
+    $latestQuizResult = $latestQuizResult[0] ?? null; 
+
+    // DIV 3: Recent Inbox Messages
     $recentInboxMessages = FaithGuardRepository::getInboxByUserId($userId);
-    $recentInboxMessages = array_slice($recentInboxMessages, 0, 5); // Limit to 5 recent
-                                                                    // General Stats
-    $memberSince = date('d/M/Y', strtotime($user_data['created_at']));
+    $recentInboxMessages = array_slice($recentInboxMessages, 0, 5); 
+
+    // Stats
+    $recentPosts = FaithGuardRepository::getPostsByUserId($userId);
+    $totalPosts = count($recentPosts);
+    $memberSince = date('d M, Y', strtotime($user_data['created_at']));
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -174,142 +192,97 @@
     </nav>
     <!-- Main -->
     <main class="c-main container my-5">
-        <h2 class="c-main__title">Welcome Back,<?php echo $accountName; ?></h2>
-        <p class="text-muted">This is your personal dashboard for tracking progress and accessing core tools.</p>
-
-        <section class="c-profile c-profile__users row">
-
-            <!-- Personal Profile and Stats -->
-            <div class="col-md-6 col-12 mb-4">
-                <div class="c-profile__items card h-100">
+        <section class="c-user__profile">
+            <!-- GRID AREA: TITLE -->
+            <div class="c-user__item c-user__item--title">
+                <h2 class="c-main__title">User Dashboard</h2>
+                <p class="text-muted">Manage your progress, track your assessments, and connect with the community.</p>
+            </div>
+            <!-- GRID AREA: STATS (Personal Profile) -->
+            <div class="c-user__item c-user__item--stats">
+                <div class="c-profile__items card c-profile__card h-100">
                     <div class="card-body">
-                        <h5 class="card-title">
-                            <i class="bi bi-person-circle me-2"></i>
-                            <span>Account Summary</span>
-                        </h5>
+                        <h5 class="card-title"><i class="bi bi-person-circle me-2"></i> Account Summary</h5>
                         <ul class="list-group list-group-flush mt-3">
-                            <li class="list-group-item">
-                                <strong>Name:</strong>
-                                <?php echo ucfirst($user_data['name'] ?? 'Unknown'); ?>
-                            </li>
-                            <li class="list-group-item">
-                                <strong>Email:</strong>
-                                <?php echo htmlspecialchars($user_data['email']); ?>
-                            </li>
-                            <li class="list-group-item">
-                                <strong>Member Since:</strong>
-                                <?php echo $memberSince; ?>
-                            </li>
-                            <li class="list-group-item">
-                                <strong>Total Posts:</strong>
-                                <?php echo $totalPosts; ?>
-                            </li>
+                            <li class="list-group-item"><strong>Email:</strong> <?php echo htmlspecialchars($user_data['email']); ?></li>
+                            <li class="list-group-item"><strong>Member Since:</strong> <?php echo $memberSince; ?></li>
+                            <li class="list-group-item"><strong>Total Posts:</strong> <?php echo $totalPosts; ?></li>
+                            <li class="list-group-item"><strong>Role:</strong> <?php echo ucfirst($user_role); ?></li>
                         </ul>
                     </div>
                 </div>
             </div>
-
-            <!-- Progress Log (Required Section) -->
-            <div class="col-md-6 col-12 mb-4">
-                <div class="c-profile__items card c-progress__card h-100">
-                    <div class="card-body c-progress__cardbody">
-                        <h5 class="card-title c-progress__cardtitle">
-                            <i class="bi bi-clipboard-check me-2"></i>
-                            <span>Accountability Progress</span>
-                        </h5>
-                        <p class="card-text text-muted">You have recorded</p><span class="c-progress__count"><?php echo $totalCheckins; ?></span> <p class="card-text text-muted">check-ins so far.</p>
-
+            <!-- GRID AREA: PROGRESS (Check-ins) -->
+            <div class="c-user__item c-user__item--progress">
+                <div class="c-profile__items card c-profile__card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="bi bi-clipboard-check me-2"></i> Accountability Progress</h5>
+                        <p class="card-text text-muted">You have recorded <strong><?php echo $totalCheckins; ?></strong> check-ins.</p>
                         <ul class="list-group list-group-flush">
-                            <?php if (! empty($recentCheckins)): ?>
+                            <?php if (!empty($recentCheckins)): ?>
                                 <?php foreach ($recentCheckins as $log): ?>
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <span class="text-success fw-bold">Check-in:</span>
-                                        <?php echo date('d/M/Y', strtotime($log['checkin_date'])); ?>
-                                        <span class="badge bg-secondary">
-                                            <?php echo htmlspecialchars($log['milestone'] ?? 'Standard'); ?>
-                                        </span>
+                                        <span><?php echo date('d/M/Y', strtotime($log['checkin_date'])); ?></span>
+                                        <span class="badge bg-secondary"><?php echo htmlspecialchars($log['milestone'] ?? 'Check-in'); ?></span>
                                     </li>
                                 <?php endforeach; ?>
                             <?php else: ?>
-                                <li class="list-group-item">No progress logs recorded yet.</li>
+                                <li class="list-group-item">No check-ins yet. Start today!</li>
                             <?php endif; ?>
                         </ul>
                     </div>
                     <div class="card-footer">
-                        <a href="../templates/progress.html" class="btn btn-sm c-btn c-btn__dashboard">View Full Progress</a>
-                        <a href="../api/progress/checkin.php" class="btn btn-sm c-btn c-btn__create">New Check-in</a>
+                        <a href="../templates/progress.html" class="btn btn-sm btn-success">View Full Progress</a>
+                        <a href="../api/progress/checkin.php" class="btn btn-sm btn-warning">New Check-in</a>
                     </div>
                 </div>
             </div>
-
-            <!-- Latest Quiz Results and Recommendation -->
-            <div class="col-md-6 col-12 mb-4">
-                <div class="c-profile__items card c-quiz__card h-100">
-                    <div class="card-body c-quiz__cardbody">
-                        <h5 class="card-title c-quiz__cardtitle">
-                            <i class="bi bi-journal-check me-2"></i>
-                            <span>Latest Assessment</span>
-                        </h5>
-
+            
+            <!-- GRID AREA: QUIZ (Latest Result) -->
+            <div class="c-user__item c-user__item--quiz">
+                <div class="c-profile__items card c-profile__card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="bi bi-journal-check me-2"></i> Latest Assessment</h5>
                         <?php if ($latestQuizResult): ?>
-                            <p class="card-text c-quiz__cardtext mb-1">
-                                **Last Quiz Taken:** <span class="c-quiz__infograph"><?php echo date('d/M/Y', strtotime($latestQuizResult['created_at'])); ?></span>
-                            </p>
-                            <p class="card-text c-quiz__cardtext mb-1">
-                                **Score:** <span class="fw-bold c-quiz__infograph"><?php echo htmlspecialchars($latestQuizResult['total_score']); ?></span>
-                            </p>
-                            <p class="card-text text-danger c-quiz__cardtext mb-3">
-                                **Identified Area:** <span class="c-quiz__infograph"><?php echo htmlspecialchars($latestQuizResult['addiction_type']); ?></span>
-                            </p>
-                            <p class="mt-3">
-                                <a href="../templates/resources.html" class="btn btn-sm c-quiz__btn">View Recommended Resources</a>
-                            </p>
+                            <p class="mb-1"><strong>Date:</strong> <?php echo date('d/M/Y', strtotime($latestQuizResult['created_at'])); ?></p>
+                            <p class="mb-1"><strong>Score:</strong> <?php echo htmlspecialchars($latestQuizResult['total_score']); ?></p>
+                            <p class="text-danger mb-3"><strong>Focus Area:</strong> <?php echo htmlspecialchars($latestQuizResult['addiction_type']); ?></p>
+                            <a href="../templates/resources.html" class="btn btn-sm btn-info">Recommended Resources</a>
                         <?php else: ?>
-                            <p class="card-text c-quiz__cardtext">Take the initial quiz to unlock personalized resource recommendations and tools.</p>
-                            <a href="../templates/quiz.html" class="btn btn-sm c-btn c-btn__dashboard">Take Quiz Now</a>
+                            <p class="card-text">Take the quiz to get personalized recommendations.</p>
+                            <a href="../templates/quiz.html" class="btn btn-sm btn-warning">Take Quiz</a>
                         <?php endif; ?>
                     </div>
                 </div>
             </div>
-            <!-- Recent Messaging (INBOX) -->
-            <div class="col-md-6 col-12 mb-4">
-                <div class="c-profile__items card c-message__card h-100">
-                    <div class="card-body c-message__cardbody">
-                        <h5 class="card-title c-message__cardtitle">
-                            <i class="bi bi-envelope-open me-2"></i>
-                            <span>Recent Messages</span>
-                        </h5>
-                        <p class="card-text c-message__cardtext">Quick view of your last 5 messages received from the community or admin.</p>
-
+            
+            <!-- GRID AREA: MESSAGES (Inbox) -->
+            <div class="c-user__item c-user__item--messages">
+                <div class="c-profile__items card c-profile__card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="bi bi-envelope-open me-2"></i> Recent Messages</h5>
                         <ul class="list-group list-group-flush">
-                            <?php if (! empty($recentInboxMessages)): ?>
+                            <?php if (!empty($recentInboxMessages)): ?>
                                 <?php foreach ($recentInboxMessages as $message): ?>
-                                    <?php
-                                        // You might need a helper method to resolve the sender ID to a name/email for display
-                                        $senderName     = $message['sender_id'] === $userId ? 'You' : 'User ' . $message['sender_id'];
-                                        $contentPreview = htmlspecialchars(substr($message['content'], 0, 40)) . '...';
-                                    ?>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <span>
-                                            <i class="bi bi-person me-2"></i> From: <span class="c-message__sender"><?php echo $senderName; ?></span>
-                                        </span>
-                                        <small class="text-muted"><?php echo date('d/M', strtotime($message['created_at'])); ?></small>
-                                    </li>
-                                    <li class="list-group-item py-1 small text-truncate">
-                                        <?php echo $contentPreview; ?>
+                                    <li class="list-group-item">
+                                        <div class="d-flex justify-content-between">
+                                            <strong>From: User <?php echo htmlspecialchars($message['sender_id']); ?></strong>
+                                            <small class="text-muted"><?php echo date('d/M', strtotime($message['created_at'])); ?></small>
+                                        </div>
+                                        <small class="text-muted d-block text-truncate"><?php echo htmlspecialchars($message['content']); ?></small>
                                     </li>
                                 <?php endforeach; ?>
                             <?php else: ?>
-                                <li class="list-group-item">Your inbox is empty!</li>
+                                <li class="list-group-item">Your inbox is empty.</li>
                             <?php endif; ?>
                         </ul>
                     </div>
                     <div class="card-footer">
-                        <a href="../templates/community.html#messages" class="btn btn-sm c-btn c-btn__dashboard">View Full Inbox</a>
-                        <a href="../api/messages/send.php" class="btn btn-sm c-btn c-btn__create">Send Message</a>
+                        <a href="../templates/community.html#messages" class="btn btn-sm btn-primary">Go to Inbox</a>
                     </div>
                 </div>
             </div>
+
         </section>
     </main>
     <!-- Footer -->

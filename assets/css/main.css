@@ -523,29 +523,58 @@ a:hover {
   color: #f5f5dc !important;
 }
 
-.c-profile {
+.c-user__profile {
+  display: block; /* Mobile Stack */
+}
+@media (min-width: 992px) {
+  .c-user__profile {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 Equal Columns */
+    grid-template-rows: auto;
+    gap: 1.5rem;
+    /* Define Grid Areas for Desktop */
+    grid-template-areas: "title title" "stats progress" "quiz messages";
+  }
+}
+.c-user__item {
+  margin-bottom: 1.5rem;
+}
+@media (min-width: 992px) {
+  .c-user__item {
+    margin-bottom: 0;
+  }
+  .c-user__item--title {
+    grid-area: title;
+  }
+  .c-user__item--stats {
+    grid-area: stats;
+  }
+  .c-user__item--progress {
+    grid-area: progress;
+  }
+  .c-user__item--quiz {
+    grid-area: quiz;
+  }
+  .c-user__item--messages {
+    grid-area: messages;
+  }
+}
+
+.c-profile__items {
+  height: 100%; /* Ensure cards fill their grid area */
   display: flex;
   flex-direction: column;
 }
-.c-profile__users, .c-profile__admin {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+
+.c-profile__card {
+  background-color: #e9b48a; /* Or white, depending on your preference */
+  border: 1px solid rgb(224.928057554, 152.4820143885, 95.071942446);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
 }
-.c-profile__title {
-  text-align: center;
-}
-.c-profile__card--messages {
-  background-color: #e9b48a;
-  color: #3c3c34;
-}
-.c-profile__cardtitle {
-  font-weight: bold;
-}
-.c-profile__count {
-  font-size: 2rem;
-  font-weight: bold;
-  color: #5c352c;
+.c-profile__card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
 .c-admin__profile {

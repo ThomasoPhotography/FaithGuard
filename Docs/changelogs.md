@@ -133,6 +133,7 @@ All notable changes to this project will be documented in this file.
 - Footer styling V8.
 - Policy footer.
 - Resource list.
+- Implement user dashboard grid layout and dynamic data display
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.
