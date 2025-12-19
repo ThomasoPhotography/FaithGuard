@@ -521,7 +521,8 @@ a {
 		}
 	}
 
-	&__item {
+	&__item,
+	&__login {
 		color: $text-light;
 
 		&:hover {
@@ -529,90 +530,67 @@ a {
 			color: $text-light;
 		}
 	}
-
-	&__login {
-		color: $text-dark;
-		border: none;
-		background-color: transparent;
-		padding: 0.4rem 0.8rem;
-		transition: color 0.2s ease, background-color 0.2s ease;
-
-		@media (min-width: 576px) {
-			padding: 0.5rem 1rem;
-		}
-
-		&:hover,
-		&.show {
-			color: $text-light !important;
-			background-color: $highlight;
-		}
-	}
-
-	&__login:hover,
-	&__login.show {
-		color: $text-light !important;
-	}
 }
 
 .c-user {
-    &__profile {
-        display: block; /* Mobile Stack */
-        
-        @media (min-width: 992px) {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr); /* 2 Equal Columns */
-            grid-template-rows: auto;
-            gap: 1.5rem;
-            
-            /* Define Grid Areas for Desktop */
-            grid-template-areas:
-                "title title"
-                "stats progress"
-                "quiz messages";
-        }
-    }
+	&__profile {
+		display: block; /* Mobile Stack */
 
-    &__item {
-        margin-bottom: 1.5rem;
-        
-        @media (min-width: 992px) {
-            margin-bottom: 0;
+		@media (min-width: 992px) {
+			display: grid;
+			grid-template-columns: repeat(2, 1fr); /* 2 Equal Columns */
+			grid-template-rows: auto;
+			gap: 1.5rem;
 
-            &--title {
-                grid-area: title;
-            }
-            &--stats {
-                grid-area: stats;
-            }
-            &--progress {
-                grid-area: progress;
-            }
-            &--quiz {
-                grid-area: quiz;
-            }
-            &--messages {
-                grid-area: messages;
-            }
-        }
-    }
+			/* Define Grid Areas for Desktop */
+			grid-template-areas:
+				'title title'
+				'stats progress'
+				'quiz messages';
+		}
+	}
+
+	&__item {
+		margin-bottom: 1.5rem;
+
+		@media (min-width: 992px) {
+			margin-bottom: 0;
+
+			&--title {
+				grid-area: title;
+			}
+			&--stats {
+				grid-area: stats;
+			}
+			&--progress {
+				grid-area: progress;
+			}
+			&--quiz {
+				grid-area: quiz;
+			}
+			&--messages {
+				grid-area: messages;
+			}
+		}
+	}
 }
 
 .c-profile__items {
-    height: 100%; /* Ensure cards fill their grid area */
-    display: flex;
-    flex-direction: column;
+	height: 100%; /* Ensure cards fill their grid area */
+	display: flex;
+	flex-direction: column;
 }
 
 .c-profile__card {
-    background-color: $primary-bg; /* Or white, depending on your preference */
-    border: 1px solid darken($primary-bg, 10%);
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-    transition: transform 0.2s ease;
-    
-    &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(0,0,0,0.1);
-    }
+	background-color: $primary-bg; /* Or white, depending on your preference */
+	border: 1px solid darken($primary-bg, 10%);
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+	transition: transform 0.2s ease;
+
+	&:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+	}
 }
 
 .c-admin {

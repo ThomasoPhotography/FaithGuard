@@ -496,31 +496,12 @@ a:hover {
     font-size: 1.5rem;
   }
 }
-.c-dropdown__item {
+.c-dropdown__item, .c-dropdown__login {
   color: #f5f5dc;
 }
-.c-dropdown__item:hover {
+.c-dropdown__item:hover, .c-dropdown__login:hover {
   background-color: #5c352c;
   color: #f5f5dc;
-}
-.c-dropdown__login {
-  color: #3c3c34;
-  border: none;
-  background-color: transparent;
-  padding: 0.4rem 0.8rem;
-  transition: color 0.2s ease, background-color 0.2s ease;
-}
-@media (min-width: 576px) {
-  .c-dropdown__login {
-    padding: 0.5rem 1rem;
-  }
-}
-.c-dropdown__login:hover, .c-dropdown__login.show {
-  color: #f5f5dc !important;
-  background-color: #2a1717;
-}
-.c-dropdown__login:hover, .c-dropdown__login.show {
-  color: #f5f5dc !important;
 }
 
 .c-user__profile {

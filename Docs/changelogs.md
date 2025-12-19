@@ -141,6 +141,7 @@ All notable changes to this project will be documented in this file.
   - Perf: Replace cURL with direct Repository calls in Admin profile to fix 504 errors.
   - Fix: Resolve undefined variables and pathing issues in profile pages.
   - Style: Update SCSS for profile grids, card tags, and navigation states.
+- Login button styling.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.
