@@ -146,6 +146,7 @@ All notable changes to this project will be documented in this file.
 - Login button styling.
 - Register link redirection.
 - Registering link.
+- Enchance quiz UI with selectable answer cards and refine progress styling.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.

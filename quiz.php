@@ -1,37 +1,68 @@
 <?php
-session_start();
-require_once __DIR__ . "/db/database.php";
-require_once __DIR__ . "/db/FaithGuardRepository.php";
+    session_set_cookie_params([
+        'lifetime' => 302400, // 3.5 days (84 hours)
+        'path'     => '/',
+        'domain'   => $_SERVER['SERVER_NAME'] ?? '',
+        'secure'   => true,
+        'httponly' => true,
+    ]);
+    session_start();
 
-// Redirect if not logged in
-if (!isset($_SESSION['logged_in']) || !$_SESSION['logged_in']) {
-    header("Location: index.php");
-    exit();
-}
+    // --- Core App Requirements (Always required) ---
+    require_once __DIR__ . "/db/database.php";
+    require_once __DIR__ . "/db/FaithGuardRepository.php";
+    // --- Optional Helper/Debug (Required, but note its function) ---
+    require_once __DIR__ . "/api/helper/debug.php";
+    // --- INITIALIZE VARIABLES ---
+    $is_logged_in = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
 
-$user_id = $_SESSION['user_id'];
-$message = '';
+    // --- CRITICAL FIX: Define user variables needed for navigation bar ---
+    $user         = null;
+    $accountName  = 'Guest';
+    $user_role    = 'user';
+    $profile_link = '';
+    $user_data    = null;
 
-// Handle form submission
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $answers = $_POST['answers'] ?? [];
-    $questions = FaithGuardRepository::getAllQuizQuestions();
-    $score = 0;
-    $total = count($questions);
+    // Check login status and fetch user data
+    if ($is_logged_in && isset($_SESSION['user_id'])) {
+        $user_data = FaithGuardRepository::getUserById($_SESSION['user_id']);
 
-    foreach ($questions as $q) {
-        if (isset($answers[$q['id']]) && $answers[$q['id']] === $q['correct_answer']) {
-            $score++;
+        if ($user_data) {
+            $user        = true;
+            $accountName = htmlspecialchars($user_data['name'] ?? $user_data['email']);
+            $user_role   = $user_data['role'] ?? 'user';
+
+            // Set Role-Based Profile Link
+            if ($user_role === 'admin') {
+                $profile_link = 'api/admin/profile.php';
+            } else {
+                $profile_link = 'api/users/profile.php';
+            }
+        } else {
+            // Logged-in session exists, but user not found in DB
+            unset($_SESSION['user_id']);
+            unset($_SESSION['logged_in']);
+            $is_logged_in = false;
         }
     }
 
-    // Save result (extend FaithGuardRepository if needed)
-    $saved = FaithGuardRepository::saveQuizResult($user_id, 1, $answers, $score); // Assume quiz_id=1
-    $message = $saved ? "Quiz completed! Your score: $score/$total" : "Error saving results.";
-}
+    // Redirect if not logged in (Quiz is for logged-in users)
+    if (! $is_logged_in) {
+        // Optional: Redirect to register or login page instead of index
+        header("Location: index.php");
+        exit();
+    }
 
-// Fetch questions
-$questions = FaithGuardRepository::getAllQuizQuestions();
+    $message = '';
+
+    // Handle form submission (if PHP fallback is needed, though JS usually handles this)
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // This part is largely superseded by the AJAX submission in assets/js/quiz.js
+        // but kept for fallback or structural completeness if you submit natively.
+    }
+
+    // Fetch questions
+    $questions = FaithGuardRepository::getAllQuizQuestions();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -44,7 +75,7 @@ $questions = FaithGuardRepository::getAllQuizQuestions();
     <meta name="author" content="WWTW - FaithGuard">
     <meta name="robots" content="noindex">
     <!-- Title -->
-    <title>Quiz - FaithGuard</title>
+    <title>FaithGuard - Quiz</title>
     <!-- Favicon -->
     <link rel="icon" href="assets/uploads/favicon.ico" type="image/x-icon">
     <!-- Bootstrap -->
@@ -83,12 +114,12 @@ $questions = FaithGuardRepository::getAllQuizQuestions();
                 <div class="d-flex dropdown c-dropdown">
                     <button class="btn c-btn c-dropdown__btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="c-dropdown__icon bi bi-person-check me-1"></i>
-                        <span class="c-dropdown__text">Welcome <?php echo $accountName; ?></span>
+                        <span class="c-dropdown__text">Welcome                                                               <?php echo $accountName; ?></span>
                     </button>
                     <!-- LOGGED-IN DROPDOWN MENU -->
                     <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu" aria-labelledby="userDropdown">
                         <li>
-                            <h6 class="dropdown-header c-dropdown__header">Signed in as: <?php echo ucfirst($user_role); ?></h6>
+                            <h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                         <?php echo ucfirst($user_role); ?></h6>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
@@ -149,37 +180,40 @@ $questions = FaithGuardRepository::getAllQuizQuestions();
     </nav>
 
     <!-- Quiz Section -->
-    <main class="container my-5">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card c-card">
-                    <div class="card-body c-card__body">
-                        <h2 class="card-title c-card__title text-center">FaithGuard Addiction Assessment Quiz</h2>
-                        <p class="text-center mb-4">Answer the questions honestly to assess your progress.</p>
+    <main class="c-main container my-5">
+        <section class="c-quiz">
+            <h2 class="c-quiz__title text-center">Addiction Assessment</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-12">
+                    <div class="card c-card">
+                        <div class="card-body c-card__body">
+                            <!-- Progress Bar -->
+                            <div class="progress c-progress mb-4">
+                                <div class="progress-bar c-progress__bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
 
-                        <?php if ($message): ?>
-                            <div class="alert alert-success"><?php echo htmlspecialchars($message); ?></div>
-                        <?php endif; ?>
-
-                        <form method="POST">
-                            <?php foreach ($questions as $index => $q): ?>
-                                <div class="mb-3">
-                                    <label class="form-label"><strong><?php echo ($index + 1) . '. ' . htmlspecialchars($q['question']); ?></strong></label>
-                                    <?php $options = json_decode($q['options'], true); ?>
-                                    <?php foreach ($options as $opt): ?>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="answers[<?php echo $q['id']; ?>]" value="<?php echo htmlspecialchars($opt); ?>" required>
-                                            <label class="form-check-label"><?php echo htmlspecialchars($opt); ?></label>
+                            <!-- Quiz Form Container -->
+                            <form id="quizForm">
+                                <div class="c-quiz__content mb-4">
+                                    <!-- Questions will be injected here by JS -->
+                                    <div class="text-center py-5">
+                                        <div class="spinner-border c-quiz__spinner text-primary" role="status">
+                                            <span class="visually-hidden">Loading...</span>
                                         </div>
-                                    <?php endforeach; ?>
+                                    </div>
                                 </div>
-                            <?php endforeach; ?>
-                            <button type="submit" class="btn c-btn w-100">Submit Quiz</button>
-                        </form>
+
+                                <div class="d-flex justify-content-between">
+                                    <button type="button" id="prevButton" class="btn c-btn c-btn__quiz c-btn__quiz--prev">Previous</button>
+                                    <button type="button" id="nextButton" class="btn c-btn c-btn__quiz c-btn__quiz--next">Next</button>
+                                    <button type="submit" id="submitButton" class="btn c-btn c-btn__quiz c-btn__quiz--submit">Submit Quiz</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
     </main>
 
     <!-- Footer -->
