@@ -286,10 +286,14 @@ class FaithGuardRepository
         );
     }
 
-    public static function deleteQuizResult($id)
-    {
-        return Database::execute("DELETE FROM quiz_results WHERE id = ?", [$id]);
-    }
+    public static function deleteQuizResult($id){
+        return Database::execute("DELETE FROM quiz_results WHERE id = ?", [$id]);}
+    public static function saveQuizResult($userId, $quizId, $answers, $score) {
+        $sql = "INSERT INTO quiz_results (user_id, quiz_id, answers, score) VALUES (?, ?, ?, ?)";
+        $params = [$userId, $quizId, json_encode($answers), $score];
+        return Database::execute($sql, $params);}
+    public static function getQuizResults($userId) {
+        return Database::getRows("SELECT * FROM quiz_results WHERE user_id = ? ORDER BY created_at DESC", [$userId]);}
 
     /* ============================
        RESOURCES

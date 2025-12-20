@@ -24,6 +24,7 @@ All notable changes to this project will be documented in this file.
 - Policy updates handled by slug.
 - Public policies.
 - Registering logic.
+- Implement dedicated quiz page and update repository logic
 
 ### Changed
 - `README.md` file got a professional make-over.
