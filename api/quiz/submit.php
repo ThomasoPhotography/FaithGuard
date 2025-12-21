@@ -1,86 +1,198 @@
 <?php
-/**
- * POST ENDPOINT: Receives quiz answers, calculates score, and saves result.
- */
 
-// --- Core App Requirements ---
 require_once __DIR__ . "/../../db/database.php";
 require_once __DIR__ . "/../../db/FaithGuardRepository.php";
 require_once __DIR__ . "/../helper/debug.php";
 
-session_set_cookie_params([
-    'lifetime' => 302400, // 3.5 days (84 hours)
-    'path'     => '/',
-    'domain'   => $_SERVER['SERVER_NAME'] ?? '',
-    'secure'   => true,
-    'httponly' => true,
-]);
 session_start();
-
 header('Content-Type: application/json');
 
-// 1. Authorization Check
 if (! isset($_SESSION['user_id'])) {
     http_response_code(401);
-    echo json_encode(['success' => false, 'error' => 'Unauthorized. Please log in to save results.']);
+    echo json_encode(['success' => false, 'error' => 'Unauthorized']);
     exit;
 }
 
-// 2. Request Method Check
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
-    echo json_encode(['success' => false, 'error' => 'Invalid request method.']);
+    echo json_encode(['success' => false, 'error' => 'Invalid method']);
     exit;
 }
 
-try {
-    // 3. Get Input Data
-    $json_input = file_get_contents('php://input');
-    $data       = json_decode($json_input, true);
+/* ============================
+   CONFIGURATION
+============================ */
 
-    // Validate essential fields
-    if (! isset($data['addiction_type']) || ! isset($data['answers']) || ! is_array($data['answers'])) {
-        throw new Exception("Invalid input format. 'addiction_type' and 'answers' array are required.");
-    }
+$CATEGORY_WEIGHTS = [
+    'secrecy'       => 1.3,
+    'guilt'         => 1.3,
+    'compulsion'    => 1.4,
+    'isolation'     => 1.2,
+    'risk'          => 1.2,
+    'health'        => 1.1,
+    'spiritual'     => 1.4,
+    'relationships' => 1.2,
+    'control'       => 1.3,
+];
 
-    $addictionType = htmlspecialchars($data['addiction_type'], ENT_QUOTES, 'UTF-8');
-    $answers       = $data['answers']; // Array of objects like {question_id: 1, score: 3} or just scores
+$ADDICTION_WEIGHTS = [
+    'pornography' => [
+        'secrecy'   => 1.4,
+        'guilt'     => 1.4,
+        'spiritual' => 1.5,
+    ],
+    'alcohol'     => [
+        'health'  => 1.4,
+        'risk'    => 1.4,
+        'control' => 1.3,
+    ],
+    'drugs'       => [
+        'health'    => 1.5,
+        'risk'      => 1.4,
+        'isolation' => 1.3,
+    ],
+    'gambling'    => [
+        'control'       => 1.4,
+        'risk'          => 1.5,
+        'relationships' => 1.3,
+    ],
+];
 
-    // 4. Calculate Total Score
-    // Assuming 'answers' is an array of numerical scores based on the 1-5 scale
-    // If it's an object, we extract the values.
-    $totalScore = 0;
-    foreach ($answers as $ans) {
-        // Handle if answer is just a number or an object with a 'score' key
-        $val = is_array($ans) ? ($ans['score'] ?? 0) : $ans;
-        $totalScore += (float) $val;
-    }
+$SCRIPTURE_MAP = [
+    'pornography' => [
+        'Low Risk'          => ['1 Corinthians 10:13'],
+        'Mild Concern'      => ['Psalm 119:9'],
+        'Moderate Struggle' => ['Matthew 5:28', 'Romans 12:2'],
+        'Severe Struggle'   => ['Job 31:1'],
+        'Critical'          => ['Psalm 51:10', '1 John 1:7'],
+    ],
+    'alcohol'     => [
+        'Low Risk'          => ['1 Corinthians 6:12'],
+        'Moderate Struggle' => ['Proverbs 20:1'],
+        'Severe Struggle'   => ['Ephesians 5:18'],
+        'Critical'          => ['Romans 13:13'],
+    ],
+];
 
-    // 5. Store in Database via Repository
-    // Signature: createQuizResult($userId, $addictionType, $answersJson, $totalScore)
-    $result = FaithGuardRepository::createQuizResult(
-        $_SESSION['user_id'],
-        $addictionType,
-        json_encode($answers), // Store raw answers for detail view later
-        $totalScore
-    );
+/* ============================
+   HELPERS
+============================ */
 
-    if ($result) {
-                                             // 6. Success Response
-                                             // You can add logic here to return specific resource tags based on the score/type
-        $recommendedTags = [$addictionType]; // Basic recommendation logic
-
-        echo json_encode([
-            'success'          => true,
-            'message'          => 'Quiz result saved successfully.',
-            'score'            => $totalScore,
-            'recommended_tags' => $recommendedTags,
-        ]);
-    } else {
-        throw new Exception("Database insertion failed.");
-    }
-
-} catch (Exception $e) {
-    error_log("Quiz Submit Error: " . $e->getMessage());
-    echo json_encode(['success' => false, 'error' => 'An error occurred while saving your results.']);
+function interpretScore(int $score): array
+{
+    return match (true) {
+        $score <= 25 => ['level' => 'Low Risk', 'tone' => 'success'],
+        $score <= 45 => ['level' => 'Mild Concern', 'tone' => 'info'],
+        $score <= 65 => ['level' => 'Moderate Struggle', 'tone' => 'warning'],
+        $score <= 80 => ['level' => 'Severe Struggle', 'tone' => 'danger'],
+        default      => ['level' => 'Critical', 'tone' => 'danger'],
+    };
 }
+
+function fetchBibleVerse(string $reference): ?array
+{
+    $apiKey = '9HmOm_ZxzdLKebUeeWl8p';
+    $url    = "https://api.scripture.api.bible/v1/bibles/de4e12af7f28f599-01/search?query=" . urlencode($reference);
+
+    $context = stream_context_create([
+        'http'    => [
+            'header' => "api-key: {$apiKey}\r\n",
+            'timeout' => 5,
+        ],
+    ]);
+
+    $response = @file_get_contents($url, false, $context);
+    if (! $response) {
+        return null;
+    }
+
+    $data = json_decode($response, true);
+    return $data['data']['verses'][0] ?? null;
+}
+
+/* ============================
+   PROCESS INPUT
+============================ */
+
+$payload = json_decode(file_get_contents('php://input'), true);
+
+if (
+    ! isset($payload['addiction_type']) ||
+    ! isset($payload['answers']) ||
+    ! is_array($payload['answers'])
+) {
+    throw new Exception('Invalid payload');
+}
+
+$addictionType = $payload['addiction_type'];
+$answers       = $payload['answers'];
+
+$questions = FaithGuardRepository::getAllQuizQuestions();
+
+$totalWeighted     = 0;
+$normalizedAnswers = [];
+
+foreach ($questions as $q) {
+    $qid = $q['id'];
+    if (! isset($answers[$qid])) {
+        continue;
+    }
+
+    $value = (int) $answers[$qid];
+    if ($value < 1 || $value > 5) {
+        continue;
+    }
+
+    $category  = $q['category'] ?? null;
+    $base      = $value;
+    $catWeight = $CATEGORY_WEIGHTS[$category] ?? 1.0;
+    $addWeight = $ADDICTION_WEIGHTS[$addictionType][$category] ?? 1.0;
+
+    $totalWeighted += $base * $catWeight * $addWeight;
+    $normalizedAnswers[$qid] = $value;
+}
+
+$maxScore   = count($questions) * 5 * 1.5;
+$percentage = round(($totalWeighted / $maxScore) * 100);
+
+$interpretation = interpretScore($percentage);
+
+/* ============================
+   SCRIPTURE + RESOURCES
+============================ */
+
+$scriptureRefs = $SCRIPTURE_MAP[$addictionType][$interpretation['level']] ?? [];
+$scriptures    = [];
+
+foreach ($scriptureRefs as $ref) {
+    $verse = fetchBibleVerse($ref);
+    if ($verse) {
+        $scriptures[] = [
+            'reference' => $ref,
+            'text'      => $verse['text'] ?? '',
+        ];
+    }
+}
+
+/* ============================
+   SAVE RESULT
+============================ */
+
+FaithGuardRepository::createQuizResult(
+    $_SESSION['user_id'],
+    $addictionType,
+    json_encode($normalizedAnswers),
+    $percentage
+);
+
+/* ============================
+   RESPONSE
+============================ */
+
+echo json_encode([
+    'success'       => true,
+    'score'         => $percentage,
+    'level'         => $interpretation['level'],
+    'scripture'     => $scriptures,
+    'resource_tags' => [$addictionType, $interpretation['level']],
+]);

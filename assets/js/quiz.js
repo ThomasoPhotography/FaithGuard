@@ -10,29 +10,58 @@ const quizForm = document.getElementById('quizForm');
 const questions = document.querySelectorAll('.c-quiz__question');
 
 let currentStep = 0;
+// #endregion
 
+// #region *** Utilities ********************************************
+const isQuestionAnswered = (stepIndex) => {
+    const question = questions[stepIndex];
+    if (!question) return false;
+
+    const inputs = question.querySelectorAll('input[type="radio"]');
+    return Array.from(inputs).some(input => input.checked);
+};
+
+const showValidationError = (stepIndex) => {
+    const question = questions[stepIndex];
+    if (!question) return;
+
+    let warning = question.querySelector('.quiz-warning');
+    if (!warning) {
+        warning = document.createElement('div');
+        warning.className = 'quiz-warning text-danger mt-2';
+        warning.textContent = 'Please select an answer before continuing.';
+        question.appendChild(warning);
+    }
+};
+
+const clearValidationError = (stepIndex) => {
+    const question = questions[stepIndex];
+    if (!question) return;
+
+    const warning = question.querySelector('.quiz-warning');
+    if (warning) warning.remove();
+};
 // #endregion
 
 // #region ***  Callback-Visualisation - show___         ***********
 const renderQuestion = (stepIndex) => {
-    if (!quizContent || stepIndex >= questions.length || stepIndex < 0) {
-        quizContent.innerHTML = '<p class="text-center text-success fw-bold">Quiz Complete. Submitting your answers...</p>';
-        return;
-    }
+    if (!quizContent || stepIndex < 0 || stepIndex >= questions.length) return;
 
-    // Show/hide questions based on data-step (PHP-generated)
     questions.forEach((q, index) => {
         q.style.display = index === stepIndex ? 'block' : 'none';
     });
 
+    clearValidationError(stepIndex);
     updateNavigationButtons(stepIndex);
     updateProgressBar(stepIndex);
 };
 
 const updateProgressBar = (stepIndex) => {
-    if (!quizProgressBar) return; // Safety check
+    if (!quizProgressBar) return;
+
     const totalSteps = questions.length;
-    const progress = ((stepIndex + 1) / totalSteps) * 100;
+    const progress = Math.round(((stepIndex + 1) / totalSteps) * 100);
+
     quizProgressBar.style.width = `${progress}%`;
     quizProgressBar.setAttribute('aria-valuenow', progress);
     quizProgressBar.textContent = `Question ${stepIndex + 1} of ${totalSteps}`;
@@ -53,6 +82,11 @@ const updateNavigationButtons = (stepIndex) => {
 
 // #region ***  Quiz Logic                             ***********
 const nextStep = () => {
+    if (!isQuestionAnswered(currentStep)) {
+        showValidationError(currentStep);
+        return;
+    }
+
     if (currentStep < questions.length - 1) {
         currentStep++;
         renderQuestion(currentStep);
@@ -68,28 +102,67 @@ const prevStep = () => {
 
 const submitQuiz = async (event) => {
     event.preventDefault();
-    // Since quiz.php handles POST submission, just let the form submit naturally
-    // Optional: Add client-side validation here if needed
-    quizForm.submit();
+
+    const formData = new FormData(quizForm);
+    const payload = {
+        addiction_type: formData.get('addiction_type'),
+        answers: {}
+    };
+
+    for (const [key, value] of formData.entries()) {
+        if (key.startsWith('answers[')) {
+            const id = key.match(/\[(\d+)\]/)[1];
+            payload.answers[id] = parseInt(value, 10);
+        }
+    }
+
+    try {
+        const response = await fetch('/api/quiz/submit.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+
+        if (!result.success) {
+            alert('There was an issue submitting your quiz.');
+            return;
+        }
+
+        // Redirect to results page
+        window.location.href = `/quiz-result.php`;
+
+    } catch (err) {
+        console.error(err);
+        alert('Network error. Please try again.');
+    }
 };
 // #endregion
 
 // #region ***  Event Listeners - listenTo___            ***********
 const listenToQuizControls = () => {
     if (!nextButton || !prevButton || !quizForm) return;
-    
+
     nextButton.addEventListener('click', nextStep);
     prevButton.addEventListener('click', prevStep);
     quizForm.addEventListener('submit', submitQuiz);
+
+    // Clear validation error when user selects an option
+    questions.forEach((question, index) => {
+        const inputs = question.querySelectorAll('input[type="radio"]');
+        inputs.forEach(input => {
+            input.addEventListener('change', () => clearValidationError(index));
+        });
+    });
 };
 // #endregion
 
 // #region ***  Init / DOMContentLoaded                  ***********
 const initQuiz = () => {
-    if (quizContent && questions.length > 0) {
-        renderQuestion(currentStep);
-        listenToQuizControls();
-    }
+    if (!quizContent || questions.length === 0) return;
+    renderQuestion(currentStep);
+    listenToQuizControls();
 };
 document.addEventListener('DOMContentLoaded', initQuiz);
 // #endregion
