@@ -54,15 +54,26 @@
     }
 
     $message = '';
+    $score = 0;
+    $total = 0;
 
-    // Handle form submission (if PHP fallback is needed, though JS usually handles this)
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // This part is largely superseded by the AJAX submission in assets/js/quiz.js
-        // but kept for fallback or structural completeness if you submit natively.
-    }
-
-    // Fetch questions
+    // Fetch questions from DB (PHP array)
     $questions = FaithGuardRepository::getAllQuizQuestions();
+    $total = count($questions);
+
+        // Handle form submission (POST to self)
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['answers'])) {
+        $answers = $_POST['answers'];
+        foreach ($questions as $q) {
+            if (isset($answers[$q['id']]) && $answers[$q['id']] === $q['correct_answer']) {
+                $score++;
+            }
+        }
+
+        // Save result to DB
+        $saved = FaithGuardRepository::saveQuizResult($_SESSION['user_id'], $_SESSION['quiz_id'], $answers, $score);
+        $message = $saved ? "Quiz completed! Your score: $score/$total" : "Error saving results.";
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -187,28 +198,37 @@
                 <div class="col-md-8 col-12">
                     <div class="card c-card">
                         <div class="card-body c-card__body">
-                            <!-- Progress Bar -->
-                            <div class="progress c-progress mb-4">
-                                <div class="progress-bar c-progress__bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
+                            <?php if ($message): ?>
+                                <div class="alert alert-success"><?php echo htmlspecialchars($message); ?></div>
+                            <?php else: ?>
+                                <!-- Progress Bar -->
+                                <div class="progress c-progress mb-4">
+                                    <div class="progress-bar c-progress__bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
 
-                            <!-- Quiz Form Container -->
-                            <form id="quizForm">
-                                <div class="c-quiz__content mb-4">
-                                    <!-- Questions will be injected here by JS -->
-                                    <div class="text-center py-5">
-                                        <div class="spinner-border c-quiz__spinner text-primary" role="status">
-                                            <span class="visually-hidden">Loading...</span>
-                                        </div>
+                                <!-- Quiz Form Container -->
+                                <form id="quizForm" method="POST">
+                                    <div class="c-quiz__content mb-4">
+                                        <?php foreach ($questions as $index => $q): ?>
+                                            <div class="c-quiz__question" data-step="<?php echo $index; ?>" style="display: <?php echo $index === 0 ? 'block' : 'none'; ?>">
+                                                <h5><?php echo ($index + 1) . '. ' . htmlspecialchars($q['question']); ?></h5>
+                                                <?php $options = json_decode($q['options'], true); ?>
+                                                <?php foreach ($options as $opt): ?>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="answers[<?php echo $q['id']; ?>]" value="<?php echo htmlspecialchars($opt); ?>" required>
+                                                        <label class="form-check-label"><?php echo htmlspecialchars($opt); ?></label>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            </div>
+                                        <?php endforeach; ?>
                                     </div>
-                                </div>
-
-                                <div class="d-flex justify-content-between">
-                                    <button type="button" id="prevButton" class="btn c-btn c-btn__quiz c-btn__quiz--prev">Previous</button>
-                                    <button type="button" id="nextButton" class="btn c-btn c-btn__quiz c-btn__quiz--next">Next</button>
-                                    <button type="submit" id="submitButton" class="btn c-btn c-btn__quiz c-btn__quiz--submit">Submit Quiz</button>
-                                </div>
-                            </form>
+                                    <div class="d-flex justify-content-between">
+                                        <button type="button" id="prevButton" class="btn c-btn c-btn__quiz c-btn__quiz--prev">Previous</button>
+                                        <button type="button" id="nextButton" class="btn c-btn c-btn__quiz c-btn__quiz--next">Next</button>
+                                        <button type="submit" id="submitButton" class="btn c-btn c-btn__quiz c-btn__quiz--submit">Submit Quiz</button>
+                                    </div>
+                                </form>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>

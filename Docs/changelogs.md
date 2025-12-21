@@ -147,6 +147,7 @@ All notable changes to this project will be documented in this file.
 - Register link redirection.
 - Registering link.
 - Enchance quiz UI with selectable answer cards and refine progress styling.
+- Quiz generation logic.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.
