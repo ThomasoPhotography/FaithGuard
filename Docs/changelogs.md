@@ -24,7 +24,8 @@ All notable changes to this project will be documented in this file.
 - Policy updates handled by slug.
 - Public policies.
 - Registering logic.
-- Implement dedicated quiz page and update repository logic
+- Implement dedicated quiz page and update repository logic.
+- Implement relational resource tagging system and enhance quiz integration.
 
 ### Changed
 - `README.md` file got a professional make-over.
@@ -42,6 +43,7 @@ All notable changes to this project will be documented in this file.
 - `faithguard_db.sql` V1 as part of database restructuring.
 - Placeholder background image from hero section in `main.css`.
 - Both `/templates/footer.html` and `/assets/js/footer.js`.
+- Unneccesary file in `/api/resources`, namely `/api/resources/list.php`.
 
 ### Fixed
 - Logout function of php.

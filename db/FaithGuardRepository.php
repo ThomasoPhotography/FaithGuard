@@ -308,20 +308,25 @@ class FaithGuardRepository
         return Database::getSingleRow("SELECT * FROM resources WHERE id = ?", [$id]);
     }
 
-    public static function createResource($title, $content, $tags = null)
+    public static function getResourceBySlug($slug)
     {
-        return Database::execute(
-            "INSERT INTO resources (title, content, tags) VALUES (?, ?, ?)",
-            [$title, $content, $tags]
+        return Database::getSingleRow("SELECT * FROM resources WHERE slug = ?", [$slug]);
+    }
+
+    public static function createResource($title, $slug, $content_text, $content_visual, $createdBy)
+    {
+        return Database::execute("INSERT INTO resources (title, slug, content_text, content_visual, created_by) VALUES (?, ?, ?, ?, ?)",
+            [$title, $slug, $content_text, $content_visual, $createdBy]
         );
     }
-    public static function updateResource($id, $title, $content, $tags)
+
+    public static function updateResource($id, $title, $slug, $content_text, $content_visual)
     {
-        return Database::execute(
-            "UPDATE resources SET title = ?, content = ?, tags = ? WHERE id = ?",
-            [$title, $content, $tags, $id]
+        return Database::execute("UPDATE resources SET title = ?, slug = ?, content_text = ?, content_visual = ? WHERE id = ?",
+            [$title, $slug, $content_text, $content_visual, $id]
         );
     }
+
     public static function deleteResource($id)
     {
         return Database::execute("DELETE FROM resources WHERE id = ?", [$id]);
