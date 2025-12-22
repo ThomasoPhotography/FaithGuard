@@ -1,60 +1,69 @@
 <?php
-// --- Core App Requirements ---
-require_once __DIR__ . "/db/database.php";
-require_once __DIR__ . "/db/FaithGuardRepository.php";
-require_once __DIR__ . "/api/helper/debug.php";
+    // --- Core App Requirements ---
+    require_once __DIR__ . "/db/database.php";
+    require_once __DIR__ . "/db/FaithGuardRepository.php";
+    require_once __DIR__ . "/api/helper/debug.php";
 
-// --- Session (same pattern as other pages) ---
-session_set_cookie_params([
-    'lifetime' => 302400,
-    'path'     => '/',
-    'domain'   => $_SERVER['SERVER_NAME'] ?? '',
-    'secure'   => true,
-    'httponly' => true,
-]);
-session_start();
+    // --- Session (same pattern as other pages) ---
+    session_set_cookie_params([
+        'lifetime' => 302400,
+        'path'     => '/',
+        'domain'   => $_SERVER['SERVER_NAME'] ?? '',
+        'secure'   => true,
+        'httponly' => true,
+    ]);
+    session_start();
 
-// --- Auth State (SAFE DEFAULTS) ---
-$is_logged_in = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
+    // --- Auth State (SAFE DEFAULTS) ---
+    $is_logged_in = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
 
-$user        = false;
-$user_data   = null;
-$accountName = '';
-$user_role   = 'guest';
+    $user        = false;
+    $user_data   = null;
+    $accountName = '';
+    $user_role   = 'guest';
 
-// --- Load user if logged in ---
-if ($is_logged_in && isset($_SESSION['user_id'])) {
-    $user_data = FaithGuardRepository::getUserById($_SESSION['user_id']);
+    // --- Load user if logged in ---
+    if ($is_logged_in && isset($_SESSION['user_id'])) {
+        $user_data = FaithGuardRepository::getUserById($_SESSION['user_id']);
 
-    if ($user_data) {
-        $user        = true;
-        $accountName = htmlspecialchars($user_data['name'] ?? $user_data['email']);
-        $user_role   = $user_data['role'] ?? 'user';
-    } else {
-        // Corrupted session → reset
-        unset($_SESSION['user_id'], $_SESSION['logged_in']);
-        $is_logged_in = false;
+        if ($user_data) {
+            $user        = true;
+            $accountName = htmlspecialchars($user_data['name'] ?? $user_data['email']);
+            $user_role   = $user_data['role'] ?? 'user';
+        } else {
+            // Corrupted session → reset
+            unset($_SESSION['user_id'], $_SESSION['logged_in']);
+            $is_logged_in = false;
+        }
     }
-}
 
-// --- Policy Logic (PUBLIC ACCESS) ---
-$slug       = $_GET['slug'] ?? '';
-$validSlugs = ['terms', 'privacy', 'cookie'];
+    // --- Policy Logic (PUBLIC ACCESS) ---
+    $slug       = $_GET['slug'] ?? '';
+    $validSlugs = ['terms', 'privacy', 'cookie'];
 
-if (! in_array($slug, $validSlugs, true)) {
-    $title   = 'Policy Not Found';
-    $content = '<p>The requested policy could not be found.</p>';
-} else {
-    $policy = FaithGuardRepository::getPolicyContent($slug);
-
-    if ($policy) {
-        $title   = htmlspecialchars($policy['content_title']);
-        $content = nl2br(htmlspecialchars($policy['content_text']));
+    if (! in_array($slug, $validSlugs, true)) {
+        $title       = 'Policy Not Found';
+        $content     = '<p>The requested policy could not be found.</p>';
+        $dateUpdated = 'Unknown';
+        $dateCreated = 'Unknown';
+        $date        = 'Date Created: ' . $dateCreated . ' - Last Updated: ' . $dateUpdated;
     } else {
-        $title   = 'Policy Not Found';
-        $content = '<p>The requested policy could not be found.</p>';
+        $policy = FaithGuardRepository::getPolicyContent($slug);
+
+        if ($policy) {
+            $title       = htmlspecialchars($policy['content_title']);
+            $content     = nl2br(htmlspecialchars($policy['content_text']));
+            $dateUpdated = htmlspecialchars($policy['updated_at']);
+            $dateCreated = htmlspecialchars($policy['created_at']);
+            $date        = 'Date Created: ' . $dateCreated . ' - Last Updated: ' . $dateUpdated;
+        } else {
+            $title       = 'Policy Not Found';
+            $content     = '<p>The requested policy could not be found.</p>';
+            $dateUpdated = 'Unknown';
+            $dateCreated = 'Unknown';
+            $date        = 'Date Created: ' . $dateCreated . ' - Last Updated: ' . $dateUpdated;
+        }
     }
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -99,12 +108,12 @@ if (! in_array($slug, $validSlugs, true)) {
                 <div class="d-flex dropdown c-dropdown">
                     <button class="btn c-btn c-dropdown__btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="c-dropdown__icon bi bi-person-check me-1"></i>
-                        <span class="c-dropdown__text">Welcome                                                                                                                                                                                                                                                         <?php echo $accountName; ?></span>
+                        <span class="c-dropdown__text">Welcome                                                                                                                                                                                                                                                                                                                       <?php echo $accountName; ?></span>
                     </button>
                     <!-- LOGGED-IN DROPDOWN MENU -->
                     <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu" aria-labelledby="userDropdown">
                         <li>
-                            <h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                                                                                                                                                                                                                                                                                                 <?php echo ucfirst($user_role); ?></h6>
+                            <h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                                                                                                                                                                                                                                                                                                                                                                                         <?php echo ucfirst($user_role); ?></h6>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
@@ -166,6 +175,7 @@ if (! in_array($slug, $validSlugs, true)) {
     <!-- Main Content -->
     <main class="container my-5">
         <h1 class="c-main__title"><?php echo $title; ?></h1>
+        <h3 class="c-main__subtitle"><?php echo $date; ?></h3>
         <div class="c-main__text"><?php echo $content; ?></div>
         <a href="index.php" class="btn c-btn c-btn__dashboard mt-4">Back to Home</a>
     </main>

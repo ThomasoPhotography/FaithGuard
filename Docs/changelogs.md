@@ -154,6 +154,7 @@ All notable changes to this project will be documented in this file.
 - Refactor harden quiz submit logic with validation, normalization, and multi-addiction weighting.
 - Policies & SQL.
 - Refactor (user-dashboard) consolidate auth handling, secure data loading, and dashboard rendering.
+- Policy pages to look more professional.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.
