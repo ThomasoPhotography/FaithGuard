@@ -17,6 +17,16 @@ SET NAMES utf8mb4;
 -- CORE TABLES
 -- ========================================================
 
+-- Create roles first so users can reference it
+CREATE TABLE `roles` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY (`name`)
+) ENGINE=InnoDB;
+
+INSERT INTO `roles` (`id`, `name`) VALUES (1, 'admin'), (2, 'user');
+
 CREATE TABLE `users` (
   `id` int NOT NULL AUTO_INCREMENT,
   `email` varchar(255) NOT NULL,
@@ -25,14 +35,8 @@ CREATE TABLE `users` (
   `role` varchar(50) NOT NULL DEFAULT 'user',
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB;
-
-CREATE TABLE `roles` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY (`name`)
+  UNIQUE KEY `email` (`email`),
+  KEY `idx_user_role` (`role`)
 ) ENGINE=InnoDB;
 
 CREATE TABLE `sessions` (
@@ -41,7 +45,8 @@ CREATE TABLE `sessions` (
   `token` varchar(255) NOT NULL,
   `expires_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY (`token`)
+  UNIQUE KEY (`token`),
+  KEY `idx_session_user` (`user_id`)
 ) ENGINE=InnoDB;
 
 -- ========================================================
@@ -67,10 +72,6 @@ CREATE TABLE `quiz_results` (
   KEY `idx_quiz_user` (`user_id`)
 ) ENGINE=InnoDB;
 
--- ========================================================
--- PER-CATEGORY SCORES (Progress bars, reports)
--- ========================================================
-
 CREATE TABLE `quiz_category_scores` (
   `id` int NOT NULL AUTO_INCREMENT,
   `quiz_result_id` int NOT NULL,
@@ -78,7 +79,8 @@ CREATE TABLE `quiz_category_scores` (
   `raw_score` decimal(10,2) NOT NULL,
   `weighted_score` decimal(10,2) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `idx_category` (`category`)
+  KEY `idx_category` (`category`),
+  KEY `idx_score_result` (`quiz_result_id`)
 ) ENGINE=InnoDB;
 
 -- ========================================================
@@ -102,17 +104,14 @@ CREATE TABLE `resource_tags` (
   KEY `idx_resource` (`resource_id`)
 ) ENGINE=InnoDB;
 
--- ========================================================
--- QUIZ → RESOURCE AUTO-MAPPING
--- ========================================================
-
 CREATE TABLE `quiz_resource_map` (
   `id` int NOT NULL AUTO_INCREMENT,
   `category` varchar(100) NOT NULL,
   `addiction_type` varchar(100),
   `resource_id` int NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `idx_map_category` (`category`)
+  KEY `idx_map_category` (`category`),
+  KEY `idx_map_resource` (`resource_id`)
 ) ENGINE=InnoDB;
 
 -- ========================================================
@@ -148,7 +147,8 @@ CREATE TABLE `progress_logs` (
   `user_id` int NOT NULL,
   `checkin_date` datetime DEFAULT CURRENT_TIMESTAMP,
   `milestone` varchar(255),
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `idx_progress_user` (`user_id`)
 ) ENGINE=InnoDB;
 
 CREATE TABLE `posts` (
@@ -156,7 +156,8 @@ CREATE TABLE `posts` (
   `user_id` int NOT NULL,
   `content` text NOT NULL,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `idx_posts_user` (`user_id`)
 ) ENGINE=InnoDB;
 
 CREATE TABLE `post_replies` (
@@ -165,7 +166,9 @@ CREATE TABLE `post_replies` (
   `user_id` int NOT NULL,
   `content` text NOT NULL,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `idx_reply_post` (`post_id`),
+  KEY `idx_reply_user` (`user_id`)
 ) ENGINE=InnoDB;
 
 CREATE TABLE `messages` (
@@ -174,7 +177,9 @@ CREATE TABLE `messages` (
   `receiver_id` int NOT NULL,
   `content` text NOT NULL,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `idx_message_sender` (`sender_id`),
+  KEY `idx_message_receiver` (`receiver_id`)
 ) ENGINE=InnoDB;
 
 -- ========================================================
@@ -197,24 +202,55 @@ CREATE TABLE `policies` (
 -- FOREIGN KEYS
 -- ========================================================
 
+-- User Role Integrity
+ALTER TABLE `users`
+  ADD CONSTRAINT `fk_users_role`
+  FOREIGN KEY (`role`) REFERENCES `roles` (`name`) ON UPDATE CASCADE;
+
+-- Session Connections
 ALTER TABLE `sessions`
   ADD CONSTRAINT `fk_sessions_user`
-  FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+  FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
+-- Quiz System Connections
 ALTER TABLE `quiz_results`
   ADD CONSTRAINT `fk_quiz_user`
-  FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+  FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 ALTER TABLE `quiz_category_scores`
   ADD CONSTRAINT `fk_category_result`
-  FOREIGN KEY (`quiz_result_id`) REFERENCES `quiz_results` (`id`);
+  FOREIGN KEY (`quiz_result_id`) REFERENCES `quiz_results` (`id`) ON DELETE CASCADE;
 
+-- Resource Connections
 ALTER TABLE `resource_tags`
   ADD CONSTRAINT `fk_resource_tags`
-  FOREIGN KEY (`resource_id`) REFERENCES `resources` (`id`);
+  FOREIGN KEY (`resource_id`) REFERENCES `resources` (`id`) ON DELETE CASCADE;
 
 ALTER TABLE `quiz_resource_map`
   ADD CONSTRAINT `fk_qrm_resource`
-  FOREIGN KEY (`resource_id`) REFERENCES `resources` (`id`);
+  FOREIGN KEY (`resource_id`) REFERENCES `resources` (`id`) ON DELETE CASCADE;
+
+-- Community & Progress Connections
+ALTER TABLE `progress_logs`
+  ADD CONSTRAINT `fk_progress_user`
+  FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+ALTER TABLE `posts`
+  ADD CONSTRAINT `fk_posts_user`
+  FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+-- Post Replies linked to both the Parent Post and the User
+ALTER TABLE `post_replies`
+  ADD CONSTRAINT `fk_reply_post`
+  FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_reply_user`
+  FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+-- Messaging Connections: Link both sender and receiver to user ID
+ALTER TABLE `messages`
+  ADD CONSTRAINT `fk_msg_sender`
+  FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_msg_receiver`
+  FOREIGN KEY (`receiver_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 COMMIT;

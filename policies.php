@@ -1,9 +1,44 @@
 <?php
-    // --- Core App Requirements (Always required) ---
+    session_set_cookie_params([
+        'lifetime' => 302400,
+        'path'     => '/',
+        'domain'   => $_SERVER['SERVER_NAME'] ?? '',
+        'secure'   => true,
+        'httponly' => true,
+    ]);
+    session_start();
+
     require_once __DIR__ . "/db/database.php";
     require_once __DIR__ . "/db/FaithGuardRepository.php";
-    // --- Optional Helper/Debug (Required, but note its function) ---
     require_once __DIR__ . "/api/helper/debug.php";
+
+    /* =========================
+   AUTH GUARD
+========================= */
+    $is_logged_in = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
+
+    if (! $is_logged_in || ! isset($_SESSION['user_id'])) {
+        header("Location: /index.php");
+        exit;
+    }
+
+    /* =========================
+   USER CONTEXT (NAVBAR)
+========================= */
+    $user        = null;
+    $accountName = 'Guest';
+    $user_role   = 'user';
+
+    $user_data = FaithGuardRepository::getUserById($_SESSION['user_id']);
+    if (! $user_data) {
+        session_destroy();
+        header("Location: /index.php");
+        exit;
+    }
+
+    $user        = true;
+    $accountName = htmlspecialchars($user_data['name'] ?? $user_data['email']);
+    $user_role   = $user_data['role'] ?? 'user';
 
     // Get slug from URL
     $slug       = $_GET['slug'] ?? '';
