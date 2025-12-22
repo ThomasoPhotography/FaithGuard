@@ -149,6 +149,7 @@ All notable changes to this project will be documented in this file.
 - Enchance quiz UI with selectable answer cards and refine progress styling.
 - Quiz generation logic.
 - Resolve quiz rendering issues and improve JSON data parsing.
+- Refactor harden quiz submit logic with validation, normalization, and multi-addiction weighting.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.

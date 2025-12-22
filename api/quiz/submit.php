@@ -1,5 +1,7 @@
 <?php
 
+declare (strict_types = 1);
+
 require_once __DIR__ . "/../../db/database.php";
 require_once __DIR__ . "/../../db/FaithGuardRepository.php";
 require_once __DIR__ . "/../helper/debug.php";
@@ -7,7 +9,11 @@ require_once __DIR__ . "/../helper/debug.php";
 session_start();
 header('Content-Type: application/json');
 
-if (! isset($_SESSION['user_id'])) {
+/* ============================
+   AUTH & METHOD GUARD
+============================ */
+
+if (empty($_SESSION['user_id'])) {
     http_response_code(401);
     echo json_encode(['success' => false, 'error' => 'Unauthorized']);
     exit;
@@ -15,7 +21,7 @@ if (! isset($_SESSION['user_id'])) {
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
-    echo json_encode(['success' => false, 'error' => 'Invalid method']);
+    echo json_encode(['success' => false, 'error' => 'Method not allowed']);
     exit;
 }
 
@@ -78,14 +84,14 @@ $SCRIPTURE_MAP = [
    HELPERS
 ============================ */
 
-function interpretScore(int $score): array
+function interpretScore(int $score): string
 {
     return match (true) {
-        $score <= 25 => ['level' => 'Low Risk', 'tone' => 'success'],
-        $score <= 45 => ['level' => 'Mild Concern', 'tone' => 'info'],
-        $score <= 65 => ['level' => 'Moderate Struggle', 'tone' => 'warning'],
-        $score <= 80 => ['level' => 'Severe Struggle', 'tone' => 'danger'],
-        default      => ['level' => 'Critical', 'tone' => 'danger'],
+        $score <= 25 => 'Low Risk',
+        $score <= 45 => 'Mild Concern',
+        $score <= 65 => 'Moderate Struggle',
+        $score <= 80 => 'Severe Struggle',
+        default      => 'Critical',
     };
 }
 
@@ -97,12 +103,12 @@ function fetchBibleVerse(string $reference): ?array
     $context = stream_context_create([
         'http'    => [
             'header' => "api-key: {$apiKey}\r\n",
-            'timeout' => 5,
+            'timeout' => 4,
         ],
     ]);
 
     $response = @file_get_contents($url, false, $context);
-    if (! $response) {
+    if ($response === false) {
         return null;
     }
 
@@ -111,29 +117,58 @@ function fetchBibleVerse(string $reference): ?array
 }
 
 /* ============================
-   PROCESS INPUT
+   INPUT VALIDATION
 ============================ */
 
 $payload = json_decode(file_get_contents('php://input'), true);
 
-if (
-    ! isset($payload['addiction_type']) ||
-    ! isset($payload['answers']) ||
-    ! is_array($payload['answers'])
-) {
-    throw new Exception('Invalid payload');
+if (! is_array($payload)) {
+    http_response_code(400);
+    echo json_encode(['success' => false, 'error' => 'Malformed JSON']);
+    exit;
 }
 
-$addictionType = $payload['addiction_type'];
-$answers       = $payload['answers'];
+if (
+    empty($payload['addiction_types']) ||
+    ! is_array($payload['addiction_types']) ||
+    empty($payload['answers']) ||
+    ! is_array($payload['answers'])
+) {
+    http_response_code(400);
+    echo json_encode(['success' => false, 'error' => 'Invalid payload structure']);
+    exit;
+}
+
+/* ============================
+   SANITIZE ADDICTIONS
+============================ */
+
+$validAddictions = array_keys($ADDICTION_WEIGHTS);
+
+$addictionTypes = array_values(array_intersect(
+    $validAddictions,
+    array_map('strval', $payload['addiction_types'])
+));
+
+if (empty($addictionTypes)) {
+    http_response_code(400);
+    echo json_encode(['success' => false, 'error' => 'No valid addiction types selected']);
+    exit;
+}
+
+/* ============================
+   SCORING
+============================ */
 
 $questions = FaithGuardRepository::getAllQuizQuestions();
+$answers   = $payload['answers'];
 
-$totalWeighted     = 0;
+$totalWeighted     = 0.0;
 $normalizedAnswers = [];
 
 foreach ($questions as $q) {
-    $qid = $q['id'];
+    $qid = (int) $q['id'];
+
     if (! isset($answers[$qid])) {
         continue;
     }
@@ -146,22 +181,43 @@ foreach ($questions as $q) {
     $category  = $q['category'] ?? null;
     $base      = $value;
     $catWeight = $CATEGORY_WEIGHTS[$category] ?? 1.0;
-    $addWeight = $ADDICTION_WEIGHTS[$addictionType][$category] ?? 1.0;
+
+    $addWeight = 1.0;
+    foreach ($addictionTypes as $type) {
+        if (isset($ADDICTION_WEIGHTS[$type][$category])) {
+            $addWeight *= $ADDICTION_WEIGHTS[$type][$category];
+        }
+    }
+
+    // Prevent runaway multipliers
+    $addWeight = min($addWeight, 2.5);
 
     $totalWeighted += $base * $catWeight * $addWeight;
     $normalizedAnswers[$qid] = $value;
 }
 
 $maxScore   = count($questions) * 5 * 1.5;
-$percentage = round(($totalWeighted / $maxScore) * 100);
+$percentage = (int) round(($totalWeighted / $maxScore) * 100);
+$percentage = max(0, min(100, $percentage));
 
-$interpretation = interpretScore($percentage);
+$level = interpretScore($percentage);
 
 /* ============================
-   SCRIPTURE + RESOURCES
+   SCRIPTURE RESOLUTION
 ============================ */
 
-$scriptureRefs = $SCRIPTURE_MAP[$addictionType][$interpretation['level']] ?? [];
+$scriptureRefs = [];
+
+foreach ($addictionTypes as $type) {
+    if (! empty($SCRIPTURE_MAP[$type][$level])) {
+        $scriptureRefs = array_merge(
+            $scriptureRefs,
+            $SCRIPTURE_MAP[$type][$level]
+        );
+    }
+}
+
+$scriptureRefs = array_unique($scriptureRefs);
 $scriptures    = [];
 
 foreach ($scriptureRefs as $ref) {
@@ -175,13 +231,13 @@ foreach ($scriptureRefs as $ref) {
 }
 
 /* ============================
-   SAVE RESULT
+   PERSIST RESULT
 ============================ */
 
 FaithGuardRepository::createQuizResult(
     $_SESSION['user_id'],
-    $addictionType,
-    json_encode($normalizedAnswers),
+    json_encode($addictionTypes, JSON_THROW_ON_ERROR),
+    json_encode($normalizedAnswers, JSON_THROW_ON_ERROR),
     $percentage
 );
 
@@ -192,7 +248,8 @@ FaithGuardRepository::createQuizResult(
 echo json_encode([
     'success'       => true,
     'score'         => $percentage,
-    'level'         => $interpretation['level'],
+    'level'         => $level,
+    'addictions'    => $addictionTypes,
     'scripture'     => $scriptures,
-    'resource_tags' => [$addictionType, $interpretation['level']],
+    'resource_tags' => array_merge($addictionTypes, [$level]),
 ]);
