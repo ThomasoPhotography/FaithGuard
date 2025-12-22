@@ -151,6 +151,7 @@ All notable changes to this project will be documented in this file.
 - Resolve quiz rendering issues and improve JSON data parsing.
 - Refactor harden quiz submit logic with validation, normalization, and multi-addiction weighting.
 - Policies & SQL.
+- Refactor (user-dashboard) consolidate auth handling, secure data loading, and dashboard rendering.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.

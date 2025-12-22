@@ -1,84 +1,72 @@
 <?php
-    session_set_cookie_params([
-        'lifetime' => 302400,
-        'path'     => '/',
-        'domain'   => $_SERVER['SERVER_NAME'] ?? '',
-        'secure'   => true,
-        'httponly' => true,
-    ]);
-    session_start();
+// --- Core App Requirements ---
+require_once __DIR__ . "/db/database.php";
+require_once __DIR__ . "/db/FaithGuardRepository.php";
+require_once __DIR__ . "/api/helper/debug.php";
 
-    require_once __DIR__ . "/db/database.php";
-    require_once __DIR__ . "/db/FaithGuardRepository.php";
-    require_once __DIR__ . "/api/helper/debug.php";
+// --- Session (same pattern as other pages) ---
+session_set_cookie_params([
+    'lifetime' => 302400,
+    'path'     => '/',
+    'domain'   => $_SERVER['SERVER_NAME'] ?? '',
+    'secure'   => true,
+    'httponly' => true,
+]);
+session_start();
 
-    /* =========================
-   AUTH GUARD
-========================= */
-    $is_logged_in = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
+// --- Auth State (SAFE DEFAULTS) ---
+$is_logged_in = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
 
-    if (! $is_logged_in || ! isset($_SESSION['user_id'])) {
-        header("Location: /index.php");
-        exit;
-    }
+$user        = false;
+$user_data   = null;
+$accountName = '';
+$user_role   = 'guest';
 
-    /* =========================
-   USER CONTEXT (NAVBAR)
-========================= */
-    $user        = null;
-    $accountName = 'Guest';
-    $user_role   = 'user';
-
+// --- Load user if logged in ---
+if ($is_logged_in && isset($_SESSION['user_id'])) {
     $user_data = FaithGuardRepository::getUserById($_SESSION['user_id']);
-    if (! $user_data) {
-        session_destroy();
-        header("Location: /index.php");
-        exit;
+
+    if ($user_data) {
+        $user        = true;
+        $accountName = htmlspecialchars($user_data['name'] ?? $user_data['email']);
+        $user_role   = $user_data['role'] ?? 'user';
+    } else {
+        // Corrupted session → reset
+        unset($_SESSION['user_id'], $_SESSION['logged_in']);
+        $is_logged_in = false;
     }
+}
 
-    $user        = true;
-    $accountName = htmlspecialchars($user_data['name'] ?? $user_data['email']);
-    $user_role   = $user_data['role'] ?? 'user';
+// --- Policy Logic (PUBLIC ACCESS) ---
+$slug       = $_GET['slug'] ?? '';
+$validSlugs = ['terms', 'privacy', 'cookie'];
 
-    // Get slug from URL
-    $slug       = $_GET['slug'] ?? '';
-    $validSlugs = ['terms', 'privacy', 'cookie'];
+if (! in_array($slug, $validSlugs, true)) {
+    $title   = 'Policy Not Found';
+    $content = '<p>The requested policy could not be found.</p>';
+} else {
+    $policy = FaithGuardRepository::getPolicyContent($slug);
 
-    if (! in_array($slug, $validSlugs)) {
+    if ($policy) {
+        $title   = htmlspecialchars($policy['content_title']);
+        $content = nl2br(htmlspecialchars($policy['content_text']));
+    } else {
         $title   = 'Policy Not Found';
         $content = '<p>The requested policy could not be found.</p>';
-    } else {
-        $policy = FaithGuardRepository::getPolicyContent($slug);
-        if ($policy) {
-            $title   = htmlspecialchars($policy['content_title']);
-            $content = nl2br(htmlspecialchars($policy['content_text']));
-        } else {
-            $title   = 'Policy Not Found';
-            $content = '<p>The requested policy could not be found.</p>';
-        }
     }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Meta tags -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="FaithGuard - Protecting Your Digital Faith">
-    <meta name="keywords" content="FaithGuard, Digital Security, Faith Protection, Online Safety">
-    <meta name="author" content="WWTW - FaithGuard">
     <meta name="robots" content="noindex">
-    <!-- Version -->
-    <meta name="version" content="0.1.4-alpha">
-    <meta name="release" content="current">
-    <!-- Title -->
     <title><?php echo $title; ?> - FaithGuard</title>
-    <!-- Favicon -->
-    <link rel="icon" href="assets/uploads/favicon.ico" type="image/x-icon">
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-    <!-- Stylesheet -->
+
+    <link rel="icon" href="assets/uploads/favicon.ico">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/main.css">
 </head>
 <body>
@@ -86,7 +74,7 @@
     <nav class="navbar navbar-expand-lg navbar-light c-nav">
         <div class="container-fluid">
             <!-- LEFT SIDE: LOGO + BRAND -->
-            <a class="navbar-brand c-nav__brand" href="index.php">
+            <a class="navbar-brand c-nav__brand" href="../index.php">
                 <img src="assets/uploads/FaithGuard_Primary_Logo.svg" alt="FaithGuard Logo" class="c-nav__logo">
             </a>
             <button class="navbar-toggler c-nav__toggler c-nav__toggler--btn" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -105,18 +93,18 @@
                         <a class="nav-link c-nav__link" href="templates/resources.html">Resources</a>
                     </li>
                 </ul>
-
                 <!-- RIGHT SIDE: USER/LOGIN DROPDOWN -->
                 <?php if ($is_logged_in && $user): ?>
                 <!-- Logged-in user menu -->
                 <div class="d-flex dropdown c-dropdown">
                     <button class="btn c-btn c-dropdown__btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="c-dropdown__icon bi bi-person-check me-1"></i>
-                        <span class="c-dropdown__text">Welcome                                                                                                                                                                                                                                                                                                                                                                                     <?php echo $accountName; ?></span>                    </button>
+                        <span class="c-dropdown__text">Welcome                                                                                                                                                                                                                                                         <?php echo $accountName; ?></span>
+                    </button>
                     <!-- LOGGED-IN DROPDOWN MENU -->
                     <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu" aria-labelledby="userDropdown">
                         <li>
-                            <h6 class="dropdown-header c-dropdown__header">Signed in as:<?php echo ucfirst($user_role); ?></h6>
+                            <h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                                                                                                                                                                                                                                                                                                 <?php echo ucfirst($user_role); ?></h6>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
@@ -158,7 +146,16 @@
                             <input type="password" id="signupPassword" class="form-control c-dropdown__info mb-2" placeholder="Password">
                         </li>
                         <li>
-                            <button class="btn c-btn c-dropdown__login js-log mb-2">Login / Register</button>
+                            <button class="btn c-btn c-dropdown__login js-log mb-2">Login</button>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <a class="dropdown-item c-dropdown__item js-create" href="/api/auth/register.php">
+                                <i class="bi bi-person-plus me-2"></i>
+                                <span class="c-dropdown__text">Create Account</span>
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -167,12 +164,10 @@
         </div>
     </nav>
     <!-- Main Content -->
-    <main class="c-main container my-5">
+    <main class="container my-5">
         <h1 class="c-main__title"><?php echo $title; ?></h1>
-        <div class="c-main__text">
-            <?php echo $content; ?>
-        </div>
-        <a href="index.php" class="btn c-btn c-btn__dashboard mt-3">Back to Home</a>
+        <div class="c-main__text"><?php echo $content; ?></div>
+        <a href="index.php" class="btn c-btn c-btn__dashboard mt-4">Back to Home</a>
     </main>
     <!-- Footer -->
     <footer class="c-footer">
@@ -220,10 +215,9 @@
             </div>
         </div>
     </footer>
-</body>
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-<!-- Custom JS -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 <script src="assets/js/auth.js"></script>
 <script src="assets/js/cookie-banner.js"></script>
+</body>
 </html>
