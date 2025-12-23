@@ -733,6 +733,11 @@ p {
 			font-size: 1rem;
 		}
 	}
+
+	&__subtitle {
+		color: rgba($text-dark, 0.5);
+		font-size: 0.7rem;
+	}
 }
 
 .c-message {
