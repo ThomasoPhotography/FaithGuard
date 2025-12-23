@@ -286,14 +286,20 @@ class FaithGuardRepository
         );
     }
 
-    public static function deleteQuizResult($id){
-        return Database::execute("DELETE FROM quiz_results WHERE id = ?", [$id]);}
-    public static function saveQuizResult($userId, $quizId, $answers, $score) {
-        $sql = "INSERT INTO quiz_results (user_id, quiz_id, answers, score) VALUES (?, ?, ?, ?)";
+    public static function deleteQuizResult($id)
+    {
+        return Database::execute("DELETE FROM quiz_results WHERE id = ?", [$id]);
+    }
+    public static function saveQuizResult($userId, $quizId, $answers, $score)
+    {
+        $sql    = "INSERT INTO quiz_results (user_id, quiz_id, answers, score) VALUES (?, ?, ?, ?)";
         $params = [$userId, $quizId, json_encode($answers), $score];
-        return Database::execute($sql, $params);}
-    public static function getQuizResults($userId) {
-        return Database::getRows("SELECT * FROM quiz_results WHERE user_id = ? ORDER BY created_at DESC", [$userId]);}
+        return Database::execute($sql, $params);
+    }
+    public static function getQuizResults($userId)
+    {
+        return Database::getRows("SELECT * FROM quiz_results WHERE user_id = ? ORDER BY created_at DESC", [$userId]);
+    }
 
     /* ============================
        RESOURCES
@@ -403,7 +409,7 @@ class FaithGuardRepository
     }
     public static function getPolicyContent($slug)
     {
-        $result = Database::getSingleRow("SELECT content_title, content_text FROM policies WHERE slug = ?", [$slug]);
+        $result = Database::getSingleRow("SELECT content_title, content_text, created_at, updated_at FROM policies WHERE slug = ? LIMIT 1", [$slug]);
         return $result ? $result : null;
     }
     public static function createPolicy($title, $slug, $contentTitle, $contentText, $version, $createdBy)

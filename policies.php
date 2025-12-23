@@ -51,11 +51,11 @@
         $policy = FaithGuardRepository::getPolicyContent($slug);
 
         if ($policy) {
-            $title       = htmlspecialchars($policy['content_title']);
-            $content     = nl2br(htmlspecialchars($policy['content_text']));
-            $dateUpdated = htmlspecialchars($policy['updated_at']);
-            $dateCreated = htmlspecialchars($policy['created_at']);
-            $date        = 'Date Created: ' . $dateCreated . ' - Last Updated: ' . $dateUpdated;
+            $title   = htmlspecialchars($policy['content_title'] ?? 'Policy');
+            $content = nl2br(htmlspecialchars($policy['content_text'] ?? ''));
+            $dateCreated = isset($policy['created_at']) ? htmlspecialchars(date('d M Y', strtotime($policy['created_at']))) : 'Unknown';
+            $dateUpdated = isset($policy['updated_at']) ? htmlspecialchars(date('d M Y', strtotime($policy['updated_at']))) : 'Unknown';
+            $date = 'Date Created: ' . $dateCreated . ' - Last Updated: ' . $dateUpdated;
         } else {
             $title       = 'Policy Not Found';
             $content     = '<p>The requested policy could not be found.</p>';
