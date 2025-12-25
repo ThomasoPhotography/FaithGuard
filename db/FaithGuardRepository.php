@@ -8,30 +8,22 @@ class FaithGuardRepository
     /* ============================
        USERS
     ============================ */
-    public static function getUserByEmail($email)
-    {
+    public static function getUserByEmail($email){
         return Database::getSingleRow("SELECT id, password_hash FROM users WHERE email = ?", [$email]);
     }
-
-    public static function getUserById($id)
-    {
+    public static function getUserById($id){
         return Database::getSingleRow("SELECT * FROM users WHERE id = ?", [$id]);
     }
-
-    public static function createUser($email, $passwordHash, $name = null, $role = 'user')
-    {
+    public static function createUser($email, $passwordHash, $name = null, $role = 'user'){
         return Database::execute("INSERT INTO users (email, password_hash, name, role) VALUES (?, ?, ?, ?)",
             [$email, $passwordHash, $name, $role]
         );
     }
-
-    public static function updateUser($id, $email, $name, $role)
-    {
+    public static function updateUser($id, $email, $name, $role){
         return Database::execute("UPDATE users SET email = ?, name = ?, role = ? WHERE id = ?",
             [$email, $name, $role, $id]
         );
     }
-
     public static function deleteUser($id)
     {
         return Database::execute("DELETE FROM users WHERE id = ?", [$id]);
@@ -40,102 +32,74 @@ class FaithGuardRepository
     /* ============================
        ANALYTICS
     ============================ */
-    public static function getAllAnalytics()
-    {
+    public static function getAllAnalytics(){
         return Database::getRows("SELECT * FROM analytics ORDER BY created_at DESC");
     }
-
-    public static function getAnalyticsByUserId($userId)
-    {
+    public static function getAnalyticsByUserId($userId){
         return Database::getRows("SELECT * FROM analytics WHERE user_id = ? ORDER BY created_at DESC", [$userId]);
     }
-
-    public static function createAnalytics($eventType, $userId = null, $data = null)
-    {
+    public static function createAnalytics($eventType, $userId = null, $data = null){
         return Database::execute("INSERT INTO analytics (event_type, user_id, data) VALUES (?, ?, ?)",
             [$eventType, $userId, $data]
         );
     }
-
-    public static function deleteAnalytics($id)
-    {
+    public static function deleteAnalytics($id){
         return Database::execute("DELETE FROM analytics WHERE id = ?", [$id]);
     }
 
     /* ============================
        DONATIONS
     ============================ */
-    public static function getAllDonations()
-    {
+    public static function getAllDonations(){
         return Database::getRows("SELECT * FROM donations ORDER BY created_at DESC");
     }
-
-    public static function getDonationsByUserId($userId)
-    {
+    public static function getDonationsByUserId($userId){
         return Database::getRows("SELECT * FROM donations WHERE user_id = ? ORDER BY created_at DESC", [$userId]);
     }
-
-    public static function createDonation($userId, $amount)
-    {
+    public static function createDonation($userId, $amount){
         return Database::execute("INSERT INTO donations (user_id, amount) VALUES (?, ?)",
             [$userId, $amount]
         );
     }
-
-    public static function deleteDonation($id)
-    {
+    public static function deleteDonation($id){
         return Database::execute("DELETE FROM donations WHERE id = ?", [$id]);
     }
 
     /* ============================
        MESSAGES
     ============================ */
-    public static function getAllMessages()
-    {
+    public static function getAllMessages(){
         return Database::getRows("SELECT * FROM messages ORDER BY created_at DESC");
     }
-
-    public static function getMessagesByUserId($userId)
-    {
+    public static function getMessagesByUserId($userId){
         return Database::getRows(
             "SELECT * FROM messages WHERE sender_id = ? OR receiver_id = ? ORDER BY created_at DESC",
             [$userId, $userId]
         );
     }
-
-    public static function getInboxByUserId($userId)
-    {
+    public static function getInboxByUserId($userId){
         return Database::getRows("SELECT * FROM messages WHERE receiver_id = ? ORDER BY created_at DESC", [$userId]);
     }
-
-    public static function createMessage($senderId, $receiverId, $content)
-    {
+    public static function createMessage($senderId, $receiverId, $content){
         return Database::execute(
             "INSERT INTO messages (sender_id, receiver_id, content) VALUES (?, ?, ?)",
             [$senderId, $receiverId, $content]
         );
     }
-
-    public static function deleteMessage($id)
-    {
+    public static function deleteMessage($id){
         return Database::execute("DELETE FROM messages WHERE id = ?", [$id]);
     }
 
     /* ============================
        POSTS
     ============================ */
-    public static function getAllPosts()
-    {
+    public static function getAllPosts(){
         return Database::getRows("SELECT * FROM posts ORDER BY created_at DESC");
     }
-
-    public static function getPostsByUserId($userId)
-    {
+    public static function getPostsByUserId($userId){
         return Database::getRows("SELECT * FROM posts WHERE user_id = ? ORDER BY created_at DESC", [$userId]);
     }
-
-    public static function getAllReportedPosts()
-    {
+    public static function getAllReportedPosts(){
         return Database::getRows(
             "SELECT p.*, r.reason, r.user_id AS reporter_id, r.created_at AS reported_at
              FROM posts p
@@ -143,285 +107,244 @@ class FaithGuardRepository
              ORDER BY r.created_at DESC"
         );
     }
-
-    public static function getPostById($id)
-    {
+    public static function getPostById($id){
         return Database::getSingleRow("SELECT * FROM posts WHERE id = ?", [$id]);
     }
-
-    public static function createPost($userId, $content)
-    {
+    public static function createPost($userId, $content){
         return Database::execute("INSERT INTO posts (user_id, content) VALUES (?, ?)", [$userId, $content]);
     }
-
-    public static function updatePost($id, $content)
-    {
+    public static function updatePost($id, $content){
         return Database::execute("UPDATE posts SET content = ? WHERE id = ?", [$content, $id]);
     }
-
-    public static function deletePost($id)
-    {
+    public static function deletePost($id){
         return Database::execute("DELETE FROM posts WHERE id = ?", [$id]);
     }
 
     /* ============================
        POST REPLIES
     ============================ */
-    public static function getRepliesByPostId($postId)
-    {
+    public static function getRepliesByPostId($postId){
         return Database::getRows("SELECT * FROM post_replies WHERE post_id = ? ORDER BY created_at ASC", [$postId]);
     }
-
-    public static function createReply($postId, $userId, $content)
-    {
+    public static function createReply($postId, $userId, $content){
         return Database::execute(
             "INSERT INTO post_replies (post_id, user_id, content) VALUES (?, ?, ?)",
             [$postId, $userId, $content]
         );
     }
-
-    public static function deleteReply($id)
-    {
+    public static function deleteReply($id){
         return Database::execute("DELETE FROM post_replies WHERE id = ?", [$id]);
     }
 
     /* ============================
        PRAYERS
     ============================ */
-    public static function getAllPrayers()
-    {
+    public static function getAllPrayers(){
         return Database::getRows("SELECT * FROM prayers ORDER BY created_at DESC");
     }
-
-    public static function getPrayersByUserId($userId)
-    {
+    public static function getPrayersByUserId($userId){
         return Database::getRows("SELECT * FROM prayers WHERE user_id = ? ORDER BY created_at DESC", [$userId]);
     }
-
-    public static function createPrayer($userId, $content)
-    {
+    public static function createPrayer($userId, $content){
         return Database::execute("INSERT INTO prayers (user_id, content) VALUES (?, ?)", [$userId, $content]);
     }
-
-    public static function deletePrayer($id)
-    {
+    public static function deletePrayer($id){
         return Database::execute("DELETE FROM prayers WHERE id = ?", [$id]);
     }
 
     /* ============================
        PROGRESS LOGS
     ============================ */
-    public static function getAllProgressLogs()
-    {
+    public static function getAllProgressLogs(){
         return Database::getRows("SELECT * FROM progress_logs ORDER BY checkin_date DESC");
     }
-
-    public static function getProgressLogsByUserId($userId)
-    {
+    public static function getProgressLogsByUserId($userId){
         return Database::getRows("SELECT * FROM progress_logs WHERE user_id = ? ORDER BY checkin_date DESC", [$userId]);
     }
-
-    public static function createProgressLog($userId, $milestone = null)
-    {
+    public static function createProgressLog($userId, $milestone = null){
         return Database::execute("INSERT INTO progress_logs (user_id, milestone) VALUES (?, ?)",
             [$userId, $milestone]
         );
     }
-
-    public static function deleteProgressLog($id)
-    {
+    public static function deleteProgressLog($id){
         return Database::execute("DELETE FROM progress_logs WHERE id = ?", [$id]);
     }
 
     /* ============================
        QUIZ — QUESTIONS
     ============================ */
-    public static function getAllQuizQuestions()
-    {
+    public static function getAllQuizQuestions(){
         return Database::getRows("SELECT * FROM quiz_questions");
     }
-
-    public static function getQuizQuestionById($id)
-    {
+    public static function getQuizQuestionById($id){
         return Database::getSingleRow("SELECT * FROM quiz_questions WHERE id = ?", [$id]);
     }
-
-    public static function createQuizQuestion($question, $options)
-    {
+    public static function createQuizQuestion($question, $options){
         return Database::execute("INSERT INTO quiz_questions (question, options) VALUES (?, ?)",
             [$question, $options]
         );
     }
-
-    public static function updateQuizQuestion($id, $question, $options)
-    {
+    public static function updateQuizQuestion($id, $question, $options){
         return Database::execute("UPDATE quiz_questions SET question = ?, options = ? WHERE id = ?",
             [$question, $options, $id]
         );
     }
-
-    public static function deleteQuizQuestion($id)
-    {
+    public static function deleteQuizQuestion($id){
         return Database::execute("DELETE FROM quiz_questions WHERE id = ?", [$id]);
     }
 
     /* ============================
        QUIZ — RESULTS
     ============================ */
-    public static function getAllQuizResults()
-    {
+    public static function getAllQuizResults(){
         return Database::getRows("SELECT * FROM quiz_results ORDER BY created_at DESC");
     }
-
-    public static function getQuizResultsByUserId($userId)
-    {
+    public static function getQuizResultsByUserId($userId){
         return Database::getRows("SELECT * FROM quiz_results WHERE user_id = ? ORDER BY created_at DESC", [$userId]);
     }
-
-    public static function createQuizResult($userId, $addictionType, $answersJson, $totalScore)
-    {
+    public static function createQuizResult($userId, $addictionType, $answersJson, $totalScore){
         return Database::execute(
             "INSERT INTO quiz_results (user_id, addiction_type, answers_json, total_score) VALUES (?, ?, ?, ?)",
             [$userId, $addictionType, $answersJson, $totalScore]
         );
     }
-
-    public static function deleteQuizResult($id)
-    {
+    public static function deleteQuizResult($id){
         return Database::execute("DELETE FROM quiz_results WHERE id = ?", [$id]);
     }
-    public static function saveQuizResult($userId, $quizId, $answers, $score)
-    {
+    public static function saveQuizResult($userId, $quizId, $answers, $score){
         $sql    = "INSERT INTO quiz_results (user_id, quiz_id, answers, score) VALUES (?, ?, ?, ?)";
         $params = [$userId, $quizId, json_encode($answers), $score];
         return Database::execute($sql, $params);
     }
-    public static function getQuizResults($userId)
-    {
+    public static function getQuizResults($userId){
         return Database::getRows("SELECT * FROM quiz_results WHERE user_id = ? ORDER BY created_at DESC", [$userId]);
     }
 
     /* ============================
        RESOURCES
     ============================ */
-    public static function getAllResources()
-    {
+    public static function getAllResources(){
         return Database::getRows("SELECT * FROM resources ORDER BY created_at DESC");
     }
-
-    public static function getResourceById($id)
-    {
+    public static function getResourceById($id){
         return Database::getSingleRow("SELECT * FROM resources WHERE id = ?", [$id]);
     }
-
-    public static function getResourceBySlug($slug)
-    {
+    public static function getResourceBySlug($slug){
         return Database::getSingleRow("SELECT * FROM resources WHERE slug = ?", [$slug]);
     }
-
-    public static function createResource($title, $slug, $content_text, $content_visual, $createdBy)
-    {
+    public static function createResource($title, $slug, $content_text, $content_visual, $createdBy){
         return Database::execute("INSERT INTO resources (title, slug, content_text, content_visual, created_by) VALUES (?, ?, ?, ?, ?)",
             [$title, $slug, $content_text, $content_visual, $createdBy]
         );
     }
-
-    public static function updateResource($id, $title, $slug, $content_text, $content_visual)
-    {
+    public static function updateResource($id, $title, $slug, $content_text, $content_visual){
         return Database::execute("UPDATE resources SET title = ?, slug = ?, content_text = ?, content_visual = ? WHERE id = ?",
             [$title, $slug, $content_text, $content_visual, $id]
         );
     }
-
-    public static function deleteResource($id)
-    {
+    public static function deleteResource($id){
         return Database::execute("DELETE FROM resources WHERE id = ?", [$id]);
     }
     /* ============================
        RESOURCE TAGS
     ============================ */
-    public static function getTagsByResourceId($resourceId)
-    {
+    public static function getTagsByResourceId($resourceId){
         return Database::getRows("SELECT * FROM resource_tags WHERE resource_id = ?", [$resourceId]);
     }
-
-    public static function createResourceTag($resourceId, $tag)
-    {
+    public static function createResourceTag($resourceId, $tag){
         return Database::execute("INSERT INTO resource_tags (resource_id, tag) VALUES (?, ?)",
             [$resourceId, $tag]
         );
     }
-    public static function deleteResourceTag($id)
-    {
+    public static function deleteResourceTag($id){
         return Database::execute("DELETE FROM resource_tags WHERE id = ?", [$id]);
+    }
+    public static function getMatchedResourcesForCategory(string $category, array $tags, int $limit = 5): array {
+        if (empty($tags)) {
+            return [];
+        }
+        $conditions = [];
+        $params     = [];
+        foreach ($tags as $tag) {
+            $conditions[] = "FIND_IN_SET(?, tags)";
+            $params[]     = $tag;
+        }
+        // Score resources by number of matching tags
+        $scoreSql = implode(' + ', array_fill(0, count($tags), 'FIND_IN_SET(?, tags)'));
+        $params = array_merge($params, $tags);
+        $params[] = $limit;
+        $sql = " SELECT *, ($scoreSql) AS relevance_score FROM resources WHERE category = ? AND (" . implode(' OR ', $conditions) . ") ORDER BY relevance_score DESC, created_at DESC LIMIT ?";
+        array_unshift($params, $category);
+        return Database::getRows($sql, $params);
+    }
+    public static function getMatchedResources(array $tags, int $limit = 5): array{
+        if (empty($tags)) {
+            return [];
+        }
+        $conditions = [];
+        $params     = [];
+        foreach ($tags as $tag) {
+            $conditions[] = "FIND_IN_SET(?, tags)";
+            $params[]     = $tag;
+        }
+        $params[] = $limit;
+        $sql = "
+            SELECT * FROM resources WHERE " . implode(' OR ', $conditions) . "ORDER BY created_at DESC LIMIT ?";
+        return Database::getRows($sql, $params);
     }
     /* ============================
        ROLES
     ============================ */
-    public static function getAllRoles()
-    {
+    public static function getAllRoles(){
         return Database::getRows("SELECT * FROM roles");
     }
-    public static function getRoleById($id)
-    {
+    public static function getRoleById($id){
         return Database::getSingleRow("SELECT * FROM roles WHERE id = ?", [$id]);
     }
-    public static function createRole($name)
-    {
+    public static function createRole($name){
         return Database::execute("INSERT INTO roles (name) VALUES (?)", [$name]);
     }
-    public static function deleteRole($id)
-    {
+    public static function deleteRole($id){
         return Database::execute("DELETE FROM roles WHERE id = ?", [$id]);
     }
     /* ============================
        SESSIONS
     ============================ */
-    public static function getSessionByToken($token)
-    {
+    public static function getSessionByToken($token){
         return Database::getSingleRow("SELECT * FROM sessions WHERE token = ?", [$token]);
     }
-    public static function createSession($userId, $token, $expiresAt)
-    {
+    public static function createSession($userId, $token, $expiresAt){
         return Database::execute(
             "INSERT INTO sessions (user_id, token, expires_at) VALUES (?, ?, ?)",
             [$userId, $token, $expiresAt]
         );
     }
-    public static function deleteSession($token)
-    {
+    public static function deleteSession($token){
         return Database::execute("DELETE FROM sessions WHERE token = ?", [$token]);
     }
     /* ============================
        POLICIES
     ============================ */
-    public static function getAllPolicies()
-    {
+    public static function getAllPolicies(){
         return Database::getRows("SELECT * FROM policies ORDER BY updated_at DESC");
     }
-    public static function getPolicyBySlug($slug)
-    {
+    public static function getPolicyBySlug($slug){
         return Database::getSingleRow("SELECT * FROM policies WHERE slug = ?", [$slug]);
     }
-    public static function getPolicyById($id)
-    {
+    public static function getPolicyById($id){
         return Database::getSingleRow("SELECT * FROM policies WHERE id = ?", [$id]);
     }
-    public static function getPolicyContent($slug)
-    {
+    public static function getPolicyContent($slug){
         $result = Database::getSingleRow("SELECT content_title, content_text, created_at, updated_at FROM policies WHERE slug = ? LIMIT 1", [$slug]);
         return $result ? $result : null;
     }
-    public static function createPolicy($title, $slug, $contentTitle, $contentText, $version, $createdBy)
-    {
+    public static function createPolicy($title, $slug, $contentTitle, $contentText, $version, $createdBy){
         return Database::execute("INSERT INTO policies (title, slug, content_title, content_text, version, created_by) VALUES (?, ?, ?, ?, ?, ?)", [$title, $slug, $contentTitle, $contentText, $version, $createdBy]);
     }
-    public static function updatePolicy($id, $title, $slug, $contentTitle, $contentText, $version)
-    {
+    public static function updatePolicy($id, $title, $slug, $contentTitle, $contentText, $version){
         return Database::execute("UPDATE policies SET title = ?, slug = ?, content_title = ?, content_text = ?, version = ? WHERE id = ?", [$title, $slug, $contentTitle, $contentText, $version, $id]);
     }
-    public static function deletePolicy($id)
-    {
+    public static function deletePolicy($id){
         return Database::execute("DELETE FROM policies WHERE id = ?", [$id]);
     }
 }
