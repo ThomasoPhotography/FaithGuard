@@ -1,6 +1,4 @@
 <?php
-// /db/FaithGuardRepository.php
-// FIX: Use single leading slash for pathing stability.
 require_once dirname(__FILE__) . "/database.php";
 
 class FaithGuardRepository
@@ -46,7 +44,6 @@ class FaithGuardRepository
     public static function deleteAnalytics($id){
         return Database::execute("DELETE FROM analytics WHERE id = ?", [$id]);
     }
-
     /* ============================
        DONATIONS
     ============================ */
@@ -64,7 +61,6 @@ class FaithGuardRepository
     public static function deleteDonation($id){
         return Database::execute("DELETE FROM donations WHERE id = ?", [$id]);
     }
-
     /* ============================
        MESSAGES
     ============================ */
@@ -89,7 +85,6 @@ class FaithGuardRepository
     public static function deleteMessage($id){
         return Database::execute("DELETE FROM messages WHERE id = ?", [$id]);
     }
-
     /* ============================
        POSTS
     ============================ */
@@ -119,7 +114,6 @@ class FaithGuardRepository
     public static function deletePost($id){
         return Database::execute("DELETE FROM posts WHERE id = ?", [$id]);
     }
-
     /* ============================
        POST REPLIES
     ============================ */
@@ -135,7 +129,6 @@ class FaithGuardRepository
     public static function deleteReply($id){
         return Database::execute("DELETE FROM post_replies WHERE id = ?", [$id]);
     }
-
     /* ============================
        PRAYERS
     ============================ */
@@ -151,7 +144,6 @@ class FaithGuardRepository
     public static function deletePrayer($id){
         return Database::execute("DELETE FROM prayers WHERE id = ?", [$id]);
     }
-
     /* ============================
        PROGRESS LOGS
     ============================ */
@@ -169,7 +161,6 @@ class FaithGuardRepository
     public static function deleteProgressLog($id){
         return Database::execute("DELETE FROM progress_logs WHERE id = ?", [$id]);
     }
-
     /* ============================
        QUIZ — QUESTIONS
     ============================ */
@@ -192,7 +183,6 @@ class FaithGuardRepository
     public static function deleteQuizQuestion($id){
         return Database::execute("DELETE FROM quiz_questions WHERE id = ?", [$id]);
     }
-
     /* ============================
        QUIZ — RESULTS
     ============================ */
@@ -219,7 +209,6 @@ class FaithGuardRepository
     public static function getQuizResults($userId){
         return Database::getRows("SELECT * FROM quiz_results WHERE user_id = ? ORDER BY created_at DESC", [$userId]);
     }
-
     /* ============================
        RESOURCES
     ============================ */
@@ -277,20 +266,27 @@ class FaithGuardRepository
         array_unshift($params, $category);
         return Database::getRows($sql, $params);
     }
-    public static function getMatchedResources(array $tags, int $limit = 5): array{
+    /* ============================
+       C1 — PASTORAL RESOURCES
+    ============================ */
+    public static function getResourcesByTags(array $tags): array {
         if (empty($tags)) {
             return [];
         }
         $conditions = [];
         $params     = [];
         foreach ($tags as $tag) {
-            $conditions[] = "FIND_IN_SET(?, tags)";
+            $conditions[] = 'FIND_IN_SET(?, tags)';
             $params[]     = $tag;
         }
-        $params[] = $limit;
-        $sql = "
-            SELECT * FROM resources WHERE " . implode(' OR ', $conditions) . "ORDER BY created_at DESC LIMIT ?";
+        $sql = "SELECT * FROM resources WHERE " . implode(' OR ', $conditions) . " ORDER BY created_at DESC";
         return Database::getRows($sql, $params);
+    }
+    public static function getResourcesByAddiction(string $addiction): array{
+        return Database::getRows(
+            "SELECT * FROM resources WHERE FIND_IN_SET(?, tags)",
+            [$addiction]
+        );
     }
     /* ============================
        ROLES

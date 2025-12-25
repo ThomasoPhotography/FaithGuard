@@ -26,6 +26,11 @@ All notable changes to this project will be documented in this file.
 - Registering logic.
 - Implement dedicated quiz page and update repository logic.
 - Implement relational resource tagging system and enhance quiz integration.
+- Introduce ranked pastoral journeys per addiction:
+  - Build staged pastoral journeys (hope, discipline, repentance, grace).
+  - Rank resources by relevance instead of randomness.
+  - Infer pastoral tags from quiz answers and severity.
+  - Deliver spiritually guided progression rather than static resource lists.
 
 ### Changed
 - `README.md` file got a professional make-over.

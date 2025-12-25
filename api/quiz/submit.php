@@ -4,6 +4,7 @@ declare (strict_types = 1);
 
 require_once __DIR__ . "/../../db/database.php";
 require_once __DIR__ . "/../../db/FaithGuardRepository.php";
+require_once __DIR__ . "/../services/pastoralJourneyService.php";
 require_once __DIR__ . "/../helper/debug.php";
 
 session_start();
@@ -179,7 +180,6 @@ foreach ($questions as $q) {
     }
 
     $category  = $q['category'] ?? null;
-    $base      = $value;
     $catWeight = $CATEGORY_WEIGHTS[$category] ?? 1.0;
 
     $addWeight = 1.0;
@@ -189,10 +189,8 @@ foreach ($questions as $q) {
         }
     }
 
-    // Prevent runaway multipliers
     $addWeight = min($addWeight, 2.5);
-
-    $totalWeighted += $base * $catWeight * $addWeight;
+    $totalWeighted += $value * $catWeight * $addWeight;
     $normalizedAnswers[$qid] = $value;
 }
 
@@ -242,14 +240,27 @@ FaithGuardRepository::createQuizResult(
 );
 
 /* ============================
+   PASTORAL JOURNEY (C1)
+============================ */
+
+$primaryAddiction = $addictionTypes[0];
+
+$journey = PastoralJourneyService::buildJourney(
+    $_SESSION['user_id'],
+    $primaryAddiction,
+    $percentage,
+    $normalizedAnswers
+);
+
+/* ============================
    RESPONSE
 ============================ */
 
 echo json_encode([
-    'success'       => true,
-    'score'         => $percentage,
-    'level'         => $level,
-    'addictions'    => $addictionTypes,
-    'scripture'     => $scriptures,
-    'resource_tags' => array_merge($addictionTypes, [$level]),
+    'success'    => true,
+    'score'      => $percentage,
+    'level'      => $level,
+    'addictions' => $addictionTypes,
+    'scripture'  => $scriptures,
+    'journey'    => $journey,
 ]);
