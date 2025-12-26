@@ -179,7 +179,7 @@ const listenToLogout = () => {
 			const data = await performLogout();
 			if (data.success) {
 				console.log('Logged out successfully.');
-				location.href = '/index.php';
+				location.href = '../../index.php';
 			} else {
 				console.error('Logout failed.');
 			}

@@ -132,12 +132,12 @@
                 <div class="d-flex dropdown c-dropdown">
                     <button class="btn c-btn c-dropdown__btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="c-dropdown__icon bi bi-person-check me-1"></i>
-                        <span class="c-dropdown__text">Welcome                                                                                                                                                                                           <?php echo $accountName; ?></span>
+                        <span class="c-dropdown__text">Welcome                                                                                                                                                                                                                                                         <?php echo $accountName; ?></span>
                     </button>
                     <!-- LOGGED-IN DROPDOWN MENU -->
                     <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu" aria-labelledby="userDropdown">
                         <li>
-                            <h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                                                                                                                                                                                                         <?php echo ucfirst($user_role); ?></h6>
+                            <h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                                                                                                                                                                                                                                                                                                 <?php echo ucfirst($user_role); ?></h6>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
@@ -205,9 +205,9 @@
                     <div class="card-body">
                         <h5><i class="bi bi-person-circle me-2"></i>Account Summary</h5>
                         <ul class="list-group list-group-flush mt-3">
-                            <li class="list-group-item"><strong>Email:</strong>                                                                                <?php echo htmlspecialchars($user['email']); ?></li>
-                            <li class="list-group-item"><strong>Member Since:</strong>                                                                                       <?php echo $memberSince; ?></li>
-                            <li class="list-group-item"><strong>Total Interactions:</strong>                                                                                             <?php echo $totalPosts; ?></li>
+                            <li class="list-group-item"><strong>Email:</strong>                                                                                                                                                               <?php echo htmlspecialchars($user['email']); ?></li>
+                            <li class="list-group-item"><strong>Member Since:</strong>                                                                                                                                                                             <?php echo $memberSince; ?></li>
+                            <li class="list-group-item"><strong>Total Interactions:</strong>                                                                                                                                                                                         <?php echo $totalPosts; ?></li>
                         </ul>
                     </div>
                 </div>
@@ -216,7 +216,7 @@
             <div class="c-user__item c-user__item--2">
                 <div class="card c-profile__card h-100">
                     <div class="card-body">
-                        <h5><i class="bi bi-clipboard-check me-2"></i> Accountability</h5>
+                        <h5><i class="bi bi-clipboard-check me-2"></i> Progress </h5>
                         <p>You have <strong><?php echo $totalCheckins; ?></strong> total check-ins.</p>
                         <ul class="list-group list-group-flush">
                             <?php if ($recentCheckins): ?>
@@ -230,6 +230,7 @@
                                 <li class="list-group-item">No check-ins logged recently.</li>
                             <?php endif; ?>
                         </ul>
+                        <a href="/api/progress/checkin.php" class="btn c-btn c-btn__dashboard w-100">Log a Check-in</a>
                     </div>
                 </div>
             </div>
@@ -238,17 +239,36 @@
                 <div class="card c-profile__card h-100">
                     <div class="card-body">
                         <h5><i class="bi bi-journal-check me-2"></i> Latest Assessment</h5>
-                        <?php if ($latestQuizResult): ?>
+                        <?php if ($latestQuizResult = "100%"): ?>
                             <div class="mt-3">
                                 <p class="mb-1"><strong>Date:</strong>                                                                       <?php echo date('d M, Y', strtotime($latestQuizResult['created_at'])); ?></p>
                                 <p class="mb-1"><strong>Score:</strong> <span class="badge bg-primary"><?php echo (int) $latestQuizResult['total_score']; ?>%</span></p>
                                 <p class="mb-3"><strong>Primary Focus:</strong>
-                                    <span class="text-muted"><?php
-                                                                 $types = json_decode($latestQuizResult['addiction_type'], true);
-                                                             echo is_array($types) ? htmlspecialchars(implode(', ', $types)) : htmlspecialchars((string) $latestQuizResult['addiction_type']);
-                                                             ?></span>
+                                    <span class="text-muted">
+                                        <?php $types = json_decode($latestQuizResult['addiction_type'], true);
+                                        echo is_array($types) ? htmlspecialchars(implode(', ', $types)) : htmlspecialchars((string) $latestQuizResult['addiction_type']); ?>
+                                    </span>
                                 </p>
                                 <a href="/resources.php" class="btn c-btn c-btn__dashboard w-100">View Recommended Resources</a>
+                            </div>
+                        <?php elseif ($latestQuizResult > "100%"): ?>
+                            <div class="mt-3">
+                                <p class="mb-1"><strong>Date:</strong>                                                                       <?php echo date('d M, Y', strtotime($latestQuizResult['created_at'])); ?></p>
+                                <p class="mb-1"><strong>Score:</strong> <span class="badge bg-primary"><?php echo (int) $latestQuizResult['total_score']; ?>%</span></p>
+                                <p class="mb-3"><strong>Primary Focus:</strong>
+                                    <span class="text-muted">
+                                        <?php $types = json_decode($latestQuizResult['addiction_type'], true);
+                                        echo is_array($types) ? htmlspecialchars(implode(', ', $types)) : htmlspecialchars((string) $latestQuizResult['addiction_type']); ?>
+                                    </span>
+                                </p>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <a href="/quiz.php" class="btn c-btn c-btn__dashboard w-100">Retake Assessment</a>
+                                    </div>
+                                    <div class="col-6">
+                                        <a href="/resources.php" class="btn c-btn c-btn__dashboard w-100">View Recommended Resources</a>
+                                    </div>
+                                </div>
                             </div>
                         <?php else: ?>
                             <p class="mt-3">You haven't completed an assessment yet.</p>
@@ -261,7 +281,7 @@
             <div class="c-user__item c-user__item--4">
                 <div class="card c-profile__card h-100 text-center">
                     <div class="card-body d-flex flex-column justify-content-center">
-                        <h5><i class="bi bi-trophy text-warning display-6"></i></h5>
+                        <h5><i class="bi bi-trophy c-user__icon text-warning display-6"></i></h5>
                         <h2 class="display-4 fw-bold mt-2"><?php echo $totalCheckins; ?></h2>
                         <p class="text-uppercase tracking-wider">Victories Logged</p>
                         <p class="small text-muted">"For though the righteous fall seven times, they rise again." <br>— Prov 24:16</p>
