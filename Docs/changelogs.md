@@ -163,6 +163,7 @@ All notable changes to this project will be documented in this file.
 - Policy data handling.
 - Register modal styling.
 - Database SQL.
+- User logic.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.

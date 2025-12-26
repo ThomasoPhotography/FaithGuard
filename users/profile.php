@@ -21,28 +21,22 @@ session_start();
 /* =========================================================
    AUTH GUARD (USER ONLY)
 ========================================================= */
-if (
-    !isset($_SESSION['logged_in'], $_SESSION['user_id']) ||
-    $_SESSION['logged_in'] !== true
-) {
-    header('Location: ../index.php');
-    exit;
-}
-
-$userId = (int) $_SESSION['user_id'];
-$user   = FaithGuardRepository::getUserById($userId);
-
-if (!$user) {
-    session_destroy();
-    header('Location: ../index.php');
-    exit;
-}
-
-$user_role = $user['role'] ?? 'user';
-if ($user_role !== 'user') {
-    http_response_code(403);
-    exit('Access denied');
-}
+    $is_logged_in = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
+    if ($is_logged_in && isset($_SESSION['user_id'])) {
+    $user_data = FaithGuardRepository::getUserById($_SESSION['user_id']);
+    if ($user_data) {
+        $user = true;
+        $accountName = htmlspecialchars($user_data['name'] ?? $user_data['email']);
+        $user_role   = $user_data['role'] ?? 'user';
+        $user_link   = ($user_role === 'admin') ? '../admin/profile.php' : 'profile.php';
+    } else {
+        unset($_SESSION['user_id']);
+        unset($_SESSION['logged_in']);
+        $is_logged_in = false;
+        header("Location: ../api/auth/register.php");
+        exit();
+    }
+    }
 
 /* =========================================================
    USER CONTEXT
