@@ -172,6 +172,7 @@ All notable changes to this project will be documented in this file.
   - Fix role-based profile routing and session guard logic.
   - Stabilize dashboard data loading for progress, quiz results, inbox, and posts.
 - Features and auth.
+- Profile URLs.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.

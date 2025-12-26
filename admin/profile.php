@@ -151,7 +151,7 @@
                         </li>
                         <!-- Profile Link (Role-Based) -->
                         <li>
-                            <a class="dropdown-item c-dropdown__item" href="<?php echo($user_role === 'admin') ? 'admin/profile.php' : 'users/profile.php'; ?>">
+                            <a class="dropdown-item c-dropdown__item" href="<?php echo($user_role === 'admin') ? 'profile.php' : 'users/profile.php'; ?>">
                                 <i class="bi bi-person-badge me-2"></i>
                                 <span class="c-dropdown__text">Profile / Dashboard</span>
                             </a>
