@@ -335,7 +335,7 @@
                 </div>
             </div>
             <!-- Admin Message Box (Recent Activity) -->
-            <div class="c-admin__item c-admin__item--6">
+            <div class="c-admin__item c-admin__item--7">
                 <div class="c-profile__items card h-100">
                     <div class="card-body">
                         <h5 class="card-title">Cookie Updates</h5>

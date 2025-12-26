@@ -31,6 +31,7 @@ All notable changes to this project will be documented in this file.
   - Rank resources by relevance instead of randomness.
   - Infer pastoral tags from quiz answers and severity.
   - Deliver spiritually guided progression rather than static resource lists.
+- Implement journal creation API with situational scripture encouragement.
 
 ### Changed
 - `README.md` file got a professional make-over.

@@ -98,7 +98,7 @@ p {
 			display: grid;
 			grid-template-columns: repeat(9, 1fr);
 			grid-template-rows: repeat(8, auto);
-			gap: 1.5rem;
+			gap: 1rem;
 		}
 	}
 	&__item {
@@ -1106,42 +1106,52 @@ p {
 
 .c-user {
 	&__profile {
-		display: block; /* Mobile Stack */
+		display: block;
 
 		@media (min-width: 992px) {
 			display: grid;
-			grid-template-columns: repeat(2, 1fr); /* 2 Equal Columns */
-			grid-template-rows: auto;
-			gap: 1.5rem;
-
-			/* Define Grid Areas for Desktop */
-			grid-template-areas:
-				'title title'
-				'stats progress'
-				'quiz messages';
+			grid-template-columns: repeat(9, 1fr);
+			grid-template-rows: repeat(8, auto);
+			gap: 1rem;
 		}
 	}
-
 	&__item {
 		margin-bottom: 1.5rem;
 
 		@media (min-width: 992px) {
 			margin-bottom: 0;
 
-			&--title {
-				grid-area: title;
+			&--1 {
+				grid-column: 1 / -1;
+				grid-row: 1;
 			}
-			&--stats {
-				grid-area: stats;
+			&--2 {
+				grid-column: 1 / 4;
+				grid-row: 2 / 5;
 			}
-			&--progress {
-				grid-area: progress;
+			&--3 {
+				grid-column: 1 / 4;
+				grid-row: 5 / 9;
 			}
-			&--quiz {
-				grid-area: quiz;
+			&--4 {
+				grid-column: 4 / 6;
+				grid-row: 2 / 6;
 			}
-			&--messages {
-				grid-area: messages;
+			&--5 {
+				grid-column: 6 / 8;
+				grid-row: 2 / 6;
+			}
+			&--6 {
+				grid-column: 8 / 10;
+				grid-row: 2 / 6;
+			}
+			&--7 {
+				grid-column: 4 / 8;
+				grid-row: 6 / 9;
+			}
+			&--8 {
+				grid-column: 8 / 10;
+				grid-row: 6 / 9;
 			}
 		}
 	}

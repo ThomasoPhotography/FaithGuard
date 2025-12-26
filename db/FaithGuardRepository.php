@@ -22,44 +22,8 @@ class FaithGuardRepository
             [$email, $name, $role, $id]
         );
     }
-    public static function deleteUser($id)
-    {
+    public static function deleteUser($id){
         return Database::execute("DELETE FROM users WHERE id = ?", [$id]);
-    }
-
-    /* ============================
-       ANALYTICS
-    ============================ */
-    public static function getAllAnalytics(){
-        return Database::getRows("SELECT * FROM analytics ORDER BY created_at DESC");
-    }
-    public static function getAnalyticsByUserId($userId){
-        return Database::getRows("SELECT * FROM analytics WHERE user_id = ? ORDER BY created_at DESC", [$userId]);
-    }
-    public static function createAnalytics($eventType, $userId = null, $data = null){
-        return Database::execute("INSERT INTO analytics (event_type, user_id, data) VALUES (?, ?, ?)",
-            [$eventType, $userId, $data]
-        );
-    }
-    public static function deleteAnalytics($id){
-        return Database::execute("DELETE FROM analytics WHERE id = ?", [$id]);
-    }
-    /* ============================
-       DONATIONS
-    ============================ */
-    public static function getAllDonations(){
-        return Database::getRows("SELECT * FROM donations ORDER BY created_at DESC");
-    }
-    public static function getDonationsByUserId($userId){
-        return Database::getRows("SELECT * FROM donations WHERE user_id = ? ORDER BY created_at DESC", [$userId]);
-    }
-    public static function createDonation($userId, $amount){
-        return Database::execute("INSERT INTO donations (user_id, amount) VALUES (?, ?)",
-            [$userId, $amount]
-        );
-    }
-    public static function deleteDonation($id){
-        return Database::execute("DELETE FROM donations WHERE id = ?", [$id]);
     }
     /* ============================
        MESSAGES
@@ -342,5 +306,31 @@ class FaithGuardRepository
     }
     public static function deletePolicy($id){
         return Database::execute("DELETE FROM policies WHERE id = ?", [$id]);
+    }
+    /* ============================
+       JOURNAL ENTRIES
+    ============================ */
+    public static function getJournalEntriesByUserId($userId){
+        return Database::getRows("SELECT * FROM journal_entries WHERE user_id = ? ORDER BY created_at DESC", [$userId]);
+    }
+    public static function createJournalEntry($userId, $content_text, $isRelated) {
+        return Database::execute("INSERT INTO journal_entries (user_id, content_text, is_addiction_related) VALUES (?, ?, ?)", [$userId, $content_text, $isRelated ? 1 : 0]);
+    }
+    public static function getEncouragement($addictionType) {
+        $data = [
+            'pornography' => [
+                'verse' => "Job 31:1",
+                'text' => "I made a covenant with my eyes not to look lustfully at a young woman."
+            ],
+            'alcohol' => [
+                'verse' => "1 Corinthians 10:13",
+                'text' => "No temptation has overtaken you except what is common to mankind. And God is faithful..."
+            ],
+            'general' => [
+                'verse' => "James 4:7",
+                'text' => "Submit yourselves, then, to God. Resist the devil, and he will flee from you."
+            ]
+        ];
+        return $data[$addictionType] ?? $data['general'];
     }
 }

@@ -22,9 +22,9 @@ const showError = (message) => {
 };
 
 const injectRegisterModal = (prefillEmail = '', prefillPassword = '') => {
-    if (document.getElementById('registerModal')) return;
+	if (document.getElementById('registerModal')) return;
 
-    const modalHTML = `
+	const modalHTML = `
     <!-- Register Modal -->
     <div class="modal fade c-modal" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
         <div class="modal-dialog c-modal__dialog">
@@ -58,32 +58,32 @@ const injectRegisterModal = (prefillEmail = '', prefillPassword = '') => {
         </div>
     </div>`;
 
-    document.body.insertAdjacentHTML('beforeend', modalHTML);
+	document.body.insertAdjacentHTML('beforeend', modalHTML);
 
-    // Attach event listener to the new form immediately after injection
-    const registerForm = document.getElementById('registerForm');
-    registerForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const email = document.getElementById('registerEmail').value;
-        const password = document.getElementById('registerPassword').value;
-        const name = document.getElementById('registerName').value || 'New User';
-        
-        const messageDiv = document.getElementById('registerMessage');
-        messageDiv.innerHTML = '<span class="text-info">Creating account...</span>';
+	// Attach event listener to the new form immediately after injection
+	const registerForm = document.getElementById('registerForm');
+	registerForm.addEventListener('submit', async (e) => {
+		e.preventDefault();
+		const email = document.getElementById('registerEmail').value;
+		const password = document.getElementById('registerPassword').value;
+		const name = document.getElementById('registerName').value || 'New User';
 
-        try {
-            const data = await attemptRegister(email, password, name);
-            if (data.success) {
-                messageDiv.innerHTML = '<span class="text-success">Account created! Redirecting...</span>';
-                setTimeout(() => location.reload(), 1500);
-            } else {
-                messageDiv.innerHTML = `<span class="text-danger">${data.error}</span>`;
-            }
-        } catch (err) {
-            console.error(err);
-            messageDiv.innerHTML = '<span class="text-danger">An error occurred.</span>';
-        }
-    });
+		const messageDiv = document.getElementById('registerMessage');
+		messageDiv.innerHTML = '<span class="text-info">Creating account...</span>';
+
+		try {
+			const data = await attemptRegister(email, password, name);
+			if (data.success) {
+				messageDiv.innerHTML = '<span class="text-success">Account created! Redirecting...</span>';
+				setTimeout(() => location.reload(), 1500);
+			} else {
+				messageDiv.innerHTML = `<span class="text-danger">${data.error}</span>`;
+			}
+		} catch (err) {
+			console.error(err);
+			messageDiv.innerHTML = '<span class="text-danger">An error occurred.</span>';
+		}
+	});
 };
 // #endregion
 
@@ -106,11 +106,11 @@ const attemptRegister = async (email, password, name) => {
 	const response = await fetch('/api/auth/register.php', {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify({ 
-            email: email, 
-            password: password, 
-            name: name 
-        }),
+		body: JSON.stringify({
+			email: email,
+			password: password,
+			name: name,
+		}),
 	});
 	return await response.json();
 };
@@ -123,56 +123,54 @@ const performLogout = async () => {
 
 // #region ***  Event Listeners - listenTo___            ***********
 const listenToAuth = () => {
-    // 1. Handle Login Button Click
-    if (authBtn) {
-        authBtn.addEventListener('click', async () => {
-            const email = emailInput.value.trim();
-            const password = passwordInput.value.trim();
+	// 1. Handle Login Button Click
+	if (authBtn) {
+		authBtn.addEventListener('click', async () => {
+			const email = emailInput.value.trim();
+			const password = passwordInput.value.trim();
 
-            if (!email || !password) {
-                showError('Please enter both email and password.');
-                return;
-            }
+			if (!email || !password) {
+				showError('Please enter both email and password.');
+				return;
+			}
 
-            try {
-                const loginData = await attemptLogin(email, password);
+			try {
+				const loginData = await attemptLogin(email, password);
 
-                if (loginData.success) {
-                    showLoginSuccess();
-                    return;
-                } 
-                
-                // Show errors directly (no auto-register loop)
-                if (loginData.error === 'Invalid credentials') {
-                    showError('Login failed: Invalid credentials');
-                } 
-                else if (loginData.error === 'User not found') {
-                    showError('User not found. Please click "Create Account" to register.');
-                } 
-                else {
-                    showError('Login failed: ' + loginData.error);
-                }
-            } catch (error) {
-                console.error('Auth error:', error);
-                showError('An error occurred. Please try again.');
-            }
-        });
-    }
+				if (loginData.success) {
+					showLoginSuccess();
+					return;
+				}
 
-    // 2. Handle "Create Account" Click (Trigger Modal)
-    // Note: createBtn corresponds to .js-create class
-    if (createBtn) {
-        createBtn.addEventListener('click', (e) => {
-            e.preventDefault(); // Stop navigation to register.php if wrapped in <a>
-            e.stopPropagation(); // Prevent dropdown from closing immediately if needed
+				// Show errors directly (no auto-register loop)
+				if (loginData.error === 'Invalid credentials') {
+					showError('Login failed: Invalid credentials');
+				} else if (loginData.error === 'User not found') {
+					showError('User not found. Please click "Create Account" to register.');
+				} else {
+					showError('Login failed: ' + loginData.error);
+				}
+			} catch (error) {
+				console.error('Auth error:', error);
+				showError('An error occurred. Please try again.');
+			}
+		});
+	}
 
-            // Inject and Show Modal
-            injectRegisterModal();
-            const modalElement = document.getElementById('registerModal');
-            const modal = new bootstrap.Modal(modalElement);
-            modal.show();
-        });
-    }
+	// 2. Handle "Create Account" Click (Trigger Modal)
+	// Note: createBtn corresponds to .js-create class
+	if (createBtn) {
+		createBtn.addEventListener('click', (e) => {
+			e.preventDefault(); // Stop navigation to register.php if wrapped in <a>
+			e.stopPropagation(); // Prevent dropdown from closing immediately if needed
+
+			// Inject and Show Modal
+			injectRegisterModal();
+			const modalElement = document.getElementById('registerModal');
+			const modal = new bootstrap.Modal(modalElement);
+			modal.show();
+		});
+	}
 };
 
 const listenToLogout = () => {
@@ -181,7 +179,7 @@ const listenToLogout = () => {
 			const data = await performLogout();
 			if (data.success) {
 				console.log('Logged out successfully.');
-				location.reload();
+				location.href = '/index.php';
 			} else {
 				console.error('Logout failed.');
 			}
