@@ -164,6 +164,12 @@ All notable changes to this project will be documented in this file.
 - Register modal styling.
 - Database SQL.
 - User logic.
+- Correct user context handling and dashboard data access:
+  - Ensure $user remains an associative array, not a boolean.
+  - Define and reuse $userId consistently across dashboard queries.
+  - Prevent null values passed to htmlspecialchars() and strtotime().
+  - Fix role-based profile routing and session guard logic.
+  - Stabilize dashboard data loading for progress, quiz results, inbox, and posts.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.
