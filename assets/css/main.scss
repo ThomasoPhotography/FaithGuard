@@ -775,6 +775,61 @@ p {
 	}
 }
 
+.c-modal {
+	&__content {
+		background-color: $primary-bg;
+	}
+	&__title {
+		font-weight: 600;
+	}
+	&__btn {
+		&--close {
+			color: $text-dark;
+			&:hover {
+				color: $highlight;
+			}
+		}
+		&--submit{
+			$btn-color: random-color($max:200);
+			$btn-color-dark: shade($btn-color, 40%);
+			color: tint($btn-color);
+			&:before, &:after {
+				content: '';
+				@include absolute(0,null,null,0);
+				@include size(100%, 0);
+				background-color: rgba($btn-color-dark, 0.25);
+				transition: 0.4s ease-in-out;
+			}
+			&:after{
+				top: auto;
+				bottom: 0;
+			}
+			&:hover {
+				color: tint($btn-color, 75%);
+				&:before,
+				&:after {
+					height: $btn-height;
+				}
+			}
+			&:active {
+				background-color: $btn-color;
+			}
+		}
+	}
+	&__label {
+		font-weight: 500;
+	}
+	&__info {
+		background-color: $secondary-bg;
+		color: $text-light;
+		&:hover,
+		&:active,
+		&:focus {
+			background-color: $highlight;
+		}
+	}
+}
+
 .c-nav {
 	background-color: $primary-bg;
 

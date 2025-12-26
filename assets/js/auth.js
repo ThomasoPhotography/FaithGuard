@@ -27,7 +27,7 @@ const injectRegisterModal = (prefillEmail = '', prefillPassword = '') => {
     const modalHTML = `
     <!-- Register Modal -->
     <div class="modal fade c-modal" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog c-modal__dialog">
             <div class="modal-content c-modal__content">
                 <div class="modal-header c-modal__header">
                     <h5 class="modal-title c-modal__title" id="registerModalLabel">Join FaithGuard</h5>
@@ -37,15 +37,15 @@ const injectRegisterModal = (prefillEmail = '', prefillPassword = '') => {
                     <form id="registerForm">
                         <div class="mb-3">
                             <label for="registerEmail" class="form-label c-modal__label">Email address</label>
-                            <input type="email" class="form-control c-dropdown__info" id="registerEmail" name="email" value="${prefillEmail}" required>
+                            <input type="email" class="form-control c-modal__info" id="registerEmail" name="email" value="${prefillEmail}" required>
                         </div>
                         <div class="mb-3">
                             <label for="registerName" class="form-label c-modal__label">Full Name (Optional)</label>
-                            <input type="text" class="form-control c-dropdown__info" id="registerName" name="name">
+                            <input type="text" class="form-control c-modal__info" id="registerName" name="name">
                         </div>
                         <div class="mb-3">
                             <label for="registerPassword" class="form-label c-modal__label">Password</label>
-                            <input type="password" class="form-control c-dropdown__info" id="registerPassword" name="password" value="${prefillPassword}" required minlength="8">
+                            <input type="password" class="form-control c-modal__info" id="registerPassword" name="password" value="${prefillPassword}" required minlength="8">
                             <div class="form-text text-muted">Must be at least 8 characters long.</div>
                         </div>
                         <div class="d-grid gap-2">

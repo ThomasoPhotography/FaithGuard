@@ -742,6 +742,29 @@ p {
   }
 }
 
+.c-modal__content {
+  background-color: #e9b48a;
+}
+.c-modal__title {
+  font-weight: 600;
+}
+.c-modal__btn--close {
+  color: #3c3c34;
+}
+.c-modal__btn--close:hover {
+  color: #2a1717;
+}
+.c-modal__label {
+  font-weight: 500;
+}
+.c-modal__info {
+  background-color: #614338;
+  color: #f5f5dc;
+}
+.c-modal__info:hover, .c-modal__info:active, .c-modal__info:focus {
+  background-color: #2a1717;
+}
+
 .c-nav {
   background-color: #e9b48a;
 }

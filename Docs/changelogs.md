@@ -161,6 +161,7 @@ All notable changes to this project will be documented in this file.
 - Refactor (user-dashboard) consolidate auth handling, secure data loading, and dashboard rendering.
 - Policy pages to look more professional.
 - Policy data handling.
+- Register modal styling.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.
