@@ -53,7 +53,6 @@
         header("Location: /index.php");
         exit;
     }
-
     $accountName = htmlspecialchars(
         $user_data['name'] ?? $user_data['email'],
         ENT_QUOTES,
@@ -64,8 +63,17 @@
     /* =========================================================
    QUIZ DATA
 ========================================================= */
-    $questions = FaithGuardRepository::getAllQuizQuestions();
-
+    $questions         = FaithGuardRepository::getAllQuizQuestions();
+    $addictionQuestion = null;
+    foreach ($questions as $q) {
+        if ((int) $q['id'] === 1) {
+            $addictionQuestion = $q;
+            break;
+        }
+    }
+    if (! $addictionQuestion) {
+        throw new RuntimeException('Addiction selection question (ID 1) missing.');
+    }
     /* =========================================================
    ADDICTION TYPES (AUTHORITATIVE LIST)
 ========================================================= */
@@ -82,7 +90,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>FaithGuard – Self Assessment</title>
+    <title>FaithGuard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex">
     <link rel="icon" href="assets/uploads/favicon.ico">
@@ -120,12 +128,12 @@
                 <div class="d-flex dropdown c-dropdown">
                     <button class="btn c-btn c-dropdown__btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="c-dropdown__icon bi bi-person-check me-1"></i>
-                        <span class="c-dropdown__text">Welcome                                                                                                                             <?php echo $accountName; ?></span>
+                        <span class="c-dropdown__text">Welcome                                                                                                                                                                                           <?php echo $accountName; ?></span>
                     </button>
                     <!-- LOGGED-IN DROPDOWN MENU -->
                     <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu" aria-labelledby="userDropdown">
                         <li>
-                            <h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                                                                                                                 <?php echo ucfirst($user_role); ?></h6>
+                            <h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                                                                                                                                                                                                         <?php echo ucfirst($user_role); ?></h6>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
@@ -197,14 +205,20 @@
                 <!-- =====================================================
                     ADDICTION SELECTION
                 ===================================================== -->
-                <section class="c-quiz__question" data-step="0" data-question-id="addiction_selection" data-required="true">
-                    <h4 class="mb-2">Which struggles best describe your situation?</h4>
-                    <p class="text-muted mb-3">You may select more than one. This helps us guide you with wisdom, Scripture, and appropriate resources.</p>
+                <section class="c-quiz__question" data-step="0" data-question-id="<?php echo (int)$addictionQuestion['id']; ?>" data-required="true">
+                    <h4 class="mb-2">
+                        <?php echo htmlspecialchars($addictionQuestion['question'], ENT_QUOTES, 'UTF-8'); ?>
+                    </h4>
+                    <?php if (!empty($addictionQuestion['description'])): ?>
+                        <p class="text-muted mb-3">
+                            <?php echo htmlspecialchars($addictionQuestion['description'], ENT_QUOTES, 'UTF-8'); ?>
+                        </p>
+                    <?php endif; ?>
                     <?php foreach ($addictionTypes as $label => $value): ?>
                         <div class="form-check mb-2">
                             <input class="form-check-input js-addiction-checkbox" type="checkbox" name="addiction_types[]" id="addiction_<?php echo htmlspecialchars($value, ENT_QUOTES); ?>" value="<?php echo htmlspecialchars($value, ENT_QUOTES); ?>">
                             <label class="form-check-label" for="addiction_<?php echo htmlspecialchars($value, ENT_QUOTES); ?>">
-                                <?php echo htmlspecialchars($label); ?>
+                                <?php echo htmlspecialchars($label, ENT_QUOTES, 'UTF-8'); ?>
                             </label>
                         </div>
                     <?php endforeach; ?>
