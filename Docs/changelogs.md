@@ -174,6 +174,7 @@ All notable changes to this project will be documented in this file.
 - Features and auth.
 - Profile URLs.
 - Quiz section backend linking.
+- Database SQL V2.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.

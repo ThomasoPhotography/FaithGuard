@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: com-linweb938.srv.combell-ops.net:3306
--- Generation Time: Dec 26, 2025 at 07:42 PM
+-- Generation Time: Dec 27, 2025 at 03:40 PM
 -- Server version: 8.0.36-28
 -- PHP Version: 7.4.33
 
@@ -20,6 +20,20 @@ SET time_zone = "+00:00";
 --
 -- Database: `ID483117_faithguard`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `journal_entries`
+--
+
+CREATE TABLE `journal_entries` (
+  `id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `content_text` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `is_addiction_related` tinyint(1) DEFAULT '0',
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -187,18 +201,6 @@ CREATE TABLE `quiz_results` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Dumping data for table `quiz_results`
---
-
-INSERT INTO `quiz_results` (`id`, `user_id`, `addiction_type`, `answers_json`, `total_score`, `created_at`) VALUES
-(1, 2, '[\"pornography\", \"alcohol\"]', '{\"1\": 3, \"2\": 4, \"3\": 1, \"4\": 3}', 37.00, '2025-12-23 23:05:58'),
-(2, 2, '[\"pornography\", \"alcohol\"]', '{\"1\": 3, \"2\": 4, \"3\": 1, \"4\": 4}', 40.00, '2025-12-23 23:06:04'),
-(3, 2, '[\"pornography\", \"alcohol\"]', '{\"1\": 3, \"2\": 4, \"3\": 1, \"4\": 4}', 40.00, '2025-12-23 23:06:07'),
-(4, 1, '[\"gambling\"]', '{\"1\": 2, \"2\": 3, \"3\": 4}', 30.00, '2025-12-24 21:04:22'),
-(5, 1, '[\"gambling\"]', '{\"1\": 2, \"2\": 3, \"3\": 4, \"4\": 3}', 40.00, '2025-12-24 21:04:28'),
-(6, 1, '[\"gambling\"]', '{\"1\": 2, \"2\": 3, \"3\": 4, \"4\": 3}', 40.00, '2025-12-24 21:09:11');
-
 -- --------------------------------------------------------
 
 --
@@ -313,6 +315,13 @@ INSERT INTO `users` (`id`, `email`, `password_hash`, `name`, `role`, `created_at
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `journal_entries`
+--
+ALTER TABLE `journal_entries`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_journal_user` (`user_id`);
 
 --
 -- Indexes for table `messages`
@@ -436,6 +445,12 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `journal_entries`
+--
+ALTER TABLE `journal_entries`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
@@ -534,6 +549,12 @@ ALTER TABLE `users`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `journal_entries`
+--
+ALTER TABLE `journal_entries`
+  ADD CONSTRAINT `fk_journal_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `messages`
