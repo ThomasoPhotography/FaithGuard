@@ -22,25 +22,20 @@
 ========================================================= */
     $is_logged_in = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
 
-    // --- CRITICAL FIX: Define user variables needed for navigation bar ---
     $user        = null;
     $accountName = 'Guest';
     $user_role   = 'user';
+
     if ($is_logged_in && isset($_SESSION['user_id'])) {
-        // Fetch user data using the repository method
         $user_data = FaithGuardRepository::getUserById($_SESSION['user_id']);
         if ($user_data) {
-            $user = true;
-            // Assuming your 'users' table has a 'name' or 'email' column and a 'role' column
+            $user        = true;
             $accountName = htmlspecialchars($user_data['name'] ?? $user_data['email']);
             $user_role   = $user_data['role'] ?? 'user';
         } else {
-            // Logged-in session exists, but user not found in DB (session cleanup needed)
-            unset($_SESSION['user_id']);
-            unset($_SESSION['logged_in']);
-            $is_logged_in = false;
-            header("Location: ../api/auth/register.php");
-            exit();
+            session_destroy();
+            header("Location: /api/auth/register.php");
+            exit;
         }
     }
 
@@ -53,6 +48,7 @@
         header("Location: /index.php");
         exit;
     }
+
     $accountName = htmlspecialchars(
         $user_data['name'] ?? $user_data['email'],
         ENT_QUOTES,
@@ -63,7 +59,8 @@
     /* =========================================================
    QUIZ DATA
 ========================================================= */
-    $questions         = FaithGuardRepository::getAllQuizQuestions();
+    $questions = FaithGuardRepository::getAllQuizQuestions();
+
     $addictionQuestion = null;
     foreach ($questions as $q) {
         if ((int) $q['id'] === 1) {
@@ -71,11 +68,13 @@
             break;
         }
     }
+
     if (! $addictionQuestion) {
         throw new RuntimeException('Addiction selection question (ID 1) missing.');
     }
+
     /* =========================================================
-   ADDICTION TYPES (AUTHORITATIVE LIST)
+   ADDICTION TYPES
 ========================================================= */
     $addictionTypes = [
         'Pornography'            => 'Pornography',
@@ -128,12 +127,12 @@
                 <div class="d-flex dropdown c-dropdown">
                     <button class="btn c-btn c-dropdown__btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="c-dropdown__icon bi bi-person-check me-1"></i>
-                        <span class="c-dropdown__text">Welcome                                                                                                                                                                                           <?php echo $accountName; ?></span>
+                        <span class="c-dropdown__text">Welcome                                                                                                                                                                                                                                                                                                                                                                                     <?php echo $accountName; ?></span>
                     </button>
                     <!-- LOGGED-IN DROPDOWN MENU -->
                     <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu" aria-labelledby="userDropdown">
                         <li>
-                            <h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                                                                                                                                                                                                         <?php echo ucfirst($user_role); ?></h6>
+                            <h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 <?php echo ucfirst($user_role); ?></h6>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
@@ -196,20 +195,21 @@
     <main class="c-main container my-5">
         <section class="c-main__section c-quiz">
             <h1 class="c-main__title text-center mb-3">FaithGuard Self-Assessment</h1>
-            <p class="c-main__text text-center mb-5"> Answer honestly. This assessment helps guide you toward Scripture-rooted support.</p>
-            <!-- PROGRESS BAR -->
+            <p class="c-main__text text-center mb-5">
+                Answer honestly. This assessment helps guide you toward Scripture-rooted support.
+            </p>
             <div class="c-progress mb-4">
-                <div class="progress-bar c-progress__bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+                <div class="progress-bar c-progress__bar" role="progressbar"></div>
             </div>
             <form class="c-quiz__content c-quiz__form" action="/api/quiz/submit.php" method="POST">
                 <!-- =====================================================
-                    ADDICTION SELECTION
+                ADDICTION SELECTION (ID 1)
                 ===================================================== -->
-                <section class="c-quiz__question" data-step="0" data-question-id="<?php echo (int)$addictionQuestion['id']; ?>" data-required="true">
+                <section class="c-quiz__question" data-step="0" data-question-id="<?php echo (int) $addictionQuestion['id']; ?>" data-required="true">
                     <h4 class="mb-2">
                         <?php echo htmlspecialchars($addictionQuestion['question'], ENT_QUOTES, 'UTF-8'); ?>
                     </h4>
-                    <?php if (!empty($addictionQuestion['description'])): ?>
+                    <?php if (! empty($addictionQuestion['description'])): ?>
                         <p class="text-muted mb-3">
                             <?php echo htmlspecialchars($addictionQuestion['description'], ENT_QUOTES, 'UTF-8'); ?>
                         </p>
@@ -227,23 +227,25 @@
                     </small>
                 </section>
                 <!-- =====================================================
-                    QUIZ QUESTIONS
+                ALL QUESTIONS EXCEPT ID 1
                 ===================================================== -->
-                <?php foreach ($questions as $index => $q): ?>
-                    <section class="c-quiz__question" data-step="<?php echo $index + 1; ?>" data-question-id="<?php echo (int) $q['id']; ?>">
-                        <h5 class="mb-3">
-                            <?php echo htmlspecialchars($q['question'], ENT_QUOTES, 'UTF-8'); ?>
-                        </h5>
-                        <?php $labels = ['Never', 'Rarely', 'Sometimes', 'Often', 'Very Often'];for ($i = 1; $i <= 5; $i++): ?>
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="radio" required name="answers[<?php echo (int) $q['id']; ?>]" value="<?php echo $i; ?>">
-                                <label class="form-check-label">
-                                    <?php echo $labels[$i - 1]; ?>
-                                </label>
-                            </div>
-                        <?php endfor; ?>
+                <?php $stepIndex = 1;foreach ($questions as $q): $questionId = (int) $q['id'];if ($questionId === 1) {continue;}?>
+	                    <section class="c-quiz__question" data-step="<?php echo $stepIndex; ?>" data-question-id="<?php echo $questionId; ?>" data-required="true">
+	                        <h5 class="mb-3">
+	                            <?php echo htmlspecialchars($q['question'], ENT_QUOTES, 'UTF-8'); ?>
+	                        </h5>
+	                        <?php
+                                    $labels = ['Never', 'Rarely', 'Sometimes', 'Often', 'Very Often'];
+                                for ($i = 1; $i <= 5; $i++): ?>
+	                                <div class="form-check mb-2">
+	                                    <input class="form-check-input" type="radio" name="answers[<?php echo $questionId; ?>]" value="<?php echo $i; ?>" required>
+	                                    <label class="form-check-label">
+	                                        <?php echo $labels[$i - 1]; ?>
+	                                    </label>
+	                                </div>
+	                            <?php endfor; ?>
                     </section>
-                <?php endforeach; ?>
+                <?php $stepIndex++;endforeach; ?>
                 <!-- =====================================================
                     NAVIGATION
                 ===================================================== -->
