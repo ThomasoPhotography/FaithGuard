@@ -173,6 +173,7 @@ All notable changes to this project will be documented in this file.
   - Stabilize dashboard data loading for progress, quiz results, inbox, and posts.
 - Features and auth.
 - Profile URLs.
+- Quiz section backend linking.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.
