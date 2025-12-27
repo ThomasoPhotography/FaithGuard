@@ -181,16 +181,20 @@
                 <!-- =====================================================
                     ADDICTION SELECTION
                 ===================================================== -->
-                <section class="c-quiz__question" data-step="0" data-label="Setup">
-                    <h4 class="mb-3">Which struggles best describe your situation?</h4>
+                <section class="c-quiz__question" data-step="0" data-question-id="addiction_selection" data-required="true">
+                    <h4 class="mb-2">Which struggles best describe your situation?</h4>
+                    <p class="text-muted mb-3">You may select more than one. This helps us guide you with wisdom, Scripture, and appropriate resources.</p>
                     <?php foreach ($addictionTypes as $label => $value): ?>
                         <div class="form-check mb-2">
-                            <input class="form-check-input" type="checkbox" name="addiction_type[]" id="addiction_<?php echo htmlspecialchars($value); ?>" value="<?php echo htmlspecialchars($value); ?>">
-                            <label class="form-check-label" for="addiction_<?php echo htmlspecialchars($value); ?>">
+                            <input class="form-check-input js-addiction-checkbox" type="checkbox" name="addiction_types[]" id="addiction_<?php echo htmlspecialchars($value, ENT_QUOTES); ?>" value="<?php echo htmlspecialchars($value, ENT_QUOTES); ?>">
+                            <label class="form-check-label" for="addiction_<?php echo htmlspecialchars($value, ENT_QUOTES); ?>">
                                 <?php echo htmlspecialchars($label); ?>
                             </label>
                         </div>
                     <?php endforeach; ?>
+                    <small class="text-danger d-none js-addiction-error">
+                        Please select at least one option to continue.
+                    </small>
                 </section>
                 <!-- =====================================================
                     QUIZ QUESTIONS
@@ -223,7 +227,7 @@
             </form>
         </section>
     </main>
-        <!-- Footer -->
+    <!-- Footer -->
     <footer class="c-footer">
         <div class="container">
             <div class="row">

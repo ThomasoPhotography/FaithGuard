@@ -176,6 +176,7 @@ All notable changes to this project will be documented in this file.
 - Quiz section backend linking.
 - Database SQL V2.
 - Quiz code.
+- Quiz logic in `/assets/js/quiz.js` and `/quiz.php`. 
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.
