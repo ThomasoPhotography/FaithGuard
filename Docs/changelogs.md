@@ -178,6 +178,7 @@ All notable changes to this project will be documented in this file.
 - Quiz code.
 - Quiz logic in `/assets/js/quiz.js` and `/quiz.php`.
 - Quiz logic in `/quiz.php`.
+- User login logic in `/quiz.php`.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.

@@ -20,13 +20,28 @@
     /* =========================================================
    AUTH GUARD
 ========================================================= */
-    $is_logged_in = isset($_SESSION['logged_in'], $_SESSION['user_id']) && $_SESSION['logged_in'] === true;
-    if (
-        ! isset($_SESSION['logged_in'], $_SESSION['user_id']) ||
-        $_SESSION['logged_in'] !== true
-    ) {
-        header("Location: /index.php");
-        exit;
+    $is_logged_in = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
+
+    // --- CRITICAL FIX: Define user variables needed for navigation bar ---
+    $user        = null;
+    $accountName = 'Guest';
+    $user_role   = 'user';
+    if ($is_logged_in && isset($_SESSION['user_id'])) {
+        // Fetch user data using the repository method
+        $user_data = FaithGuardRepository::getUserById($_SESSION['user_id']);
+        if ($user_data) {
+            $user = true;
+            // Assuming your 'users' table has a 'name' or 'email' column and a 'role' column
+            $accountName = htmlspecialchars($user_data['name'] ?? $user_data['email']);
+            $user_role   = $user_data['role'] ?? 'user';
+        } else {
+            // Logged-in session exists, but user not found in DB (session cleanup needed)
+            unset($_SESSION['user_id']);
+            unset($_SESSION['logged_in']);
+            $is_logged_in = false;
+            header("Location: ../api/auth/register.php");
+            exit();
+        }
     }
 
     /* =========================================================
@@ -105,12 +120,12 @@
                 <div class="d-flex dropdown c-dropdown">
                     <button class="btn c-btn c-dropdown__btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="c-dropdown__icon bi bi-person-check me-1"></i>
-                        <span class="c-dropdown__text">Welcome                                                                                                                                                                                                                                                         <?php echo $accountName; ?></span>
+                        <span class="c-dropdown__text">Welcome                                                                                                                             <?php echo $accountName; ?></span>
                     </button>
                     <!-- LOGGED-IN DROPDOWN MENU -->
                     <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu" aria-labelledby="userDropdown">
                         <li>
-                            <h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                                                                                                                                                                                                                                                                                                 <?php echo ucfirst($user_role); ?></h6>
+                            <h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                                                                                                                 <?php echo ucfirst($user_role); ?></h6>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
