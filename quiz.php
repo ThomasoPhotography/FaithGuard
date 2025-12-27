@@ -1,4 +1,9 @@
 <?php
+    declare (strict_types = 1);
+
+    /* =========================================================
+   SESSION + SECURITY
+========================================================= */
     session_set_cookie_params([
         'lifetime' => 302400,
         'path'     => '/',
@@ -12,63 +17,63 @@
     require_once __DIR__ . "/db/FaithGuardRepository.php";
     require_once __DIR__ . "/api/helper/debug.php";
 
-    /* =========================
+    /* =========================================================
    AUTH GUARD
-========================= */
-    $is_logged_in = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
-
-    if (! $is_logged_in || ! isset($_SESSION['user_id'])) {
+========================================================= */
+    if (
+        ! isset($_SESSION['logged_in'], $_SESSION['user_id']) ||
+        $_SESSION['logged_in'] !== true
+    ) {
         header("Location: /index.php");
         exit;
     }
 
-    /* =========================
-   USER CONTEXT (NAVBAR)
-========================= */
-    $user        = null;
-    $accountName = 'Guest';
-    $user_role   = 'user';
-
-    $user_data = FaithGuardRepository::getUserById($_SESSION['user_id']);
-    if (! $user_data) {
+    /* =========================================================
+   USER CONTEXT
+========================================================= */
+    $user_data = FaithGuardRepository::getUserById((int) $_SESSION['user_id']);
+    if (! is_array($user_data)) {
         session_destroy();
         header("Location: /index.php");
         exit;
     }
 
-    $user        = true;
-    $accountName = htmlspecialchars($user_data['name'] ?? $user_data['email']);
-    $user_role   = $user_data['role'] ?? 'user';
+    $accountName = htmlspecialchars(
+        $user_data['name'] ?? $user_data['email'],
+        ENT_QUOTES,
+        'UTF-8'
+    );
+    $user_role = $user_data['role'] ?? 'user';
 
-    /* =========================
+    /* =========================================================
    QUIZ DATA
-========================= */
+========================================================= */
     $questions = FaithGuardRepository::getAllQuizQuestions();
+
+    /* =========================================================
+   ADDICTION TYPES (AUTHORITATIVE LIST)
+========================================================= */
+    $addictionTypes = [
+        'Pornography'            => 'Pornography',
+        'Alcohol'                => 'Alcohol',
+        'Substance Use'          => 'Substance',
+        'Gambling'               => 'Gambling',
+        'Digital / Social Media' => 'Digital',
+        'Smoking / Vaping'       => 'Smoking',
+    ];
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Meta tags -->
     <meta charset="UTF-8">
+    <title>FaithGuard – Self Assessment</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="FaithGuard - Protecting Your Digital Faith">
-    <meta name="keywords" content="FaithGuard, Digital Security, Faith Protection, Online Safety">
-    <meta name="author" content="WWTW - FaithGuard">
     <meta name="robots" content="noindex">
-    <!-- Version -->
-    <meta name="version" content="0.1.4-alpha">
-    <meta name="release" content="current">
-    <!-- Title -->
-    <title>FaithGuard</title>
-    <!-- Favicon -->
-    <link rel="icon" href="assets/uploads/favicon.ico" type="image/x-icon">
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-    <!-- Stylesheet -->
+    <link rel="icon" href="assets/uploads/favicon.ico">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/main.css">
 </head>
-
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light c-nav">
@@ -99,12 +104,12 @@
                 <div class="d-flex dropdown c-dropdown">
                     <button class="btn c-btn c-dropdown__btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="c-dropdown__icon bi bi-person-check me-1"></i>
-                        <span class="c-dropdown__text">Welcome                                                                                                                                                                                                                                                         <?php echo $accountName; ?></span>
+                        <span class="c-dropdown__text">Welcome                                                                                                                                                                                           <?php echo $accountName; ?></span>
                     </button>
                     <!-- LOGGED-IN DROPDOWN MENU -->
                     <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu" aria-labelledby="userDropdown">
                         <li>
-                            <h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                                                                                                                                                                                                                                                                                                 <?php echo ucfirst($user_role); ?></h6>
+                            <h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                                                                                                                                                                                                         <?php echo ucfirst($user_role); ?></h6>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
@@ -167,43 +172,50 @@
     <main class="c-main container my-5">
         <section class="c-main__section c-quiz">
             <h1 class="c-main__title text-center mb-3">FaithGuard Self-Assessment</h1>
-            <p class="c-main__text text-center mb-5">Answer honestly. This assessment helps guide you toward Scripture-rooted support.</p>
-            <!-- Progress -->
+            <p class="c-main__text text-center mb-5"> Answer honestly. This assessment helps guide you toward Scripture-rooted support.</p>
+            <!-- PROGRESS BAR -->
             <div class="c-progress mb-4">
                 <div class="progress-bar c-progress__bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
-            <!-- Questions -->
             <form class="c-quiz__content c-quiz__form" action="/api/quiz/submit.php" method="POST">
-                <!-- STEP 0: Addiction Type -->
+                <!-- =====================================================
+                    ADDICTION SELECTION
+                ===================================================== -->
                 <section class="c-quiz__question" data-step="0" data-label="Setup">
-                    <h4 class="mb-3">Which struggle best describes your situation?</h4>
-                    <?php foreach (['pornography', 'alcohol', 'drugs', 'gambling', ''] as $type): ?>
+                    <h4 class="mb-3">Which struggles best describe your situation?</h4>
+                    <?php foreach ($addictionTypes as $label => $value): ?>
                         <div class="form-check mb-2">
-                            <input class="form-check-input" type="checkbox" name="addiction_type[]" value="<?php echo $type ?>">
-                            <label class="form-check-label"> <?php echo ucfirst($type) ?> </label>
+                            <input class="form-check-input" type="checkbox" name="addiction_type[]" id="addiction_<?php echo htmlspecialchars($value); ?>" value="<?php echo htmlspecialchars($value); ?>">
+                            <label class="form-check-label" for="addiction_<?php echo htmlspecialchars($value); ?>">
+                                <?php echo htmlspecialchars($label); ?>
+                            </label>
                         </div>
                     <?php endforeach; ?>
                 </section>
-                <!-- QUIZ QUESTIONS -->
+                <!-- =====================================================
+                    QUIZ QUESTIONS
+                ===================================================== -->
                 <?php foreach ($questions as $index => $q): ?>
-                    <section class="c-quiz__question" data-step="<?php echo $index + 1 ?>" data-question-id="<?php echo (int) $q['id'] ?>">
-                        <h5 class="mb-3">                                          <?php echo htmlspecialchars($q['question'], ENT_QUOTES, 'UTF-8') ?></h5>
+                    <section class="c-quiz__question" data-step="<?php echo $index + 1; ?>" data-question-id="<?php echo (int) $q['id']; ?>">
+                        <h5 class="mb-3">
+                            <?php echo htmlspecialchars($q['question'], ENT_QUOTES, 'UTF-8'); ?>
+                        </h5>
                         <?php $labels = ['Never', 'Rarely', 'Sometimes', 'Often', 'Very Often'];for ($i = 1; $i <= 5; $i++): ?>
                             <div class="form-check mb-2">
-                                <input class="form-check-input" type="radio" name="answers[<?php echo (int) $q['id'] ?>]" value="<?php echo $i ?>">
-                                <label class="form-check-label"><?php echo $labels[$i - 1] ?></label>
+                                <input class="form-check-input" type="radio" required name="answers[<?php echo (int) $q['id']; ?>]" value="<?php echo $i; ?>">
+                                <label class="form-check-label">
+                                    <?php echo $labels[$i - 1]; ?>
+                                </label>
                             </div>
                         <?php endfor; ?>
                     </section>
                 <?php endforeach; ?>
-                <!-- NAVIGATION -->
+                <!-- =====================================================
+                    NAVIGATION
+                ===================================================== -->
                 <div class="d-flex justify-content-between mt-4">
-                    <button type="button" id="prevButton" class="btn c-btn">
-                        Back
-                    </button>
-                    <button type="button" id="nextButton" class="btn c-btn">
-                        Next
-                    </button>
+                    <button type="button" id="prevButton" class="btn c-btn">Back</button>
+                    <button type="button" id="nextButton" class="btn c-btn">Next</button>
                     <button type="submit" id="submitButton" class="btn c-btn" hidden>
                         Submit Assessment
                     </button>
@@ -211,7 +223,7 @@
             </form>
         </section>
     </main>
-    <!-- Footer -->
+        <!-- Footer -->
     <footer class="c-footer">
         <div class="container">
             <div class="row">
@@ -257,11 +269,10 @@
             </div>
         </div>
     </footer>
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Custom JS -->
-    <script src="assets/js/cookie-banner.js"></script>
-    <script src="assets/js/auth.js"></script>
-    <script src="assets/js/quiz.js"></script>
 </body>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Custom JS -->
+<script src="assets/js/quiz.js"></script>
+<script src="assets/js/auth.js"></script>
 </html>
