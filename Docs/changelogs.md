@@ -181,6 +181,7 @@ All notable changes to this project will be documented in this file.
 - User login logic in `/quiz.php`.
 - Quiz data directly imported from database.
 - Quiz content logic.
+- Database, repository & quiz logic.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.

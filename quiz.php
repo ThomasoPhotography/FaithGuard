@@ -1,89 +1,89 @@
 <?php
-    declare (strict_types = 1);
+declare(strict_types=1);
 
-    /* =========================================================
+/* =========================================================
    SESSION + SECURITY
 ========================================================= */
-    session_set_cookie_params([
-        'lifetime' => 302400,
-        'path'     => '/',
-        'domain'   => $_SERVER['SERVER_NAME'] ?? '',
-        'secure'   => true,
-        'httponly' => true,
-    ]);
-    session_start();
+session_set_cookie_params([
+    'lifetime' => 302400,
+    'path'     => '/',
+    'domain'   => $_SERVER['SERVER_NAME'] ?? '',
+    'secure'   => true,
+    'httponly' => true,
+]);
+session_start();
 
-    require_once __DIR__ . "/db/database.php";
-    require_once __DIR__ . "/db/FaithGuardRepository.php";
-    require_once __DIR__ . "/api/helper/debug.php";
+require_once __DIR__ . "/db/database.php";
+require_once __DIR__ . "/db/FaithGuardRepository.php";
+require_once __DIR__ . "/api/helper/debug.php";
 
-    /* =========================================================
+/* =========================================================
    AUTH GUARD
 ========================================================= */
-    $is_logged_in = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
+$is_logged_in = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
 
-    $user        = null;
-    $accountName = 'Guest';
-    $user_role   = 'user';
+$user        = null;
+$accountName = 'Guest';
+$user_role   = 'user';
 
-    if ($is_logged_in && isset($_SESSION['user_id'])) {
-        $user_data = FaithGuardRepository::getUserById($_SESSION['user_id']);
-        if ($user_data) {
-            $user        = true;
-            $accountName = htmlspecialchars($user_data['name'] ?? $user_data['email']);
-            $user_role   = $user_data['role'] ?? 'user';
-        } else {
-            session_destroy();
-            header("Location: /api/auth/register.php");
-            exit;
-        }
-    }
-
-    /* =========================================================
-   USER CONTEXT
-========================================================= */
-    $user_data = FaithGuardRepository::getUserById((int) $_SESSION['user_id']);
-    if (! is_array($user_data)) {
+if ($is_logged_in && isset($_SESSION['user_id'])) {
+    $user_data = FaithGuardRepository::getUserById($_SESSION['user_id']);
+    if ($user_data) {
+        $user        = true;
+        $accountName = htmlspecialchars($user_data['name'] ?? $user_data['email']);
+        $user_role   = $user_data['role'] ?? 'user';
+    } else {
         session_destroy();
-        header("Location: /index.php");
+        header("Location: /api/auth/register.php");
         exit;
     }
+}
 
-    $accountName = htmlspecialchars(
-        $user_data['name'] ?? $user_data['email'],
-        ENT_QUOTES,
-        'UTF-8'
-    );
-    $user_role = $user_data['role'] ?? 'user';
+/* =========================================================
+   USER CONTEXT
+========================================================= */
+$user_data = FaithGuardRepository::getUserById((int) $_SESSION['user_id']);
+if (!is_array($user_data)) {
+    session_destroy();
+    header("Location: /index.php");
+    exit;
+}
 
-    /* =========================================================
+$accountName = htmlspecialchars(
+    $user_data['name'] ?? $user_data['email'],
+    ENT_QUOTES,
+    'UTF-8'
+);
+$user_role = $user_data['role'] ?? 'user';
+
+/* =========================================================
    QUIZ DATA
 ========================================================= */
-    $questions = FaithGuardRepository::getAllQuizQuestions();
+$questions = FaithGuardRepository::getAllQuizQuestions();
 
-    $addictionQuestion = null;
-    foreach ($questions as $q) {
-        if ((int) $q['id'] === 1) {
-            $addictionQuestion = $q;
-            break;
-        }
+$addictionQuestion = null;
+foreach ($questions as $q) {
+    if ((int) $q['id'] === 1) {
+        $addictionQuestion = $q;
+        break;
     }
+}
 
-    if (! $addictionQuestion) {
-        throw new RuntimeException('Addiction selection question (ID 1) missing.');
-    }
+if (!$addictionQuestion) {
+    throw new RuntimeException('Addiction selection question (ID 1) missing.');
+}
 
-    /* =========================================================
-   ADDICTION TYPES
+/* =========================================================
+   ADDICTION TYPES (still static by design)
 ========================================================= */
-    $addictionTypes = [
-        'Pornography'            => 'Pornography',
-        'Alcohol'                => 'Alcohol',
-        'Substance Use'          => 'Substance',
-        'Gambling'               => 'Gambling',
-        'Digital / Social Media' => 'Digital',
-        'Smoking / Vaping'       => 'Smoking',
-    ];
+$addictionTypes = [
+    'Pornography'            => 'Pornography',
+    'Alcohol'                => 'Alcohol',
+    'Substance Use'          => 'Substance',
+    'Gambling'               => 'Gambling',
+    'Digital / Social Media' => 'Digital',
+    'Smoking / Vaping'       => 'Smoking',
+];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -127,12 +127,12 @@
                 <div class="d-flex dropdown c-dropdown">
                     <button class="btn c-btn c-dropdown__btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="c-dropdown__icon bi bi-person-check me-1"></i>
-                        <span class="c-dropdown__text">Welcome                                                                                                                                                                                                                                                                                                                                                                                     <?php echo $accountName; ?></span>
+                        <span class="c-dropdown__text">Welcome                                                                                                                             <?php echo $accountName; ?></span>
                     </button>
                     <!-- LOGGED-IN DROPDOWN MENU -->
                     <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu" aria-labelledby="userDropdown">
                         <li>
-                            <h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 <?php echo ucfirst($user_role); ?></h6>
+                            <h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                                                                                                                 <?php echo ucfirst($user_role); ?></h6>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
@@ -193,122 +193,85 @@
     </nav>
     <!-- Main Content -->
     <main class="c-main container my-5">
-        <section class="c-main__section c-quiz">
-            <h1 class="c-main__title text-center mb-3">FaithGuard Self-Assessment</h1>
-            <p class="c-main__text text-center mb-5">
-                Answer honestly. This assessment helps guide you toward Scripture-rooted support.
-            </p>
-            <div class="c-progress mb-4">
-                <div class="progress-bar c-progress__bar" role="progressbar"></div>
-            </div>
-            <form class="c-quiz__content c-quiz__form" action="/api/quiz/submit.php" method="POST">
-                <!-- =====================================================
-                ADDICTION SELECTION (ID 1)
-                ===================================================== -->
-                <section class="c-quiz__question" data-step="0" data-question-id="<?php echo (int) $addictionQuestion['id']; ?>" data-required="true">
-                    <h4 class="mb-2">
-                        <?php echo htmlspecialchars($addictionQuestion['question'], ENT_QUOTES, 'UTF-8'); ?>
-                    </h4>
-                    <?php if (! empty($addictionQuestion['description'])): ?>
-                        <p class="text-muted mb-3">
-                            <?php echo htmlspecialchars($addictionQuestion['description'], ENT_QUOTES, 'UTF-8'); ?>
-                        </p>
-                    <?php endif; ?>
-                    <?php foreach ($addictionTypes as $label => $value): ?>
+    <section class="c-main__section c-quiz">
+        <h1 class="c-main__title text-center mb-3">FaithGuard Self-Assessment</h1>
+        <p class="c-main__text text-center mb-5">
+            Answer honestly. This assessment helps guide you toward Scripture-rooted support.
+        </p>
+        <div class="c-progress mb-4">
+            <div class="progress-bar c-progress__bar" role="progressbar"></div>
+        </div>
+        <form class="c-quiz__content c-quiz__form" action="/api/quiz/submit.php" method="POST">
+
+            <!-- =====================================================
+                 ADDICTION SELECTION (ID 1)
+            ===================================================== -->
+            <section class="c-quiz__question" data-step="0" data-question-id="<?php echo (int) $addictionQuestion['id']; ?>" data-required="true">
+                <h4 class="mb-2">
+                    <?php echo htmlspecialchars($addictionQuestion['question'], ENT_QUOTES, 'UTF-8'); ?>
+                </h4>
+                <?php if (!empty($addictionQuestion['description'])): ?>
+                    <p class="text-muted mb-3">
+                        <?php echo htmlspecialchars($addictionQuestion['description'], ENT_QUOTES, 'UTF-8'); ?>
+                    </p>
+                <?php endif; ?>
+                <?php foreach ($addictionTypes as $label => $value): ?>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input js-addiction-checkbox" type="checkbox" name="addiction_types[]" id="addiction_<?php echo htmlspecialchars($value, ENT_QUOTES); ?>" value="<?php echo htmlspecialchars($value, ENT_QUOTES); ?>">
+                        <label class="form-check-label" for="addiction_<?php echo htmlspecialchars($value, ENT_QUOTES); ?>">
+                            <?php echo htmlspecialchars($label, ENT_QUOTES, 'UTF-8'); ?>
+                        </label>
+                    </div>
+                <?php endforeach; ?>
+            </section>
+
+            <!-- =====================================================
+                ALL QUESTIONS EXCEPT ID 1
+            ===================================================== -->
+            <?php
+            $stepIndex = 1;
+            foreach ($questions as $q):
+                $questionId = (int) $q['id'];
+                if ($questionId === 1) {
+                    continue;
+                }
+                $answerOptions = FaithGuardRepository::getAllQuizAnswerOptions($questionId);
+            ?>
+                <section class="c-quiz__question" data-step="<?php echo $stepIndex; ?>" data-question-id="<?php echo $questionId; ?>" data-required="true">
+                    <h5 class="mb-3">
+                        <?php echo htmlspecialchars($q['question'], ENT_QUOTES, 'UTF-8'); ?>
+                    </h5>
+                    <?php foreach ($answerOptions as $option): ?>
                         <div class="form-check mb-2">
-                            <input class="form-check-input js-addiction-checkbox" type="checkbox" name="addiction_types[]" id="addiction_<?php echo htmlspecialchars($value, ENT_QUOTES); ?>" value="<?php echo htmlspecialchars($value, ENT_QUOTES); ?>">
-                            <label class="form-check-label" for="addiction_<?php echo htmlspecialchars($value, ENT_QUOTES); ?>">
-                                <?php echo htmlspecialchars($label, ENT_QUOTES, 'UTF-8'); ?>
+                            <input class="form-check-input" type="radio" name="answers[<?php echo $questionId; ?>]" value="<?php echo (int) $option['value']; ?>" required>
+                            <label class="form-check-label">
+                                <?php echo htmlspecialchars($option['label'], ENT_QUOTES, 'UTF-8'); ?>
                             </label>
                         </div>
                     <?php endforeach; ?>
-                    <small class="text-danger d-none js-addiction-error">
-                        Please select at least one option to continue.
-                    </small>
+
                 </section>
-                <!-- =====================================================
-                ALL QUESTIONS EXCEPT ID 1
-                ===================================================== -->
-                <?php $stepIndex = 1;foreach ($questions as $q): $questionId = (int) $q['id'];if ($questionId === 1) {continue;}?>
-	                    <section class="c-quiz__question" data-step="<?php echo $stepIndex; ?>" data-question-id="<?php echo $questionId; ?>" data-required="true">
-	                        <h5 class="mb-3">
-	                            <?php echo htmlspecialchars($q['question'], ENT_QUOTES, 'UTF-8'); ?>
-	                        </h5>
-	                        <?php
-                                    $labels = ['Never', 'Rarely', 'Sometimes', 'Often', 'Very Often'];
-                                for ($i = 1; $i <= 5; $i++): ?>
-	                                <div class="form-check mb-2">
-	                                    <input class="form-check-input" type="radio" name="answers[<?php echo $questionId; ?>]" value="<?php echo $i; ?>" required>
-	                                    <label class="form-check-label">
-	                                        <?php echo $labels[$i - 1]; ?>
-	                                    </label>
-	                                </div>
-	                            <?php endfor; ?>
-                    </section>
-                <?php $stepIndex++;endforeach; ?>
-                <!-- =====================================================
-                    NAVIGATION
-                ===================================================== -->
-                <div class="d-flex justify-content-between mt-4">
-                    <button type="button" id="prevButton" class="btn c-btn">Back</button>
-                    <button type="button" id="nextButton" class="btn c-btn">Next</button>
-                    <button type="submit" id="submitButton" class="btn c-btn" hidden>
-                        Submit Assessment
-                    </button>
-                </div>
-            </form>
-        </section>
-    </main>
-    <!-- Footer -->
-    <footer class="c-footer">
-        <div class="container">
-            <div class="row">
-                <!-- Footer Content: Left -->
-                <div class="col-md-6 col-12">
-                    <img class="c-footer__logo" src="assets/uploads/FaithGuard_Secondary_Logo.svg" alt="Secondary Logo">
-                    <p class="c-footer__text">&copy; 2025 FaithGuard. All rights reserved. Overcoming addiction through Christ &amp; Protecting your digital faith with hope and redemption.</p>
-                </div>
-                <!-- Footer Content: Right -->
-                <div class="col-md-6 col-12 text-md-end">
-                    <ul class="footer-nav c-footer__nav">
-                        <li class="c-footer__item">
-                            <a class="c-footer__links" href="index.php">Home</a>
-                        </li>
-                        <li class="c-footer__item">
-                            <a class="c-footer__links" href="resources.html">Resources</a>
-                        </li>
-                        <li class="c-footer__item">
-                            <a class="c-footer__links" href="about.html">About</a>
-                    </li>
-                    <li class="c-footer__item">
-                        <a class="c-footer__links" href="contact.php">Contact</a>
-                    </li>
-                </ul>
+            <?php
+                $stepIndex++;
+            endforeach;
+            ?>
+
+            <!-- =====================================================
+                NAVIGATION
+            ===================================================== -->
+            <div class="d-flex justify-content-between mt-4">
+                <button type="button" id="prevButton" class="btn c-btn">Back</button>
+                <button type="button" id="nextButton" class="btn c-btn">Next</button>
+                <button type="submit" id="submitButton" class="btn c-btn" hidden>
+                    Submit Assessment
+                </button>
             </div>
-            <!-- Footer Content: Policies -->
-            <div class="row">
-                <div class="col-md-3">
-                    <li class="c-footer__item">
-                            <a class="c-footer__links" href="policies.php?slug=terms">Terms of Service</a>
-                        </li>
-                </div>
-                <div class="col-md-3">
-                    <li class="c-footer__item">
-                            <a class="c-footer__links" href="policies.php?slug=privacy">Privacy Policy</a>
-                        </li>
-                </div>
-                <div class="col-md-3">
-                    <li class="c-footer__item">
-                            <a class="c-footer__links" href="policies.php?slug=cookie">Cookie Policy</a>
-                        </li>
-                </div>
-            </div>
-        </div>
-    </footer>
-</body>
-<!-- Bootstrap JS -->
+        </form>
+    </section>
+</main>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Custom JS -->
 <script src="assets/js/quiz.js"></script>
 <script src="assets/js/auth.js"></script>
+</body>
 </html>

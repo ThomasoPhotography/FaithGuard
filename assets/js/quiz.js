@@ -17,16 +17,23 @@ const isQuestionAnswered = (stepIndex) => {
 	const question = questions[stepIndex];
 	if (!question) return false;
 
-	// Addiction selection (checkboxes)
-	if (stepIndex === 0) {
-		return Array.from(question.querySelectorAll('input[type="checkbox"]')).some((cb) => cb.checked);
+	const inputs = Array.from(question.querySelectorAll('input'));
+	if (!inputs.length) return true;
+
+	const type = inputs[0].type;
+
+	if (type === 'checkbox') {
+		return inputs.some((i) => i.checked);
 	}
 
-	// Normal quiz questions (radio buttons)
-	return Array.from(question.querySelectorAll('input[type="radio"]')).some((r) => r.checked);
+	if (type === 'radio') {
+		return inputs.some((i) => i.checked);
+	}
+
+	return true;
 };
 
-const showValidationError = (stepIndex, message = 'Please select an answer before continuing.') => {
+const showValidationError = (stepIndex, message) => {
 	const question = questions[stepIndex];
 	if (!question) return;
 
@@ -59,9 +66,7 @@ const renderQuestion = (stepIndex) => {
 const updateProgressBar = (stepIndex) => {
 	if (!quizProgressBar) return;
 
-	const totalSteps = questions.length;
-	const progress = Math.round(((stepIndex + 1) / totalSteps) * 100);
-
+	const progress = Math.round(((stepIndex + 1) / questions.length) * 100);
 	quizProgressBar.style.width = `${progress}%`;
 	quizProgressBar.setAttribute('aria-valuenow', progress);
 };
@@ -82,26 +87,19 @@ const updateNavigation = (stepIndex) => {
 // #region *** Navigation Logic ************************************
 const nextStep = () => {
 	if (!isQuestionAnswered(currentStep)) {
-		const message = currentStep === 0 ? 'Please select at least one struggle to continue.' : 'Please select an answer before continuing.';
-
-		showValidationError(currentStep, message);
+		showValidationError(currentStep, 'Please answer this question before continuing.');
 		return;
 	}
 
 	clearValidationError(currentStep);
-
-	if (currentStep < questions.length - 1) {
-		currentStep++;
-		renderQuestion(currentStep);
-	}
+	currentStep++;
+	renderQuestion(currentStep);
 };
 
 const prevStep = () => {
-	if (currentStep > 0) {
-		clearValidationError(currentStep);
-		currentStep--;
-		renderQuestion(currentStep);
-	}
+	clearValidationError(currentStep);
+	currentStep--;
+	renderQuestion(currentStep);
 };
 // #endregion
 
@@ -110,63 +108,39 @@ const submitQuiz = async (event) => {
 	event.preventDefault();
 	if (isSubmitting) return;
 
-	// Final validation safeguard
-	if (!isQuestionAnswered(0)) {
-		renderQuestion(0);
-		showValidationError(0, 'Please select at least one struggle.');
-		return;
-	}
 	isSubmitting = true;
 	submitButton.disabled = true;
+
 	const formData = new FormData(quizForm);
-	const addictionTypes = [];
-	const answers = {};
+	const payload = {
+		addiction_types: [],
+		answers: {},
+	};
+
 	for (const [key, value] of formData.entries()) {
 		if (key === 'addiction_types[]') {
-			addictionTypes.push(value);
+			payload.addiction_types.push(value);
 		}
 
 		if (key.startsWith('answers[')) {
-			const match = key.match(/\[(\d+)\]/);
-			if (match) {
-				answers[match[1]] = Number(value);
-			}
+			const id = key.match(/\[(\d+)\]/)?.[1];
+			if (id) payload.answers[id] = Number(value);
 		}
 	}
-	if (!addictionTypes.length) {
-		alert('Please select at least one struggle.');
-		isSubmitting = false;
-		submitButton.disabled = false;
-		return;
-	}
+
 	try {
 		const response = await fetch('/api/quiz/submit.php', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({
-				addiction_types: addictionTypes,
-				answers: answers,
-			}),
+			body: JSON.stringify(payload),
 		});
+
 		const result = await response.json();
-		if (!result.success) {
-			alert(result.error || 'Submission failed.');
-			isSubmitting = false;
-			submitButton.disabled = false;
-			return;
-		}
-		// ROLE-BASED REDIRECT
-		const role = result.role || 'user';
-		if (role === 'admin') {
-			window.location.href = '/admin/profile.php';
-		} else if (role === 'user') {
-			window.location.href = '/users/profile.php';
-		} else {
-			window.location.href = '/index.php';
-		}
-	} catch (error) {
-		console.error(error);
-		alert('Network error. Please try again.');
+		if (!result.success) throw new Error(result.error || 'Submission failed');
+
+		window.location.href = result.role === 'admin' ? '/admin/profile.php' : '/users/profile.php';
+	} catch (err) {
+		alert(err.message || 'Network error');
 		isSubmitting = false;
 		submitButton.disabled = false;
 	}
@@ -188,12 +162,19 @@ const listenToQuizControls = () => {
 // #endregion
 
 // #region *** Init *************************************************
-const initQuiz = () => {
+document.addEventListener('DOMContentLoaded', () => {
 	if (!quizForm || !questions.length) return;
-	currentStep = 0;
-	renderQuestion(currentStep);
-	listenToQuizControls();
-};
 
-document.addEventListener('DOMContentLoaded', initQuiz);
+	renderQuestion(0);
+
+	nextButton.addEventListener('click', nextStep);
+	prevButton.addEventListener('click', prevStep);
+	quizForm.addEventListener('submit', submitQuiz);
+
+	questions.forEach((q, i) => {
+		q.querySelectorAll('input').forEach((input) => {
+			input.addEventListener('change', () => clearValidationError(i));
+		});
+	});
+});
 // #endregion
