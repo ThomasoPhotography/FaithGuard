@@ -84,7 +84,7 @@ p {
     display: grid;
     grid-template-columns: repeat(9, 1fr);
     grid-template-rows: repeat(8, auto);
-    gap: 1.5rem;
+    gap: 1rem;
   }
 }
 .c-admin__item {
@@ -754,6 +754,28 @@ p {
 .c-modal__btn--close:hover {
   color: #2a1717;
 }
+.c-modal__btn--submit {
+  background-color: shade(#e9b48a, 40%);
+  color: tint(#3c3c34);
+}
+.c-modal__btn--submit:before, .c-modal__btn--submit:after {
+  content: "";
+  background-color: rgba(92, 53, 44, 0.25);
+  transition: 0.4s ease-in-out;
+}
+.c-modal__btn--submit:after {
+  top: auto;
+  bottom: 0;
+}
+.c-modal__btn--submit:hover {
+  color: tint(#e9b48a, 75%);
+}
+.c-modal__btn--submit:hover:before, .c-modal__btn--submit:hover:after {
+  height: 2rem;
+}
+.c-modal__btn--submit:active {
+  background-color: #e9b48a;
+}
 .c-modal__label {
   font-weight: 500;
 }
@@ -1018,17 +1040,45 @@ p {
   }
 }
 
+.c-timeline {
+  position: relative;
+  padding-left: 1.5rem;
+}
+.c-timeline::before {
+  content: "";
+  position: absolute;
+  left: 0.375rem;
+  top: 0;
+  bottom: 0;
+  width: 0.125rem;
+  background: #f5f5dc;
+}
+.c-timeline__item {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+.c-timeline__marker {
+  position: absolute;
+  left: -0.125rem;
+  top: 0.375rem;
+  width: 0.875rem;
+  height: 0.875rem;
+  background: #5c352c;
+  border-radius: 50%;
+}
+.c-timeline__content {
+  padding-left: 1rem;
+}
+
 .c-user__profile {
-  display: block; /* Mobile Stack */
+  display: block;
 }
 @media (min-width: 992px) {
   .c-user__profile {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2 Equal Columns */
-    grid-template-rows: auto;
-    gap: 1.5rem;
-    /* Define Grid Areas for Desktop */
-    grid-template-areas: "title title" "stats progress" "quiz messages";
+    grid-template-columns: repeat(9, 1fr);
+    grid-template-rows: repeat(8, auto);
+    gap: 1rem;
   }
 }
 .c-user__item {
@@ -1038,21 +1088,41 @@ p {
   .c-user__item {
     margin-bottom: 0;
   }
-  .c-user__item--title {
-    grid-area: title;
+  .c-user__item--1 {
+    grid-column: 1/-1;
+    grid-row: 1;
   }
-  .c-user__item--stats {
-    grid-area: stats;
+  .c-user__item--2 {
+    grid-column: 1/4;
+    grid-row: 2/5;
   }
-  .c-user__item--progress {
-    grid-area: progress;
+  .c-user__item--3 {
+    grid-column: 1/4;
+    grid-row: 5/9;
   }
-  .c-user__item--quiz {
-    grid-area: quiz;
+  .c-user__item--4 {
+    grid-column: 4/6;
+    grid-row: 2/6;
   }
-  .c-user__item--messages {
-    grid-area: messages;
+  .c-user__item--5 {
+    grid-column: 6/8;
+    grid-row: 2/6;
   }
+  .c-user__item--6 {
+    grid-column: 8/10;
+    grid-row: 2/6;
+  }
+  .c-user__item--7 {
+    grid-column: 4/8;
+    grid-row: 6/9;
+  }
+  .c-user__item--8 {
+    grid-column: 8/10;
+    grid-row: 6/9;
+  }
+}
+.c-user__icon {
+  color: #3c3c34 !important;
 }
 
 /*---------------------------------------/*

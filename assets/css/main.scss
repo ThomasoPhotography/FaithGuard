@@ -790,17 +790,12 @@ p {
 			}
 		}
 		&--submit {
-			$btn-color: random-color(
-				$max: 200,
-			);
-			$btn-color-dark: shade($btn-color, 40%);
-			color: tint($btn-color);
+			background-color: shade($primary-bg, 40%);
+			color: tint($text-dark);
 			&:before,
 			&:after {
 				content: '';
-				@include absolute(0, null, null, 0);
-				@include size(100%, 0);
-				background-color: rgba($btn-color-dark, 0.25);
+				background-color: rgba($accent, 0.25);
 				transition: 0.4s ease-in-out;
 			}
 			&:after {
@@ -808,14 +803,14 @@ p {
 				bottom: 0;
 			}
 			&:hover {
-				color: tint($btn-color, 75%);
+				color: tint($primary-bg, 75%);
 				&:before,
 				&:after {
-					height: $btn-height;
+					height: $spacing;
 				}
 			}
 			&:active {
-				background-color: $btn-color;
+				background-color: $primary-bg;
 			}
 		}
 	}
@@ -1104,6 +1099,40 @@ p {
 		@media (min-width: 768px) {
 			font-size: 2rem;
 		}
+	}
+}
+
+.c-timeline {
+	position: relative;
+	padding-left: 1.5rem;
+
+	&::before {
+		content: '';
+		position: absolute;
+		left: 0.375rem;
+		top: 0;
+		bottom: 0;
+		width: 0.125rem;
+		background: $text-light;
+	}
+
+	&__item {
+		position: relative;
+		margin-bottom: 1.5rem;
+	}
+
+	&__marker {
+		position: absolute;
+		left: -0.125rem;
+		top: 0.375rem;
+		width: 0.875rem;
+		height: 0.875rem;
+		background: $accent;
+		border-radius: 50%;
+	}
+
+	&__content {
+		padding-left: 1rem;
 	}
 }
 

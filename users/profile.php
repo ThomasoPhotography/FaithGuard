@@ -322,31 +322,39 @@
             </div>
             <!-- Section: Quiz Timeline -->
             <div class="c-user__item c-user__item--6">
-                <div class="card c-profile__card h-100 opacity-75 bg-light">
-                    <div class="card-body d-flex align-items-center justify-content-center">
-                        <?php if(empty($timelines)): ?>
-                            <div class="text-center text-muted">
-                                <i class="bi bi-hourglass-split display-6"></i>
-                                <h6 class="mt-2">No Journey data yet</h6>
-                                <p class="small mb-0">
-                                    Complete your first assessment to begin your journey.
-                                </p>
-                            </div>
-                        <?php else: ?>
-                            <h6 class="mb-3 text-center">Your Journey so far</h6>
-                            <?php foreach ($timelines as $entry): ?>
-                                <div class="mb-3">
-                                    <strong><?php echo htmlspecialchars($entry['addiction']); ?></strong>
-                                    <small class="text-muted">
-                                        Last score: <?php echo $entry['previous'] ?? '-';?>
-                                        Now: <?php echo $entry['current'] ?? '-';?>
-                                    </small>
-                                    <br>
-                                    <span class="badge bg-secondary">
-                                        <?php echo ucfirst($entry['trend']);?>
-                                    </span>
-                                </div>
-                            <?php endforeach; ?>
+                <div class="card c-profile__card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title mb-4">
+                            <i class="bi bi-clock-history me-2"></i>
+                            Assessment Timeline
+                        </h5>
+                        <?php if (empty($timelines)): ?>
+                            <p class="text-muted small mb-0">No assessments recorded yet.</p>
+                            <?php else: ?>
+                                <ul class="c-timeline list-unstyled mb-0">
+                                    <?php foreach ($timelines as $entry): ?>
+                                        <li class="c-timeline__item">
+                                            <div class="c-timeline__marker"></div>
+                                            <div class="c-timeline__content">
+                                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                                    <strong>
+                                                        <?php echo date('F j, Y', strtotime($entry['date'])); ?>
+                                                    </strong>
+                                                    <span class="badge bg-secondary text-uppercase small">
+                                                        <?php echo htmlspecialchars($entry['severity']); ?>
+                                                    </span>
+                                                </div>
+                                                <div class="small text-muted">
+                                                    <?php foreach ($entry['addictions'] as $type => $score): ?>
+                                                        <span class="me-2">
+                                                            <?php echo ucfirst($type); ?> (<?php echo $score; ?>)
+                                                        </span>
+                                                    <?php endforeach; ?>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
                         <?php endif; ?>
                     </div>
                 </div>
