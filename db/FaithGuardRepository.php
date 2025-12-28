@@ -72,12 +72,7 @@ class FaithGuardRepository
     }
     public static function getAllReportedPosts()
     {
-        return Database::getRows(
-            "SELECT p.*, r.reason, r.user_id AS reporter_id, r.created_at AS reported_at
-             FROM posts p
-             JOIN reports r ON p.id = r.post_id
-             ORDER BY r.created_at DESC"
-        );
+        return Database::getRows("SELECT p.*, r.reason, r.user_id AS reporter_id, r.created_at AS reported_at FROM posts p JOIN reports r ON p.id = r.post_id ORDER BY r.created_at DESC");
     }
     public static function getPostById($id)
     {
@@ -204,9 +199,7 @@ class FaithGuardRepository
     }
     public static function saveQuizResult($userId, $quizId, $answers, $score)
     {
-        $sql    = "INSERT INTO quiz_results (user_id, quiz_id, answers, score) VALUES (?, ?, ?, ?)";
-        $params = [$userId, $quizId, json_encode($answers), $score];
-        return Database::execute($sql, $params);
+        return Database::execute("INSERT INTO quiz_results (user_id, quiz_id, answers, score) VALUES (?, ?, ?, ?)", [$userId, $quizId, json_encode($answers), $score]);
     }
     public static function getQuizResults($userId)
     {
@@ -238,6 +231,40 @@ class FaithGuardRepository
     public static function deleteQuizAnswerOption($id)
     {
         return Database::execute("DELETE FROM quiz_answer_options WHERE id = ?", [$id]);
+    }
+    /* ============================
+        QUIZ — ATTEMPTS
+    ============================ */
+    public static function createQuizAttempt(int $userId): int
+    {
+        Database::execute(
+            "INSERT INTO quiz_attempts (user_id) VALUES (?)",
+            [$userId]
+        );
+
+        return Database::getSingleRow("SELECT LAST_INSERT_ID() AS id")['id'];
+    }
+    public static function getPreviousAttemptId(int $userId, int $currentAttemptId): ?int
+    {
+        $row = Database::getSingleRow("SELECT id FROM quiz_attempts WHERE user_id = ? AND id < ? ORDER BY id DESC LIMIT 2", [$userId, $currentAttemptId]);
+        return $row ? (int) $row['id'] : null;
+    }
+
+    /* ============================
+        QUIZ — ATTEMPT ADDICTIONS
+    ============================ */
+    public static function saveAttemptAddiction(int $attemptId, string $addiction, int $score): void
+    {
+        Database::execute("INSERT INTO quiz_attempt_addictions (attempt_id, addiction_type, score) VALUES (?, ?, ?)", [$attemptId, $addiction, $score]);
+    }
+    public static function getAttemptAddictions(int $attemptId): array
+    {
+        $rows   = Database::getRows("SELECT addiction_type, score FROM quiz_attempt_addictions WHERE attempt_id = ?", [$attemptId]);
+        $result = [];
+        foreach ($rows as $row) {
+            $result[$row['addiction_type']] = (int) $row['score'];
+        }
+        return $result;
     }
     /* ============================
         RESOURCES
@@ -427,5 +454,23 @@ class FaithGuardRepository
             "SELECT * FROM resources WHERE FIND_IN_SET(?, tags)",
             [$addiction]
         );
+    }
+    /* ================================================
+        C2 — PROGRESS COMPARISON & CHANGE DETECTION
+    ================================================ */
+    public static function getLastQuizAttempt($userId)
+    {
+        return Database::getSingleRow(
+            "SELECT * FROM quiz_results WHERE user_id = ? ORDER BY created_at DESC LIMIT 2",
+            [$userId]
+        );
+    }
+    public static function insertAttemptComparison(array $data): void
+    {
+        Database::execute("INSERT INTO quiz_attempt_comparisons (attempt_id, addiction_type, previous_score, current_score, delta, trend) VALUES (:attempt_id, :addiction_type, :previous_score, :current_score, :delta, :trend)", $data);
+    }
+    public static function getComparisonsByAttempt(int $attemptId): array
+    {
+        return Database::getRows("SELECT * FROM quiz_attempt_comparisons WHERE attempt_id = ? ORDER BY addiction_type ASC", [$attemptId]);
     }
 }

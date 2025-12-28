@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: com-linweb938.srv.combell-ops.net:3306
--- Generation Time: Dec 27, 2025 at 10:44 PM
+-- Generation Time: Dec 28, 2025 at 02:00 PM
 -- Server version: 8.0.36-28
 -- PHP Version: 7.4.33
 
@@ -110,6 +110,49 @@ CREATE TABLE `progress_logs` (
   `user_id` int NOT NULL,
   `checkin_date` datetime DEFAULT CURRENT_TIMESTAMP,
   `milestone` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `quiz_attempts`
+--
+
+CREATE TABLE `quiz_attempts` (
+  `id` int UNSIGNED NOT NULL,
+  `user_id` int UNSIGNED NOT NULL,
+  `total_score` int NOT NULL,
+  `level` varchar(32) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `quiz_attempt_addictions`
+--
+
+CREATE TABLE `quiz_attempt_addictions` (
+  `id` int UNSIGNED NOT NULL,
+  `attempt_id` int UNSIGNED NOT NULL,
+  `addiction_type` varchar(64) NOT NULL,
+  `score` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `quiz_attempt_comparisons`
+--
+
+CREATE TABLE `quiz_attempt_comparisons` (
+  `id` int UNSIGNED NOT NULL,
+  `attempt_id` int UNSIGNED NOT NULL,
+  `addiction_type` varchar(64) NOT NULL,
+  `previous_score` int DEFAULT NULL,
+  `current_score` int NOT NULL,
+  `delta` int NOT NULL,
+  `trend` enum('improved','worsened','unchanged','new') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -361,6 +404,27 @@ ALTER TABLE `progress_logs`
   ADD KEY `idx_progress_user` (`user_id`);
 
 --
+-- Indexes for table `quiz_attempts`
+--
+ALTER TABLE `quiz_attempts`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_user_attempts` (`user_id`,`created_at`);
+
+--
+-- Indexes for table `quiz_attempt_addictions`
+--
+ALTER TABLE `quiz_attempt_addictions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_attempt_addiction` (`attempt_id`,`addiction_type`);
+
+--
+-- Indexes for table `quiz_attempt_comparisons`
+--
+ALTER TABLE `quiz_attempt_comparisons`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_attempt_comparison` (`attempt_id`,`addiction_type`);
+
+--
 -- Indexes for table `quiz_category_scores`
 --
 ALTER TABLE `quiz_category_scores`
@@ -481,6 +545,24 @@ ALTER TABLE `progress_logs`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `quiz_attempts`
+--
+ALTER TABLE `quiz_attempts`
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `quiz_attempt_addictions`
+--
+ALTER TABLE `quiz_attempt_addictions`
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `quiz_attempt_comparisons`
+--
+ALTER TABLE `quiz_attempt_comparisons`
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `quiz_category_scores`
 --
 ALTER TABLE `quiz_category_scores`
@@ -581,6 +663,18 @@ ALTER TABLE `post_replies`
 --
 ALTER TABLE `progress_logs`
   ADD CONSTRAINT `fk_progress_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `quiz_attempt_addictions`
+--
+ALTER TABLE `quiz_attempt_addictions`
+  ADD CONSTRAINT `fk_attempt_addiction_attempt` FOREIGN KEY (`attempt_id`) REFERENCES `quiz_attempts` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `quiz_attempt_comparisons`
+--
+ALTER TABLE `quiz_attempt_comparisons`
+  ADD CONSTRAINT `fk_comparison_attempt` FOREIGN KEY (`attempt_id`) REFERENCES `quiz_attempts` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `quiz_category_scores`

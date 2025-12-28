@@ -32,6 +32,10 @@ All notable changes to this project will be documented in this file.
   - Infer pastoral tags from quiz answers and severity.
   - Deliver spiritually guided progression rather than static resource lists.
 - Implement journal creation API with situational scripture encouragement.
+- Creating User-Facing Summaries and Visuals:
+  - `/db/faithguard_db.sql` gained new tables.
+  - `/db/FaithGuardRepository.php` changed to accomondate the new tables in `/db/faithguard_db.sql`.
+  - `/api/services` gained a new service file to compare former and the latest quizzes in `api/services/quizComparisonService.php`.
 
 ### Changed
 - `README.md` file got a professional make-over.
