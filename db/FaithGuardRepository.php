@@ -456,7 +456,7 @@ class FaithGuardRepository
         );
     }
     /* ================================================
-        C2 — PROGRESS COMPARISON & CHANGE DETECTION
+        C2-E — PROGRESS COMPARISON & CHANGE DETECTION
     ================================================ */
     public static function getLastQuizAttempt($userId)
     {
@@ -472,5 +472,14 @@ class FaithGuardRepository
     public static function getComparisonsByAttempt(int $attemptId): array
     {
         return Database::getRows("SELECT * FROM quiz_attempt_comparisons WHERE attempt_id = ? ORDER BY addiction_type ASC", [$attemptId]);
+    }
+    /* ================================================
+        C2-F — TIMELINE DATA
+    ================================================ */
+    public static function getAddictionTimeline(int $userId, string $addictionType): array{
+        return Database::getRows("SELECT qa.id AS attempt_id, qa.created_at AS attempt_date, qaa.score AS score FROM quiz_attempts qa JOIN quiz_attempt_addictions qaa ON qa.id = qaa.attempt_id WHERE qa.user_id = ? AND qaa.addiction_type = ? ORDER BY qa.created_at ASC", [$userId, $addictionType]);
+    }
+    public static function getUserAddictionHistory(int $userId):array{
+        return Database::getRows("SELECT DISTINCT addiction_type FROM quiz_attempt_addictions WHERE attempt_id IN (SELECT id FROM quiz_attempts WHERE user_id = ?)", [$userId]);
     }
 }

@@ -7,6 +7,7 @@
     require_once __DIR__ . "/../db/database.php";
     require_once __DIR__ . "/../db/FaithGuardRepository.php";
     require_once __DIR__ . "/../api/helper/debug.php";
+    require_once __DIR__ . "/../api/services/quizTimelineService.php";
 
     /* =========================================================
    SESSION SETUP
@@ -31,8 +32,9 @@
         exit;
     }
 
-    $userId = (int) $_SESSION['user_id'];
-    $user   = FaithGuardRepository::getUserById($userId);
+    $userId    = $_SESSION['user_id'] ?? null;
+    $user      = FaithGuardRepository::getUserById($userId);
+    $timelines = QuizTimelineService::buildUserTimelines($userId);
 
     if (! is_array($user)) {
         session_destroy();
@@ -132,12 +134,12 @@
                 <div class="d-flex dropdown c-dropdown">
                     <button class="btn c-btn c-dropdown__btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="c-dropdown__icon bi bi-person-check me-1"></i>
-                        <span class="c-dropdown__text">Welcome                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 <?php echo $accountName; ?></span>
+                        <span class="c-dropdown__text">Welcome                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               <?php echo $accountName; ?></span>
                     </button>
                     <!-- LOGGED-IN DROPDOWN MENU -->
                     <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu" aria-labelledby="userDropdown">
                         <li>
-                            <h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 <?php echo ucfirst($user_role); ?></h6>
+                            <h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         <?php echo ucfirst($user_role); ?></h6>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
@@ -205,9 +207,9 @@
                     <div class="card-body">
                         <h5><i class="bi bi-person-circle me-2"></i>Account Summary</h5>
                         <ul class="list-group list-group-flush mt-3">
-                            <li class="list-group-item"><strong>Email:</strong>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           <?php echo htmlspecialchars($user['email']); ?></li>
-                            <li class="list-group-item"><strong>Member Since:</strong>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     <?php echo $memberSince; ?></li>
-                            <li class="list-group-item"><strong>Total Interactions:</strong>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         <?php echo $totalPosts; ?></li>
+                            <li class="list-group-item"><strong>Email:</strong>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          <?php echo htmlspecialchars($user['email']); ?></li>
+                            <li class="list-group-item"><strong>Member Since:</strong>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           <?php echo $memberSince; ?></li>
+                            <li class="list-group-item"><strong>Total Interactions:</strong>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     <?php echo $totalPosts; ?></li>
                         </ul>
                     </div>
                 </div>
@@ -246,12 +248,12 @@
                             $types     = json_decode($latestQuizResult['addiction_type'] ?? '[]', true);
                             $typesText = is_array($types) ? implode(', ', $types) : '';
                         ?>
-                        <p><strong>Date:</strong> <?php echo $date?></p>
+                        <p><strong>Date:</strong><?php echo $date ?></p>
                         <p><strong>Score:</strong>
-                            <span class="badge bg-primary"><?php echo $score?>%</span>
+                            <span class="badge bg-primary"><?php echo $score ?>%</span>
                         </p>
                         <p><strong>Focus Areas:</strong>
-                            <?php echo htmlspecialchars($typesText, ENT_QUOTES)?>
+                            <?php echo htmlspecialchars($typesText, ENT_QUOTES) ?>
                         </p>
                         <div class="row g-2">
                             <div class="col-6">
@@ -318,14 +320,34 @@
                     </div>
                 </div>
             </div>
-            <!-- Section: Coming Soon -->
+            <!-- Section: Quiz Timeline -->
             <div class="c-user__item c-user__item--6">
                 <div class="card c-profile__card h-100 opacity-75 bg-light">
                     <div class="card-body d-flex align-items-center justify-content-center">
-                        <div class="text-center">
-                            <i class="bi bi-lock-fill display-6 text-muted"></i>
-                            <h6 class="mt-2 text-muted">Future Feature</h6>
-                        </div>
+                        <?php if(empty($timelines)): ?>
+                            <div class="text-center text-muted">
+                                <i class="bi bi-hourglass-split display-6"></i>
+                                <h6 class="mt-2">No Journey data yet</h6>
+                                <p class="small mb-0">
+                                    Complete your first assessment to begin your journey.
+                                </p>
+                            </div>
+                        <?php else: ?>
+                            <h6 class="mb-3 text-center">Your Journey so far</h6>
+                            <?php foreach ($timelines as $entry): ?>
+                                <div class="mb-3">
+                                    <strong><?php echo htmlspecialchars($entry['addiction']); ?></strong>
+                                    <small class="text-muted">
+                                        Last score: <?php echo $entry['previous'] ?? '-';?>
+                                        Now: <?php echo $entry['current'] ?? '-';?>
+                                    </small>
+                                    <br>
+                                    <span class="badge bg-secondary">
+                                        <?php echo ucfirst($entry['trend']);?>
+                                    </span>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
