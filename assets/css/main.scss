@@ -254,6 +254,15 @@ p {
 	}
 }
 
+.c-cookie {
+	&__icon {
+		width: auto;
+		height: 1.5rem;
+		vertical-align: middle;
+		margin-right: 0.5rem;
+	}
+}
+
 .c-cta {
 	background-color: $primary-bg;
 	padding: 2rem 1rem;

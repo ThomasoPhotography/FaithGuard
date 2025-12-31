@@ -1,17 +1,17 @@
-# FaithGuard
+# 1. FaithGuard
 
 ![HTML](https://img.shields.io/badge/HTML-E34F26?style=for-the-badge&logo=html5&logoColor=white) ![SCSS](https://img.shields.io/badge/SCSS-CC6699?style=for-the-badge&logo=sass&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black) ![PHP](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white) ![SQL](https://img.shields.io/badge/SQL-336791?style=for-the-badge&logoColor=white) ![Markdown](https://img.shields.io/badge/Markdown-000000?style=for-the-badge&logo=markdown&logoColor=white)
 
 FaithGuard is a **full-stack, responsive web application** built with PHP, JS, SQL and SCSS. It delivers a clean web presence and a simple development workflow. Customize styles, add assets, and deploy in seconds.
 
-## 🎯 Features
+## 1.1. 🎯 Features
 
 - **Responsive layout** optimized for mobile and desktop  
 - **SCSS source** with compiled CSS for easy theming  
 - **Organized assets** folder for images, fonts, and styles
 - **Organized backend** folder for backend logic  
 
-## 🛠️ Development
+## 1.2. 🛠️ Development
 
 Customize and rebuild styles with your preferred SCSS tool:
 
@@ -22,43 +22,59 @@ Customize and rebuild styles with your preferred SCSS tool:
    ```
 3. Refresh your browser to see changes  
 
-## 📁 Project Structure
+## 1.3. 📁 Project Structure
 
-### I. Core Application Files
+### 1.3.1. I. Core Application Files
 | Path | File | Description |
 | --- | --- | --- |
 | **Project Root** | `index.php` | **Main Application Entry Point.** Loads all core requirements, performs session checks, fetches user data, and renders the main HTML structure. |
-|  | `resources.html` | Client-side page displaying resources. |
-|  | `about.html` | Client-side static page placeholder. |
-|  | `dashboard.html` | Client-side placeholder for the logged-in user dashboard. |
-|  | `faithguard.sql` | **Complete Database Schema** (Tables, Indexes, Initial Data). Used for initial setup in phpMyAdmin. |
-|  | `.env` | Local environment variables (e.g., local DB credentials, **ignored by Git**). |
-|  | `.gitignore` | Defines files/folders to exclude from version control. |
+|  | `policies.php` | Client-side page displaying all three types of policies by slug (Privacy Policy, Cookie Policy and Terms of Service). |
+|  | `quiz.php` | Client-side with all core requirements, performs session checks, fetches user data, and renders the quiz HTML structure. |
+|  | `resources.php` | Client-side page displaying all the resource neatly. |
 |  | `README.md` | Project overview and setup instructions. |
-### II. Backend PHP Logic (Server Endpoints)
+|  | `.htaccess` | Cheatcode security list to make HTTP into HTTPS. |
+### 1.3.2. II. Backend PHP Logic (Server Endpoints)
 All server-side processing, database interaction, and API endpoints reside here.
 
 | Path | File / Folder | Purpose |
 | --- | --- | --- |
-| **`/api/`** | `resources_fetch.php` | Endpoint for fetching and filtering resources (GET requests from the client). |
-|  | `testimonies_fetch.php` | Optional endpoint for fetching dynamic quotes (e.g., for the home page). |
-| **`/api/auth/`** | `login.php` | **Handles POST requests for user authentication and session creation.** |
-|  | `register.php` | Handles POST requests for new user sign-up and password hashing. |
-|  | `logout.php` | Destroys the user's PHP session and logs them out. |
-| **`/api/...`** | `/admin/`, `/posts/`, etc. | Contains various other logic endpoints for core application features. |
-| **`/db/`** | `database.php` | **PDO Connection Class.** Defines the static `getConnection()` method and error handling. |
+| **`/admin/`** | | **Folder with all admin endpoint logic.** |
+|  | `moderation.php` | Endpoint for fetching all reported posts and/or resources. |
+|  | `policies.php` | Endpoint for fetching and updating all of the policies shown on the Client-side page `/policies.php`. |
+|  | `profile.php` | Endpoint for the Admin Dashboard. |
+| **`/api/auth/`** | | **Folder with all authentication endpoint logic.** |
+|  | `login.php` | **Handles POST requests for user authentication and session creation.** |
+|  | `register.php` | **Handles POST requests for new user sign-up and password hashing.** |
+|  | `logout.php` | **Destroys the user's PHP session and logs them out.** |
+| **`/api/...`** | `/helper/`, `/posts/`, etc. | Contains various other logic endpoints for core application features. |
+| **`/db/`** | | **Folder with all database endpoint logic.** |
+|  | `database.php` | **PDO Connection Class.** Defines the static `getConnection()` method and error handling. |
 |  | `FaithGuardRepository.php` | **Data Access Layer (DAL).** Contains static methods (e.g., `getUserByEmail`) that execute queries using the `Database` class. |
-### III. Client-Side Assets
+|  | `faithguard.sql` | **Complete Database Schema** (Tables, Indexes, Initial Data). Used for initial setup in phpMyAdmin. |
+### 1.3.3. III. Client-Side Assets
 | Path | File | Purpose |
 | --- | --- | --- |
-| **`/assets/`** |  | Main directory for client assets. |
-|  | `/css/style.scss` | Original SASS/SCSS file for styling (The source file). |
-|  | `/css/style.css` | **Compiled CSS** (The file linked in the HTML `<head>`). |
-|  | `/js/main.js` | Core JavaScript logic, UI initialization, and general event listeners. |
-|  | `/js/resources.js` | JavaScript specific to resources filtering and display. |
-|  | `/img/` | Contains project logos, favicon, and background images. |
+| **`/assets/`** |  | **Main directory for client assets.** |
+| **`/assets/css/`** |  | **Folder with client-side styling** |
+|  | `/css/main.scss` | Original SASS/SCSS file for styling (The source file). |
+|  | `/css/main.css` | **Compiled CSS** (The file linked in the HTML `<head>`). |
+| **`/assets/js/`** |  | **Main directory for client assets.** |
+|  | `/js/auth.js` ||
+|  | `/js/community.js` ||
+|  | `/js/cookie-banner.js` ||
+|  | `/js/journal.js` ||
+|  | `/js/messaging.js` ||
+|  | `/js/profile-timeline-modal.js` ||
+|  | `/js/progress.js` ||
+|  | `/js/quiz.js` ||
+|  | `/js/resources.js` ||
+| **`/assets/uploads/`** |  | **Folder for client visual assets such as logos or images.** |
+|  | `FaithGuard_Primary_Logo` | Project logo featured on the navigation bar. |
+|  | `FaithGuard_Secondary_Logo` | Project logo featured on the footer bar. |
+|  | `favicon.ico` | Project logo featured on browser tabs next to the site name. |
+|  | `Wordmark_Logo` | Project logo featured on the cookie-banner. |
 
-## 🚧 Future Plans
+## 1.4. 🚧 Future Plans
 
 The project is now in the dynamic backend stage, integrating PHP and SQL into the stack.
 
@@ -66,7 +82,7 @@ The project is now in the dynamic backend stage, integrating PHP and SQL into th
 - **Interactive features** via JavaScript  
 - **Accessibility improvements** and content updates  
 
-## 🗺️ Roadmap
+## 1.5. 🗺️ Roadmap
 
 This roadmap highlights key versions from the initial commit to the current dynamic backend alpha. It shows how the project evolved over time.
 
@@ -86,14 +102,13 @@ This roadmap highlights key versions from the initial commit to the current dyna
 - **v0.1.3** – Polishing dynamic behavior and fixing issues.  
 - **v0.1.4-alpha** – Current dynamic backend alpha stage.  
 
-## 🗺️ TO DO
+## 1.6. 🗺️ TO DO
 
 This TODO list is to keep track with certain things/ideas the website needs in the near future:
-- Quiz integration
-- Query URL's
-- Resource Content
-- Recommend resources from Quiz Answers
-- Progress
-- Prayers (Personal and whenever I post on TikTok).
-
+- [x] Quiz integration
+- [ ] Query URL's
+- [ ] Resource Content
+- [ ] Recommend resources from Quiz Answers
+- [ ] Progress
+- [ ] Prayers (Personal and whenever I post on TikTok).
 ---
