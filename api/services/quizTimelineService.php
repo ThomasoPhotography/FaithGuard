@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../db/FaithGuardRepository.php';
+require_once __DIR__ . '/../../db/FaithGuardRepository.php';
 
     /*=========================================================
         QUIZ TIMELINE SERVICE
