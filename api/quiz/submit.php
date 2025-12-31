@@ -13,7 +13,7 @@ header('Content-Type: application/json');
 /* ============================
    AUTH & METHOD GUARD
 ============================ */
-
+$userId = $_SESSION['user_id'] ?? null;
 if (empty($_SESSION['user_id'])) {
     http_response_code(401);
     echo json_encode(['success' => false, 'error' => 'Unauthorized']);
@@ -258,6 +258,8 @@ $journey = PastoralJourneyService::buildJourney(
 
 echo json_encode([
     'success'    => true,
+    'user_id'    => $userId,
+    'role'       => $_SESSION['role'] ?? 'user',
     'score'      => $percentage,
     'level'      => $level,
     'addictions' => $addictionTypes,

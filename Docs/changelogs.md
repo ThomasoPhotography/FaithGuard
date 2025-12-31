@@ -37,7 +37,8 @@ All notable changes to this project will be documented in this file.
   - `/db/FaithGuardRepository.php` changed to accomondate the new tables in `/db/faithguard_db.sql`.
   - `/api/services` gained a new service file to compare former and the latest quizzes in `api/services/quizComparisonService.php`.
 - Add quiz timeline preparation and conditional display on user profile.
-- C2-I-2: Render a chronological visual timeline of quiz attempts.
+- C2-I-1: Render a chronological visual timeline of quiz attempts.
+- Guard around user_id.
 
 ### Changed
 - `README.md` file got a professional make-over.
