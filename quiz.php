@@ -199,7 +199,9 @@
             Answer honestly. This assessment helps guide you toward Scripture-rooted support.
         </p>
         <div class="c-progress mb-4">
-            <div class="progress-bar c-progress__bar" role="progressbar"></div>
+            <div class="c-progress__track">
+                <div class="c-progress__bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+            </div>
         </div>
         <form class="c-quiz__content c-quiz__form" action="/api/quiz/submit.php" method="POST">
 
@@ -228,33 +230,21 @@
             <!-- =====================================================
                 ALL QUESTIONS EXCEPT ID 1
             ===================================================== -->
-            <?php
-                $stepIndex = 1;
-                foreach ($questions as $q):
-                    $questionId = (int) $q['id'];
-                    if ($questionId === 1) {
-                        continue;
-                    }
-                    $answerOptions = FaithGuardRepository::getAllQuizAnswerOptions($questionId);?>
-	                <section class="c-quiz__question" data-step="<?php echo $stepIndex; ?>" data-question-id="<?php echo $questionId; ?>" data-required="true">
-	                    <h5 class="mb-3">
-	                        <?php echo htmlspecialchars($q['question'], ENT_QUOTES, 'UTF-8'); ?>
-	                    </h5>
-	                    <?php foreach ($answerOptions as $option): ?>
-	                        <div class="form-check mb-2">
-	                            <input class="form-check-input" type="radio" name="answers[<?php echo $questionId; ?>]" value="<?php echo (int) $option['value']; ?>" required>
-	                            <label class="form-check-label">
-	                                <?php echo htmlspecialchars($option['label'], ENT_QUOTES, 'UTF-8'); ?>
-	                            </label>
-	                        </div>
-	                    <?php endforeach; ?>
-
+            <?php $stepIndex = 1; foreach ($questions as $q): $questionId = (int) $q['id']; if ($questionId === 1) { continue;} $answerOptions = FaithGuardRepository::getAllQuizAnswerOptions($questionId);?>
+                <section class="c-quiz__question" data-step="<?php echo $stepIndex; ?>" data-question-id="<?php echo $questionId; ?>" data-required="true">
+                    <h5 class="mb-3">
+                        <?php echo htmlspecialchars($q['question'], ENT_QUOTES, 'UTF-8'); ?>
+                    </h5>
+                    <?php foreach ($answerOptions as $option): ?>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="answers[<?php echo $questionId; ?>]" value="<?php echo $i; ?>" required>
+                            <label class="form-check-label">
+                                <?php echo htmlspecialchars($option['label'], ENT_QUOTES, 'UTF-8'); ?>
+                            </label>
+                        </div>
+                    <?php endforeach; ?>
                 </section>
-            <?php
-                $stepIndex++;
-                endforeach;
-            ?>
-
+            <?php $stepIndex++; endforeach;?>
             <!-- =====================================================
                 NAVIGATION
             ===================================================== -->

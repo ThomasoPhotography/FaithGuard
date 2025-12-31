@@ -1,4 +1,4 @@
-// #region ***  Quiz Data Structures and DOM References ***********
+// #region *** Quiz Data Structures and DOM References ***********
 const quizForm = document.querySelector('.c-quiz__form');
 const quizProgressBar = document.querySelector('.c-progress__bar');
 
@@ -12,29 +12,26 @@ let currentStep = 0;
 let isSubmitting = false;
 // #endregion
 
-// #region *** Utilities ********************************************
-const isQuestionAnswered = (stepIndex) => {
-	const question = questions[stepIndex];
-	if (!question) return false;
+// #region *** Utilities *****************************************
+const getQuestionByStep = (step) => questions.find((q) => Number(q.dataset.step) === step);
 
+const isQuestionAnswered = (step) => {
+	const question = getQuestionByStep(step);
+	if (!question) return false;
 	const inputs = Array.from(question.querySelectorAll('input'));
 	if (!inputs.length) return true;
-
 	const type = inputs[0].type;
-
 	if (type === 'checkbox') {
 		return inputs.some((i) => i.checked);
 	}
-
 	if (type === 'radio') {
 		return inputs.some((i) => i.checked);
 	}
-
 	return true;
 };
 
-const showValidationError = (stepIndex, message) => {
-	const question = questions[stepIndex];
+const showValidationError = (step, message) => {
+	const question = getQuestionByStep(step);
 	if (!question) return;
 
 	let warning = question.querySelector('.quiz-warning');
@@ -47,34 +44,37 @@ const showValidationError = (stepIndex, message) => {
 	warning.textContent = message;
 };
 
-const clearValidationError = (stepIndex) => {
-	const warning = questions[stepIndex]?.querySelector('.quiz-warning');
+const clearValidationError = (step) => {
+	const question = getQuestionByStep(step);
+	const warning = question?.querySelector('.quiz-warning');
 	if (warning) warning.remove();
 };
 // #endregion
 
-// #region *** Rendering *******************************************
+// #region *** Rendering *****************************************
 const renderQuestion = (stepIndex) => {
 	questions.forEach((q, i) => {
-		q.style.display = i === stepIndex ? 'block' : 'none';
+		q.hidden = i !== stepIndex;
 	});
 
 	updateProgressBar(stepIndex);
 	updateNavigation(stepIndex);
 };
 
-const updateProgressBar = (stepIndex) => {
+const updateProgressBar = (step) => {
 	if (!quizProgressBar) return;
 
-	const progress = Math.round(((stepIndex + 1) / questions.length) * 100);
+	const totalSteps = questions.length;
+	const progress = Math.round(((step + 1) / totalSteps) * 100);
+
 	quizProgressBar.style.width = `${progress}%`;
 	quizProgressBar.setAttribute('aria-valuenow', progress);
 };
 
-const updateNavigation = (stepIndex) => {
-	prevButton.style.display = stepIndex > 0 ? 'inline-block' : 'none';
+const updateNavigation = (step) => {
+	prevButton.style.display = step > 0 ? 'inline-block' : 'none';
 
-	if (stepIndex === questions.length - 1) {
+	if (step === questions.length - 1) {
 		nextButton.style.display = 'none';
 		submitButton.hidden = false;
 	} else {
@@ -84,7 +84,7 @@ const updateNavigation = (stepIndex) => {
 };
 // #endregion
 
-// #region *** Navigation Logic ************************************
+// #region *** Navigation Logic **********************************
 const nextStep = () => {
 	if (!isQuestionAnswered(currentStep)) {
 		showValidationError(currentStep, 'Please answer this question before continuing.');
@@ -103,7 +103,7 @@ const prevStep = () => {
 };
 // #endregion
 
-// #region *** Submission ******************************************
+// #region *** Submission ***************************************
 const submitQuiz = async (event) => {
 	event.preventDefault();
 	if (isSubmitting) return;
@@ -147,21 +147,7 @@ const submitQuiz = async (event) => {
 };
 // #endregion
 
-// #region *** Event Listeners *************************************
-const listenToQuizControls = () => {
-	if (!quizForm) return;
-	nextButton.addEventListener('click', nextStep);
-	prevButton.addEventListener('click', prevStep);
-	quizForm.addEventListener('submit', submitQuiz);
-	questions.forEach((question, index) => {
-		question.querySelectorAll('input').forEach((input) => {
-			input.addEventListener('change', () => clearValidationError(index));
-		});
-	});
-};
-// #endregion
-
-// #region *** Init *************************************************
+// #region *** Init *********************************************
 document.addEventListener('DOMContentLoaded', () => {
 	if (!quizForm || !questions.length) return;
 
@@ -171,9 +157,10 @@ document.addEventListener('DOMContentLoaded', () => {
 	prevButton.addEventListener('click', prevStep);
 	quizForm.addEventListener('submit', submitQuiz);
 
-	questions.forEach((q, i) => {
+	questions.forEach((q) => {
+		const step = Number(q.dataset.step);
 		q.querySelectorAll('input').forEach((input) => {
-			input.addEventListener('change', () => clearValidationError(i));
+			input.addEventListener('change', () => clearValidationError(step));
 		});
 	});
 });

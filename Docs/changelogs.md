@@ -38,7 +38,7 @@ All notable changes to this project will be documented in this file.
   - `/api/services` gained a new service file to compare former and the latest quizzes in `api/services/quizComparisonService.php`.
 - Add quiz timeline preparation and conditional display on user profile.
 - C2-I-1: Render a chronological visual timeline of quiz attempts.
-- Guard around user_id.
+- C2-I-2: Last vs Previus Attempt Comparison Cards.
 
 ### Changed
 - `README.md` file got a professional make-over.
@@ -189,6 +189,8 @@ All notable changes to this project will be documented in this file.
 - Quiz data directly imported from database.
 - Quiz content logic.
 - Database, repository & quiz logic.
+- Guard around user_id.
+- Improve quiz progress bar with refined easing animation.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.
