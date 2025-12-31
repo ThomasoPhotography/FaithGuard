@@ -207,44 +207,22 @@
     </nav>
     <!-- Main Content -->
     <main class="container my-5 c-main">
-        <section class="c-user__profile">
-            <!-- Section: Account Summary -->
-            <div class="c-user__item c-user__item--1">
+        <section class="c-dashboard c-user__profile">
+            <!-- ROW 1 : ACCOUNT SUMMARY -->
+            <div class="c-dashboard__item c-slot-1-1 c-span-6">
                 <div class="card c-profile__card h-100">
                     <div class="card-body">
                         <h5><i class="bi bi-person-circle me-2"></i>Account Summary</h5>
                         <ul class="list-group list-group-flush mt-3">
-                            <li class="list-group-item"><strong>Email:</strong>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          <?php echo htmlspecialchars($user['email']); ?></li>
-                            <li class="list-group-item"><strong>Member Since:</strong>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           <?php echo $memberSince; ?></li>
-                            <li class="list-group-item"><strong>Total Interactions:</strong>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     <?php echo $totalPosts; ?></li>
+                            <li class="list-group-item"><strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?></li>
+                            <li class="list-group-item"><strong>Member Since:</strong> <?php echo $memberSince; ?></li>
+                            <li class="list-group-item"><strong>Total Interactions:</strong> <?php echo $totalPosts; ?></li>
                         </ul>
                     </div>
                 </div>
             </div>
-            <!-- Section: Accountability / Progress -->
-            <div class="c-user__item c-user__item--2">
-                <div class="card c-profile__card h-100">
-                    <div class="card-body">
-                        <h5><i class="bi bi-clipboard-check me-2"></i> Progress </h5>
-                        <p>You have <strong><?php echo $totalCheckins; ?></strong> total check-ins.</p>
-                        <ul class="list-group list-group-flush">
-                            <?php if ($recentCheckins): ?>
-                                <?php foreach ($recentCheckins as $log): ?>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <span><?php echo date('d M, Y', strtotime($log['checkin_date'])); ?></span>
-                                        <span class="badge bg-secondary"><?php echo htmlspecialchars($log['milestone'] ?? 'Check-in'); ?></span>
-                                    </li>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <li class="list-group-item">No check-ins logged recently.</li>
-                            <?php endif; ?>
-                        </ul>
-                        <a href="/api/progress/checkin.php" class="btn c-btn c-btn__dashboard w-100">Log a Check-in</a>
-                    </div>
-                </div>
-            </div>
-            <!-- Section: Latest Assessment -->
-            <div class="c-user__item c-user__item--3">
+            <!-- ROW 1 : LATEST ASSESSMENT -->
+            <div class="c-dashboard__item c-slot-7-1 c-span-6">
                 <div class="card c-profile__card h-100">
                     <div class="card-body">
                         <h5><i class="bi bi-journal-check me-2"></i> Latest Assessment</h5>
@@ -277,8 +255,30 @@
                     </div>
                 </div>
             </div>
-            <!-- Section: Victory Counter -->
-            <div class="c-user__item c-user__item--4">
+            <!-- ROWS 2–3 : PROGRESS -->
+            <div class="c-dashboard__item c-slot-1-2 c-span-3 c-row-span-2">
+                <div class="card c-profile__card h-100">
+                    <div class="card-body">
+                        <h5><i class="bi bi-clipboard-check me-2"></i> Progress </h5>
+                        <p>You have <strong><?php echo $totalCheckins; ?></strong> total check-ins.</p>
+                        <ul class="list-group list-group-flush">
+                            <?php if ($recentCheckins): ?>
+                                <?php foreach ($recentCheckins as $log): ?>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span><?php echo date('d M, Y', strtotime($log['checkin_date'])); ?></span>
+                                        <span class="badge bg-secondary"><?php echo htmlspecialchars($log['milestone'] ?? 'Check-in'); ?></span>
+                                    </li>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <li class="list-group-item">No check-ins logged recently.</li>
+                            <?php endif; ?>
+                        </ul>
+                        <a href="/api/progress/checkin.php" class="btn c-btn c-btn__dashboard w-100">Log a Check-in</a>
+                    </div>
+                </div>
+            </div>
+            <!-- ROWS 2–3 : VICTORY COUNTER -->
+            <div class="c-dashboard__item c-slot-4-2 c-span-3 c-row-span-2">
                 <div class="card c-profile__card h-100 text-center">
                     <div class="card-body d-flex flex-column justify-content-center">
                         <h5><i class="bi bi-trophy c-user__icon text-warning display-6"></i></h5>
@@ -288,15 +288,14 @@
                     </div>
                 </div>
             </div>
-            <!-- Section: Journal -->
-            <div class="c-user__item c-user__item--5">
+            <!-- ROWS 2–3 : JOURNAL -->
+            <div class="c-dashboard__item c-slot-7-2 c-span-6 c-row-span-2">
                 <div class="card c-profile__card h-100">
                     <div class="card-body">
                         <h5><i class="bi bi-journal-richtext me-2"></i> Daily Journal</h5>
                         <p class="small text-muted mb-3">Reflect on your walk with Christ. Be honest about triggers or temptations.</p>
                         <form id="journalForm">
                             <textarea id="journalContent" class="form-control mb-3" rows="5" placeholder="How are you feeling today? Any specific struggles or praises?" required></textarea>
-
                             <!-- Toggle for Addiction Relation -->
                             <div class="form-check mb-2">
                                 <input class="form-check-input" type="checkbox" id="isAddictionRelated">
@@ -304,7 +303,6 @@
                                     Is this entry related to your addiction?
                                 </label>
                             </div>
-
                             <!-- List of Addiction Types (Hidden by default) -->
                             <div id="addictionTypeSelection" class="mb-3" style="display: none;">
                                 <p class="small text-muted mb-1">Select focus area(s):</p>
@@ -321,14 +319,13 @@
                                     <?php endforeach; ?>
                                 </div>
                             </div>
-
                             <button type="submit" class="btn c-btn c-btn__create w-100">Save Entry</button>
                         </form>
                     </div>
                 </div>
             </div>
-            <!-- Section: Quiz Timeline -->
-            <div class="c-user__item c-user__item--6">
+            <!-- ROWS 4–5 : TIMELINE -->
+            <div class="c-dashboard__item c-slot-1-4 c-span-9 c-row-span-2">
                 <div class="card c-profile__card h-100">
                     <div class="card-body">
                         <h5 class="card-title mb-4">
@@ -345,7 +342,7 @@
                                             <div class="c-timeline__content">
                                                 <div class="d-flex justify-content-between align-items-center mb-1">
                                                     <strong>
-                                                        <?php echo date('F j, Y', strtotime($entry['date'])); ?>
+                                                        <?php echo date('d M, Y', strtotime($entry['date'])); ?>
                                                     </strong>
                                                     <span class="badge bg-secondary text-uppercase small">
                                                         <?php echo htmlspecialchars($entry['severity']); ?>
@@ -375,8 +372,8 @@
                     </div>
                 </div>
             </div>
-            <!-- Section: Recent Messages -->
-            <div class="c-user__item c-user__item--7">
+            <!-- ROWS 4–5 : MESSAGES -->
+            <div class="c-dashboard__item c-slot-10-4 c-span-3 c-row-span-2">
                 <div class="card c-profile__card h-100">
                     <div class="card-body">
                         <h5><i class="bi bi-chat-dots me-2"></i> Messages</h5>
@@ -398,13 +395,13 @@
                     </div>
                 </div>
             </div>
-            <!-- Section: Coming Soon -->
-            <div class="c-user__item c-user__item--8">
-                <div class="card c-profile__card h-100 opacity-75 bg-light">
+            <!-- ROWS 6–9 : FUTURE EXPANSION ZONE -->
+            <div class="c-dashboard__item c-slot-1-6 c-span-12 c-row-span-4">
+                <div class="card c-profile__card h-100 c-feature--locked">
                     <div class="card-body d-flex align-items-center justify-content-center">
                         <div class="text-center">
-                            <i class="bi bi-lock-fill display-6 text-muted"></i>
-                            <h6 class="mt-2 text-muted">Future Feature</h6>
+                            <i class="bi bi-lock-fill"></i>
+                            <p class="mb-0">Future Expansion Zone</p>
                         </div>
                     </div>
                 </div>

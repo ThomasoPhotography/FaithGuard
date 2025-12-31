@@ -1,5 +1,5 @@
 /*---------------------------------------/*
- # SETTINGS
+	# SETTINGS
 /*---------------------------------------*/
 // Variables for "Old Money" and "Dark Academia" theme
 $primary-bg: #e9b48a; // Light tan
@@ -16,7 +16,7 @@ $font-family: 'Garamond', serif; // Classic serif font (Can change)
 $spacing: 2rem;
 
 /*---------------------------------------/*
- # GENERIC - BOOTSTRAP
+	# GENERIC - BOOTSTRAP
 /*---------------------------------------*/
 * {
 	box-sizing: border-box;
@@ -53,7 +53,7 @@ body {
 	font-size: 0.9rem;
 }
 /*---------------------------------------/*
- # ELEMENTS
+	# ELEMENTS
 /*---------------------------------------*/
 a {
 	text-decoration: none;
@@ -75,7 +75,7 @@ p {
 	margin-bottom: 1rem;
 }
 /*---------------------------------------/*
- # OBJECTS
+	# OBJECTS
 /*---------------------------------------*/
 .container {
 	max-width: 75rem;
@@ -88,61 +88,8 @@ p {
 	padding-right: 1rem;
 }
 /*---------------------------------------/*
- # COMPONENTS
+	# COMPONENTS
 /*---------------------------------------*/
-.c-admin {
-	&__profile {
-		display: block;
-
-		@media (min-width: 992px) {
-			display: grid;
-			grid-template-columns: repeat(9, 1fr);
-			grid-template-rows: repeat(8, auto);
-			gap: 1rem;
-		}
-	}
-	&__item {
-		margin-bottom: 1.5rem;
-
-		@media (min-width: 992px) {
-			margin-bottom: 0;
-
-			&--1 {
-				grid-column: 1 / -1;
-				grid-row: 1;
-			}
-			&--2 {
-				grid-column: 1 / 4;
-				grid-row: 2 / 5;
-			}
-			&--3 {
-				grid-column: 1 / 4;
-				grid-row: 5 / 9;
-			}
-			&--4 {
-				grid-column: 4 / 6;
-				grid-row: 2 / 6;
-			}
-			&--5 {
-				grid-column: 6 / 8;
-				grid-row: 2 / 6;
-			}
-			&--6 {
-				grid-column: 8 / 10;
-				grid-row: 2 / 6;
-			}
-			&--7 {
-				grid-column: 4 / 8;
-				grid-row: 6 / 9;
-			}
-			&--8 {
-				grid-column: 8 / 10;
-				grid-row: 6 / 9;
-			}
-		}
-	}
-}
-
 .c-btn {
 	padding: 0.5rem 1rem;
 	font-size: 0.9rem;
@@ -377,6 +324,26 @@ p {
 	}
 }
 
+.c-dashboard {
+	display: block;
+
+	@media (min-width: 992px) {
+		display: grid;
+		grid-template-columns: repeat(12, 1fr);
+		grid-template-rows: repeat(9, minmax(120px, auto));
+		gap: 1rem;
+		width: 100%;
+	}
+
+	&__item {
+		margin-bottom: 1.5rem;
+
+		@media (min-width: 992px) {
+			margin-bottom: 0;
+		}
+	}
+}
+
 .c-dropdown {
 	&__btn {
 		color: $text-dark;
@@ -459,6 +426,22 @@ p {
 			background-color: $accent;
 			color: $text-light;
 		}
+	}
+}
+
+.c-feature {
+	&--locked {
+		opacity: 0.55;
+		pointer-events: none;
+		text-align: center;
+	}
+	i {
+		font-size: 2rem;
+		color: rgba(0, 0, 0, 0.4);
+	}
+	p {
+		margin-top: 0.5rem;
+		font-size: 0.85rem;
 	}
 }
 
@@ -776,8 +759,15 @@ p {
 }
 
 .c-modal {
+	&__body {
+		font-size: 0.95rem;
+	}
 	&__content {
 		background-color: $primary-bg;
+		border-radius: 0.75rem;
+	}
+	&__header {
+		border-bottom: 0.0625rem solid rgba($highlight, 0.08);
 	}
 	&__title {
 		font-weight: 600;
@@ -983,7 +973,7 @@ p {
 		width: 0%;
 		height: 100%;
 		background-color: $highlight;
-		transition: width 420ms cubic-bezier(0.4, 0.0, 0.2, 1) 30ms;
+		transition: width 420ms cubic-bezier(0.4, 0, 0.2, 1) 30ms;
 	}
 
 	&__cardbody {
@@ -1016,11 +1006,11 @@ p {
 		}
 	}
 
-	&__track{
+	&__track {
 		width: 100%;
-		height: .5rem;
+		height: 0.5rem;
 		background-color: $primary-bg;
-		border-radius: .25rem;
+		border-radius: 0.25rem;
 		overflow: hidden;
 	}
 }
@@ -1089,6 +1079,11 @@ p {
 		}
 	}
 
+	&__question h4,
+	&__question h5 {
+		font-weight: 600;
+	}
+
 	&__spinner {
 		width: 2.5rem;
 		height: 2.5rem;
@@ -1146,70 +1141,20 @@ p {
 	}
 }
 
-.c-user {
-	&__profile {
-		display: block;
-
-		@media (min-width: 992px) {
-			display: grid;
-			grid-template-columns: repeat(9, 1fr);
-			grid-template-rows: repeat(8, auto);
-			gap: 1rem;
-		}
-	}
-	&__item {
-		margin-bottom: 1.5rem;
-
-		@media (min-width: 992px) {
-			margin-bottom: 0;
-
-			&--1 {
-				grid-column: 1 / -1;
-				grid-row: 1;
-			}
-			&--2 {
-				grid-column: 1 / 4;
-				grid-row: 2 / 5;
-			}
-			&--3 {
-				grid-column: 1 / 4;
-				grid-row: 5 / 9;
-			}
-			&--4 {
-				grid-column: 4 / 6;
-				grid-row: 2 / 6;
-			}
-			&--5 {
-				grid-column: 6 / 8;
-				grid-row: 2 / 6;
-			}
-			&--6 {
-				grid-column: 8 / 10;
-				grid-row: 2 / 6;
-			}
-			&--7 {
-				grid-column: 4 / 8;
-				grid-row: 6 / 9;
-			}
-			&--8 {
-				grid-column: 8 / 10;
-				grid-row: 6 / 9;
-			}
-		}
-	}
-	&__icon {
-		color: $text-dark !important;
-	}
-}
-
 /*---------------------------------------/*
- # UTILITIES
+	# UTILITIES
 /*---------------------------------------*/
 .u-hidden {
 	display: none !important;
 }
+.text-muted {
+	color: rgba($color: 0, 0, 0, 0.55) !important;
+}
 
-// Responsive utilities
+/* =========================================================
+	RESPONSIVE UTILITIES
+========================================================= */
+// Mobile Bootstrap
 @media (max-width: 575.98px) {
 	.row {
 		margin-left: 0;
@@ -1222,9 +1167,49 @@ p {
 		padding-right: 0.5rem;
 	}
 }
-
+// Desktop Navbar
 @media (max-width: 991.98px) {
 	.navbar-collapse {
 		margin-top: 1rem;
+	}
+}
+// GRID SLOT SYSTEM (12 × 9)
+@media (min-width: 992px) {
+	/* Exact slot positioning */
+	@for $row from 1 through 9 {
+		@for $col from 1 through 12 {
+			.c-slot-#{$col}-#{$row} {
+				grid-column: #{$col} / span 1;
+				grid-row: #{$row} / span 1;
+			}
+		}
+	}
+
+	/* Column spans */
+	.c-span-2 {
+		grid-column: span 2;
+	}
+	.c-span-3 {
+		grid-column: span 3;
+	}
+	.c-span-4 {
+		grid-column: span 4;
+	}
+	.c-span-6 {
+		grid-column: span 6;
+	}
+	.c-span-12 {
+		grid-column: 1 / -1;
+	}
+
+	/* Row spans */
+	.c-row-span-2 {
+		grid-row: span 2;
+	}
+	.c-row-span-3 {
+		grid-row: span 3;
+	}
+	.c-row-span-4 {
+		grid-row: span 4;
 	}
 }

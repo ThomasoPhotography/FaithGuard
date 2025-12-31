@@ -192,6 +192,7 @@ All notable changes to this project will be documented in this file.
 - Database, repository & quiz logic.
 - Guard around user_id.
 - Improve quiz progress bar with refined easing animation.
+- Grid Dashboard Layout.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.
