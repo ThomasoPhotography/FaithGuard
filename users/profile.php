@@ -2,16 +2,16 @@
     declare (strict_types = 1);
 
     /* =========================================================
-   CORE REQUIREMENTS
-========================================================= */
+        CORE REQUIREMENTS
+    ========================================================= */
     require_once __DIR__ . "/../db/database.php";
     require_once __DIR__ . "/../db/FaithGuardRepository.php";
     require_once __DIR__ . "/../api/helper/debug.php";
     require_once __DIR__ . "/../api/services/quizTimelineService.php";
 
     /* =========================================================
-   SESSION SETUP
-========================================================= */
+        SESSION SETUP
+    ========================================================= */
     session_set_cookie_params([
         'lifetime' => 302400,
         'path'     => '/',
@@ -22,8 +22,8 @@
     session_start();
 
     /* =========================================================
-   AUTH GUARD (USER ONLY)
-========================================================= */
+        AUTH GUARD (USER ONLY)
+    ========================================================= */
     $is_logged_in = isset($_SESSION['logged_in'], $_SESSION['user_id'])
         && $_SESSION['logged_in'] === true;
 
@@ -43,8 +43,8 @@
     }
 
     /* =========================================================
-   USER CONTEXT
-========================================================= */
+        USER CONTEXT
+    ========================================================= */
     $accountName = htmlspecialchars(
         $user['name'] ?? $user['email'] ?? 'User',
         ENT_QUOTES,
@@ -61,8 +61,8 @@
         : '—';
 
     /* =========================================================
-   DASHBOARD DATA
-========================================================= */
+        DASHBOARD DATA
+    ========================================================= */
 
     // Progress
     $progressLogs   = FaithGuardRepository::getProgressLogsByUserId($userId) ?? [];
@@ -80,6 +80,13 @@
     // Posts
     $posts      = FaithGuardRepository::getPostsByUserId($userId) ?? [];
     $totalPosts = count($posts);
+
+    /* =========================================================
+        RENDER PAGE
+    ========================================================= */
+    $comparisons = FaithGuardRepository::getComparisonsByAttempt($latestQuizResult['attempt_id'] ?? 0);
+    $summary     = QuizComparisonService::buildUserSummary($comparisons);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -352,6 +359,15 @@
                                                     <?php endforeach; ?>
                                                 </div>
                                             </div>
+                                            <hr class="my-3">
+                                            <div class="text-end">
+                                                <button type="button" class="btn btn-sm btn-outline-secondary js-open-timeline-modal" data-endpoint="/api/modals/timeline-details.php">
+                                                    <i class="bi bi-eye me-1"></i> View detailed history
+                                                </button>
+                                                <button type="button" class="btn btn-sm btn-outline-secondary js-open-timeline-modal" data-endpoint="/api/modals/pastoral-summary.php">
+                                                    <i class="bi bi-heart-pulse me-1"></i> Pastoral Summary
+                                                </button>
+                                            </div>
                                         </li>
                                     <?php endforeach; ?>
                                 </ul>
@@ -445,5 +461,6 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../assets/js/auth.js"></script>
 <script src="../assets/js/journal.js"></script>
+<script src="../assets/js/timeline-modal.js"></script>
 </body>
 </html>

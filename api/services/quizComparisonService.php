@@ -9,7 +9,7 @@ require_once __DIR__ . '/../db/FaithGuardRepository.php';
     /* =====================================================
         PUBLIC ENTRY POINT
     ===================================================== */
-    public static function compareAttempt(int $userId, int $currentAttemptId): void{
+    public static function getAttemptComparisons($userId, $currentAttemptId): void{
         $previousAttemptId = FaithGuardRepository::getPreviousAttemptId($userId, $currentAttemptId);
         $currentAddictions  = FaithGuardRepository::getAttemptAddictions($currentAttemptId);
         $previousAddictions = $previousAttemptId ? FaithGuardRepository::getAttemptAddictions($previousAttemptId) : [];

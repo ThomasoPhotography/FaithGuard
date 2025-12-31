@@ -469,17 +469,48 @@ class FaithGuardRepository
     {
         Database::execute("INSERT INTO quiz_attempt_comparisons (attempt_id, addiction_type, previous_score, current_score, delta, trend) VALUES (:attempt_id, :addiction_type, :previous_score, :current_score, :delta, :trend)", $data);
     }
-    public static function getComparisonsByAttempt(int $attemptId): array
+    public static function getComparisonsByAttempt($attemptId): array
     {
         return Database::getRows("SELECT * FROM quiz_attempt_comparisons WHERE attempt_id = ? ORDER BY addiction_type ASC", [$attemptId]);
+    }
+    public static function getLatestComparisonSummary(int $userId): array
+    {
+        return Database::getRows(
+            "SELECT c.addiction_type, c.trend, CASE c.trend WHEN 'improved' THEN 'There has been progress since your last assessment.' WHEN 'worsened' THEN 'This area has become more challenging recently.' WHEN 'unchanged' THEN 'This area remains steady.' WHEN 'new' THEN 'This struggle has newly emerged.' END AS message, CASE c.trend WHEN 'improved' THEN 'success' WHEN 'unchanged' THEN 'secondary' WHEN 'new' THEN 'warning' WHEN 'worsened' THEN 'danger' END AS tone FROM quiz_attempt_comparisons c JOIN quiz_attempts a ON a.id = c.attempt_id WHERE a.user_id = ? ORDER BY a.created_at DESC", [$userId]);
     }
     /* ================================================
         C2-F — TIMELINE DATA
     ================================================ */
-    public static function getAddictionTimeline(int $userId, string $addictionType): array{
+    public static function getAddictionTimeline(int $userId, string $addictionType): array
+    {
         return Database::getRows("SELECT qa.id AS attempt_id, qa.created_at AS attempt_date, qaa.score AS score FROM quiz_attempts qa JOIN quiz_attempt_addictions qaa ON qa.id = qaa.attempt_id WHERE qa.user_id = ? AND qaa.addiction_type = ? ORDER BY qa.created_at ASC", [$userId, $addictionType]);
     }
-    public static function getUserAddictionHistory(int $userId):array{
+    public static function getUserAddictionHistory(int $userId): array
+    {
         return Database::getRows("SELECT DISTINCT addiction_type FROM quiz_attempt_addictions WHERE attempt_id IN (SELECT id FROM quiz_attempts WHERE user_id = ?)", [$userId]);
+    }
+    public static function getUserQuizTimeline(int $userId): array
+    {
+        $attempts = Database::getRows("SELECT id, created_at FROM quiz_attempts WHERE user_id = ? ORDER BY created_at DESC", [$userId]);
+        $timeline = [];
+        foreach ($attempts as $attempt) {
+            $addictions   = Database::getRows("SELECT addiction_type, current_score FROM quiz_attempt_addictions WHERE attempt_id = ?", [$attempt['id']]);
+            $addictionMap = [];
+            $totalScore   = 0;
+            foreach ($addictions as $row) {
+                $addictionMap[$row['addiction_type']] = (int) $row['current_score'];
+                $totalScore += (int) $row['current_score'];
+            }
+            $timeline[] = ['date' => $attempt['created_at'], 'severity' => self::severityLabel($totalScore), 'addictions' => $addictionMap];
+        }
+        return $timeline;
+    }
+    private static function severityLabel(int $score): string
+    {
+        return match (true) {
+            $score <= 5  => 'low',
+            $score <= 10 => 'moderate',
+            default      => 'high',
+        };
     }
 }
