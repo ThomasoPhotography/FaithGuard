@@ -195,6 +195,7 @@ All notable changes to this project will be documented in this file.
 - Improve quiz progress bar with refined easing animation.
 - Grid Dashboard Layout.
 - Cookie banner with styling and README.md.
+- Relinking repository.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.
