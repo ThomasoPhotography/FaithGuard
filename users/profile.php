@@ -9,10 +9,10 @@
     require_once __DIR__ . '/../db/FaithGuardRepository.php';
     require_once __DIR__ . '/../api/services/bootstrap.php';
     $timelineServiceAvailable = safeRequire(
-        __DIR__ . '/../api/services/quizTimelineService.php', 'quizTimelineService'
+        __DIR__ . '/../api/services/quizTimelineService.php', 'QuizTimelineService'
     );
     $comparisonServiceAvailable = safeRequire(
-        __DIR__ . '/../api/services/quizComparisonService.php', 'quizComparisonService'
+        __DIR__ . '/../api/services/quizComparisonService.php', 'QuizComparisonService'
     );
 
     /* =========================================================

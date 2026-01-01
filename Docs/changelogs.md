@@ -197,6 +197,7 @@ All notable changes to this project will be documented in this file.
 - Cookie banner with styling and README.md.
 - Relinking repository.
 - Relinking quiz services.
+- Quiz service and relinking of the service.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.
