@@ -196,6 +196,7 @@ All notable changes to this project will be documented in this file.
 - Grid Dashboard Layout.
 - Cookie banner with styling and README.md.
 - Relinking repository.
+- Relinking quiz services.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.
