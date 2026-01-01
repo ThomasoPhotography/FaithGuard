@@ -1,15 +1,17 @@
 # 1. FaithGuard
-
 ![HTML](https://img.shields.io/badge/HTML-E34F26?style=for-the-badge&logo=html5&logoColor=white) ![SCSS](https://img.shields.io/badge/SCSS-CC6699?style=for-the-badge&logo=sass&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black) ![PHP](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white) ![SQL](https://img.shields.io/badge/SQL-336791?style=for-the-badge&logoColor=white) ![Markdown](https://img.shields.io/badge/Markdown-000000?style=for-the-badge&logo=markdown&logoColor=white)
 
-FaithGuard is a **full-stack, responsive web application** built with PHP, JS, SQL and SCSS. It delivers a clean web presence and a simple development workflow. Customize styles, add assets, and deploy in seconds.
+FaithGuard is a ***full-stack, responsive web application*** designed to support individuals seeking freedom from digital-influenced addictions. It is a ministry initiative of the TikTok account **[wwtw.be](https://www.tiktok.com/@wwtw.be) [WWTW | Christian Content]**.
+
+WWTW stands for **Walk With The Word**. Our mission is rooted in the truth revealed in the Gospel according to John: that Jesus Christ is the Word (John 1:1), the eternal "I Am" (John 8:58) who provides the light and strength for true restoration.
 
 ## 1.1. 🎯 Features
 
-- **Responsive layout** optimized for mobile and desktop  
-- **SCSS source** with compiled CSS for easy theming  
-- **Organized assets** folder for images, fonts, and styles
-- **Organized backend** folder for backend logic  
+- **Confidential Self-Assessment**: A weighted 25+ question quiz evaluating spiritual and behavioral risk using Likert scales.
+- **Interactive Daily Journal**: A private reflection tool with keyword detection that triggers "Battle-Ready" scripture modals for moments of struggle.
+- **Relational Resource Library**: Dynamic filtering of faith-based content tagged by addiction type and spiritual focus.
+- **Accountability Dashboard**: Includes a "Victory Counter" for tracking check-in streaks and a historical activity timeline.
+- **Responsive & Discreet UI**: Optimized for all devices with a "Dark Academia" aesthetic that prioritizes legibility and privacy.  
 
 ## 1.2. 🛠️ Development
 
@@ -19,20 +21,18 @@ Customize and rebuild styles with your preferred SCSS tool:
 2. Compile to **`assets/css/main.css`**  
    ```bash
    sass assets/css/main.scss assets/css/main.css --watch
-   ```
-3. Refresh your browser to see changes  
+   ``` 
 
 ## 1.3. 📁 Project Structure
-
 ### 1.3.1. I. Core Application Files
 | Path | File | Description |
 | --- | --- | --- |
-| **Project Root** | `index.php` | **Main Application Entry Point.** Loads all core requirements, performs session checks, fetches user data, and renders the main HTML structure. |
-|  | `policies.php` | Client-side page displaying all three types of policies by slug (Privacy Policy, Cookie Policy and Terms of Service). |
-|  | `quiz.php` | Client-side with all core requirements, performs session checks, fetches user data, and renders the quiz HTML structure. |
-|  | `resources.php` | Client-side page displaying all the resource neatly. |
+| **Project Root** | `index.php` | **Main Entry Point**. Handles session hydration, user context, and landing page rendering. |
+|  | `policies.php` | Renders legal documentation (ToS, Privacy, Cookies) as defined by **wwtw.be**. |
+|  | `quiz.php` | Drives the interactive assessment experience, pulling dynamic questions from the DB. |
+|  | `resources.php` | Searchable interface for the relational resource and scripture mapping system. |
 |  | `README.md` | Project overview and setup instructions. |
-|  | `.htaccess` | Cheatcode security list to make HTTP into HTTPS. |
+|  | `.htaccess` | Enforces HTTPS and protects sensitive backend/database directories. |
 ### 1.3.2. II. Backend PHP Logic (Server Endpoints)
 All server-side processing, database interaction, and API endpoints reside here.
 
@@ -59,15 +59,16 @@ All server-side processing, database interaction, and API endpoints reside here.
 |  | `/css/main.scss` | Original SASS/SCSS file for styling (The source file). |
 |  | `/css/main.css` | **Compiled CSS** (The file linked in the HTML `<head>`). |
 | **`/assets/js/`** |  | **Main directory for client assets.** |
-|  | `/js/auth.js` ||
-|  | `/js/community.js` ||
-|  | `/js/cookie-banner.js` ||
-|  | `/js/journal.js` ||
-|  | `/js/messaging.js` ||
-|  | `/js/profile-timeline-modal.js` ||
-|  | `/js/progress.js` ||
-|  | `/js/quiz.js` ||
-|  | `/js/resources.js` ||
+|  | `/js/auth.js` | Manages login, registration modals, and session authentication logic. |
+|  | `/js/community.js` | Handles community forum interactions, including creating posts, replies, and reports. |
+|  | `/js/cookie-banner.js` | Manages the display and storage of user cookie consent preferences. |
+|  | `/js/journal.js` | Powers the interactive daily journal, addiction tagging, and battle-ready scripture modals. |
+|  | `/js/messaging.js` | Facilitates peer-to-peer messaging, inbox rendering, and message deletion. |
+|  | `/js/profile-timeline-modal.js` | Manages the UI for viewing historical progress and activity timelines on the dashboard. |
+|  | `/js/profile-pastoral-modal.js` | Handles interactions for spiritual guidance requests and pastoral support modals. |
+|  | `/js/progress.js` | Handles progress log submissions, victory tracking, and data visualisation. |
+|  | `/js/quiz.js` | Drives the multi-step addiction self-assessment quiz logic and dynamic UI rendering. |
+|  | `/js/resources.js` | Controls the fetching, searching, and dynamic filtering of faith-based resources. |
 | **`/assets/uploads/`** |  | **Folder for client visual assets such as logos or images.** |
 |  | `FaithGuard_Primary_Logo` | Project logo featured on the navigation bar. |
 |  | `FaithGuard_Secondary_Logo` | Project logo featured on the footer bar. |
@@ -75,28 +76,16 @@ All server-side processing, database interaction, and API endpoints reside here.
 |  | `Wordmark_Logo` | Project logo featured on the cookie-banner. |
 
 ## 1.4. 🚧 Future Plans
-
-The project is now in the dynamic backend stage, integrating PHP and SQL into the stack.
-
-- **Dynamic backend** with PHP and SQL  
-- **Interactive features** via JavaScript  
-- **Accessibility improvements** and content updates  
+### V0.1.4-alpha:
+- Pastoral Support: Direct integration for users to request one-on-one spiritual guidance.
+- Enhanced Achievement System: Unlocking "Word Warrior" badges for long-term streaks.
+- Prayer Wall: A community space for sharing and answering prayer requests.
 
 ## 1.5. 🗺️ Roadmap
 
 This roadmap highlights key versions from the initial commit to the current dynamic backend alpha. It shows how the project evolved over time.
 
-- **v0.0.0** – Initial commit.  
-- **v0.0.1** – Basic codes and initial layout.  
-- **v0.0.2** – Further building on v0.0.1.  
-- **v0.0.3** – Refinements to structure and styles.  
-- **v0.0.4** – Additional components and layout tweaks.  
-- **v0.0.5** – Improved responsiveness and asset organization.  
-- **v0.0.6** – SCSS cleanup and small UI enhancements.  
-- **v0.0.7** – Preparation for backend integration.  
-- **v0.0.8** – Initial JavaScript utilities and interactions.  
-- **v0.0.9** – Stability improvements before minor version bump.  
-- **v0.1.0** – Foundation for dynamic backend work.  
+- **v0.0.0** -> **v0.1.0** – Foundation for dynamic backend work.  
 - **v0.1.1** – Early PHP and SQL integration.  
 - **v0.1.2** – Extended backend features and data handling.  
 - **v0.1.3** – Polishing dynamic behavior and fixing issues.  
@@ -105,10 +94,12 @@ This roadmap highlights key versions from the initial commit to the current dyna
 ## 1.6. 🗺️ TO DO
 
 This TODO list is to keep track with certain things/ideas the website needs in the near future:
-- [x] Quiz integration
-- [ ] Query URL's
-- [ ] Resource Content
-- [ ] Recommend resources from Quiz Answers
-- [ ] Progress
-- [ ] Prayers (Personal and whenever I post on TikTok).
+- [X] Quiz integration
+- [X] Relational Resource Seed Data
+- [X] Interactive Journal & Scripture Modals
+- [X] Victory Counter & Progress Tracking
+- [ ] Query URL navigation improvements
+- [ ] Resource content
+- [ ] TikTok-integrated Prayer log intergration
+- [ ] Admin moderation dashboard completion
 ---

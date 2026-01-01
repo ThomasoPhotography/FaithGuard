@@ -31,11 +31,6 @@ body {
   box-shadow: none;
 }
 
-.text-muted {
-  color: #3c3c34 !important;
-  font-size: 0.9rem;
-}
-
 /*---------------------------------------/*
 	# ELEMENTS
 /*---------------------------------------*/
@@ -76,6 +71,23 @@ p {
 /*---------------------------------------/*
 	# COMPONENTS
 /*---------------------------------------*/
+.c-admin__profile {
+  display: block;
+}
+@media (min-width: 992px) {
+  .c-admin__profile {
+    display: grid;
+  }
+}
+.c-admin__item {
+  margin-bottom: 1.5rem;
+}
+@media (min-width: 992px) {
+  .c-admin__item {
+    margin-bottom: 0;
+  }
+}
+
 .c-btn {
   padding: 0.5rem 1rem;
   font-size: 0.9rem;
@@ -223,6 +235,36 @@ p {
 .c-card__badge--tag:hover {
   background-color: #5c352c;
   cursor: default; /* Or pointer if clickable */
+}
+
+.c-cookie {
+  background-color: #614338;
+  color: #f5f5dc;
+}
+.c-cookie__btn {
+  background-color: #e9b48a;
+  color: #3c3c34;
+}
+.c-cookie__btn:hover {
+  background-color: rgba(233, 180, 138, 0.55);
+  color: #3c3c34;
+  text-decoration: none;
+}
+.c-cookie__btn--outline {
+  background-color: transparent;
+  border: 2px solid #e9b48a;
+  color: #e9b48a;
+}
+.c-cookie__btn--outline:hover {
+  background-color: #e9b48a;
+  color: #3c3c34;
+  text-decoration: none;
+}
+.c-cookie__icon {
+  width: 100%;
+  height: auto;
+  vertical-align: middle;
+  margin-right: 0.5rem;
 }
 
 .c-cta {
@@ -745,7 +787,7 @@ p {
   color: #2a1717;
 }
 .c-modal__btn--submit {
-  background-color: shade(#e9b48a, 40%);
+  background-color: tint(#e9b48a, 40%);
   color: tint(#3c3c34);
 }
 .c-modal__btn--submit:before, .c-modal__btn--submit:after {
@@ -887,6 +929,32 @@ p {
   color: #f5f5dc;
   outline: none;
   box-shadow: 0 0 5px #5c352c;
+}
+
+.c-pastoral {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+.c-pastoral__addiction {
+  font-weight: 600;
+  color: #2a1717;
+  margin-bottom: 0.25rem;
+}
+.c-pastoral__summary {
+  margin-bottom: 0.35rem;
+  line-height: 1.45;
+}
+.c-pastoral__badge {
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+}
+
+.c-pastoralModal__header {
+  padding-top: 0.25rem;
+}
+.c-pastoralModal__title {
+  font-weight: 500;
 }
 
 .c-profile__card {
@@ -1072,6 +1140,23 @@ p {
   padding-left: 1rem;
 }
 
+.c-user__profile {
+  display: block;
+}
+@media (min-width: 992px) {
+  .c-user__profile {
+    display: grid;
+  }
+}
+.c-user__item {
+  margin-bottom: 1.5rem;
+}
+@media (min-width: 992px) {
+  .c-user__item {
+    margin-bottom: 0;
+  }
+}
+
 /*---------------------------------------/*
 	# UTILITIES
 /*---------------------------------------*/
@@ -1080,12 +1165,28 @@ p {
 }
 
 .text-muted {
-  color: black;
+  color: #3c3c34 !important;
 }
 
-/* =========================================================
-	RESPONSIVE UTILITIES
-========================================================= */
+.text-positive {
+  color: #0b4a14 !important;
+}
+
+.text-neutral {
+  color: #614338 !important;
+}
+
+.text-supportive {
+  color: #750716 !important;
+}
+
+.text-gentle {
+  color: #ba6f0e !important;
+}
+
+/*-------------------------------------------------------/*
+	# RESPONSIVE UTILITIES
+/*-------------------------------------------------------*/
 @media (max-width: 575.98px) {
   .row {
     margin-left: 0;

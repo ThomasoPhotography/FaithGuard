@@ -21,8 +21,8 @@ const showCookieBanner = () => {
 						</p>
                     </div>
                     <div class="col-md-4 col-12 text-md-end mt-2 mt-md-0">
-                        <button id="accept-cookies" class="btn c-btn c-btn__dashboard btn-sm me-2">Accept</button>
-                        <button id="decline-cookies" class="btn c-btn c-btn__dashboard c-btn__dashboard--outline btn-sm">Decline</button>
+                        <button id="accept-cookies" class="btn c-btn c-cookie__btn btn-sm me-2">Accept</button>
+                        <button id="decline-cookies" class="btn c-btn c-cookie__btn c-cookie__btn--outline btn-sm">Decline</button>
                     </div>
                 </div>
             </div>

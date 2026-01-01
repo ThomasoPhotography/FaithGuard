@@ -47,11 +47,6 @@ body {
 		box-shadow: none;
 	}
 }
-
-.text-muted {
-	color: $text-dark !important;
-	font-size: 0.9rem;
-}
 /*---------------------------------------/*
 	# ELEMENTS
 /*---------------------------------------*/
@@ -90,6 +85,21 @@ p {
 /*---------------------------------------/*
 	# COMPONENTS
 /*---------------------------------------*/
+.c-admin {
+	&__profile {
+		display: block;
+		@media (min-width: 992px) {
+			display: grid;
+		}
+	}
+	&__item {
+		margin-bottom: 1.5rem;
+		@media (min-width: 992px) {
+			margin-bottom: 0;
+		}
+	}
+}
+
 .c-btn {
 	padding: 0.5rem 1rem;
 	font-size: 0.9rem;
@@ -255,9 +265,31 @@ p {
 }
 
 .c-cookie {
+	background-color: $secondary-bg;
+	color: $text-light;
+	&__btn {
+		background-color: $primary-bg;
+		color: $text-dark;
+		&:hover {
+			background-color: rgba($primary-bg, 0.55);
+			color: $text-dark;
+			text-decoration: none;
+		}
+
+		&--outline {
+			background-color: transparent;
+			border: 2px solid $primary-bg;
+			color: $primary-bg;
+			&:hover {
+				background-color: $primary-bg;
+				color: $text-dark;
+				text-decoration: none;
+			}
+		}
+	}
 	&__icon {
-		width: auto;
-		height: 1.5rem;
+		width: 100%;
+		height: auto;
 		vertical-align: middle;
 		margin-right: 0.5rem;
 	}
@@ -789,7 +821,7 @@ p {
 			}
 		}
 		&--submit {
-			background-color: shade($primary-bg, 40%);
+			background-color: tint($primary-bg, 40%);
 			color: tint($text-dark);
 			&:before,
 			&:after {
@@ -947,6 +979,34 @@ p {
 			outline: none;
 			box-shadow: 0 0 5px $accent;
 		}
+	}
+}
+
+.c-pastoral {
+	display: flex;
+	flex-direction: column;
+	gap: 1.25rem;
+	&__addiction {
+		font-weight: 600;
+		color: $highlight;
+		margin-bottom: 0.25rem;
+	}
+	&__summary {
+		margin-bottom: 0.35rem;
+		line-height: 1.45;
+	}
+	&__badge {
+		font-size: 0.65rem;
+		letter-spacing: 0.08em;
+	}
+}
+
+.c-pastoralModal {
+	&__header {
+		padding-top: 0.25rem;
+	}
+	&__title {
+		font-weight: 500;
 	}
 }
 
@@ -1150,6 +1210,21 @@ p {
 	}
 }
 
+.c-user {
+	&__profile {
+		display: block;
+		@media (min-width: 992px) {
+			display: grid;
+		}
+	}
+	&__item {
+		margin-bottom: 1.5rem;
+		@media (min-width: 992px) {
+			margin-bottom: 0;
+		}
+	}
+}
+
 /*---------------------------------------/*
 	# UTILITIES
 /*---------------------------------------*/
@@ -1157,12 +1232,24 @@ p {
 	display: none !important;
 }
 .text-muted {
-	color: rgba($color: 0, 0, 0, 0.55) !important;
+	color: $text-dark !important;
 }
-
-/* =========================================================
-	RESPONSIVE UTILITIES
-========================================================= */
+// Pastoral tone
+.text-positive {
+	color: $beginner !important;
+}
+.text-neutral {
+	color: $secondary-bg !important;
+}
+.text-supportive {
+	color: $advanced !important;
+}
+.text-gentle {
+	color: $intermediate !important;
+}
+/*-------------------------------------------------------/*
+	# RESPONSIVE UTILITIES
+/*-------------------------------------------------------*/
 // Mobile Bootstrap
 @media (max-width: 575.98px) {
 	.row {
@@ -1182,7 +1269,7 @@ p {
 		margin-top: 1rem;
 	}
 }
-// GRID SLOT SYSTEM (12 × 9)
+// Grid Slot (12 × 9)
 @media (min-width: 992px) {
 	/* Exact slot positioning */
 	@for $row from 1 through 9 {

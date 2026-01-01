@@ -139,12 +139,12 @@
                 <div class="d-flex dropdown c-dropdown">
                     <button class="btn c-btn c-dropdown__btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="c-dropdown__icon bi bi-person-check me-1"></i>
-                        <span class="c-dropdown__text">Welcome                                                               <?php echo $accountName; ?></span>
+                        <span class="c-dropdown__text">Welcome                                                                                                                             <?php echo $accountName; ?></span>
                     </button>
                     <!-- LOGGED-IN DROPDOWN MENU -->
                     <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu" aria-labelledby="userDropdown">
                         <li>
-                            <h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                         <?php echo ucfirst($user_role); ?></h6>
+                            <h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                                                                                                                 <?php echo ucfirst($user_role); ?></h6>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
@@ -205,159 +205,148 @@
     </nav>
     <!-- Main -->
     <main class="c-main container my-5">
-        <section class="c-admin__profile">
-            <div class="c-admin__item c-admin__item--1">
-                <h2 class="c-profile__title">Admin Dashboard</h2>
-            </div>
-            <!-- Flagged/Reported Posts -->
-            <div class="c-admin__item c-admin__item--2">
-                <div class="c-profile__items card h-100">
+        <section class="c-dashboard c-admin__profile">
+            <!-- ROW 1 : ACCOUNT SUMMARY -->
+            <div class="c-dashboard__item c-slot-1-1 c-span-6">
+                <div class="card c-profile__card h-100">
                     <div class="card-body">
-                        <h5 class="card-title">Flagged/Reported Posts (<?php echo count($reports); ?> Pending)</h5>
-                        <p class="card-text">Preview and moderate reported community posts to maintain a safe, faith-focused environment.</p>
-                        <ul class="list-group list-group-flush">
-                            <?php if (! empty($reports)): ?>
-                                <?php foreach ($reports as $report): ?>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        Post ID:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 <?php echo htmlspecialchars($report['post_id']); ?> - Reason:<?php echo htmlspecialchars($report['reason']); ?>
-                                        <button class="btn btn-sm c-btn c-btn__outline">Review</button>
-                                    </li>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <li class="list-group-item">No pending reports.</li>
-                            <?php endif; ?>
-                        </ul>
-                    </div>
-                    <div class="card-footer">
-                        <a href="../admin/moderation.php" class="btn c-btn c-btn__dashboard mt-2">View All Reports</a>
+                        <h5 class="card-title">Account Summary</h5>
+                        <p class="mb-1"><strong>Name:</strong>                                                               <?php echo $accountName; ?></p>
+                        <p class="mb-1"><strong>Role:</strong>                                                               <?php echo ucfirst($user_role); ?></p>
+                        <p class="mb-0"><strong>Member Since:</strong>                                                                       <?php echo $memberSince; ?></p>
                     </div>
                 </div>
             </div>
-            <!-- Resource Management -->
-            <div class="c-admin__item c-admin__item--3">
-                <div class="c-profile__items card h-100">
+            <!-- ROW 1 : LATEST ASSESSEMENT -->
+            <div class="c-dashboard__item c-slot-7-1 c-span-6">
+                <div class="card c-profile__card h-100">
                     <div class="card-body">
-                        <h5 class="card-title">Resource Management</h5>
-                        <p class="card-text">Quickly create new resources or view total resources available for users.</p>
-                        <!-- Example: Mini form and stats -->
-                        <form class="mb-3" action="../resources/create.php" method="POST">
-                            <input type="text" name="title" class="form-control mb-2" placeholder="Resource Title" required>
-                            <textarea name="content" class="form-control mb-2" placeholder="Content" rows="2" required></textarea>
-                            <button type="submit" class="btn c-btn c-btn__create">Create Resource</button>
-                        </form>
-                        <p>
-                            <strong>Total Resources:</strong>
-                            <?php echo $resourceCount; ?>
+                        <h5><i class="bi bi-journal-check me-2"></i> Latest Assessment</h5>
+                        <?php if (is_array($latestQuizResult)): ?>
+                        <?php
+                            $score     = (int) ($latestQuizResult['total_score'] ?? 0);
+                            $date      = ! empty($latestQuizResult['created_at']) ? date('d M, Y', strtotime($latestQuizResult['created_at'])) : '—';
+                            $types     = json_decode($latestQuizResult['addiction_type'] ?? '[]', true);
+                            $typesText = is_array($types) ? implode(', ', $types) : '';
+                        ?>
+                        <p><strong>Date:</strong><?php echo $date ?></p>
+                        <p><strong>Score:</strong>
+                            <span class="badge bg-primary"><?php echo $score ?>%</span>
                         </p>
+                        <p><strong>Focus Areas:</strong>
+                            <?php echo htmlspecialchars($typesText, ENT_QUOTES) ?>
+                        </p>
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <a href="/quiz.php" class="btn c-btn w-100">Retake Assessment</a>
+                            </div>
+                            <div class="col-6">
+                                <a href="/resources.php" class="btn c-btn w-100">View Resources</a>
+                            </div>
+                        </div>
+                        <?php else: ?>
+                            <p>You haven’t completed an assessment yet.</p>
+                            <a href="/quiz.php" class="btn c-btn w-100">Take the Assessment</a>
+                        <?php endif; ?>
                     </div>
-                    <div class="card-footer">
-                        <a href="../resources/list.php" class="btn c-btn c-btn__dashboard">Manage All Resources</a>
-                    </div>
+                    <button class="btn c-btn c-btn__outline js-open-pastoral-modal" data-endpoint="/api/modals/pastoral-summary.php">
+                        <i class="bi bi-journal-heart me-2"></i> View Pastoral Insight
+                    </button>
                 </div>
             </div>
-            <!-- Legal & Policy Updates -->
-            <!-- Terms of Service -->
-            <div class="c-admin__item c-admin__item--4">
-                <div class="c-profile__items card h-100">
+            <!-- ROWS 2–3 : PRIVACY POLICY -->
+            <div class="c-dashboard__item c-slot-1-2 c-span-3 c-row-span-2">
+                <div class="card c-profile__card h-100">
                     <div class="card-body">
-                        <h5 class="card-title">Legal Updates</h5>
-                        <p class="card-text">Update Terms of Service to ensure compliance and user trust.</p>
-                        <!-- ToS Form -->
-                        <form action="policies.php" method="POST">
-                            <input type="hidden" name="slug" value="terms">
-                            <div class="mb-3">
-                                <label for="tos_title">Title</label>
-                                <input type="text" name="content_title" id="tos_title" class="form-control" value="
-                                    <?php echo htmlspecialchars($tosTitle); ?>
-                                ">
-                            </div>
-                            <div class="mb-3">
-                                <label for="tos_text">Content</label>
-                                <textarea name="content_text" id="tos_text" class="form-control" rows="3">
-                                    <?php echo htmlspecialchars($tosText); ?>
-                                </textarea>
-                            </div>
-                            <button type="submit" class="btn c-btn c-btn__dashboard">Update ToS</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <!-- Privacy Policy -->
-            <div class="c-admin__item c-admin__item--5">
-                <div class="c-profile__items card h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">Privacy Updates</h5>
-                        <p class="card-text">Update Privacy Policy to ensure compliance and user trust.</p>
-                        <!-- Privacy Form -->
+                        <h5 class="card-title">Privacy Policy</h5>
                         <form action="policies.php" method="POST">
                             <input type="hidden" name="slug" value="privacy">
-                            <div class="mb-3">
-                                <label for="privacy_title">Title</label>
-                                <input type="text" name="content_title" id="privacy_title" class="form-control" value="
-                                <?php echo htmlspecialchars($privacyTitle); ?>
-                                ">
-                            </div>
-                            <div class="mb-3">
-                                <label for="privacy_text">Content</label>
-                                <textarea name="content_text" id="privacy_text" class="form-control" rows="3">
-                                    <?php echo htmlspecialchars($privacyText); ?>
-                                </textarea>
-                            </div>
-                            <button type="submit" class="btn c-btn c-btn__dashboard">Update Privacy Policy</button>
+                            <input type="text" name="content_title" class="form-control mb-2" value="<?php echo htmlspecialchars($privacyTitle); ?>">
+                            <textarea name="content_text" class="form-control mb-3" rows="6"><?php echo htmlspecialchars($privacyText); ?></textarea>
+                            <button class="btn c-btn c-btn__dashboard w-100">Update Privacy Policy</button>
                         </form>
                     </div>
                 </div>
             </div>
-            <!-- Cookie Policy -->
-            <div class="c-admin__item c-admin__item--6">
-                <div class="c-profile__items card h-100">
+            <!-- ROWS 2–3 : TERMS OF SERVICE -->
+            <div class="c-dashboard__item c-slot-4-2 c-span-3 c-row-span-2">
+                <div class="card c-profile__card h-100">
                     <div class="card-body">
-                        <h5 class="card-title">Cookie Updates</h5>
-                        <p class="card-text">Update Cookie Policy to ensure compliance and user trust.</p>
-                        <!-- Cookie Form -->
+                        <h5 class="card-title">Terms of Service</h5>
+                        <form action="policies.php" method="POST">
+                            <input type="hidden" name="slug" value="terms">
+                            <input type="text" name="content_title" class="form-control mb-2" value="<?php echo htmlspecialchars($tosTitle); ?>">
+                            <textarea name="content_text" class="form-control mb-3" rows="6"><?php echo htmlspecialchars($tosText); ?></textarea>
+                            <button class="btn c-btn c-btn__dashboard w-100">Update Terms</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- ROWS 2–3 : COOKIE POLICY -->
+            <div class="c-dashboard__item c-slot-7-2 c-span-6 c-row-span-2">
+                <div class="card c-profile__card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Cookie Policy</h5>
                         <form action="policies.php" method="POST">
                             <input type="hidden" name="slug" value="cookie">
-                            <div class="mb-3">
-                                <label for="cookie_title">Title</label>
-                                <input type="text" name="content_title" id="cookie_title" class="form-control" value="
-                                <?php echo htmlspecialchars($cookieTitle); ?>
-                                ">
-                            </div>
-                            <div class="mb-3">
-                                <label for="cookie_text">Content</label>
-                                <textarea name="content_text" id="cookie_text" class="form-control" rows="3">
-                                    <?php echo htmlspecialchars($cookieText); ?>
-                                </textarea>
-                            </div>
-                            <button type="submit" class="btn c-btn c-btn__dashboard">Update Cookie Policy</button>
+                            <input type="text" name="content_title" class="form-control mb-2" value="<?php echo htmlspecialchars($cookieTitle); ?>">
+                            <textarea name="content_text" class="form-control mb-3" rows="6"><?php echo htmlspecialchars($cookieText); ?></textarea>
+                            <button class="btn c-btn c-btn__dashboard w-100">Update Cookie Policy</button>
                         </form>
                     </div>
                 </div>
             </div>
-            <!-- Admin Message Box (Recent Activity) -->
-            <div class="c-admin__item c-admin__item--7">
-                <div class="c-profile__items card h-100">
+            <!-- ROWS 4–5 : REPORTS -->
+            <div class="c-dashboard__item c-slot-1-4 c-span-3 c-row-span-2">
+                <div class="card c-profile__card h-100">
                     <div class="card-body">
-                        <h5 class="card-title">Cookie Updates</h5>
-                        <p class="card-text">Update Cookie Policy to ensure compliance and user trust.</p>
-                        <!-- Cookie Form -->
-                        <form action="policies.php" method="POST">
-                            <input type="hidden" name="slug" value="cookie">
-                            <label for="cookie">Cookie Policy</label>
-                            <textarea name="content" id="cookie" class="form-control mb-2" rows="3">
-                                <?php echo htmlspecialchars($cookieText); ?>
-                            </textarea>
-                            <button type="submit" class="btn c-btn c-btn__dashboard">Update Cookie</button>
+                        <h5 class="card-title">Reports</h5>
+                        <p class="small text-muted mb-2"><?php echo count($reports); ?> pending</p>
+                        <a href="/admin/moderation.php" class="btn c-btn c-btn__dashboard w-100">View Reports</a>
+                    </div>
+                </div>
+            </div>
+            <!-- ROWS 4–5 : RESOURCES LIST -->
+            <div class="c-dashboard__item c-slot-4-4 c-span-3 c-row-span-2">
+                <div class="card c-profile__card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Resources</h5>
+                        <p><strong>Total:</strong>                                                   <?php echo $resourceCount; ?></p>
+                        <a href="../resources/list.php" class="btn c-btn c-btn__dashboard w-100">Manage Resources</a>
+                    </div>
+                </div>
+            </div>
+            <!-- ROWS 4–5 : NEW RESOURCE MAKER -->
+            <div class="c-dashboard__item c-slot-7-4 c-span-3 c-row-span-2">
+                <div class="card c-profile__card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Create Resource</h5>
+                        <form action="../api/resources/create.php" method="POST">
+                            <input type="text" name="title" class="form-control mb-2" placeholder="Title" required>
+                            <input type="url" name="video" class="form-control mb-2" placeholder="Video link">
+                            <textarea name="content" class="form-control mb-3" rows="4" placeholder="Content" required></textarea>
+                            <button class="btn c-btn c-btn__create w-100">Create new Resource</button>
                         </form>
                     </div>
                 </div>
             </div>
-            <!-- Upcoming Feature -->
-            <div class="c-admin__item c-admin__item--8">
-                <div class="c-profile__items card h-100">
+            <!-- ROWS 4–5 : MESSAGES -->
+            <div class="c-dashboard__item c-slot-10-4 c-span-3 c-row-span-2">
+                <div class="card c-profile__card h-100">
                     <div class="card-body">
-                        <h5 class="card-title">Coming Soon</h5>
-                        <p class="card-text">This spot is for an upcoming feature.</p>
+                        <h5 class="card-title">Messages</h5>
+                        <p class="text-muted small">Recent administrative messages.</p>
+                        <!-- Placeholder for future message list -->
+                    </div>
+                </div>
+            </div>
+            <!-- ROWS 6–9 : FEZ -->
+            <div class="c-dashboard__item c-slot-1-6 c-span-12 c-row-span-4">
+                <div class="card c-profile__card h-100 c-feature--locked">
+                    <div class="card-body d-flex align-items-center justify-content-center">
+                        <div class="text-center">
+                        <i class="bi bi-lock-fill"></i>
+                        <p class="mb-0">Future Expansion Zone</p>
                     </div>
                 </div>
             </div>
@@ -415,4 +404,6 @@
 <!-- Custom JS -->
 <script src="../assets/js/auth.js"></script>
 <script src="../assets/js/cookie-banner.js"></script>
+<script src="../assets/js/timeline-modal.js"></script>
+<script src="../assets/js/profile-pastoral-modal.js"></script>
 </html>

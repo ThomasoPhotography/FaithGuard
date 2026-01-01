@@ -2,21 +2,12 @@
 
 require_once __DIR__ . '/../db/FaithGuardRepository.php';
 
-    /* =========================================================
-        QUIZ COMPARISON SERVICE
-    ========================================================= */
     class QuizComparisonService{
-    /* =====================================================
-        PUBLIC ENTRY POINT
-    ===================================================== */
     public static function getAttemptComparisons($userId, $currentAttemptId): void{
         $previousAttemptId = FaithGuardRepository::getPreviousAttemptId($userId, $currentAttemptId);
         $currentAddictions  = FaithGuardRepository::getAttemptAddictions($currentAttemptId);
         $previousAddictions = $previousAttemptId ? FaithGuardRepository::getAttemptAddictions($previousAttemptId) : [];
         foreach ($currentAddictions as $addiction => $currentScore) {
-            /* ---------------------------------------------
-                NEW ADDICTION DETECTED
-            --------------------------------------------- */
             if (!isset($previousAddictions[$addiction])) {
                 self::storeComparison(
                     $currentAttemptId,
@@ -28,9 +19,6 @@ require_once __DIR__ . '/../db/FaithGuardRepository.php';
                 );
                 continue;
             }
-            /* ---------------------------------------------
-                EXISTING ADDICTION COMPARISON
-            --------------------------------------------- */
             $previousScore = (int) $previousAddictions[$addiction];
             $delta         = $currentScore - $previousScore;
             $trend         = self::determineTrend($delta);

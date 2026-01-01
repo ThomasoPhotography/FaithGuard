@@ -40,6 +40,7 @@ All notable changes to this project will be documented in this file.
 - C2-I-1: Render a chronological visual timeline of quiz attempts.
 - C2-I-2: Last vs Previous Attempt Comparison Cards.
 - C2-I-3: Pastoral Summaries: add reusable modal system for timeline details, pastoral summaries with repository-backed rendering which can be built upon.
+- Implement v0.1.4-alpha features (journaling system, victory counter, and WWTW branding), together with C2-I-3.
 
 ### Changed
 - `README.md` file got a professional make-over.

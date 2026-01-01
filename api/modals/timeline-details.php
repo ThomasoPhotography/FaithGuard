@@ -2,52 +2,30 @@
     declare (strict_types = 1);
 
     /* =========================================================
-        CORE REQUIREMENTS
-    ========================================================= */
-    require_once __DIR__ . "/../db/database.php";
-    require_once __DIR__ . "/../db/FaithGuardRepository.php";
-    require_once __DIR__ . "/../api/helper/debug.php";
-    require_once __DIR__ . "/../api/services/quizTimelineService.php";
+   CORE REQUIREMENTS
+========================================================= */
+    require_once __DIR__ . '/../db/database.php';
+    require_once __DIR__ . '/../db/FaithGuardRepository.php';
 
     /* =========================================================
-        SESSION SETUP
-    ========================================================= */
-    session_set_cookie_params([
-        'lifetime' => 302400,
-        'path'     => '/',
-        'domain'   => $_SERVER['SERVER_NAME'] ?? '',
-        'secure'   => true,
-        'httponly' => true,
-    ]);
+   SESSION & AUTH
+========================================================= */
     session_start();
 
+    if (
+        empty($_SESSION['logged_in']) ||
+        empty($_SESSION['user_id'])
+    ) {
+        echo '<p class="text-muted text-center mb-0">Please sign in to view history.</p>';
+        exit;
+    }
+
+    $userId = (int) $_SESSION['user_id'];
+
     /* =========================================================
-        AUTH GUARD (USER ONLY)
-    ========================================================= */
-    $is_logged_in = isset($_SESSION['logged_in'], $_SESSION['user_id'])
-        && $_SESSION['logged_in'] === true;
-
-    if (! $is_logged_in) {
-        header("Location: ../api/auth/login.php");
-        exit;
-    }
-
-    $userId    = $_SESSION['user_id'] ?? null;
-    $user      = FaithGuardRepository::getUserById($userId);
-    $timelines = QuizTimelineService::buildUserTimelines($userId);
-
-    if (! is_array($user)) {
-        session_destroy();
-        header("Location: ../api/auth/login.php");
-        exit;
-    }
-
-/*
-|--------------------------------------------------------------------------
-| Fetch timeline data from repository
-|--------------------------------------------------------------------------
-*/
-$timelines = FaithGuardRepository::getUserQuizTimeline($userId);
+   DATA FETCH
+========================================================= */
+    $timelines = FaithGuardRepository::getUserQuizTimeline($userId);
 
 if (empty($timelines)): ?>
     <p class="text-muted text-center mb-0">
@@ -73,7 +51,7 @@ if (empty($timelines)): ?>
                     <div class="small text-muted">
                         <?php foreach ($entry['addictions'] as $type => $score): ?>
                             <span class="me-2">
-                                <?php echo ucfirst($type); ?> (<?php echo $score; ?>)
+                                <?php echo ucfirst($type); ?> (<?php echo (int) $score; ?>)
                             </span>
                         <?php endforeach; ?>
                     </div>
