@@ -209,6 +209,7 @@ All notable changes to this project will be documented in this file.
 - Grid layout admin profile V2.
 - Grid layout profiles.
 - Grid layout profiles V2.
+- Grid layout user profile V2.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.
