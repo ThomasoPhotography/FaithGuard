@@ -337,7 +337,7 @@
                 </div>
             </div>
             <!-- ROWS 4–5 : TIMELINE -->
-            <div class="c-dashboard__item c-slot-1-4 c-span-9 c-row-span-2">
+            <div class="c-dashboard__item c-slot-1-4 c-span-6 c-row-span-2">
                 <div class="card c-profile__card h-100">
                     <div class="card-body">
                         <h5 class="card-title mb-4">
@@ -385,7 +385,7 @@
                 </div>
             </div>
             <!-- ROWS 4–5 : MESSAGES -->
-            <div class="c-dashboard__item c-slot-10-4 c-span-3 c-row-span-2">
+            <div class="c-dashboard__item c-slot-10-4 c-span-6 c-row-span-2">
                 <div class="card c-profile__card h-100">
                     <div class="card-body">
                         <h5><i class="bi bi-chat-dots me-2"></i> Messages</h5>
