@@ -139,12 +139,12 @@
                 <div class="d-flex dropdown c-dropdown">
                     <button class="btn c-btn c-dropdown__btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="c-dropdown__icon bi bi-person-check me-1"></i>
-                        <span class="c-dropdown__text">Welcome                                                                                                                             <?php echo $accountName; ?></span>
+                        <span class="c-dropdown__text">Welcome                                                                                                                                                                                           <?php echo $accountName; ?></span>
                     </button>
                     <!-- LOGGED-IN DROPDOWN MENU -->
                     <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu" aria-labelledby="userDropdown">
                         <li>
-                            <h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                                                                                                                 <?php echo ucfirst($user_role); ?></h6>
+                            <h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                                                                                                                                                                                                         <?php echo ucfirst($user_role); ?></h6>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
@@ -211,9 +211,9 @@
                 <div class="card c-profile__card h-100">
                     <div class="card-body">
                         <h5 class="card-title">Account Summary</h5>
-                        <p class="mb-1"><strong>Name:</strong>                                                               <?php echo $accountName; ?></p>
-                        <p class="mb-1"><strong>Role:</strong>                                                               <?php echo ucfirst($user_role); ?></p>
-                        <p class="mb-0"><strong>Member Since:</strong>                                                                       <?php echo $memberSince; ?></p>
+                        <p class="mb-1"><strong>Name:</strong>                                                                                                                             <?php echo $accountName; ?></p>
+                        <p class="mb-1"><strong>Role:</strong>                                                                                                                             <?php echo ucfirst($user_role); ?></p>
+                        <p class="mb-0"><strong>Member Since:</strong>                                                                                                                                             <?php echo $memberSince; ?></p>
                     </div>
                 </div>
             </div>
@@ -311,7 +311,7 @@
                 <div class="card c-profile__card h-100">
                     <div class="card-body">
                         <h5 class="card-title">Resources</h5>
-                        <p><strong>Total:</strong>                                                   <?php echo $resourceCount; ?></p>
+                        <p><strong>Total:</strong>                                                                                                     <?php echo $resourceCount; ?></p>
                         <a href="../resources/list.php" class="btn c-btn c-btn__dashboard w-100">Manage Resources</a>
                     </div>
                 </div>
@@ -331,7 +331,7 @@
                 </div>
             </div>
             <!-- ROWS 4–5 : MESSAGES -->
-            <div class="c-dashboard__item c-slot-10-4 c-span-6 c-row-span-2">
+            <div class="c-dashboard__item c-slot-10-4 c-span-12 c-row-span-2">
                 <div class="card c-profile__card h-100">
                     <div class="card-body">
                         <h5 class="card-title">Messages</h5>
