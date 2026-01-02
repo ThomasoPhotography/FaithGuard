@@ -261,7 +261,7 @@ p {
   text-decoration: none;
 }
 .c-cookie__icon {
-  width: 100%;
+  max-width: 2rem;
   height: auto;
   vertical-align: middle;
   margin-right: 0.5rem;

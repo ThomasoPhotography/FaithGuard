@@ -7,7 +7,7 @@ const showCookieBanner = () => {
 	if (!cookieBanner) {
 		cookieBanner = document.createElement('div');
 		cookieBanner.id = 'cookie-banner';
-		cookieBanner.className = 'alert alert-info alert-dismissible fade show position-fixed bottom-0 start-0 w-100 mb-0 border-0 rounded-0';
+		cookieBanner.className = 'alert alert-info alert-dismissible fade show position-fixed bottom-0 start-0 w-100 mb-0 border-0 rounded-0 c-cookie';
 		cookieBanner.innerHTML = `
             <div class="container-fluid">
                 <div class="row align-items-center">

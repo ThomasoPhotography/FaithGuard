@@ -198,6 +198,7 @@ All notable changes to this project will be documented in this file.
 - Relinking repository.
 - Relinking quiz services.
 - Quiz service and relinking of the service.
+- Minor bugs in services and rendering of the cookie-banner.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.
