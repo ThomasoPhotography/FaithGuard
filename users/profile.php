@@ -224,6 +224,7 @@
                         <h5 class="card-title">Account Summary</h5>
                         <p class="mb-1"><strong>Name:</strong> <?php echo $accountName; ?></p>
                         <p class="mb-1"><strong>Role:</strong> <?php echo ucfirst($user_role); ?></p>
+                        <p class="mb-1"><strong>Email:</strong><?php echo htmlspecialchars($user_data['email']); ?></p>
                         <p class="mb-0"><strong>Member Since:</strong> <?php echo $memberSince; ?></p>
                         <p class="mb-0"><strong>Total Interactions:</strong> <?php echo $totalPosts; ?></p>
                     </div>
