@@ -221,12 +221,11 @@
             <div class="c-dashboard__item c-slot-1-1 c-span-6">
                 <div class="card c-profile__card h-100">
                     <div class="card-body">
-                        <h5><i class="bi bi-person-circle me-2"></i>Account Summary</h5>
-                        <ul class="list-group list-group-flush mt-3">
-                            <li class="list-group-item"><strong>Email:</strong>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           <?php echo htmlspecialchars($user['email']); ?></li>
-                            <li class="list-group-item"><strong>Member Since:</strong>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     <?php echo $memberSince; ?></li>
-                            <li class="list-group-item"><strong>Total Interactions:</strong>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         <?php echo $totalPosts; ?></li>
-                        </ul>
+                        <h5 class="card-title">Account Summary</h5>
+                        <p class="mb-1"><strong>Name:</strong> <?php echo $accountName; ?></p>
+                        <p class="mb-1"><strong>Role:</strong> <?php echo ucfirst($user_role); ?></p>
+                        <p class="mb-0"><strong>Member Since:</strong> <?php echo $memberSince; ?></p>
+                        <p class="mb-0"><strong>Total Interactions:</strong> <?php echo $totalPosts; ?></p>
                     </div>
                 </div>
             </div>

@@ -82,8 +82,14 @@
         $recentMessages = FaithGuardRepository::getMessagesByUserId($_SESSION['user_id']);
         $recentMessages = array_slice($recentMessages, 0, 5);
     }
-
-    // Nav bar variables
+    // --- Quiz Results ---
+    $latestQuizResult = null;
+    $quizResults      = [];
+    if ($userId > 0) {
+        $quizResults      = FaithGuardRepository::getQuizResultsByUserId($userId) ?? [];
+        $latestQuizResult = $quizResults[0] ?? null;
+    }
+    // --- Nav bar variables ---
     $memberSince = date('d/M/Y', strtotime($user_data['created_at']));
 ?>
 <!DOCTYPE html>
