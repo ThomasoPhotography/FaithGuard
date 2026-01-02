@@ -302,8 +302,7 @@ p {
 		&:hover {
 			color: $primary-bg;
 			text-decoration: underline;
-			text-decoration-thickness: calc($spacing/4);
-			text-decoration-color: shade($primary-bg);
+			text-decoration-thickness: 0.15rem;
 		}
 	}
 }

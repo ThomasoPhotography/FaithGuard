@@ -276,8 +276,7 @@ p {
 .c-cookie__link:hover {
   color: #e9b48a;
   text-decoration: underline;
-  text-decoration-thickness: 0.5rem;
-  text-decoration-color: shade(#e9b48a);
+  text-decoration-thickness: 0.15rem;
 }
 
 .c-cta {

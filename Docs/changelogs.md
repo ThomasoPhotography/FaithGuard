@@ -202,6 +202,7 @@ All notable changes to this project will be documented in this file.
 - Visual rendering of cookie-banner.
 - Cookie-banner styling.
 - Visualisation of cookie-banner links.
+- Cookie-banner links styling.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.
