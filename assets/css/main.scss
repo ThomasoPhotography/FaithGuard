@@ -288,10 +288,13 @@ p {
 		}
 	}
 	&__icon {
-		max-width: $spacing;
+		display: flex !important;
+		justify-content: center !important;
+		align-items: center;
+		max-width: calc($spacing *4);
 		height: auto;
 		vertical-align: middle;
-		margin-right: 0.5rem;
+		margin-right: 0.75rem;
 	}
 }
 

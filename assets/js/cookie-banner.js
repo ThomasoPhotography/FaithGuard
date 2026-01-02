@@ -12,7 +12,7 @@ const showCookieBanner = () => {
             <div class="container-fluid">
                 <div class="row align-items-center">
                     <div class="col-md-8 col-12">
-					<img src="../../assets/uploads/Wordmark.svg" alt="Cookie Icon" class="me-2 c-cookie__icon">
+					<img src="../../assets/uploads/Wordmark.svg" alt="Cookie Icon" class="c-cookie__icon">
                         <p class="mb-0">
 							We use cookies to enhance your experience on FaithGuard. By continuing, you agree to our
 							<a href="../../policies.php?slug=cookie" target="_blank" class="alert-link">Cookie Policy</a>,

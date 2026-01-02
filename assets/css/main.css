@@ -261,10 +261,13 @@ p {
   text-decoration: none;
 }
 .c-cookie__icon {
-  max-width: 2rem;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center;
+  max-width: 8rem;
   height: auto;
   vertical-align: middle;
-  margin-right: 0.5rem;
+  margin-right: 0.75rem;
 }
 
 .c-cta {
