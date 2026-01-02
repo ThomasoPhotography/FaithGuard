@@ -205,6 +205,7 @@ All notable changes to this project will be documented in this file.
 - Cookie-banner links styling.
 - Target reassigned to parent.
 - Grid layout user profile.
+- Grid layout admin profile.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.
