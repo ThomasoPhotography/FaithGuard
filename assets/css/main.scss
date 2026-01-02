@@ -291,10 +291,20 @@ p {
 		display: flex !important;
 		justify-content: center !important;
 		align-items: center;
-		max-width: calc($spacing *4);
+		max-width: calc($spacing * 5) !important;
 		height: auto;
 		vertical-align: middle;
 		margin-right: 0.75rem;
+	}
+	&__link {
+		color: $text-light;
+		text-decoration: none;
+		&:hover {
+			color: $primary-bg;
+			text-decoration: underline;
+			text-decoration-thickness: calc($spacing/4);
+			text-decoration-color: shade($primary-bg);
+		}
 	}
 }
 

@@ -264,10 +264,20 @@ p {
   display: flex !important;
   justify-content: center !important;
   align-items: center;
-  max-width: 8rem;
+  max-width: 10rem !important;
   height: auto;
   vertical-align: middle;
   margin-right: 0.75rem;
+}
+.c-cookie__link {
+  color: #f5f5dc;
+  text-decoration: none;
+}
+.c-cookie__link:hover {
+  color: #e9b48a;
+  text-decoration: underline;
+  text-decoration-thickness: 0.5rem;
+  text-decoration-color: shade(#e9b48a);
 }
 
 .c-cta {

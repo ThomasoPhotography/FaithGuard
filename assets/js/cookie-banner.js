@@ -15,9 +15,9 @@ const showCookieBanner = () => {
 					<img src="../../assets/uploads/Wordmark.svg" alt="Cookie Icon" class="c-cookie__icon">
                         <p class="mb-0">
 							We use cookies to enhance your experience on FaithGuard. By continuing, you agree to our
-							<a href="../../policies.php?slug=cookie" target="_blank" class="alert-link">Cookie Policy</a>,
-							<a href="../../policies.php?slug=privacy" target="_blank" class="alert-link">Privacy Policy</a>, and
-							<a href="../../policies.php?slug=terms" target="_blank" class="alert-link">Terms of Service</a>.
+							<a href="../../policies.php?slug=cookie" target="_blank" class="alert-link c-cookie__link">Cookie Policy</a>,
+							<a href="../../policies.php?slug=privacy" target="_blank" class="alert-link c-cookie__link">Privacy Policy</a>, and
+							<a href="../../policies.php?slug=terms" target="_blank" class="alert-link c-cookie__link">Terms of Service</a>.
 						</p>
                     </div>
                     <div class="col-md-4 col-12 text-md-end mt-2 mt-md-0">
