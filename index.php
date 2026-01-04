@@ -283,4 +283,5 @@
 <!-- Custom JS -->
 <script src="assets/js/cookie-banner.js"></script>
 <script src="assets/js/auth.js"></script>
+<script src="assets/js/scripture-modal.js"></script>
 </html>

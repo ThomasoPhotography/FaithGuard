@@ -249,7 +249,6 @@ class FaithGuardRepository
         $row = Database::getSingleRow("SELECT id FROM quiz_attempts WHERE user_id = ? AND id < ? ORDER BY id DESC LIMIT 2", [$userId, $currentAttemptId]);
         return $row ? (int) $row['id'] : null;
     }
-
     /* ============================
         QUIZ — ATTEMPT ADDICTIONS
     ============================ */
@@ -512,5 +511,56 @@ class FaithGuardRepository
             $score <= 10 => 'moderate',
             default      => 'high',
         };
+    }
+    /* =====================================================
+        BIBLE / SCRIPTURE ACCESS
+    ===================================================== */
+    public static function getAvailableBibles(): ?array
+    {
+        return BibleApiService::getBibles();
+    }
+    public static function getBibleById(string $bibleId): ?array
+    {
+        return BibleApiService::getBibleVersion($bibleId);
+    }
+    public static function getVerse(string $bibleId, string $verseId): ?array
+    {
+        return BibleApiService::getVerse($bibleId, $verseId);
+    }
+    public static function searchScripture(string $bibleId, string $query): ?array
+    {
+        return BibleApiService::searchVerses($bibleId, $query);
+    }
+    /* =====================================================
+        SCRIPTURE CACHE
+    ===================================================== */
+    public static function getCachedVerse(string $bibleId, string $verseKey, string $translation): ?array
+    {
+        return Database::getSingleRow("SELECT * FROM scripture_cache sc WHERE id AND verse_key = ? AND translation = ? LIMIT 1", [$bibleId, $verseKey, $translation]);
+    }
+    public static function storeCachedVerse(string $bibleId, string $verseKey, string $translation, string $text): void
+    {
+        Database::execute("INSERT INTO scripture_cache (id, verse_key, translation, text, fetched_at) VALUES (?, ?, ?, ?, NOW()) ON DUPLICATE KEY UPDATE text = VALUES(text),fetched_at = NOW()", [$bibleId, $verseKey, $translation, $text]);
+    }
+    public static function resolveVerse(string $bibleId, string $verseKey, string $translation): ?array {
+        $cached = self::getCachedVerse($bibleId, $verseKey, $translation);
+        if ($cached) {
+            return [
+                'source' => 'cache',
+                'text'   => $cached['text'],
+                'fetched_at' => $cached['fetched_at'],
+            ];
+        }
+        $response = BibleApiService::getVerse($bibleId, $verseKey);
+        if (!isset($response['data']['content'])) {
+            return null;
+        }
+        $text = trim(strip_tags($response['data']['content']));
+        self::storeCachedVerse($bibleId, $verseKey, $translation, $text);
+        return [
+            'source' => 'api',
+            'text'   => $text,
+            'fetched_at' => date('Y-m-d H:i:s'),
+        ];
     }
 }
