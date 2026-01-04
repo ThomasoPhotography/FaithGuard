@@ -33,24 +33,34 @@ Customize and rebuild styles with your preferred SCSS tool:
 |  | `resources.php` | Searchable interface for the relational resource and scripture mapping system. |
 |  | `README.md` | Project overview and setup instructions. |
 |  | `.htaccess` | Enforces HTTPS and protects sensitive backend/database directories. |
+| **`/admin/`** | | **Folder with all admin endpoint logic.** |
+| | `profile.php` | **Admin Dashboard**. Orchestrates the display of timelines, summaries, and journaling. |
+|  | `moderation.php` | Endpoint for fetching all reported posts and/or resources. |
+|  | `policies.php` | Endpoint for fetching and updating all of the policies shown on the Client-side page `/policies.php`. |
+| **`/users/`** | | **Folder with all user endpoint logic.** |
+| | `profile.php` | **User Dashboard**. Orchestrates the display of timelines, summaries, and journaling. |
 ### 1.3.2. II. Backend PHP Logic (Server Endpoints)
 All server-side processing, database interaction, and API endpoints reside here.
 
 | Path | File / Folder | Purpose |
 | --- | --- | --- |
-| **`/admin/`** | | **Folder with all admin endpoint logic.** |
-|  | `moderation.php` | Endpoint for fetching all reported posts and/or resources. |
-|  | `policies.php` | Endpoint for fetching and updating all of the policies shown on the Client-side page `/policies.php`. |
-|  | `profile.php` | Endpoint for the Admin Dashboard. |
-| **`/api/auth/`** | | **Folder with all authentication endpoint logic.** |
+| **`/api/`** | | **Parent folder with all endpoint logic.** |
+|  | `config.php` | **Global Configuation**. Store API keys (Bible API) and base URL constants. |
+| **`/auth/`** | | **Folder with all authentication endpoint logic.** |
 |  | `login.php` | **Handles POST requests for user authentication and session creation.** |
 |  | `register.php` | **Handles POST requests for new user sign-up and password hashing.** |
 |  | `logout.php` | **Destroys the user's PHP session and logs them out.** |
+| **`/api/journal/`** | `create.php` | Saves reflections and returns situational encouragement based on detected triggers. |
+| **`/api/services`** | | **Business Logic Layer**. Dedicated service classes. |
+|  | `bibleApiService.php` | Integration with API.bible including local database caching logic. |
+|  | `languageService.php` | Logic for processing language selection on the website. |
+|  | `quizComparisonService.php` | Logic for comparing assessment attempts to track spiritual growth. |
+|  | `quizTimelineService.php` | Logic for processing raw quiz results into a formatted user timeline. |
 | **`/api/...`** | `/helper/`, `/posts/`, etc. | Contains various other logic endpoints for core application features. |
 | **`/db/`** | | **Folder with all database endpoint logic.** |
-|  | `database.php` | **PDO Connection Class.** Defines the static `getConnection()` method and error handling. |
-|  | `FaithGuardRepository.php` | **Data Access Layer (DAL).** Contains static methods (e.g., `getUserByEmail`) that execute queries using the `Database` class. |
-|  | `faithguard.sql` | **Complete Database Schema** (Tables, Indexes, Initial Data). Used for initial setup in phpMyAdmin. |
+|  | `database.php` | **PDO Connection Class**. Defines the singleton connection and timeout handling. |
+|  | `FaithGuardRepository.php` | **Data Access Layer (DAL).** Centralized SQL queries for the entire application. |
+|  | `faithguard.sql` | **Relational Schema**. Complete structure including foreign key constraints and seed data.|
 ### 1.3.3. III. Client-Side Assets
 | Path | File | Purpose |
 | --- | --- | --- |

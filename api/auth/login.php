@@ -53,6 +53,7 @@ if (password_verify($password, $user['password_hash'])) {
     $_SESSION = []; 
     $_SESSION['logged_in'] = true; 
     $_SESSION['user_id'] = $user['id'];
+    $_SESSION['language'] = $user['prefered_language'] ?? 'en';
     
     session_regenerate_id(true);
 

@@ -1,35 +1,80 @@
 <?php
-declare(strict_types=1);
+    declare (strict_types = 1);
 
-require_once __DIR__ . '/../services/bibleApiService.php';
-require_once __DIR__ . '/../../db/FaithGuardRepository.php';
-//require_once __DIR__ . '/../services/ScriptureLanguageResolver.php';
+    /* =========================================================
+   SESSION
+========================================================= */
+    session_start();
 
-$siteLanguage = $_SESSION['site_language'] ?? 'en';
-//$default      = ScriptureLanguageResolver::getDefaultTranslation($siteLanguage);
+    /* =========================================================
+   CORE REQUIREMENTS
+========================================================= */
+    require_once __DIR__ . '/../services/languageService.php';
+    require_once __DIR__ . '/../services/bibleApiService.php';
+    require_once __DIR__ . '/../../db/FaithGuardRepository.php';
 
-$bibleId      = $_GET['bibleId']     ?? $default['bibleId'];
-$translation  = $_GET['translation'] ?? $default['translation'];
+    /* =========================================================
+   INPUT GUARD
+========================================================= */
+    $verseKey = $_GET['verse'] ?? null;
 
-$result = FaithGuardRepository::resolveVerse(
-    $bibleId,
-    $verseKey,
-    $translation
-);
+    if (! $verseKey) {
+        echo '<p class="text-muted">No scripture selected.</p>';
+        exit;
+    }
 
-if (!$result) {
-    echo '<div class="alert alert-warning">Scripture could not be loaded.</div>';
-    exit;
-}
+    /* =========================================================
+   LANGUAGE & TRANSLATION
+========================================================= */
+    $language    = LanguageService::getCurrentLanguage();
+    $translation = LanguageService::getBibleTranslation();
+
+    /* =========================================================
+   SCRIPTURE RESOLUTION (CACHE → API)
+========================================================= */
+    $result = FaithGuardRepository::resolveVerse(
+        $translation,
+        $verseKey,
+        $bibleId,
+    );
+
+    if (! $result || empty($result['text'])) {
+        if ($language = 'en') {
+            echo '<div class="alert alert-warning">Scripture could not be loaded.</div>';
+            exit;
+        } else if ($language = 'nl') {
+            echo '<div class="alert alert-warning">Het Heilig Shrift kon niet geladen worden.</div>';
+            exit;
+        } else {
+            echo '<div class="alert alert-warning">Faithguard error 1: Language not found.</div>';
+            exit;
+        }
+    }
 ?>
 
-<div class="scripture-modal">
-    <p class="fw-bold mb-1"><?= htmlspecialchars($verseKey) ?> (<?= htmlspecialchars($translation) ?>)</p>
+<div class="c-scripture-modal">
+    <p class="fw-bold mb-1">
+        <?php echo htmlspecialchars($verseKey) ?>
+        <span class="text-muted small">(<?php echo htmlspecialchars($translation) ?>)</span>
+    </p>
+
     <blockquote class="blockquote">
-        <?= nl2br(htmlspecialchars($result['text'])) ?>
+        <?php echo nl2br(htmlspecialchars($result['text'])) ?>
     </blockquote>
 
     <p class="small text-muted mt-2">
-        Source: <?= $result['source'] === 'cache' ? 'Saved Scripture' : 'Bible API' ?>
+        Source:                <?php echo $result['source'] === 'cache' ? 'Saved Scripture' : 'Bible API' ?>
     </p>
+
+    <?php if ($language === 'nl'): ?>
+        <p class="small text-muted mt-3">
+            Schriftcitaten zijn afkomstig uit de NBV21.
+            Tekst kan afwijken van andere vertalingen.
+        </p>
+    <?php else: ?>
+        <p class="small text-muted mt-3">
+            Scripture quotations are from the NRSVUE.
+            Text may differ from other translations.
+        </p>
+    <?php endif; ?>
 </div>

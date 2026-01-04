@@ -30,6 +30,20 @@ class FaithGuardRepository
     {
         return Database::execute("DELETE FROM users WHERE id = ?", [$id]);
     }
+    public static function updateUserLanguage(int $userId, string $language): bool
+    {
+        return Database::execute(
+            "UPDATE users SET preferred_language = ? WHERE id = ?", [$language, $userId]
+        );
+    }
+    public static function getUserLanguage(int $userId): string
+    {
+        return Database::getSingleRow(
+            "SELECT preferred_language FROM users WHERE id = ? LIMIT 1", [$userId]
+        );
+        return $row['preferred_language'] ?? 'en';
+    }
+
     /* ============================
         MESSAGES
     ============================ */
@@ -542,24 +556,25 @@ class FaithGuardRepository
     {
         Database::execute("INSERT INTO scripture_cache (id, verse_key, translation, text, fetched_at) VALUES (?, ?, ?, ?, NOW()) ON DUPLICATE KEY UPDATE text = VALUES(text),fetched_at = NOW()", [$bibleId, $verseKey, $translation, $text]);
     }
-    public static function resolveVerse(string $bibleId, string $verseKey, string $translation): ?array {
+    public static function resolveVerse(string $bibleId, string $verseKey, string $translation): ?array
+    {
         $cached = self::getCachedVerse($bibleId, $verseKey, $translation);
         if ($cached) {
             return [
-                'source' => 'cache',
-                'text'   => $cached['text'],
+                'source'     => 'cache',
+                'text'       => $cached['text'],
                 'fetched_at' => $cached['fetched_at'],
             ];
         }
         $response = BibleApiService::getVerse($bibleId, $verseKey);
-        if (!isset($response['data']['content'])) {
+        if (! isset($response['data']['content'])) {
             return null;
         }
         $text = trim(strip_tags($response['data']['content']));
         self::storeCachedVerse($bibleId, $verseKey, $translation, $text);
         return [
-            'source' => 'api',
-            'text'   => $text,
+            'source'     => 'api',
+            'text'       => $text,
             'fetched_at' => date('Y-m-d H:i:s'),
         ];
     }

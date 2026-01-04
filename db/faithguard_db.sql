@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: com-linweb938.srv.combell-ops.net:3306
--- Generation Time: Dec 28, 2025 at 02:00 PM
+-- Generation Time: Jan 04, 2026 at 03:26 PM
 -- Server version: 8.0.36-28
 -- PHP Version: 7.4.33
 
@@ -70,7 +70,9 @@ CREATE TABLE `policies` (
 --
 
 INSERT INTO `policies` (`id`, `title`, `slug`, `content_title`, `content_text`, `created_at`, `updated_at`) VALUES
-(1, 'Terms of Service', 'terms', 'Terms of Service', '1. Introduction\r\n\r\nWelcome to FaithGuard (the \"Service\"), operated by WWTW (\"we,\" \"us,\" or \"our\"). By accessing our website (https://faithguard.site), you agree to be bound by these Terms of Service. If you disagree with any part of these terms, you may not access the Service.\r\n\r\n1.1 Nature of Service (Medical Disclaimer)\r\n\r\nFaithGuard provides faith-based resources and a community environment for individuals struggling with digitally influenced addictions.\r\n\r\nNot Medical Advice: The content provided is for informational and spiritual support purposes only. It is not a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of a physician or qualified health provider regarding medical conditions.\r\n\r\nNo Professional Relationship: Use of this website does not establish a doctor-patient or counsellor-client relationship.\r\n\r\n1.2 User Accounts\r\n\r\n- You must provide accurate and complete information when creating an account.\r\n- You are responsible for safeguarding your password.\r\n- You agree not to disclose your password to any third party.\r\n\r\n1.3 User Conduct\r\n\r\nYou agree not to use the Service:\r\n- In any way that violates national or international law.\r\n- To transmit any advertising or promotional material (spam).\r\n- To impersonate FaithGuard employees or other users.\r\n- To post content that is abusive, defamatory, or violates the faith-focused nature of the community.\r\n\r\n1.4 Intellectual Property\r\n\r\nThe Service and its original content, features, and functionality are the exclusive property of FaithGuard and its licensors.\r\n\r\n1.5 Governing Law\r\n\r\nThese Terms shall be governed by the laws of Belgium. Any disputes arising from these Terms will be subject to the exclusive jurisdiction of the courts of Kortrijk.', '2025-12-15 17:55:00', '2025-12-22 23:17:05');
+(1, 'Terms of Service', 'terms', 'Terms of Service', '1.1 Introduction\r\n\r\nWelcome to FaithGuard (the \"Service\"). FaithGuard is a ministry initiative of the TikTok account wwtw.be [WWTW | Christian Content]. WWTW stands for Walk With The Word.\r\n\r\nOur mission is rooted in the truth revealed in the Gospel according to John: that Jesus Christ is the Word (John 1:1), the eternal Son of God who declared, \"Before Abraham was, I Am.\" By accessing or using our website (https://faithguard.site), you agree to be bound by these Terms of Service.\r\n\r\n1.2 Nature of Service (Medical Disclaimer)\r\n\r\nFaithGuard provides faith-based resources and a community environment for individuals seeking spiritual freedom through the Word of God.\r\n- Not Medical Advice: The content provided is for informational and spiritual support purposes only. It is not a substitute for professional medical advice, diagnosis, or treatment.\r\n- No Professional Relationship: Use of this website does not establish a doctor-patient or counselor-client relationship.\r\n\r\n1.3 User Accounts\r\n- You must provide accurate information when creating an account.\r\n- You are responsible for safeguarding your credentials.\r\n-  wwtw.be reserves the right to terminate accounts that violate our community standards.\r\n\r\n1.4 Intellectual Property\r\n\r\nThe Service and its original content, features, and functionality are the exclusive property of wwtw.be [WWTW | Christian Content] and its licensors.\r\n\r\n1.5 Governing Law\r\n\r\nThese Terms shall be governed by the laws of Belgium. Any disputes will be subject to the exclusive jurisdiction of the courts of Kortrijk.', '2025-12-15 17:55:00', '2026-01-04 12:21:27'),
+(2, 'Privacy Policy', 'privacy', 'Privacy Policy', '2.1 Introduction\r\n\r\nFaithGuard is committed to protecting your personal data in accordance with the General Data Protection Regulation (GDPR) and the Belgian Data Protection Act.\r\n\r\n2.2 Data Controller\r\n\r\nwwtw.be [WWTW | Christian Content]\r\nWWTW: Walk With The Word\r\nBelgium\r\nContact Email: info@faithguard.site\r\n\r\n2.3 Data We Collect\r\n- Personal Data: Email address, name, and account credentials.\r\n- Sensitive Data: Information regarding spiritual struggles or beliefs provided voluntarily. We process this data solely based on your explicit consent to aid in your journey with the Word (Art. 9(2)(a) GDPR).\r\n\r\n2.4 Purpose of Processing\r\n- To provide personalized scripture recommendations.\r\n- To manage the community forum and journal features.\r\n- To facilitate your spiritual growth as part of the WWTW community.\r\n\r\n2.5 Your Rights\r\n\r\nUnder GDPR, you have the right to access, rectify, or erase your data. To exercise these rights, please contact the WWTW team at the email provided above.', '2026-01-04 12:27:24', '2026-01-04 12:30:44'),
+(3, 'Cookie Policy', 'cookie', 'Cookie Policy', '3.1 What are Cookies?\r\n\r\nCookies are small text files used to help the FaithGuard website function efficiently.\r\n\r\n3.2 Necessary Cookies\r\n - `PHPSESSID`: Essential for maintaining your session within the wwtw.be ecosystem. Deleted upon closing the browser.\r\n\r\n3.3 Consent and Management\r\n\r\nBy using our site, you consent to strictly necessary cookies. For all other cookies, we will request your consent via our WWTW-branded cookie banner.', '2026-01-04 12:28:45', '2026-01-04 12:32:18');
 
 -- --------------------------------------------------------
 
@@ -344,16 +346,17 @@ CREATE TABLE `users` (
   `password_hash` varchar(255) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
   `role` varchar(50) NOT NULL DEFAULT 'user',
-  `created_at` datetime DEFAULT CURRENT_TIMESTAMP
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `preferred_language` char(2) NOT NULL DEFAULT 'en'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `email`, `password_hash`, `name`, `role`, `created_at`) VALUES
-(1, 'admin@faithguard.com', '$2y$12$Si3tc0jbzi7SZ85svjKhLeMkVf1aoQcpMaGis/s.obNQoKdAm7YqW', 'Admin', 'admin', '2025-12-22 23:03:16'),
-(2, 'thomas.deseure@proton.me', '$2y$12$M5By2UvRbwuTvrFfYh42UOzM1tv1KnQGbedtlbWnCqu6wnNGrIATO', 'Thomas', 'user', '2025-12-24 00:04:49');
+INSERT INTO `users` (`id`, `email`, `password_hash`, `name`, `role`, `created_at`, `preferred_language`) VALUES
+(1, 'admin@faithguard.com', '$2y$12$Si3tc0jbzi7SZ85svjKhLeMkVf1aoQcpMaGis/s.obNQoKdAm7YqW', 'Admin', 'admin', '2025-12-06 23:03:16', 'en'),
+(2, 'thomas.deseure@proton.me', '$2y$12$M5By2UvRbwuTvrFfYh42UOzM1tv1KnQGbedtlbWnCqu6wnNGrIATO', 'Thomas', 'user', '2025-12-07 00:04:49', 'en');
 
 --
 -- Indexes for dumped tables
@@ -524,7 +527,7 @@ ALTER TABLE `messages`
 -- AUTO_INCREMENT for table `policies`
 --
 ALTER TABLE `policies`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `posts`

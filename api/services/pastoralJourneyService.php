@@ -25,7 +25,7 @@ class PastoralJourneyService
         ];
     }
     /* -----------------------------
-       STAGE DETERMINATION
+        STAGE DETERMINATION
     ----------------------------- */
     private static function determineStage(int $score, array $answers): string
     {
@@ -42,7 +42,7 @@ class PastoralJourneyService
     }
 
     /* -----------------------------
-       TAG PROFILE
+        TAG PROFILE
     ----------------------------- */
     private static function buildTagProfile(
         string $addiction,
@@ -63,7 +63,7 @@ class PastoralJourneyService
     }
 
     /* -----------------------------
-       RESOURCE RANKING
+        RESOURCE RANKING
     ----------------------------- */
     private static function rankResources(
         array $resources,
@@ -97,7 +97,7 @@ class PastoralJourneyService
     }
 
     /* -----------------------------
-       JOURNEY FORMATTING
+        JOURNEY FORMATTING
     ----------------------------- */
     private static function formatJourney(string $stage, array $resources): array
     {
