@@ -36,13 +36,6 @@ class FaithGuardRepository
             "UPDATE users SET preferred_language = ? WHERE id = ?", [$language, $userId]
         );
     }
-    public static function getUserLanguage(int $userId): string
-    {
-        return Database::getSingleRow(
-            "SELECT preferred_language FROM users WHERE id = ? LIMIT 1", [$userId]
-        );
-        return $row['preferred_language'] ?? 'en';
-    }
 
     /* ============================
         MESSAGES

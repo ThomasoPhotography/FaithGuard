@@ -888,12 +888,6 @@ p {
 .c-nav__item a:hover {
   text-decoration: underline;
 }
-.c-nav__language {
-  margin-left: 1rem;
-  margin-right: 1rem;
-  display: flex;
-  align-items: center;
-}
 .c-nav__link {
   color: #3c3c34;
   text-decoration: none;
@@ -937,11 +931,6 @@ p {
   color: #f5f5dc;
   outline: none;
   box-shadow: 0 0 5px #5c352c;
-}
-.c-nav__selector {
-  min-width: 8.125rem;
-  font-size: 0.85rem;
-  padding: 0.25rem 0.5rem;
 }
 .c-nav__toggler {
   border: none;
@@ -1228,20 +1217,6 @@ p {
 @media (max-width: 991.98px) {
   .navbar-collapse {
     margin-top: 1rem;
-  }
-}
-@media (min-width: 992px) {
-  .c-nav__bar {
-    order: 1;
-  }
-  .c-nav__collapse {
-    flex-direction: row;
-  }
-  .c-nav__dropdown {
-    order: 3;
-  }
-  .c-nav__language {
-    order: 4;
   }
 }
 @media (min-width: 992px) {

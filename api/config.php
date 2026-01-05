@@ -21,11 +21,3 @@ if (basename(__FILE__) === basename($_SERVER['SCRIPT_FILENAME'])) {
     http_response_code(403);
     die('Direct access not allowed.');
 }
-
-// Language configuration
-const SITE_LANGUAGES     = ['en', 'nl'];
-const DEFAULT_LANGUAGE   = 'en';
-const BIBLE_TRANSLATIONS = [
-    'en' => 'NRSVUE',
-    'nl' => 'NBV21',
-];

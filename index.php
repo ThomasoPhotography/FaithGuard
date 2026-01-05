@@ -11,10 +11,10 @@
     }
 
     // --- Core App Requirements (Always required) ---
-    require_once __DIR__ . "../../../db/database.php";
-    require_once __DIR__ . "../../../db/FaithGuardRepository.php";
+    require_once __DIR__ . "/db/database.php";
+    require_once __DIR__ . "/db/FaithGuardRepository.php";
     // --- Optional Helper/Debug (Required, but note its function) ---
-    require_once __DIR__ . "../../../api/helper/debug.php";
+    require_once __DIR__ . "/api/helper/debug.php";
 
     $is_logged_in = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
 
@@ -37,7 +37,7 @@
             unset($_SESSION['user_id']);
             unset($_SESSION['logged_in']);
             $is_logged_in = false;
-            header("Location: ../api/auth/register.php");
+            header("Location: /api/auth/register.php");
             exit();
         }
     }
@@ -65,12 +65,12 @@
     <!-- Title -->
     <title>FaithGuard</title>
     <!-- Favicon -->
-    <link rel="icon" href="../../assets/uploads/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/assets/uploads/favicon.ico" type="image/x-icon">
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <!-- Stylesheet -->
-    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/main.css">
 </head>
 
 <body>
@@ -98,29 +98,18 @@
                         <a class="nav-link c-nav__link" href="contact.php">Contact</a>
                     </li>
                 </ul>
-                <!-- LANGUAGE SELECTOR   -->
-                <form method="post" action="../../../api/actions/set-language.php" class="d-inline c-nav__language">
-                    <select name="language" class="form-select form-select-sm c-nav__selector" onchange="this.form.submit()">
-                        <option value="en" class="c-nav__selector c-nav__selector--en"
-                            <?php echo($_SESSION['language'] ?? 'en') === 'en' ? 'selected' : '' ?>> English
-                        </option>
-                        <option value="nl" class="c-nav__selector c-nav__selector--nl"
-                            <?php echo($_SESSION['language'] ?? '') === 'nl' ? 'selected' : '' ?>> Nederlands
-                        </option>
-                    </select>
-                </form>
                 <!-- RIGHT SIDE: USER/LOGIN DROPDOWN -->
                 <?php if ($is_logged_in && $user): ?>
                 <!-- Logged-in user menu -->
                 <div class="d-flex dropdown c-nav__dropdown c-dropdown">
                     <button class="btn c-btn c-dropdown__btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="c-dropdown__icon bi bi-person-check me-1"></i>
-                        <span class="c-dropdown__text">Welcome                                                                                                                                                                                                                                                                                                                       <?php echo $accountName; ?></span>
+                        <span class="c-dropdown__text">Welcome                                                                                                                                                                                                                                                                                                                                                                                                                                                   <?php echo $accountName; ?></span>
                     </button>
                     <!-- LOGGED-IN DROPDOWN MENU -->
                     <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu" aria-labelledby="userDropdown">
                         <li>
-                            <h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                                                                                                                                                                                                                                                                                                                                                                                         <?php echo ucfirst($user_role); ?></h6>
+                            <h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         <?php echo ucfirst($user_role); ?></h6>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
@@ -213,7 +202,7 @@
                                 <div class="card-body c-card__body">
                                     <h5 class="card-title c-card__title"><?php echo htmlspecialchars($resource['title']); ?></h5>
                                     <p class="card-text c-card__text"><?php echo htmlspecialchars(substr($resource['content'], 0, 100)) . (strlen($resource['content']) > 100 ? '...' : ''); ?></p>
-                                    <a href="templates/resources.html?id=<?php echo $resource['id']; ?>" class="btn c-btn c-card__btn">Learn More</a>
+                                    <a href="/resources.php?id=<?php echo $resource['id']; ?>" class="btn c-btn c-card__btn">Learn More</a>
                                 </div>
                             </div>
                         </div>
@@ -251,7 +240,7 @@
             <div class="row">
                 <!-- Footer Content: Left -->
                 <div class="col-md-6 col-12">
-                    <img class="c-footer__logo" src="../../assets/uploads/FaithGuard_Secondary_Logo.svg" alt="Secondary Logo">
+                    <img class="c-footer__logo" src="/assets/uploads/FaithGuard_Secondary_Logo.svg" alt="Secondary Logo">
                     <p class="c-footer__text">&copy; 2025 FaithGuard. All rights reserved. Overcoming addiction through Christ &amp; Protecting your digital faith with hope and redemption.</p>
                 </div>
                 <!-- Footer Content: Right -->
@@ -295,14 +284,14 @@
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 <!-- Custom JS -->
-<script src="../../assets/js/auth.js"></script>
-<script src="../../assets/js/cookie-banner.js"></script>
-<script src="../../assets/js/journal.js"></script>
-<script src="../../assets/js/profile-timeline-modal.js"></script>
-<script src="../../assets/js/profile-pastoral-modal.js"></script>
-<script src="../../assets/js/messaging.js"></script>
-<script src="../../assets/js/progress.js"></script>
-<script src="../../assets/js/quiz.js"></script>
-<script src="../../assets/js/resources.js"></script>
-<script src="../../assets/js/scripture-modal.js"></script>
+<script src="/assets/js/auth.js"></script>
+<script src="/assets/js/cookie-banner.js"></script>
+<script src="/assets/js/journal.js"></script>
+<script src="/assets/js/profile-timeline-modal.js"></script>
+<script src="/assets/js/profile-pastoral-modal.js"></script>
+<script src="/assets/js/messaging.js"></script>
+<script src="/assets/js/progress.js"></script>
+<script src="/assets/js/quiz.js"></script>
+<script src="/assets/js/resources.js"></script>
+<script src="/assets/js/scripture-modal.js"></script>
 </html>

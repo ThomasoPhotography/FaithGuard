@@ -61,6 +61,7 @@ All notable changes to this project will be documented in this file.
 - Placeholder background image from hero section in `main.css`.
 - Both `/templates/footer.html` and `/assets/js/footer.js`.
 - Unneccesary file in `/api/resources`, namely `/api/resources/list.php`.
+- Language selector and its files.
 
 ### Fixed
 - Logout function of php.

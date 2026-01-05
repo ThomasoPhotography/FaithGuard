@@ -934,13 +934,6 @@ p {
 		}
 	}
 
-	&__language {
-		margin-left: 1rem;
-		margin-right: 1rem;
-		display: flex;
-		align-items: center;
-	}
-
 	&__link {
 		color: $text-dark;
 		text-decoration: none;
@@ -986,12 +979,6 @@ p {
 			outline: none;
 			box-shadow: 0 0 5px $accent;
 		}
-	}
-
-	&__selector {
-		min-width: 8.125rem;
-		font-size: 0.85rem;
-		padding: 0.25rem 0.5rem;
 	}
 
 	&__toggler {
@@ -1297,26 +1284,6 @@ p {
 @media (max-width: 991.98px) {
 	.navbar-collapse {
 		margin-top: 1rem;
-	}
-}
-// Desktop Navbar
-@media (min-width: 992px) {
-	.c-nav {
-		&__bar {
-			order: 1;
-		}
-
-		&__collapse {
-			flex-direction: row;
-		}
-
-		&__dropdown {
-			order: 3;
-		}
-
-		&__language {
-			order: 4;
-		}
 	}
 }
 // Grid Slot (12 × 9)
