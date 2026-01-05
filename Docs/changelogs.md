@@ -215,6 +215,7 @@ All notable changes to this project will be documented in this file.
 - Grid layout user profile V3.
 - User and Admin profile cleaned up.
 - Minor code changes to implement C2-I-4.
+- Implement language selector to pages => 'en' modified to implementation.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.

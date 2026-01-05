@@ -1,8 +1,8 @@
 <?php
     // --- Core App Requirements ---
-    require_once __DIR__ . "/db/database.php";
-    require_once __DIR__ . "/db/FaithGuardRepository.php";
-    require_once __DIR__ . "/api/helper/debug.php";
+    require_once __DIR__ . "../../../db/database.php";
+    require_once __DIR__ . "../../../db/FaithGuardRepository.php";
+    require_once __DIR__ . "../../../api/helper/debug.php";
 
     // --- Session (same pattern as other pages) ---
     session_set_cookie_params([
@@ -73,33 +73,45 @@
     <meta name="robots" content="noindex">
     <title><?php echo $title; ?> - FaithGuard</title>
 
-    <link rel="icon" href="assets/uploads/favicon.ico">
+    <link rel="icon" href="../../assets/uploads/favicon.ico">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/main.css">
 </head>
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light c-nav">
         <div class="container-fluid">
             <!-- LEFT SIDE: LOGO + BRAND -->
-            <a class="navbar-brand c-nav__brand" href="../index.php">
+            <a class="navbar-brand c-nav__brand" href="index.php">
                 <img src="assets/uploads/FaithGuard_Primary_Logo.svg" alt="FaithGuard Logo" class="c-nav__logo">
             </a>
             <button class="navbar-toggler c-nav__toggler c-nav__toggler--btn" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+            <!-- LANGUAGE SELECTOR   -->
+            <form method="post" action="../../../api/actions/set-language.php" class="d-inline c-nav__language">
+                <select name="language" class="form-select form-select-sm c-nav__selector" onchange="this.form.submit()">
+                    <option value="en" class="c-nav__selector c-nav__selector--en" <?php echo ($_SESSION['language'] ?? 'en') === 'en' ? 'selected' : ''?>>
+                        English
+                    </option>
+                    <option value="nl" class="c-nav__selector c-nav__selector--nl" <?php echo ($_SESSION['language'] ?? '') === 'nl' ? 'selected' : ''?>>
+                        Nederlands
+                    </option>
+                </select>
+            </form>
+            <!-- NAV -->
             <div class="collapse navbar-collapse" id="navbarNav">
                 <!-- Main Navigation Links (CENTER/LEFT) -->
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item c-nav__item">
-                        <a class="nav-link c-nav__link" href="templates/community.html">Community</a>
+                        <a class="nav-link c-nav__link" href="about.php">About</a>
                     </li>
                     <li class="nav-item c-nav__item">
-                        <a class="nav-link c-nav__link" href="templates/progress.html">Progress</a>
+                        <a class="nav-link c-nav__link" href="resources.php">Resources</a>
                     </li>
                     <li class="nav-item c-nav__item">
-                        <a class="nav-link c-nav__link" href="templates/resources.html">Resources</a>
+                        <a class="nav-link c-nav__link" href="contact.php">Contact</a>
                     </li>
                 </ul>
                 <!-- RIGHT SIDE: USER/LOGIN DROPDOWN -->
@@ -108,12 +120,12 @@
                 <div class="d-flex dropdown c-dropdown">
                     <button class="btn c-btn c-dropdown__btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="c-dropdown__icon bi bi-person-check me-1"></i>
-                        <span class="c-dropdown__text">Welcome                                                                                                                                                                                                                                                                                                                       <?php echo $accountName; ?></span>
+                        <span class="c-dropdown__text">Welcome                                                                                                                                                                                           <?php echo $accountName; ?></span>
                     </button>
                     <!-- LOGGED-IN DROPDOWN MENU -->
                     <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu" aria-labelledby="userDropdown">
                         <li>
-                            <h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                                                                                                                                                                                                                                                                                                                                                                                         <?php echo ucfirst($user_role); ?></h6>
+                            <h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                                                                                                                                                                                                         <?php echo ucfirst($user_role); ?></h6>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
@@ -185,7 +197,7 @@
             <div class="row">
                 <!-- Footer Content: Left -->
                 <div class="col-md-6 col-12">
-                    <img class="c-footer__logo" src="assets/uploads/FaithGuard_Secondary_Logo.svg" alt="Secondary Logo">
+                    <img class="c-footer__logo" src="../../assets/uploads/FaithGuard_Secondary_Logo.svg" alt="Secondary Logo">
                     <p class="c-footer__text">&copy; 2025 FaithGuard. All rights reserved. Overcoming addiction through Christ &amp; Protecting your digital faith with hope and redemption.</p>
                 </div>
                 <!-- Footer Content: Right -->
@@ -227,7 +239,7 @@
     </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-<script src="assets/js/auth.js"></script>
-<script src="assets/js/cookie-banner.js"></script>
+<script src="../../assets/js/auth.js"></script>
+<script src="../../assets/js/cookie-banner.js"></script>
 </body>
 </html>
