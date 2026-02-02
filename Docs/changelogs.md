@@ -43,6 +43,7 @@ All notable changes to this project will be documented in this file.
 - Implement v0.1.4-alpha features (journaling system, victory counter, and WWTW branding), together with C2-I-3.
 - Introduce central Scripture language resolver to map site language to default Bible translations (NRSVUE for EN, NBV21 for NL). Scripture modal now respects site language: while allowing user translation overrides, ensuring future compatibility with a global language chooser.
 - C2-I-3.2: apply user language preference to scripture modal with translation defaults and disclaimers.
+- Add Bible API key constant to Database class for secure server-side storage.
 
 ### Changed
 - `README.md` file got a professional make-over.
