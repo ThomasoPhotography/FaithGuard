@@ -17,7 +17,7 @@ $password = $input['password'];
 $remember = $input['remember'] ?? false;
 
 // Find user
-$user = FaithGuardRepository::findUserByEmail($email);
+$user = FaithGuardRepository::getUserByEmail($email);
 if (! $user) {
     errorResponse('Invalid email or password', 401);
 }

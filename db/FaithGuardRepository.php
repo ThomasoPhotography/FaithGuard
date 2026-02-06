@@ -8,7 +8,7 @@ class FaithGuardRepository
 
     //Find user by ID
 
-    public static function findUserById(int $id): ?array
+    public static function getUserById(int $id): ?array
     {
         return Database::getSingleRow(
             "SELECT id, username, email, first_name, last_name, avatar_url, bio,
@@ -20,7 +20,7 @@ class FaithGuardRepository
 
     //Find user by email (includes password hash for auth)
 
-    public static function findUserByEmail(string $email): ?array
+    public static function getUserByEmail(string $email): ?array
     {
         return Database::getSingleRow(
             "SELECT * FROM users WHERE email = ? AND is_active = 1",
@@ -30,13 +30,13 @@ class FaithGuardRepository
 
     //Find user by username
 
-    public static function findUserByUsername(string $username): ?array
+    public static function getUserByName(string $firstName, string $lastName): ?array
     {
         return Database::getSingleRow(
-            "SELECT id, username, email, first_name, last_name, avatar_url, bio,
+            "SELECT id, email, first_name, last_name, avatar_url, bio,
                     is_admin, is_active, created_at, last_login
-            FROM users WHERE username = ?",
-            [$username]
+            FROM users WHERE first_name = ? AND last_name = ?",
+            [$firstName, $lastName]
         );
     }
 

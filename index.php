@@ -1,13 +1,13 @@
 <?php
     session_set_cookie_params([
-        'lifetime' => 302400, // 3.5 days (84 hours)
-        'path'     => '/',
-        'domain'   => $_SERVER['SERVER_NAME'] ?? '',
-        'secure'   => true,
-        'httponly' => true,
+    'lifetime' => 302400, // 3.5 days (84 hours)
+    'path'     => '/',
+    'domain'   => $_SERVER['SERVER_NAME'] ?? '',
+    'secure'   => true,
+    'httponly' => true,
     ]);
     if (session_status() === PHP_SESSION_NONE) {
-        session_start();
+    session_start();
     }
 
     // --- Core App Requirements (Always required) ---
@@ -24,27 +24,27 @@
     $user_role   = 'user';
 
     if ($is_logged_in && isset($_SESSION['user_id'])) {
-        // Fetch user data using the repository method
-        $user_data = FaithGuardRepository::getUserById($_SESSION['user_id']);
+    // Fetch user data using the repository method
+    $user_data = FaithGuardRepository::getUserById($_SESSION['user_id']);
 
-        if ($user_data) {
-            $user = true;
-            // Assuming your 'users' table has a 'name' or 'email' column and a 'role' column
-            $accountName = htmlspecialchars($user_data['name'] ?? $user_data['email']);
-            $user_role   = $user_data['role'] ?? 'user';
-        } else {
-            // Logged-in session exists, but user not found in DB (session cleanup needed)
-            unset($_SESSION['user_id']);
-            unset($_SESSION['logged_in']);
-            $is_logged_in = false;
-            header("Location: /api/auth/register.php");
-            exit();
-        }
+    if ($user_data) {
+        $user = true;
+        // Assuming your 'users' table has a 'name' or 'email' column and a 'role' column
+        $accountName = htmlspecialchars($user_data['name'] ?? $user_data['email']);
+        $user_role   = $user_data['role'] ?? 'user';
+    } else {
+        // Logged-in session exists, but user not found in DB (session cleanup needed)
+        unset($_SESSION['user_id']);
+        unset($_SESSION['logged_in']);
+        $is_logged_in = false;
+        header("Location: /api/auth/register.php");
+        exit();
+    }
     }
 
     // --- Fetch Resources for Dynamic Display ---
     // Fetch all resources from DB
-    $resources = FaithGuardRepository::getAllResources();
+    $resources = FaithGuardRepository::getResources($type, $category); // Adjust type as needed (e.g., 'featured', 'latest')
     // Limit to 6 for display (adjust as needed)
     $max_resources = 6;
 ?>
