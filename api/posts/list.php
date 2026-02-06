@@ -1,5 +1,0 @@
-<?php
-require_once __DIR__ . '../../db/database.php';
-$posts = Database::getRows("SELECT * FROM posts");
-echo json_encode($posts);
-?>

@@ -1,67 +1,52 @@
 <?php
-session_set_cookie_params([
-    'lifetime' => 302400, // 3.5 days (84 hours)
-    'path' => '/',       
-    'domain' => $_SERVER['HTTP_HOST'] ?? '',
-    'secure' => true,    
-    'httponly' => true
+require_once __DIR__ . '/../base.php';
+
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    errorResponse('Method not allowed', 405);
+}
+
+$input = getJsonInput();
+validateRequired($input, ['email', 'password']);
+
+$email = filter_var(sanitize($input['email']), FILTER_VALIDATE_EMAIL);
+if (! $email) {
+    errorResponse('Invalid email address');
+}
+
+$password = $input['password'];
+$remember = $input['remember'] ?? false;
+
+// Find user
+$user = FaithGuardRepository::findUserByEmail($email);
+if (! $user) {
+    errorResponse('Invalid email or password', 401);
+}
+
+// Verify password
+if (! password_verify($password, $user['password_hash'])) {
+    errorResponse('Invalid email or password', 401);
+}
+
+// Update last login
+FaithGuardRepository::updateLastLogin($user['id']);
+
+// Create session
+$sessionLifetime = $remember ? SESSION_LIFETIME : (60 * 60 * 24); // 7 days or 1 day
+$expiresAt       = time() + $sessionLifetime;
+$sessionToken    = generateToken();
+
+FaithGuardRepository::createSession($sessionToken, $user['id'], $expiresAt);
+setSessionCookie($sessionToken, $expiresAt);
+
+// Return user data (exclude sensitive fields)
+successResponse([
+    'user' => [
+        'id'         => $user['id'],
+        'username'   => $user['username'],
+        'email'      => $user['email'],
+        'first_name' => $user['first_name'],
+        'last_name'  => $user['last_name'],
+        'avatar_url' => $user['avatar_url'],
+        'is_admin'   => (bool) $user['is_admin'],
+    ],
 ]);
-session_start();
-require_once __DIR__ . '/../../db/database.php';
-require_once __DIR__ . '/../../db/FaithGuardRepository.php'; 
-require_once __DIR__ . '/../helper/debug.php'; 
-
-header('Content-Type: application/json');
-
-$debug = true;
-
-// --- 1. Handle Input (Reads JSON sent by JavaScript) ---
-$json_data = file_get_contents('php://input');
-$data = json_decode($json_data, true);
-
-if (!$data || json_last_error() !== JSON_ERROR_NONE || !isset($data['email'], $data['password'])) {
-    $response = ['success' => false, 'error' => 'Invalid input format or missing fields.'];
-    echo json_encode($response);
-    exit;
-}
-
-// Sanitize inputs
-$email = filter_var($data['email'], FILTER_SANITIZE_EMAIL);
-$password = $data['password'];
-
-// --- 2. Authentication Logic ---
-try {
-    $user = FaithGuardRepository::getUserByEmail($email);
-} catch (Throwable $e) {
-    // Database error handling (returns 500 equivalent)
-    error_log("FATAL LOGIN ERROR (DB/REPO): " . $e->getMessage());
-    echo json_encode(['success' => false, 'error' => 'Server Configuration Error.']);
-    exit;
-}
-
-// Change logic flow in three parts:
-// A. User not found -> Return specific JSON error (SKIP REDIRECT)
-if (!$user) {
-    echo json_encode(['success' => false, 'error' => 'User not found']);
-    exit;
-}
-
-// B. User found -> Check password
-if (password_verify($password, $user['password_hash'])) {
-    
-    // --- SUCCESS: Establish Session ---
-    $_SESSION = []; 
-    $_SESSION['logged_in'] = true; 
-    $_SESSION['user_id'] = $user['id'];
-    $_SESSION['language'] = $user['prefered_language'] ?? 'en';
-    
-    session_regenerate_id(true);
-
-    $_SESSION['token'] = bin2hex(random_bytes(16));
-    
-    echo json_encode(['success' => true, 'token' => $_SESSION['token']]);
-    
-} else {
-    // C. User found, but invalid password
-    echo json_encode(['success' => false, 'error' => 'Invalid credentials']);
-}

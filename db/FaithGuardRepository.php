@@ -1,574 +1,386 @@
 <?php
-require_once dirname(__FILE__) . "/database.php";
+require_once __DIR__ . '/database.php';
 
 class FaithGuardRepository
 {
-    /* ============================
-        USERS
-    ============================ */
-    public static function getUserByEmail($email)
-    {
-        return Database::getSingleRow("SELECT id, password_hash FROM users WHERE email = ?", [$email]);
-    }
-    public static function getUserById($id)
-    {
-        return Database::getSingleRow("SELECT * FROM users WHERE id = ?", [$id]);
-    }
-    public static function createUser($email, $passwordHash, $name = null, $role = 'user')
-    {
-        return Database::execute("INSERT INTO users (email, password_hash, name, role) VALUES (?, ?, ?, ?)",
-            [$email, $passwordHash, $name, $role]
-        );
-    }
-    public static function updateUser($id, $email, $name, $role)
-    {
-        return Database::execute("UPDATE users SET email = ?, name = ?, role = ? WHERE id = ?",
-            [$email, $name, $role, $id]
-        );
-    }
-    public static function deleteUser($id)
-    {
-        return Database::execute("DELETE FROM users WHERE id = ?", [$id]);
-    }
-    public static function updateUserLanguage(int $userId, string $language): bool
-    {
-        return Database::execute(
-            "UPDATE users SET preferred_language = ? WHERE id = ?", [$language, $userId]
-        );
-    }
 
-    /* ============================
-        MESSAGES
-    ============================ */
-    public static function getAllMessages()
-    {
-        return Database::getRows("SELECT * FROM messages ORDER BY created_at DESC");
-    }
-    public static function getMessagesByUserId($userId)
-    {
-        return Database::getRows(
-            "SELECT * FROM messages WHERE sender_id = ? OR receiver_id = ? ORDER BY created_at DESC",
-            [$userId, $userId]
-        );
-    }
-    public static function getInboxByUserId($userId)
-    {
-        return Database::getRows("SELECT * FROM messages WHERE receiver_id = ? ORDER BY created_at DESC", [$userId]);
-    }
-    public static function createMessage($senderId, $receiverId, $content)
-    {
-        return Database::execute(
-            "INSERT INTO messages (sender_id, receiver_id, content) VALUES (?, ?, ?)",
-            [$senderId, $receiverId, $content]
-        );
-    }
-    public static function deleteMessage($id)
-    {
-        return Database::execute("DELETE FROM messages WHERE id = ?", [$id]);
-    }
-    /* ============================
-        POSTS
-    ============================ */
-    public static function getAllPosts()
-    {
-        return Database::getRows("SELECT * FROM posts ORDER BY created_at DESC");
-    }
-    public static function getPostsByUserId($userId)
-    {
-        return Database::getRows("SELECT * FROM posts WHERE user_id = ? ORDER BY created_at DESC", [$userId]);
-    }
-    public static function getAllReportedPosts()
-    {
-        return Database::getRows("SELECT p.*, r.reason, r.user_id AS reporter_id, r.created_at AS reported_at FROM posts p JOIN reports r ON p.id = r.post_id ORDER BY r.created_at DESC");
-    }
-    public static function getPostById($id)
-    {
-        return Database::getSingleRow("SELECT * FROM posts WHERE id = ?", [$id]);
-    }
-    public static function createPost($userId, $content)
-    {
-        return Database::execute("INSERT INTO posts (user_id, content) VALUES (?, ?)", [$userId, $content]);
-    }
-    public static function updatePost($id, $content)
-    {
-        return Database::execute("UPDATE posts SET content = ? WHERE id = ?", [$content, $id]);
-    }
-    public static function deletePost($id)
-    {
-        return Database::execute("DELETE FROM posts WHERE id = ?", [$id]);
-    }
-    /* ============================
-        POST REPLIES
-    ============================ */
-    public static function getRepliesByPostId($postId)
-    {
-        return Database::getRows("SELECT * FROM post_replies WHERE post_id = ? ORDER BY created_at ASC", [$postId]);
-    }
-    public static function createReply($postId, $userId, $content)
-    {
-        return Database::execute(
-            "INSERT INTO post_replies (post_id, user_id, content) VALUES (?, ?, ?)",
-            [$postId, $userId, $content]
-        );
-    }
-    public static function deleteReply($id)
-    {
-        return Database::execute("DELETE FROM post_replies WHERE id = ?", [$id]);
-    }
-    /* ============================
-        PRAYERS
-    ============================ */
-    public static function getAllPrayers()
-    {
-        return Database::getRows("SELECT * FROM prayers ORDER BY created_at DESC");
-    }
-    public static function getPrayersByUserId($userId)
-    {
-        return Database::getRows("SELECT * FROM prayers WHERE user_id = ? ORDER BY created_at DESC", [$userId]);
-    }
-    public static function createPrayer($userId, $content)
-    {
-        return Database::execute("INSERT INTO prayers (user_id, content) VALUES (?, ?)", [$userId, $content]);
-    }
-    public static function deletePrayer($id)
-    {
-        return Database::execute("DELETE FROM prayers WHERE id = ?", [$id]);
-    }
-    /* ============================
-        PROGRESS LOGS
-    ============================ */
-    public static function getAllProgressLogs()
-    {
-        return Database::getRows("SELECT * FROM progress_logs ORDER BY checkin_date DESC");
-    }
-    public static function getProgressLogsByUserId($userId)
-    {
-        return Database::getRows("SELECT * FROM progress_logs WHERE user_id = ? ORDER BY checkin_date DESC", [$userId]);
-    }
-    public static function createProgressLog($userId, $milestone = null)
-    {
-        return Database::execute("INSERT INTO progress_logs (user_id, milestone) VALUES (?, ?)",
-            [$userId, $milestone]
-        );
-    }
-    public static function deleteProgressLog($id)
-    {
-        return Database::execute("DELETE FROM progress_logs WHERE id = ?", [$id]);
-    }
-    /* ============================
-        QUIZ — QUESTIONS
-    ============================ */
-    public static function getAllQuizQuestions()
-    {
-        return Database::getRows("SELECT * FROM quiz_questions");
-    }
-    public static function getQuizQuestionById($id)
-    {
-        return Database::getSingleRow("SELECT * FROM quiz_questions WHERE id = ?", [$id]);
-    }
-    public static function createQuizQuestion($question, $options)
-    {
-        return Database::execute("INSERT INTO quiz_questions (question, options) VALUES (?, ?)",
-            [$question, $options]
-        );
-    }
-    public static function updateQuizQuestion($id, $question, $options)
-    {
-        return Database::execute("UPDATE quiz_questions SET question = ?, options = ? WHERE id = ?",
-            [$question, $options, $id]
-        );
-    }
-    public static function deleteQuizQuestion($id)
-    {
-        return Database::execute("DELETE FROM quiz_questions WHERE id = ?", [$id]);
-    }
-    /* ============================
-        QUIZ — RESULTS
-    ============================ */
-    public static function getAllQuizResults()
-    {
-        return Database::getRows("SELECT * FROM quiz_results ORDER BY created_at DESC");
-    }
-    public static function getQuizResultsByUserId($userId)
-    {
-        return Database::getRows("SELECT * FROM quiz_results WHERE user_id = ? ORDER BY created_at DESC", [$userId]);
-    }
-    public static function createQuizResult($userId, $addictionType, $answersJson, $totalScore)
-    {
-        return Database::execute(
-            "INSERT INTO quiz_results (user_id, addiction_type, answers_json, total_score) VALUES (?, ?, ?, ?)",
-            [$userId, $addictionType, $answersJson, $totalScore]
-        );
-    }
-    public static function deleteQuizResult($id)
-    {
-        return Database::execute("DELETE FROM quiz_results WHERE id = ?", [$id]);
-    }
-    public static function saveQuizResult($userId, $quizId, $answers, $score)
-    {
-        return Database::execute("INSERT INTO quiz_results (user_id, quiz_id, answers, score) VALUES (?, ?, ?, ?)", [$userId, $quizId, json_encode($answers), $score]);
-    }
-    public static function getQuizResults($userId)
-    {
-        return Database::getRows("SELECT * FROM quiz_results WHERE user_id = ? ORDER BY created_at DESC", [$userId]);
-    }
-    /* ============================
-        QUIZ — ANSWER OPTIONS
-    ============================ */
-    public static function getAllQuizAnswerOptions()
-    {
-        return Database::getRows("SELECT * FROM quiz_answer_options");
-    }
-    public static function getQuizAnswerOptionsByQuestionId($questionId)
-    {
-        return Database::getRows("SELECT * FROM quiz_answer_options WHERE question_id = ?", [$questionId]);
-    }
-    public static function createQuizAnswerOption($questionId, $optionText, $value)
-    {
-        return Database::execute("INSERT INTO quiz_answer_options (question_id, option_text, value) VALUES (?, ?, ?)",
-            [$questionId, $optionText, $value]
-        );
-    }
-    public static function updateQuizAnswerOption($id, $optionText, $value)
-    {
-        return Database::execute("UPDATE quiz_answer_options SET option_text = ?, value = ? WHERE id = ?",
-            [$optionText, $value, $id]
-        );
-    }
-    public static function deleteQuizAnswerOption($id)
-    {
-        return Database::execute("DELETE FROM quiz_answer_options WHERE id = ?", [$id]);
-    }
-    /* ============================
-        QUIZ — ATTEMPTS
-    ============================ */
-    public static function createQuizAttempt(int $userId): int
-    {
-        Database::execute(
-            "INSERT INTO quiz_attempts (user_id) VALUES (?)",
-            [$userId]
-        );
+    // ==================== USER OPERATIONS ====================
 
-        return Database::getSingleRow("SELECT LAST_INSERT_ID() AS id")['id'];
-    }
-    public static function getPreviousAttemptId(int $userId, int $currentAttemptId): ?int
-    {
-        $row = Database::getSingleRow("SELECT id FROM quiz_attempts WHERE user_id = ? AND id < ? ORDER BY id DESC LIMIT 2", [$userId, $currentAttemptId]);
-        return $row ? (int) $row['id'] : null;
-    }
-    /* ============================
-        QUIZ — ATTEMPT ADDICTIONS
-    ============================ */
-    public static function saveAttemptAddiction(int $attemptId, string $addiction, int $score): void
-    {
-        Database::execute("INSERT INTO quiz_attempt_addictions (attempt_id, addiction_type, score) VALUES (?, ?, ?)", [$attemptId, $addiction, $score]);
-    }
-    public static function getAttemptAddictions(int $attemptId): array
-    {
-        $rows   = Database::getRows("SELECT addiction_type, score FROM quiz_attempt_addictions WHERE attempt_id = ?", [$attemptId]);
-        $result = [];
-        foreach ($rows as $row) {
-            $result[$row['addiction_type']] = (int) $row['score'];
-        }
-        return $result;
-    }
-    /* ============================
-        RESOURCES
-    ============================ */
-    public static function getAllResources()
-    {
-        return Database::getRows("SELECT * FROM resources ORDER BY created_at DESC");
-    }
-    public static function getResourceById($id)
-    {
-        return Database::getSingleRow("SELECT * FROM resources WHERE id = ?", [$id]);
-    }
-    public static function getResourceBySlug($slug)
-    {
-        return Database::getSingleRow("SELECT * FROM resources WHERE slug = ?", [$slug]);
-    }
-    public static function createResource($title, $slug, $content_text, $content_visual, $createdBy)
-    {
-        return Database::execute("INSERT INTO resources (title, slug, content_text, content_visual, created_by) VALUES (?, ?, ?, ?, ?)",
-            [$title, $slug, $content_text, $content_visual, $createdBy]
-        );
-    }
-    public static function updateResource($id, $title, $slug, $content_text, $content_visual)
-    {
-        return Database::execute("UPDATE resources SET title = ?, slug = ?, content_text = ?, content_visual = ? WHERE id = ?",
-            [$title, $slug, $content_text, $content_visual, $id]
-        );
-    }
-    public static function deleteResource($id)
-    {
-        return Database::execute("DELETE FROM resources WHERE id = ?", [$id]);
-    }
-    /* ============================
-        RESOURCE TAGS
-    ============================ */
-    public static function getTagsByResourceId($resourceId)
-    {
-        return Database::getRows("SELECT * FROM resource_tags WHERE resource_id = ?", [$resourceId]);
-    }
-    public static function createResourceTag($resourceId, $tag)
-    {
-        return Database::execute("INSERT INTO resource_tags (resource_id, tag) VALUES (?, ?)",
-            [$resourceId, $tag]
-        );
-    }
-    public static function deleteResourceTag($id)
-    {
-        return Database::execute("DELETE FROM resource_tags WHERE id = ?", [$id]);
-    }
-    public static function getMatchedResourcesForCategory(string $category, array $tags, int $limit = 5): array
-    {
-        if (empty($tags)) {
-            return [];
-        }
-        $conditions = [];
-        $params     = [];
-        foreach ($tags as $tag) {
-            $conditions[] = "FIND_IN_SET(?, tags)";
-            $params[]     = $tag;
-        }
-        // Score resources by number of matching tags
-        $scoreSql = implode(' + ', array_fill(0, count($tags), 'FIND_IN_SET(?, tags)'));
-        $params   = array_merge($params, $tags);
-        $params[] = $limit;
-        $sql      = " SELECT *, ($scoreSql) AS relevance_score FROM resources WHERE category = ? AND (" . implode(' OR ', $conditions) . ") ORDER BY relevance_score DESC, created_at DESC LIMIT ?";
-        array_unshift($params, $category);
-        return Database::getRows($sql, $params);
-    }
-    /* ============================
-        ROLES
-    ============================ */
-    public static function getAllRoles()
-    {
-        return Database::getRows("SELECT * FROM roles");
-    }
-    public static function getRoleById($id)
-    {
-        return Database::getSingleRow("SELECT * FROM roles WHERE id = ?", [$id]);
-    }
-    public static function createRole($name)
-    {
-        return Database::execute("INSERT INTO roles (name) VALUES (?)", [$name]);
-    }
-    public static function deleteRole($id)
-    {
-        return Database::execute("DELETE FROM roles WHERE id = ?", [$id]);
-    }
-    /* ============================
-        SESSIONS
-    ============================ */
-    public static function getSessionByToken($token)
-    {
-        return Database::getSingleRow("SELECT * FROM sessions WHERE token = ?", [$token]);
-    }
-    public static function createSession($userId, $token, $expiresAt)
-    {
-        return Database::execute(
-            "INSERT INTO sessions (user_id, token, expires_at) VALUES (?, ?, ?)",
-            [$userId, $token, $expiresAt]
-        );
-    }
-    public static function deleteSession($token)
-    {
-        return Database::execute("DELETE FROM sessions WHERE token = ?", [$token]);
-    }
-    /* ============================
-        POLICIES
-    ============================ */
-    public static function getAllPolicies()
-    {
-        return Database::getRows("SELECT * FROM policies ORDER BY updated_at DESC");
-    }
-    public static function getPolicyBySlug($slug)
-    {
-        return Database::getSingleRow("SELECT * FROM policies WHERE slug = ?", [$slug]);
-    }
-    public static function getPolicyById($id)
-    {
-        return Database::getSingleRow("SELECT * FROM policies WHERE id = ?", [$id]);
-    }
-    public static function getPolicyContent($slug)
-    {
-        $result = Database::getSingleRow("SELECT content_title, content_text, created_at, updated_at FROM policies WHERE slug = ? LIMIT 1", [$slug]);
-        return $result ? $result : null;
-    }
-    public static function createPolicy($title, $slug, $contentTitle, $contentText, $version, $createdBy)
-    {
-        return Database::execute("INSERT INTO policies (title, slug, content_title, content_text, version, created_by) VALUES (?, ?, ?, ?, ?, ?)", [$title, $slug, $contentTitle, $contentText, $version, $createdBy]);
-    }
-    public static function updatePolicy($id, $title, $slug, $contentTitle, $contentText, $version)
-    {
-        return Database::execute("UPDATE policies SET title = ?, slug = ?, content_title = ?, content_text = ?, version = ? WHERE id = ?", [$title, $slug, $contentTitle, $contentText, $version, $id]);
-    }
-    public static function deletePolicy($id)
-    {
-        return Database::execute("DELETE FROM policies WHERE id = ?", [$id]);
-    }
-    /* ============================
-        JOURNAL ENTRIES
-    ============================ */
-    public static function getJournalEntriesByUserId($userId)
-    {
-        return Database::getRows("SELECT * FROM journal_entries WHERE user_id = ? ORDER BY created_at DESC", [$userId]);
-    }
-    public static function createJournalEntry($userId, $content_text, $isRelated)
-    {
-        return Database::execute("INSERT INTO journal_entries (user_id, content_text, is_addiction_related) VALUES (?, ?, ?)", [$userId, $content_text, $isRelated ? 1 : 0]);
-    }
-    public static function getEncouragement($addictionType)
-    {
-        $data = [
-            'pornography' => [
-                'verse' => "Job 31:1",
-                'text'  => "I made a covenant with my eyes not to look lustfully at a young woman.",
-            ],
-            'alcohol'     => [
-                'verse' => "1 Corinthians 10:13",
-                'text'  => "No temptation has overtaken you except what is common to mankind. And God is faithful...",
-            ],
-            'general'     => [
-                'verse' => "James 4:7",
-                'text'  => "Submit yourselves, then, to God. Resist the devil, and he will flee from you.",
-            ],
-        ];
-        return $data[$addictionType] ?? $data['general'];
-    }
-    /* ============================
-        C1 — PASTORAL RESOURCES
-    ============================ */
-    public static function getResourcesByTags(array $tags): array
-    {
-        if (empty($tags)) {
-            return [];
-        }
-        $conditions = [];
-        $params     = [];
-        foreach ($tags as $tag) {
-            $conditions[] = 'FIND_IN_SET(?, tags)';
-            $params[]     = $tag;
-        }
-        $sql = "SELECT * FROM resources WHERE " . implode(' OR ', $conditions) . " ORDER BY created_at DESC";
-        return Database::getRows($sql, $params);
-    }
-    public static function getResourcesByAddiction(string $addiction): array
-    {
-        return Database::getRows(
-            "SELECT * FROM resources WHERE FIND_IN_SET(?, tags)",
-            [$addiction]
-        );
-    }
-    /* ================================================
-        C2-E — PROGRESS COMPARISON & CHANGE DETECTION
-    ================================================ */
-    public static function getLastQuizAttempt($userId)
+    //Find user by ID
+
+    public static function findUserById(int $id): ?array
     {
         return Database::getSingleRow(
-            "SELECT * FROM quiz_results WHERE user_id = ? ORDER BY created_at DESC LIMIT 2",
+            "SELECT id, username, email, first_name, last_name, avatar_url, bio,
+                    is_admin, is_active, created_at, last_login
+            FROM users WHERE id = ?",
+            [$id]
+        );
+    }
+
+    //Find user by email (includes password hash for auth)
+
+    public static function findUserByEmail(string $email): ?array
+    {
+        return Database::getSingleRow(
+            "SELECT * FROM users WHERE email = ? AND is_active = 1",
+            [$email]
+        );
+    }
+
+    //Find user by username
+
+    public static function findUserByUsername(string $username): ?array
+    {
+        return Database::getSingleRow(
+            "SELECT id, username, email, first_name, last_name, avatar_url, bio,
+                    is_admin, is_active, created_at, last_login
+            FROM users WHERE username = ?",
+            [$username]
+        );
+    }
+
+    //Create new user
+
+    public static function createUser(array $data): int | false
+    {
+        $userId = Database::execute(
+            "INSERT INTO users (username, email, password_hash, first_name, last_name)
+            VALUES (?, ?, ?, ?, ?)",
+            [
+                $data['username'],
+                $data['email'],
+                $data['password_hash'],
+                $data['first_name'] ?? null,
+                $data['last_name'] ?? null,
+            ]
+        );
+
+        if ($userId) {
+            // Create default preferences
+            self::createUserPreferences($userId);
+            // Create progress record
+            self::createUserProgress($userId);
+        }
+
+        return $userId;
+    }
+
+    //Update user
+
+    public static function updateUser(int $id, array $data): bool
+    {
+        $allowed = ['username', 'email', 'first_name', 'last_name', 'avatar_url', 'bio'];
+        $sets    = [];
+        $values  = [];
+
+        foreach ($data as $key => $value) {
+            if (in_array($key, $allowed)) {
+                $sets[]   = "$key = ?";
+                $values[] = $value;
+            }
+        }
+
+        if (empty($sets)) {
+            return false;
+        }
+
+        $values[] = $id;
+        return Database::execute(
+            "UPDATE users SET " . implode(', ', $sets) . " WHERE id = ?",
+            $values
+        );
+    }
+
+    //Update last login timestamp
+
+    public static function updateLastLogin(int $userId): bool
+    {
+        return Database::execute(
+            "UPDATE users SET last_login = NOW() WHERE id = ?",
             [$userId]
         );
     }
-    public static function insertAttemptComparison(array $data): void
+
+    //Update password
+
+    public static function updatePassword(int $userId, string $passwordHash): bool
     {
-        Database::execute("INSERT INTO quiz_attempt_comparisons (attempt_id, addiction_type, previous_score, current_score, delta, trend) VALUES (:attempt_id, :addiction_type, :previous_score, :current_score, :delta, :trend)", $data);
+        return Database::execute(
+            "UPDATE users SET password_hash = ? WHERE id = ?",
+            [$passwordHash, $userId]
+        );
     }
-    public static function getComparisonsByAttempt($attemptId): array
+
+    // ==================== USER PREFERENCES ====================
+
+    //Create default user preferences
+
+    public static function createUserPreferences(int $userId): bool
     {
-        return Database::getRows("SELECT * FROM quiz_attempt_comparisons WHERE attempt_id = ? ORDER BY addiction_type ASC", [$attemptId]);
+        return Database::execute(
+            "INSERT INTO user_preferences (user_id) VALUES (?)",
+            [$userId]
+        );
     }
-    public static function getLatestComparisonSummary(int $userId): array
+
+    //Get user preferences
+
+    public static function getUserPreferences(int $userId): ?array
+    {
+        return Database::getSingleRow(
+            "SELECT * FROM user_preferences WHERE user_id = ?",
+            [$userId]
+        );
+    }
+
+    //Update user preferences
+
+    public static function updateUserPreferences(int $userId, array $data): bool
+    {
+        $allowed = ['bible_language', 'bible_version', 'theme', 'notifications_enabled'];
+        $sets    = [];
+        $values  = [];
+
+        foreach ($data as $key => $value) {
+            if (in_array($key, $allowed)) {
+                $sets[]   = "$key = ?";
+                $values[] = $value;
+            }
+        }
+
+        if (empty($sets)) {
+            return false;
+        }
+
+        $values[] = $userId;
+        return Database::execute(
+            "UPDATE user_preferences SET " . implode(', ', $sets) . " WHERE user_id = ?",
+            $values
+        );
+    }
+
+    // ==================== USER PROGRESS ====================
+
+    //Create user progress record
+
+    public static function createUserProgress(int $userId): bool
+    {
+        return Database::execute(
+            "INSERT INTO user_progress (user_id) VALUES (?)",
+            [$userId]
+        );
+    }
+
+    //Get user progress
+
+    public static function getUserProgress(int $userId): ?array
+    {
+        return Database::getSingleRow(
+            "SELECT * FROM user_progress WHERE user_id = ?",
+            [$userId]
+        );
+    }
+
+    //Update user progress
+
+    public static function updateUserProgress(int $userId, array $data): bool
+    {
+        $allowed = ['streak_days', 'longest_streak', 'total_checkins', 'last_checkin', 'sobriety_date'];
+        $sets    = [];
+        $values  = [];
+
+        foreach ($data as $key => $value) {
+            if (in_array($key, $allowed)) {
+                $sets[]   = "$key = ?";
+                $values[] = $value;
+            }
+        }
+
+        if (empty($sets)) {
+            return false;
+        }
+
+        $values[] = $userId;
+        return Database::execute(
+            "UPDATE user_progress SET " . implode(', ', $sets) . " WHERE user_id = ?",
+            $values
+        );
+    }
+
+    // ==================== CHECK-INS ====================
+
+    //Create daily check-in
+
+    public static function createCheckin(array $data): int | false
+    {
+        return Database::execute(
+            "INSERT INTO checkins (user_id, checkin_date, mood_rating, notes, triggers, victories)
+             VALUES (?, ?, ?, ?, ?, ?)",
+            [
+                $data['user_id'],
+                $data['checkin_date'],
+                $data['mood_rating'],
+                $data['notes'] ?? null,
+                $data['triggers'] ?? null,
+                $data['victories'] ?? null,
+            ]
+        );
+    }
+
+    //Get user's check-ins
+    public static function getUserCheckins(int $userId, int $limit = 30): array
     {
         return Database::getRows(
-            "SELECT c.addiction_type, c.trend, CASE c.trend WHEN 'improved' THEN 'There has been progress since your last assessment.' WHEN 'worsened' THEN 'This area has become more challenging recently.' WHEN 'unchanged' THEN 'This area remains steady.' WHEN 'new' THEN 'This struggle has newly emerged.' END AS message, CASE c.trend WHEN 'improved' THEN 'success' WHEN 'unchanged' THEN 'secondary' WHEN 'new' THEN 'warning' WHEN 'worsened' THEN 'danger' END AS tone FROM quiz_attempt_comparisons c JOIN quiz_attempts a ON a.id = c.attempt_id WHERE a.user_id = ? ORDER BY a.created_at DESC", [$userId]);
+            "SELECT * FROM checkins WHERE user_id = ? ORDER BY checkin_date DESC LIMIT ?",
+            [$userId, $limit]
+        );
     }
-    /* ================================================
-        C2-F — TIMELINE DATA
-    ================================================ */
-    public static function getAddictionTimeline(int $userId, string $addictionType): array
+    //Get check-in for specific date
+    public static function getCheckinByDate(int $userId, string $date): ?array
     {
-        return Database::getRows("SELECT qa.id AS attempt_id, qa.created_at AS attempt_date, qaa.score AS score FROM quiz_attempts qa JOIN quiz_attempt_addictions qaa ON qa.id = qaa.attempt_id WHERE qa.user_id = ? AND qaa.addiction_type = ? ORDER BY qa.created_at ASC", [$userId, $addictionType]);
+        return Database::getSingleRow(
+            "SELECT * FROM checkins WHERE user_id = ? AND checkin_date = ?",
+            [$userId, $date]
+        );
     }
-    public static function getUserAddictionHistory(int $userId): array
+
+    // ==================== RESOURCES ====================
+    //Get all resources
+    public static function getResources(string $type, string $category, int $limit = 50): array
     {
-        return Database::getRows("SELECT DISTINCT addiction_type FROM quiz_attempt_addictions WHERE attempt_id IN (SELECT id FROM quiz_attempts WHERE user_id = ?)", [$userId]);
+        return Database::getRows(
+            "SELECT * FROM resources WHERE type = ? AND category = ? ORDER BY is_featured DESC, created_at DESC LIMIT ?",
+            [$type, $category, $limit]
+        );
     }
-    public static function getUserQuizTimeline(int $userId): array
+    //Get resource by ID
+    public static function getResourceById(int $id): ?array
     {
-        $attempts = Database::getRows("SELECT id, created_at FROM quiz_attempts WHERE user_id = ? ORDER BY created_at DESC", [$userId]);
-        $timeline = [];
-        foreach ($attempts as $attempt) {
-            $addictions   = Database::getRows("SELECT addiction_type, current_score FROM quiz_attempt_addictions WHERE attempt_id = ?", [$attempt['id']]);
-            $addictionMap = [];
-            $totalScore   = 0;
-            foreach ($addictions as $row) {
-                $addictionMap[$row['addiction_type']] = (int) $row['current_score'];
-                $totalScore += (int) $row['current_score'];
-            }
-            $timeline[] = ['date' => $attempt['created_at'], 'severity' => self::severityLabel($totalScore), 'addictions' => $addictionMap];
+        return Database::getSingleRow(
+            "SELECT * FROM resources WHERE id = ?",
+            [$id]
+        );
+    }
+    //Increment resource view count
+    public static function incrementResourceViews(int $id): bool
+    {
+        return Database::execute(
+            "UPDATE resources SET view_count = view_count + 1 WHERE id = ?",
+            [$id]
+        );
+    }
+    // ==================== POSTS ====================
+    //Get community posts
+    public static function getPosts(int $limit = 20, int $offset = 0): array
+    {
+        return Database::getRows(
+            "SELECT p.*, u.username, u.avatar_url FROM posts p JOIN users u ON p.user_id = u.id ORDER BY p.is_pinned DESC, p.created_at DESC LIMIT ? OFFSET ?",
+            [$limit, $offset]
+        );
+    }
+
+    //Create post
+    public static function createPost(array $data): int | false
+    {
+        return Database::execute(
+            "INSERT INTO posts (user_id, title, content, is_anonymous)
+            VALUES (?, ?, ?, ?)",
+            [
+                $data['user_id'],
+                $data['title'],
+                $data['content'],
+                $data['is_anonymous'] ?? false,
+            ]
+        );
+    }
+
+    // ==================== QUIZ ====================
+
+    //Get all quiz questions with answers
+    public static function getQuizQuestions(): array
+    {
+        $questions = Database::getRows(
+            "SELECT * FROM quiz_questions WHERE is_active = 1 ORDER BY order_num"
+        );
+
+        foreach ($questions as &$question) {
+            $question['answers'] = Database::getRows(
+                "SELECT * FROM quiz_answers WHERE question_id = ? ORDER BY order_num",
+                [$question['id']]
+            );
         }
-        return $timeline;
+
+        return $questions;
     }
-    private static function severityLabel(int $score): string
+
+    //Save quiz result
+
+    public static function saveQuizResult(array $data): int | false
     {
-        return match (true) {
-            $score <= 5  => 'low',
-            $score <= 10 => 'moderate',
-            default      => 'high',
-        };
+        return Database::execute(
+            "INSERT INTO quiz_results (user_id, total_score, category_scores, recommendations)
+             VALUES (?, ?, ?, ?)",
+            [
+                $data['user_id'],
+                $data['total_score'],
+                json_encode($data['category_scores'] ?? []),
+                $data['recommendations'] ?? null
+            ]
+        );
     }
-    /* =====================================================
-        BIBLE / SCRIPTURE ACCESS
-    ===================================================== */
-    public static function getAvailableBibles(): ?array
+
+    // ==================== SESSIONS ====================
+
+    //Create session
+
+    public static function createSession(string $sessionId, int $userId, int $expiresAt): bool
     {
-        return BibleApiService::getBibles();
+        return Database::execute(
+            "INSERT INTO sessions (id, user_id, expires_at) VALUES (?, ?, FROM_UNIXTIME(?))",
+            [$sessionId, $userId, $expiresAt]
+        );
     }
-    public static function getBibleById(string $bibleId): ?array
+
+    //Get session by ID
+
+    public static function getSession(string $sessionId): ?array
     {
-        return BibleApiService::getBibleVersion($bibleId);
+        return Database::getSingleRow(
+            "SELECT s.*, u.id as user_id, u.username, u.email, u.is_admin
+             FROM sessions s
+             JOIN users u ON s.user_id = u.id
+             WHERE s.id = ? AND s.expires_at > NOW()",
+            [$sessionId]
+        );
     }
-    public static function getVerse(string $bibleId, string $verseId): ?array
+
+    //Delete session
+
+    public static function deleteSession(string $sessionId): bool
     {
-        return BibleApiService::getVerse($bibleId, $verseId);
+        return Database::execute(
+            "DELETE FROM sessions WHERE id = ?",
+            [$sessionId]
+        );
     }
-    public static function searchScripture(string $bibleId, string $query): ?array
+
+    //Delete all user sessions
+
+    public static function deleteUserSessions(int $userId): bool
     {
-        return BibleApiService::searchVerses($bibleId, $query);
+        return Database::execute(
+            "DELETE FROM sessions WHERE user_id = ?",
+            [$userId]
+        );
     }
-    /* =====================================================
-        SCRIPTURE CACHE
-    ===================================================== */
-    public static function getCachedVerse(string $bibleId, string $verseKey, string $translation): ?array
+
+    //Clean expired sessions
+
+    public static function cleanExpiredSessions(): bool
     {
-        return Database::getSingleRow("SELECT * FROM scripture_cache sc WHERE id AND verse_key = ? AND translation = ? LIMIT 1", [$bibleId, $verseKey, $translation]);
-    }
-    public static function storeCachedVerse(string $bibleId, string $verseKey, string $translation, string $text): void
-    {
-        Database::execute("INSERT INTO scripture_cache (id, verse_key, translation, text, fetched_at) VALUES (?, ?, ?, ?, NOW()) ON DUPLICATE KEY UPDATE text = VALUES(text),fetched_at = NOW()", [$bibleId, $verseKey, $translation, $text]);
-    }
-    public static function resolveVerse(string $bibleId, string $verseKey, string $translation): ?array
-    {
-        $cached = self::getCachedVerse($bibleId, $verseKey, $translation);
-        if ($cached) {
-            return [
-                'source'     => 'cache',
-                'text'       => $cached['text'],
-                'fetched_at' => $cached['fetched_at'],
-            ];
-        }
-        $response = BibleApiService::getVerse($bibleId, $verseKey);
-        if (! isset($response['data']['content'])) {
-            return null;
-        }
-        $text = trim(strip_tags($response['data']['content']));
-        self::storeCachedVerse($bibleId, $verseKey, $translation, $text);
-        return [
-            'source'     => 'api',
-            'text'       => $text,
-            'fetched_at' => date('Y-m-d H:i:s'),
-        ];
+        return Database::execute(
+            "DELETE FROM sessions WHERE expires_at < NOW()"
+        );
     }
 }

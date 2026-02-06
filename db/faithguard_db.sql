@@ -1,721 +1,226 @@
--- phpMyAdmin SQL Dump
--- version 5.2.2
--- https://www.phpmyadmin.net/
---
--- Host: com-linweb938.srv.combell-ops.net:3306
--- Generation Time: Jan 04, 2026 at 03:26 PM
--- Server version: 8.0.36-28
--- PHP Version: 7.4.33
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
---
--- Database: `ID483117_faithguard`
---
-
--- --------------------------------------------------------
-
---
--- Table structure for table `journal_entries`
---
-
-CREATE TABLE `journal_entries` (
-  `id` int NOT NULL,
-  `user_id` int NOT NULL,
-  `content_text` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `is_addiction_related` tinyint(1) DEFAULT '0',
-  `created_at` datetime DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `messages`
---
-
-CREATE TABLE `messages` (
-  `id` int NOT NULL,
-  `sender_id` int NOT NULL,
-  `receiver_id` int NOT NULL,
-  `content` text NOT NULL,
-  `created_at` datetime DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `policies`
---
-
-CREATE TABLE `policies` (
-  `id` int NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `slug` varchar(255) NOT NULL,
-  `content_title` varchar(255) NOT NULL,
-  `content_text` longtext NOT NULL,
-  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `policies`
---
-
-INSERT INTO `policies` (`id`, `title`, `slug`, `content_title`, `content_text`, `created_at`, `updated_at`) VALUES
-(1, 'Terms of Service', 'terms', 'Terms of Service', '1.1 Introduction\r\n\r\nWelcome to FaithGuard (the \"Service\"). FaithGuard is a ministry initiative of the TikTok account wwtw.be [WWTW | Christian Content]. WWTW stands for Walk With The Word.\r\n\r\nOur mission is rooted in the truth revealed in the Gospel according to John: that Jesus Christ is the Word (John 1:1), the eternal Son of God who declared, \"Before Abraham was, I Am.\" By accessing or using our website (https://faithguard.site), you agree to be bound by these Terms of Service.\r\n\r\n1.2 Nature of Service (Medical Disclaimer)\r\n\r\nFaithGuard provides faith-based resources and a community environment for individuals seeking spiritual freedom through the Word of God.\r\n- Not Medical Advice: The content provided is for informational and spiritual support purposes only. It is not a substitute for professional medical advice, diagnosis, or treatment.\r\n- No Professional Relationship: Use of this website does not establish a doctor-patient or counselor-client relationship.\r\n\r\n1.3 User Accounts\r\n- You must provide accurate information when creating an account.\r\n- You are responsible for safeguarding your credentials.\r\n-  wwtw.be reserves the right to terminate accounts that violate our community standards.\r\n\r\n1.4 Intellectual Property\r\n\r\nThe Service and its original content, features, and functionality are the exclusive property of wwtw.be [WWTW | Christian Content] and its licensors.\r\n\r\n1.5 Governing Law\r\n\r\nThese Terms shall be governed by the laws of Belgium. Any disputes will be subject to the exclusive jurisdiction of the courts of Kortrijk.', '2025-12-15 17:55:00', '2026-01-04 12:21:27'),
-(2, 'Privacy Policy', 'privacy', 'Privacy Policy', '2.1 Introduction\r\n\r\nFaithGuard is committed to protecting your personal data in accordance with the General Data Protection Regulation (GDPR) and the Belgian Data Protection Act.\r\n\r\n2.2 Data Controller\r\n\r\nwwtw.be [WWTW | Christian Content]\r\nWWTW: Walk With The Word\r\nBelgium\r\nContact Email: info@faithguard.site\r\n\r\n2.3 Data We Collect\r\n- Personal Data: Email address, name, and account credentials.\r\n- Sensitive Data: Information regarding spiritual struggles or beliefs provided voluntarily. We process this data solely based on your explicit consent to aid in your journey with the Word (Art. 9(2)(a) GDPR).\r\n\r\n2.4 Purpose of Processing\r\n- To provide personalized scripture recommendations.\r\n- To manage the community forum and journal features.\r\n- To facilitate your spiritual growth as part of the WWTW community.\r\n\r\n2.5 Your Rights\r\n\r\nUnder GDPR, you have the right to access, rectify, or erase your data. To exercise these rights, please contact the WWTW team at the email provided above.', '2026-01-04 12:27:24', '2026-01-04 12:30:44'),
-(3, 'Cookie Policy', 'cookie', 'Cookie Policy', '3.1 What are Cookies?\r\n\r\nCookies are small text files used to help the FaithGuard website function efficiently.\r\n\r\n3.2 Necessary Cookies\r\n - `PHPSESSID`: Essential for maintaining your session within the wwtw.be ecosystem. Deleted upon closing the browser.\r\n\r\n3.3 Consent and Management\r\n\r\nBy using our site, you consent to strictly necessary cookies. For all other cookies, we will request your consent via our WWTW-branded cookie banner.', '2026-01-04 12:28:45', '2026-01-04 12:32:18');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `posts`
---
-
-CREATE TABLE `posts` (
-  `id` int NOT NULL,
-  `user_id` int NOT NULL,
-  `content` text NOT NULL,
-  `created_at` datetime DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `post_replies`
---
-
-CREATE TABLE `post_replies` (
-  `id` int NOT NULL,
-  `post_id` int NOT NULL,
-  `user_id` int NOT NULL,
-  `content` text NOT NULL,
-  `created_at` datetime DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `progress_logs`
---
-
-CREATE TABLE `progress_logs` (
-  `id` int NOT NULL,
-  `user_id` int NOT NULL,
-  `checkin_date` datetime DEFAULT CURRENT_TIMESTAMP,
-  `milestone` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `quiz_attempts`
---
-
-CREATE TABLE `quiz_attempts` (
-  `id` int UNSIGNED NOT NULL,
-  `user_id` int UNSIGNED NOT NULL,
-  `total_score` int NOT NULL,
-  `level` varchar(32) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `quiz_attempt_addictions`
---
-
-CREATE TABLE `quiz_attempt_addictions` (
-  `id` int UNSIGNED NOT NULL,
-  `attempt_id` int UNSIGNED NOT NULL,
-  `addiction_type` varchar(64) NOT NULL,
-  `score` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `quiz_attempt_comparisons`
---
-
-CREATE TABLE `quiz_attempt_comparisons` (
-  `id` int UNSIGNED NOT NULL,
-  `attempt_id` int UNSIGNED NOT NULL,
-  `addiction_type` varchar(64) NOT NULL,
-  `previous_score` int DEFAULT NULL,
-  `current_score` int NOT NULL,
-  `delta` int NOT NULL,
-  `trend` enum('improved','worsened','unchanged','new') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `quiz_category_scores`
---
-
-CREATE TABLE `quiz_category_scores` (
-  `id` int NOT NULL,
-  `quiz_result_id` int NOT NULL,
-  `category` varchar(100) NOT NULL,
-  `raw_score` decimal(10,2) NOT NULL,
-  `weighted_score` decimal(10,2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `quiz_questions`
---
-
-CREATE TABLE `quiz_questions` (
-  `id` int NOT NULL,
-  `question` text NOT NULL,
-  `options` json NOT NULL,
-  `category` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `created_at` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `quiz_questions`
---
-
-INSERT INTO `quiz_questions` (`id`, `question`, `options`, `category`, `created_at`) VALUES
-(1, 'Which area are you seeking freedom in today?', '{\"name\": \"addiction_type\", \"type\": \"checkbox\", \"options\": [{\"label\": \"Pornography\", \"value\": \"pornography\", \"weight\": 1.5}, {\"label\": \"Sexual Compulsion (non-porn)\", \"value\": \"sexual_compulsion\", \"weight\": 1.4}, {\"label\": \"Alcohol\", \"value\": \"alcohol\", \"weight\": 1.3}, {\"label\": \"Illegal Drugs\", \"value\": \"drugs_illegal\", \"weight\": 1.5}, {\"label\": \"Prescription Drug Misuse\", \"value\": \"drugs_prescription\", \"weight\": 1.4}, {\"label\": \"Smoking / Vaping\", \"value\": \"smoking\", \"weight\": 1.2}, {\"label\": \"Gambling\", \"value\": \"gambling\", \"weight\": 1.4}, {\"label\": \"Gaming Addiction\", \"value\": \"gaming\", \"weight\": 1.2}, {\"label\": \"Social Media / Digital Consumption\", \"value\": \"digital\", \"weight\": 1.1}, {\"label\": \"Food Addiction / Disordered Eating\", \"value\": \"food\", \"weight\": 1.2}, {\"label\": \"Shopping / Spending\", \"value\": \"shopping\", \"weight\": 1.1}, {\"label\": \"Workaholism\", \"value\": \"work\", \"weight\": 1.1}, {\"label\": \"Emotional Dependency / Codependency\", \"value\": \"emotional_dependency\", \"weight\": 1.3}, {\"label\": \"Anger / Rage\", \"value\": \"anger\", \"weight\": 1.3}, {\"label\": \"Self-Harm Behaviors\", \"value\": \"self_harm\", \"weight\": 1.6}, {\"label\": \"Escapism / Avoidance Behaviors\", \"value\": \"escapism\", \"weight\": 1.2}], \"scoring_type\": \"multiplier_base\"}', 'addiction', '2025-12-22'),
-(2, 'How often do you currently engage in spiritual reflection or prayer?', '{\"name\": \"spiritual_frequency\", \"type\": \"radio\", \"options\": [{\"label\": \"Daily\", \"score\": -5}, {\"label\": \"Weekly\", \"score\": -2}, {\"label\": \"Rarely\", \"score\": 2}, {\"label\": \"Never at the moment\", \"score\": 5}], \"scoring_type\": \"score_modifier\"}', 'spiritual', '2025-12-24'),
-(3, 'I feel close to God in my daily life.', '{\"type\": \"radio\", \"options\": [{\"label\": \"Never\", \"score\": 5}, {\"label\": \"Rarely\", \"score\": 4}, {\"label\": \"Sometimes\", \"score\": 3}, {\"label\": \"Often\", \"score\": 2}, {\"label\": \"Very Often\", \"score\": 1}], \"category\": \"spiritual\"}', 'spiritual', '2025-12-24'),
-(4, 'I turn to prayer when I feel tempted or overwhelmed.', '{\"type\": \"radio\", \"options\": [{\"label\": \"Never\", \"score\": 5}, {\"label\": \"Rarely\", \"score\": 4}, {\"label\": \"Sometimes\", \"score\": 3}, {\"label\": \"Often\", \"score\": 2}, {\"label\": \"Very Often\", \"score\": 1}], \"category\": \"spiritual\"}', 'spiritual', '2025-12-24'),
-(5, 'My struggle has affected how I read Scripture or worship.', '{\"type\": \"radio\", \"options\": [{\"label\": \"Strongly Disagree\", \"score\": 1}, {\"label\": \"Disagree\", \"score\": 2}, {\"label\": \"Neutral\", \"score\": 3}, {\"label\": \"Agree\", \"score\": 4}, {\"label\": \"Strongly Agree\", \"score\": 5}], \"category\": \"spiritual\"}', 'spiritual', '2025-12-24'),
-(6, 'I believe God’s grace is available to me, even in my weakness.', '{\"type\": \"radio\", \"options\": [{\"label\": \"Never\", \"score\": 5}, {\"label\": \"Rarely\", \"score\": 4}, {\"label\": \"Sometimes\", \"score\": 3}, {\"label\": \"Often\", \"score\": 2}, {\"label\": \"Very Often\", \"score\": 1}], \"category\": \"hope\"}', 'hope', '2025-12-24'),
-(7, 'I sometimes feel distant from God because of my habits.', '{\"type\": \"radio\", \"options\": [{\"label\": \"Never\", \"score\": 1}, {\"label\": \"Rarely\", \"score\": 2}, {\"label\": \"Sometimes\", \"score\": 3}, {\"label\": \"Often\", \"score\": 4}, {\"label\": \"Very Often\", \"score\": 5}], \"category\": \"guilt\"}', 'guilt', '2025-12-24'),
-(8, 'I feel torn between what I believe and what I do.', '{\"type\": \"radio\", \"options\": [{\"label\": \"Strongly Disagree\", \"score\": 1}, {\"label\": \"Disagree\", \"score\": 2}, {\"label\": \"Neutral\", \"score\": 3}, {\"label\": \"Agree\", \"score\": 4}, {\"label\": \"Strongly Agree\", \"score\": 5}], \"category\": \"guilt\"}', 'guilt', '2025-12-24'),
-(9, 'I have tried to stop or reduce this behavior and struggled to do so.', '{\"type\": \"radio\", \"options\": [{\"label\": \"Never\", \"score\": 1}, {\"label\": \"Rarely\", \"score\": 2}, {\"label\": \"Sometimes\", \"score\": 3}, {\"label\": \"Often\", \"score\": 4}, {\"label\": \"Very Often\", \"score\": 5}], \"category\": \"compulsion\"}', 'compulsion', '2025-12-24'),
-(10, 'I feel a sense of relief or escape when I give in, followed by regret.', '{\"type\": \"radio\", \"options\": [{\"label\": \"Never\", \"score\": 1}, {\"label\": \"Rarely\", \"score\": 2}, {\"label\": \"Sometimes\", \"score\": 3}, {\"label\": \"Often\", \"score\": 4}, {\"label\": \"Very Often\", \"score\": 5}], \"category\": \"compulsion\"}', 'compulsion', '2025-12-24'),
-(11, 'I feel ashamed when I think about this struggle.', '{\"type\": \"radio\", \"options\": [{\"label\": \"Strongly Disagree\", \"score\": 1}, {\"label\": \"Disagree\", \"score\": 2}, {\"label\": \"Neutral\", \"score\": 3}, {\"label\": \"Agree\", \"score\": 4}, {\"label\": \"Strongly Agree\", \"score\": 5}], \"category\": \"guilt\"}', 'guilt', '2025-12-24'),
-(12, 'I feel in control of this behavior.', '{\"type\": \"radio\", \"options\": [{\"label\": \"Strongly Disagree\", \"score\": 5}, {\"label\": \"Disagree\", \"score\": 4}, {\"label\": \"Neutral\", \"score\": 3}, {\"label\": \"Agree\", \"score\": 2}, {\"label\": \"Strongly Agree\", \"score\": 1}], \"category\": \"control\"}', 'control', '2025-12-24'),
-(13, 'I hide this struggle from people close to me.', '{\"type\": \"radio\", \"options\": [{\"label\": \"Strongly Disagree\", \"score\": 1}, {\"label\": \"Disagree\", \"score\": 2}, {\"label\": \"Neutral\", \"score\": 3}, {\"label\": \"Agree\", \"score\": 4}, {\"label\": \"Strongly Agree\", \"score\": 5}], \"category\": \"secrecy\"}', 'secrecy', '2025-12-24'),
-(14, 'I worry about how others would see me if they knew.', '{\"type\": \"radio\", \"options\": [{\"label\": \"Never\", \"score\": 1}, {\"label\": \"Rarely\", \"score\": 2}, {\"label\": \"Sometimes\", \"score\": 3}, {\"label\": \"Often\", \"score\": 4}, {\"label\": \"Very Often\", \"score\": 5}], \"category\": \"secrecy\"}', 'secrecy', '2025-12-24'),
-(15, 'This struggle has caused me to withdraw from others.', '{\"type\": \"radio\", \"options\": [{\"label\": \"Strongly Disagree\", \"score\": 1}, {\"label\": \"Disagree\", \"score\": 2}, {\"label\": \"Neutral\", \"score\": 3}, {\"label\": \"Agree\", \"score\": 4}, {\"label\": \"Strongly Agree\", \"score\": 5}], \"category\": \"isolation\"}', 'isolation', '2025-12-24'),
-(16, 'I feel alone in this battle.', '{\"type\": \"radio\", \"options\": [{\"label\": \"Strongly Disagree\", \"score\": 1}, {\"label\": \"Disagree\", \"score\": 2}, {\"label\": \"Neutral\", \"score\": 3}, {\"label\": \"Agree\", \"score\": 4}, {\"label\": \"Strongly Agree\", \"score\": 5}], \"category\": \"isolation\"}', 'isolation', '2025-12-24'),
-(17, 'I avoid certain conversations or situations because of this habit.', '{\"type\": \"radio\", \"options\": [{\"label\": \"Never\", \"score\": 1}, {\"label\": \"Rarely\", \"score\": 2}, {\"label\": \"Sometimes\", \"score\": 3}, {\"label\": \"Often\", \"score\": 4}, {\"label\": \"Very Often\", \"score\": 5}], \"category\": \"secrecy\"}', 'secrecy', '2025-12-24'),
-(18, 'This behavior has negatively affected my relationships.', '{\"type\": \"radio\", \"options\": [{\"label\": \"Never\", \"score\": 1}, {\"label\": \"Rarely\", \"score\": 2}, {\"label\": \"Sometimes\", \"score\": 3}, {\"label\": \"Often\", \"score\": 4}, {\"label\": \"Very Often\", \"score\": 5}], \"category\": \"relationships\"}', 'relationships', '2025-12-24'),
-(19, 'I have noticed negative effects on my mental or physical health.', '{\"type\": \"radio\", \"options\": [{\"label\": \"Strongly Disagree\", \"score\": 1}, {\"label\": \"Disagree\", \"score\": 2}, {\"label\": \"Neutral\", \"score\": 3}, {\"label\": \"Agree\", \"score\": 4}, {\"label\": \"Strongly Agree\", \"score\": 5}], \"category\": \"health\"}', 'health', '2025-12-24'),
-(20, 'My behavior has led me to take risks I normally wouldn’t.', '{\"type\": \"radio\", \"options\": [{\"label\": \"Strongly Disagree\", \"score\": 1}, {\"label\": \"Disagree\", \"score\": 2}, {\"label\": \"Neutral\", \"score\": 3}, {\"label\": \"Agree\", \"score\": 4}, {\"label\": \"Strongly Agree\", \"score\": 5}], \"category\": \"risk\"}', 'risk', '2025-12-24'),
-(21, 'I sometimes minimize or justify this behavior to myself.', '{\"type\": \"radio\", \"options\": [{\"label\": \"Never\", \"score\": 1}, {\"label\": \"Rarely\", \"score\": 2}, {\"label\": \"Sometimes\", \"score\": 3}, {\"label\": \"Often\", \"score\": 4}, {\"label\": \"Very Often\", \"score\": 5}], \"category\": \"control\"}', 'control', '2025-12-24'),
-(22, 'I fear where this struggle could lead if it continues.', '{\"type\": \"radio\", \"options\": [{\"label\": \"Never\", \"score\": 1}, {\"label\": \"Rarely\", \"score\": 2}, {\"label\": \"Sometimes\", \"score\": 3}, {\"label\": \"Often\", \"score\": 4}, {\"label\": \"Very Often\", \"score\": 5}], \"category\": \"risk\"}', 'risk', '2025-12-24'),
-(23, 'I believe change is possible for me.', '{\"type\": \"radio\", \"options\": [{\"label\": \"Strongly Disagree\", \"score\": 5}, {\"label\": \"Disagree\", \"score\": 4}, {\"label\": \"Neutral\", \"score\": 3}, {\"label\": \"Agree\", \"score\": 2}, {\"label\": \"Strongly Agree\", \"score\": 1}], \"category\": \"hope\"}', 'hope', '2025-12-24'),
-(24, 'I would be open to talking to someone I trust about this.', '{\"type\": \"radio\", \"options\": [{\"label\": \"Strongly Disagree\", \"score\": 5}, {\"label\": \"Disagree\", \"score\": 4}, {\"label\": \"Neutral\", \"score\": 3}, {\"label\": \"Agree\", \"score\": 2}, {\"label\": \"Strongly Agree\", \"score\": 1}], \"category\": \"accountability\"}', 'accountability', '2025-12-24'),
-(25, 'I feel supported by my faith community.', '{\"type\": \"radio\", \"options\": [{\"label\": \"Strongly Disagree\", \"score\": 5}, {\"label\": \"Disagree\", \"score\": 4}, {\"label\": \"Neutral\", \"score\": 3}, {\"label\": \"Agree\", \"score\": 2}, {\"label\": \"Strongly Agree\", \"score\": 1}], \"category\": \"relationships\"}', 'relationships', '2025-12-24'),
-(26, 'I believe healing involves both faith and practical steps.', '{\"type\": \"radio\", \"options\": [{\"label\": \"Never\", \"score\": 5}, {\"label\": \"Rarely\", \"score\": 4}, {\"label\": \"Sometimes\", \"score\": 3}, {\"label\": \"Often\", \"score\": 2}, {\"label\": \"Very Often\", \"score\": 1}], \"category\": \"spiritual\"}', 'spiritual', '2025-12-24'),
-(27, 'I desire freedom and restoration more than temporary relief.', '{\"type\": \"radio\", \"options\": [{\"label\": \"Never\", \"score\": 5}, {\"label\": \"Rarely\", \"score\": 4}, {\"label\": \"Sometimes\", \"score\": 3}, {\"label\": \"Often\", \"score\": 2}, {\"label\": \"Very Often\", \"score\": 1}], \"category\": \"hope\"}', 'hope', '2025-12-24');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `quiz_resource_map`
---
-
-CREATE TABLE `quiz_resource_map` (
-  `id` int NOT NULL,
-  `category` varchar(100) NOT NULL,
-  `addiction_type` varchar(100) DEFAULT NULL,
-  `resource_id` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `quiz_results`
---
-
-CREATE TABLE `quiz_results` (
-  `id` int NOT NULL,
-  `user_id` int NOT NULL,
-  `addiction_type` json NOT NULL,
-  `answers_json` json NOT NULL,
-  `total_score` decimal(10,2) NOT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `quiz_scripture_map`
---
-
-CREATE TABLE `quiz_scripture_map` (
-  `id` int NOT NULL,
-  `category` varchar(100) NOT NULL,
-  `min_score` decimal(10,2) DEFAULT NULL,
-  `max_score` decimal(10,2) DEFAULT NULL,
-  `verse_key` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `resources`
---
-
-CREATE TABLE `resources` (
-  `id` int NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `slug` varchar(255) NOT NULL,
-  `content_text` text NOT NULL,
-  `content_visual` text,
-  `tags` json DEFAULT NULL,
-  `created_at` datetime DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `resource_tags`
---
-
-CREATE TABLE `resource_tags` (
-  `id` int NOT NULL,
-  `resource_id` int NOT NULL,
-  `tag` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `roles`
---
-
-CREATE TABLE `roles` (
-  `id` int NOT NULL,
-  `name` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `roles`
---
-
-INSERT INTO `roles` (`id`, `name`) VALUES
-(1, 'admin'),
-(2, 'user');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `scripture_cache`
---
-
-CREATE TABLE `scripture_cache` (
-  `id` int NOT NULL,
-  `verse_key` varchar(100) NOT NULL,
-  `translation` varchar(50) NOT NULL,
-  `text` text NOT NULL,
-  `fetched_at` datetime DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `sessions`
---
-
-CREATE TABLE `sessions` (
-  `id` int NOT NULL,
-  `user_id` int NOT NULL,
-  `token` varchar(255) NOT NULL,
-  `expires_at` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `users`
---
-
-CREATE TABLE `users` (
-  `id` int NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `password_hash` varchar(255) NOT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  `role` varchar(50) NOT NULL DEFAULT 'user',
-  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
-  `preferred_language` char(2) NOT NULL DEFAULT 'en'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`id`, `email`, `password_hash`, `name`, `role`, `created_at`, `preferred_language`) VALUES
-(1, 'admin@faithguard.com', '$2y$12$Si3tc0jbzi7SZ85svjKhLeMkVf1aoQcpMaGis/s.obNQoKdAm7YqW', 'Admin', 'admin', '2025-12-06 23:03:16', 'en'),
-(2, 'thomas.deseure@proton.me', '$2y$12$M5By2UvRbwuTvrFfYh42UOzM1tv1KnQGbedtlbWnCqu6wnNGrIATO', 'Thomas', 'user', '2025-12-07 00:04:49', 'en');
-
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `journal_entries`
---
-ALTER TABLE `journal_entries`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_journal_user` (`user_id`);
-
---
--- Indexes for table `messages`
---
-ALTER TABLE `messages`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `idx_message_sender` (`sender_id`),
-  ADD KEY `idx_message_receiver` (`receiver_id`);
-
---
--- Indexes for table `policies`
---
-ALTER TABLE `policies`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `slug` (`slug`);
-
---
--- Indexes for table `posts`
---
-ALTER TABLE `posts`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `idx_posts_user` (`user_id`);
-
---
--- Indexes for table `post_replies`
---
-ALTER TABLE `post_replies`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `idx_reply_post` (`post_id`),
-  ADD KEY `idx_reply_user` (`user_id`);
-
---
--- Indexes for table `progress_logs`
---
-ALTER TABLE `progress_logs`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `idx_progress_user` (`user_id`);
-
---
--- Indexes for table `quiz_attempts`
---
-ALTER TABLE `quiz_attempts`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `idx_user_attempts` (`user_id`,`created_at`);
-
---
--- Indexes for table `quiz_attempt_addictions`
---
-ALTER TABLE `quiz_attempt_addictions`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `idx_attempt_addiction` (`attempt_id`,`addiction_type`);
-
---
--- Indexes for table `quiz_attempt_comparisons`
---
-ALTER TABLE `quiz_attempt_comparisons`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `idx_attempt_comparison` (`attempt_id`,`addiction_type`);
-
---
--- Indexes for table `quiz_category_scores`
---
-ALTER TABLE `quiz_category_scores`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `idx_category` (`category`),
-  ADD KEY `idx_score_result` (`quiz_result_id`);
-
---
--- Indexes for table `quiz_questions`
---
-ALTER TABLE `quiz_questions`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `quiz_resource_map`
---
-ALTER TABLE `quiz_resource_map`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `idx_map_category` (`category`),
-  ADD KEY `idx_map_resource` (`resource_id`);
-
---
--- Indexes for table `quiz_results`
---
-ALTER TABLE `quiz_results`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `idx_quiz_user` (`user_id`);
-
---
--- Indexes for table `quiz_scripture_map`
---
-ALTER TABLE `quiz_scripture_map`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `idx_scripture_category` (`category`);
-
---
--- Indexes for table `resources`
---
-ALTER TABLE `resources`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `slug` (`slug`);
-
---
--- Indexes for table `resource_tags`
---
-ALTER TABLE `resource_tags`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `idx_resource` (`resource_id`);
-
---
--- Indexes for table `roles`
---
-ALTER TABLE `roles`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `name` (`name`);
-
---
--- Indexes for table `scripture_cache`
---
-ALTER TABLE `scripture_cache`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `verse_translation` (`verse_key`,`translation`);
-
---
--- Indexes for table `sessions`
---
-ALTER TABLE `sessions`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `token` (`token`),
-  ADD KEY `idx_session_user` (`user_id`);
-
---
--- Indexes for table `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `email` (`email`),
-  ADD KEY `idx_user_role` (`role`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `journal_entries`
---
-ALTER TABLE `journal_entries`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `messages`
---
-ALTER TABLE `messages`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `policies`
---
-ALTER TABLE `policies`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT for table `posts`
---
-ALTER TABLE `posts`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `post_replies`
---
-ALTER TABLE `post_replies`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `progress_logs`
---
-ALTER TABLE `progress_logs`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `quiz_attempts`
---
-ALTER TABLE `quiz_attempts`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `quiz_attempt_addictions`
---
-ALTER TABLE `quiz_attempt_addictions`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `quiz_attempt_comparisons`
---
-ALTER TABLE `quiz_attempt_comparisons`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `quiz_category_scores`
---
-ALTER TABLE `quiz_category_scores`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `quiz_questions`
---
-ALTER TABLE `quiz_questions`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
-
---
--- AUTO_INCREMENT for table `quiz_resource_map`
---
-ALTER TABLE `quiz_resource_map`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `quiz_results`
---
-ALTER TABLE `quiz_results`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
---
--- AUTO_INCREMENT for table `quiz_scripture_map`
---
-ALTER TABLE `quiz_scripture_map`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `resources`
---
-ALTER TABLE `resources`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `resource_tags`
---
-ALTER TABLE `resource_tags`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `roles`
---
-ALTER TABLE `roles`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `scripture_cache`
---
-ALTER TABLE `scripture_cache`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `sessions`
---
-ALTER TABLE `sessions`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `users`
---
-ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `journal_entries`
---
-ALTER TABLE `journal_entries`
-  ADD CONSTRAINT `fk_journal_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
-
---
--- Constraints for table `messages`
---
-ALTER TABLE `messages`
-  ADD CONSTRAINT `fk_msg_receiver` FOREIGN KEY (`receiver_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `fk_msg_sender` FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
-
---
--- Constraints for table `posts`
---
-ALTER TABLE `posts`
-  ADD CONSTRAINT `fk_posts_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
-
---
--- Constraints for table `post_replies`
---
-ALTER TABLE `post_replies`
-  ADD CONSTRAINT `fk_reply_post` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `fk_reply_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
-
---
--- Constraints for table `progress_logs`
---
-ALTER TABLE `progress_logs`
-  ADD CONSTRAINT `fk_progress_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
-
---
--- Constraints for table `quiz_attempt_addictions`
---
-ALTER TABLE `quiz_attempt_addictions`
-  ADD CONSTRAINT `fk_attempt_addiction_attempt` FOREIGN KEY (`attempt_id`) REFERENCES `quiz_attempts` (`id`) ON DELETE CASCADE;
-
---
--- Constraints for table `quiz_attempt_comparisons`
---
-ALTER TABLE `quiz_attempt_comparisons`
-  ADD CONSTRAINT `fk_comparison_attempt` FOREIGN KEY (`attempt_id`) REFERENCES `quiz_attempts` (`id`) ON DELETE CASCADE;
-
---
--- Constraints for table `quiz_category_scores`
---
-ALTER TABLE `quiz_category_scores`
-  ADD CONSTRAINT `fk_category_result` FOREIGN KEY (`quiz_result_id`) REFERENCES `quiz_results` (`id`) ON DELETE CASCADE;
-
---
--- Constraints for table `quiz_resource_map`
---
-ALTER TABLE `quiz_resource_map`
-  ADD CONSTRAINT `fk_qrm_resource` FOREIGN KEY (`resource_id`) REFERENCES `resources` (`id`) ON DELETE CASCADE;
-
---
--- Constraints for table `quiz_results`
---
-ALTER TABLE `quiz_results`
-  ADD CONSTRAINT `fk_quiz_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
-
---
--- Constraints for table `resource_tags`
---
-ALTER TABLE `resource_tags`
-  ADD CONSTRAINT `fk_resource_tags` FOREIGN KEY (`resource_id`) REFERENCES `resources` (`id`) ON DELETE CASCADE;
-
---
--- Constraints for table `sessions`
---
-ALTER TABLE `sessions`
-  ADD CONSTRAINT `fk_sessions_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
-
---
--- Constraints for table `users`
---
-ALTER TABLE `users`
-  ADD CONSTRAINT `fk_users_role` FOREIGN KEY (`role`) REFERENCES `roles` (`name`) ON UPDATE CASCADE;
-COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+-- FaithGuard Database Schema
+-- MySQL 8.0+ compatible
+
+CREATE DATABASE IF NOT EXISTS faithguard CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE faithguard;
+
+-- Users table
+CREATE TABLE IF NOT EXISTS users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    first_name VARCHAR(100),
+    last_name VARCHAR(100),
+    avatar_url VARCHAR(255),
+    bio TEXT,
+    bible_language ENUM('en', 'nl') DEFAULT 'en',
+    bible_version VARCHAR(20) DEFAULT 'NRSVUE',
+    bible_book VARCHAR(50),
+    is_admin BOOLEAN DEFAULT FALSE,
+    is_active BOOLEAN DEFAULT TRUE,
+    email_verified BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    last_login TIMESTAMP NULL,
+    INDEX idx_email (email),
+    INDEX idx_username (username)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- User roles (for future expansion, currently using is_admin flag)
+CREATE TABLE IF NOT EXISTS roles (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL UNIQUE,
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- User accounts
+INSERT INTO `users` (`id`, `email`, `password_hash`, `first_name`, `last_name`, `bio`, `bible_language`, `bible_version`, `bible_book`, `is_admin`, `email_verified`, `created_at`) VALUES
+(1, 'admin@faithguard.com', '$2y$12$Si3tc0jbzi7SZ85svjKhLeMkVf1aoQcpMaGis/s.obNQoKdAm7YqW', 'admin', 'admin', 'To be Written', 'en', 'NRSVUE', 'Luke', TRUE, TRUE, '2025-12-06 23:03:16'),
+(2, 'thomas.deseure@proton.me', '$2y$12$M5By2UvRbwuTvrFfYh42UOzM1tv1KnQGbedtlbWnCqu6wnNGrIATO', 'Thomas', 'user', 'To be Written', 'en', 'NRSVUE', 'Mark', FALSE, TRUE, '2025-12-07 00:04:49');
+
+-- User preferences
+CREATE TABLE IF NOT EXISTS user_preferences (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    bible_language ENUM('en', 'nl') DEFAULT 'en',
+    bible_version VARCHAR(20) DEFAULT 'NRSVUE',
+    JOIN users u ON u.id = user_id,
+    bible_book VARCHAR(50) DEFAULT u.bible_book -- Default to user's current book if not set
+      CHECK (bible_book IN ('Genesis', 'Exodus', 'Leviticus', 'Numbers', 'Deuteronomy', 'Joshua', 'Judges', 'Ruth', '1 Samuel', '2 Samuel', '1 Kings', '2 Kings', '1 Chronicles', '2 Chronicles', 'Ezra', 'Nehemiah', 'Esther', 'Job', 'Psalms', 'Proverbs', 'Ecclesiastes', 'Song of Solomon', 'Isaiah', 'Jeremiah', 'Lamentations', 'Ezekiel', 'Daniel', 'Hosea', 'Joel', 'Amos', 'Obadiah', 'Jonah', 'Micah', 'Nahum', 'Habakkuk', 'Zephaniah', 'Haggai', 'Zechariah', 'Malachi' -- Old Testament books
+      , 'Matthew', 'Mark', 'Luke', 'John', 'Acts', 'Romans', '1 Corinthians', '2 Corinthians', 'Galatians', 'Ephesians', 'Philippians', 'Colossians', '1 Thessalonians', '2 Thessalonians', '1 Timothy', '2 Timothy', 'Titus', 'Philemon', 'Hebrews', 'James', '1 Peter', '2 Peter', '1 John', '2 John', '3 John', 'Jude', 'Revelation' -- New Testament books
+      ),) WHEN NOT EXISTS bible_book DEFAULT 'Luke 1:1',
+    theme ENUM('light', 'dark') DEFAULT 'light',
+    notifications_enabled BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    UNIQUE KEY unique_user_prefs (user_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Progress tracking
+CREATE TABLE IF NOT EXISTS user_progress (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    streak_days INT DEFAULT 0,
+    longest_streak INT DEFAULT 0,
+    total_checkins INT DEFAULT 0,
+    last_checkin DATE NULL,
+    sobriety_date DATE NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    UNIQUE KEY unique_user_progress (user_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Daily check-ins
+CREATE TABLE IF NOT EXISTS checkins (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    checkin_date DATE NOT NULL,
+    mood_rating INT CHECK (mood_rating BETWEEN 1 AND 5),
+    notes TEXT,
+    triggers TEXT,
+    victories TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    UNIQUE KEY unique_daily_checkin (user_id, checkin_date)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Resources
+CREATE TABLE IF NOT EXISTS resources (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    content TEXT,
+    type ENUM('article', 'video', 'audio', 'guide', 'prayer') NOT NULL,
+    category VARCHAR(100),
+    author VARCHAR(100),
+    url VARCHAR(500),
+    thumbnail_url VARCHAR(255),
+    is_featured BOOLEAN DEFAULT FALSE,
+    view_count INT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_type (type),
+    INDEX idx_category (category)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Quiz/Assessment questions
+CREATE TABLE IF NOT EXISTS quiz_questions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    question TEXT NOT NULL,
+    category VARCHAR(100),
+    order_num INT DEFAULT 0,
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Quiz answers
+CREATE TABLE IF NOT EXISTS quiz_answers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    question_id INT NOT NULL,
+    answer_text TEXT NOT NULL,
+    score_value INT DEFAULT 0,
+    order_num INT DEFAULT 0,
+    FOREIGN KEY (question_id) REFERENCES quiz_questions(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- User quiz results
+CREATE TABLE IF NOT EXISTS quiz_results (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    total_score INT NOT NULL,
+    category_scores JSON,
+    recommendations TEXT,
+    taken_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Messages/Community posts
+CREATE TABLE IF NOT EXISTS posts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    title VARCHAR(255),
+    content TEXT NOT NULL,
+    is_anonymous BOOLEAN DEFAULT FALSE,
+    is_pinned BOOLEAN DEFAULT FALSE,
+    like_count INT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    INDEX idx_created (created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Comments on posts
+CREATE TABLE IF NOT EXISTS comments (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    post_id INT NOT NULL,
+    user_id INT NOT NULL,
+    content TEXT NOT NULL,
+    is_anonymous BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Prayer requests
+CREATE TABLE IF NOT EXISTS prayer_requests (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    title VARCHAR(255),
+    content TEXT NOT NULL,
+    is_anonymous BOOLEAN DEFAULT FALSE,
+    is_answered BOOLEAN DEFAULT FALSE,
+    prayer_count INT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Sessions for authentication
+CREATE TABLE IF NOT EXISTS sessions (
+    id VARCHAR(128) PRIMARY KEY,
+    user_id INT NOT NULL,
+    expires_at TIMESTAMP NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    INDEX idx_expires (expires_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Insert sample resources
+INSERT INTO resources (title, description, type, category, author) VALUES
+('Understanding Digital Addiction', 'A comprehensive guide to understanding how digital addiction affects our spiritual life.', 'article', 'education', 'FaithGuard Team'),
+('Daily Prayer for Strength', 'A morning prayer to start your day with purpose and protection.', 'prayer', 'spiritual', 'Pastor John Davis'),
+('Breaking Free: Video Series', '5-part video series on overcoming addiction through faith.', 'video', 'recovery', 'Dr. Sarah Mitchell'),
+('Scripture Meditation Guide', 'Learn to meditate on God''s Word for healing and transformation.', 'guide', 'spiritual', 'FaithGuard Team'),
+('The Armor of God', 'Understanding and applying Ephesians 6 in your daily battle.', 'article', 'spiritual', 'Pastor Mike Johnson');
+
+-- Insert sample quiz questions
+INSERT INTO quiz_questions (question, category, order_num) VALUES
+('How often do you find yourself using digital devices without a specific purpose?', 'usage', 1),
+('Do you feel anxious or restless when you cannot access your devices?', 'dependence', 2),
+('Has your digital usage affected your sleep patterns?', 'health', 3),
+('Do you find it difficult to focus on prayer or reading Scripture due to digital distractions?', 'spiritual', 4),
+('Have you tried to reduce your screen time but found it difficult?', 'control', 5);
+
+INSERT INTO quiz_answers (question_id, answer_text, score_value, order_num) VALUES
+(1, 'Never or rarely', 1, 1),
+(1, 'Sometimes', 2, 2),
+(1, 'Often', 3, 3),
+(1, 'Very frequently', 4, 4),
+(2, 'Never', 1, 1),
+(2, 'Occasionally', 2, 2),
+(2, 'Frequently', 3, 3),
+(2, 'Always', 4, 4),
+(3, 'Not at all', 1, 1),
+(3, 'Slightly', 2, 2),
+(3, 'Moderately', 3, 3),
+(3, 'Significantly', 4, 4),
+(4, 'Never', 1, 1),
+(4, 'Rarely', 2, 2),
+(4, 'Sometimes', 3, 3),
+(4, 'Often', 4, 4),
+(5, 'No, I have not tried', 1, 1),
+(5, 'Tried but succeeded', 2, 2),
+(5, 'Tried with difficulty', 3, 3),
+(5, 'Tried multiple times unsuccessfully', 4, 4);

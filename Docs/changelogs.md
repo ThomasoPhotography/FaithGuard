@@ -44,6 +44,10 @@ All notable changes to this project will be documented in this file.
 - Introduce central Scripture language resolver to map site language to default Bible translations (NRSVUE for EN, NBV21 for NL). Scripture modal now respects site language: while allowing user translation overrides, ensuring future compatibility with a global language chooser.
 - C2-I-3.2: apply user language preference to scripture modal with translation defaults and disclaimers.
 - Add Bible API key constant to Database class for secure server-side storage.
+- Add community call-to-action section and Bible verse functionality
+  - Introduced a new call-to-action section in index.php to encourage user registration.
+  - Added bible.js for handling Bible verse fetching and modal display.
+  - Created config.php for centralized database and API configuration settings.
 
 ### Changed
 - `README.md` file got a professional make-over.
