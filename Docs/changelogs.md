@@ -48,6 +48,7 @@ All notable changes to this project will be documented in this file.
   - Introduced a new call-to-action section in index.php to encourage user registration.
   - Added bible.js for handling Bible verse fetching and modal display.
   - Created config.php for centralized database and API configuration settings.
+- Implement user authentication endpoints for login, logout, and registration.
 
 ### Changed
 - `README.md` file got a professional make-over.
