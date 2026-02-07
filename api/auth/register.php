@@ -10,16 +10,18 @@ if (! ENABLE_REGISTRATION) {
 }
 
 $input = getJsonInput();
-validateRequired($input, ['first_name', 'last_name', 'email', 'password']);
+validateRequired($input, ['full_name', 'email', 'password']);
 
-$fullName  = trim($input['first_name'] . ' ' . $input['last_name']);
+$fullName  = trim($input['full_name']);
 $email     = filter_var(sanitize($input['email']), FILTER_VALIDATE_EMAIL);
 $password  = $input['password'];
-$firstName = isset($input['first_name']) ? sanitize($input['first_name']) : null;
-$lastName  = isset($input['last_name']) ? sanitize($input['last_name']) : null;
+// Split full name into first and last name
+$nameParts = explode(' ', $fullName, 2);
+$firstName = $nameParts[0];
+$lastName  = isset($nameParts[1]) ? $nameParts[1] : '';
 
 // Validate username
-if (! preg_match('/^[a-zA-Z0-9_]{3,50}$/', $username)) {
+if (! preg_match('/^[a-zA-Z0-9_]{3,50}$/', $firstName)) {
     errorResponse('Username must be 3-50 characters and contain only letters, numbers, and underscores');
 }
 

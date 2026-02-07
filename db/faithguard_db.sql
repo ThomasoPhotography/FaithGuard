@@ -1,8 +1,8 @@
 -- FaithGuard Database Schema
 -- MySQL 8.0+ compatible
 
-CREATE DATABASE IF NOT EXISTS faithguard CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE faithguard;
+CREATE DATABASE IF NOT EXISTS ID483117_faithguard CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE ID483117_faithguard;
 
 -- Users table
 CREATE TABLE IF NOT EXISTS users (
@@ -22,9 +22,8 @@ CREATE TABLE IF NOT EXISTS users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     last_login TIMESTAMP NULL,
-    INDEX idx_email (email),
-    INDEX idx_username (username)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    INDEX idx_email (email)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- User roles (for future expansion, currently using is_admin flag)
 CREATE TABLE IF NOT EXISTS roles (
@@ -32,7 +31,7 @@ CREATE TABLE IF NOT EXISTS roles (
     name VARCHAR(50) NOT NULL UNIQUE,
     description TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- User accounts
 INSERT INTO `users` (`id`, `email`, `password_hash`, `first_name`, `last_name`, `bio`, `bible_language`, `bible_version`, `bible_book`, `is_admin`, `email_verified`, `created_at`) VALUES
@@ -43,19 +42,41 @@ INSERT INTO `users` (`id`, `email`, `password_hash`, `first_name`, `last_name`, 
 CREATE TABLE IF NOT EXISTS user_preferences (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
+
     bible_language ENUM('en', 'nl') DEFAULT 'en',
     bible_version VARCHAR(20) DEFAULT 'NRSVUE',
-    JOIN users u ON u.id = user_id,
-    bible_book VARCHAR(50) DEFAULT u.bible_book -- Default to user's current book if not set
-      CHECK (bible_book IN ('Genesis', 'Exodus', 'Leviticus', 'Numbers', 'Deuteronomy', 'Joshua', 'Judges', 'Ruth', '1 Samuel', '2 Samuel', '1 Kings', '2 Kings', '1 Chronicles', '2 Chronicles', 'Ezra', 'Nehemiah', 'Esther', 'Job', 'Psalms', 'Proverbs', 'Ecclesiastes', 'Song of Solomon', 'Isaiah', 'Jeremiah', 'Lamentations', 'Ezekiel', 'Daniel', 'Hosea', 'Joel', 'Amos', 'Obadiah', 'Jonah', 'Micah', 'Nahum', 'Habakkuk', 'Zephaniah', 'Haggai', 'Zechariah', 'Malachi' -- Old Testament books
-      , 'Matthew', 'Mark', 'Luke', 'John', 'Acts', 'Romans', '1 Corinthians', '2 Corinthians', 'Galatians', 'Ephesians', 'Philippians', 'Colossians', '1 Thessalonians', '2 Thessalonians', '1 Timothy', '2 Timothy', 'Titus', 'Philemon', 'Hebrews', 'James', '1 Peter', '2 Peter', '1 John', '2 John', '3 John', 'Jude', 'Revelation' -- New Testament books
-      ),) WHEN NOT EXISTS bible_book DEFAULT 'Luke 1:1',
+
+    bible_book VARCHAR(50) DEFAULT 'Luke',
+
     theme ENUM('light', 'dark') DEFAULT 'light',
     notifications_enabled BOOLEAN DEFAULT TRUE,
+
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    CONSTRAINT chk_bible_book CHECK (
+        bible_book IN (
+            'Genesis','Exodus','Leviticus','Numbers','Deuteronomy',
+            'Joshua','Judges','Ruth','1 Samuel','2 Samuel',
+            '1 Kings','2 Kings','1 Chronicles','2 Chronicles',
+            'Ezra','Nehemiah','Esther','Job','Psalms','Proverbs',
+            'Ecclesiastes','Song of Solomon','Isaiah','Jeremiah',
+            'Lamentations','Ezekiel','Daniel','Hosea','Joel',
+            'Amos','Obadiah','Jonah','Micah','Nahum','Habakkuk',
+            'Zephaniah','Haggai','Zechariah','Malachi',
+            'Matthew','Mark','Luke','John','Acts','Romans',
+            '1 Corinthians','2 Corinthians','Galatians',
+            'Ephesians','Philippians','Colossians',
+            '1 Thessalonians','2 Thessalonians',
+            '1 Timothy','2 Timothy','Titus','Philemon',
+            'Hebrews','James','1 Peter','2 Peter',
+            '1 John','2 John','3 John','Jude','Revelation'
+        )
+    ),
+
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     UNIQUE KEY unique_user_prefs (user_id)
+
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Progress tracking

@@ -50,6 +50,11 @@ All notable changes to this project will be documented in this file.
   - Created config.php for centralized database and API configuration settings.
 - Implement user authentication endpoints for login, logout, and registration.
 - Add API endpoints for managing posts, check-ins, quizzes, and resources.
+- Added quadruple features:
+  - feat(database): update database name and improve user preferences table structure.
+  - feat(nav): implement mobile navigation functionality.
+  - feat(utils): add utility functions for alerts and debouncing.
+  - feat(verse-modal): create verse modal with loading and error handling.
 
 ### Changed
 - `README.md` file got a professional make-over.
