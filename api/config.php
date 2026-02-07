@@ -1,11 +1,8 @@
 <?php
 declare (strict_types = 1);
-// FaithGuard Configuration File
-// This file contains sensitive settings. Do NOT commit to version control.
-// For production, use environment variables instead of hardcoding values.
 
 // Bible API Settings (from api.bible)
-define('BIBLE_API_KEY', 'VrnmMFY2YCN4xcBPUnzxf');
+define('BIBLE_API_KEY', 'jhCTF0KSddJvqBAb-na7p');
 define('BIBLE_API_BASE_URL', 'https://api.bible/v1');
 
 // Example: App Settings

@@ -49,6 +49,7 @@ All notable changes to this project will be documented in this file.
   - Added bible.js for handling Bible verse fetching and modal display.
   - Created config.php for centralized database and API configuration settings.
 - Implement user authentication endpoints for login, logout, and registration.
+- Add API endpoints for managing posts, check-ins, quizzes, and resources.
 
 ### Changed
 - `README.md` file got a professional make-over.
