@@ -245,3 +245,33 @@ INSERT INTO quiz_answers (question_id, answer_text, score_value, order_num) VALU
 (5, 'Tried but succeeded', 2, 2),
 (5, 'Tried with difficulty', 3, 3),
 (5, 'Tried multiple times unsuccessfully', 4, 4);
+
+-- Cache for scripture content to minimize API calls
+CREATE TABLE IF NOT EXISTS scripture_cache (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    reference VARCHAR(50) NOT NULL,
+    version VARCHAR(20) NOT NULL,
+    content TEXT NOT NULL,
+    fetched_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY unique_reference_version (reference, version)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Cache for book and chapter metadata
+CREATE TABLE IF NOT EXISTS bible_books (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    book_id VARCHAR(50) NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    language VARCHAR(10) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY unique_book_lang (book_id, language)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS bible_chapters (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    chapter_id VARCHAR(50) NOT NULL,
+    book_id VARCHAR(50) NOT NULL,
+    chapter_number INT NOT NULL,
+    language VARCHAR(10) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY unique_chapter_lang (chapter_id, language)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

@@ -55,6 +55,14 @@ All notable changes to this project will be documented in this file.
   - feat(nav): implement mobile navigation functionality.
   - feat(utils): add utility functions for alerts and debouncing.
   - feat(verse-modal): create verse modal with loading and error handling.
+- Update Bible API integration and caching mechanism:
+  - Changed Bible API key in config.php for scripture access.
+  - Updated Bible version definitions to include NLD1939 and modified NBV21 comments.
+  - Added scripture_cache, bible_books, and bible_chapters tables to faithguard_db.sql for caching scripture content and metadata.
+  - Removed users/profile.php file to streamline user profile management.
+  - Introduced BibleService class for fetching scripture verses from the API.
+  - Implemented cookie banner functionality in cookie-banner.js for user consent.
+  - Created a new dashboard.php file for user dashboard with progress tracking, journal, quiz assessment, and scripture loading features.
 
 ### Changed
 - `README.md` file got a professional make-over.

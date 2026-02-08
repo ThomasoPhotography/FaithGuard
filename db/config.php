@@ -20,16 +20,19 @@ define('DB_CHARSET', 'utf8mb4');
 
 // API.Bible Configuration
 // API Key for scripture access - NRSVUE (English) and NBV21 (Dutch)
-define('BIBLE_API_KEY', $_ENV['BIBLE_API_KEY'] ?? 'VrnmMFY2YCN4xcBPUnzxf');
+define('BIBLE_API_KEY', $_ENV['BIBLE_API_KEY'] ?? 'jhCTF0KSddJvqBAb-na7p');
 define('BIBLE_API_BASE_URL', 'https://api.scripture.api.bible/v1');
 
 // Bible Version IDs
 // NRSVUE: New Revised Standard Version Updated Edition (English)
-// NBV21: Nederlandse Bijbelvertaling 2021 (Dutch)
+// NLD1939: Statenvertaling (Dutch)
+// NBV21: Nederlandse Bijbelvertaling 2021 (Dutch) when approved by NBG
 define('BIBLE_VERSION_EN', 'NRSVUE');
-define('BIBLE_VERSION_NL', 'NBV21');
 define('BIBLE_VERSION_ID_EN', '9879dbb7cfe39e4d-01');
-define('BIBLE_VERSION_ID_NL', 'ad7a5f55c8c8b00d-01');
+//define('BIBLE_VERSION_NL', 'NBV21');
+//define('BIBLE_VERSION_ID_NL', 'ad7a5f55c8c8b00d-01');
+define('BIBLE_VERSION_NL', 'NLD1939');
+define('BIBLE_VERSION_ID_NL', 'ead7b4cc5007389c-01');
 
 // Application Settings
 define('APP_NAME', 'FaithGuard');
