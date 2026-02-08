@@ -63,6 +63,7 @@ All notable changes to this project will be documented in this file.
   - Introduced BibleService class for fetching scripture verses from the API.
   - Implemented cookie banner functionality in cookie-banner.js for user consent.
   - Created a new dashboard.php file for user dashboard with progress tracking, journal, quiz assessment, and scripture loading features.
+- Enhance dashboard layout, add footer and navigation components, and implement verse modal functionality.
 
 ### Changed
 - `README.md` file got a professional make-over.

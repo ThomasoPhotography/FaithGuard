@@ -343,21 +343,75 @@ a {
 	opacity: 0;
 	visibility: hidden;
 	transition: opacity 200ms ease;
-
 	&--active {
 		opacity: 1;
 		visibility: visible;
 	}
-
 	&__content {
 		background: $color-surface;
 		border-radius: $radius-lg;
 		padding: 2rem;
 		box-shadow: $shadow-lg;
 		width: 100%;
-		max-width: 500px;
+		max-width: 31.25rem;
+	}
+	&--verse{
+		display: none;
+		&.is-active{
+			display: flex;
+		}
 	}
 }
+
+/* Verse */
+.c-verseModal{
+	&__selector{
+		display: flex;
+		gap: 1rem;
+		margin-bottom: 1.5rem;
+	}
+	&__lang{
+		&--btn{
+			padding: .5rem 1rem;
+			border: 1px solid $color-primary;
+			background: transparent;
+			cursor: pointer;
+		}
+	}
+}
+
+/* Footer */
+.c-footer {
+	background: var(--color-dark);
+	color: $color-bg;
+	&__inner {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 3rem 1.5rem;
+	}
+	&__top {
+		display: flex;
+		justify-content: space-between;
+		gap: 3rem;
+	}
+	&__links {
+		display: flex;
+		gap: 3rem;
+	}
+	&__column-list {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+	&__bottom {
+		display: flex;
+		justify-content: space-between;
+		margin-top: 3rem;
+		padding-top: 2rem;
+		border-top: 1px solid rgba(255,255,255,0.1);
+	}
+}
+
 
 /*---------------------------------------/*
 	# UTILITIES

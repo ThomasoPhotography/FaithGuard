@@ -296,7 +296,58 @@ a:hover {
   padding: 2rem;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 500px;
+  max-width: 31.25rem;
+}
+.c-modal--verse {
+  display: none;
+}
+.c-modal--verse.is-active {
+  display: flex;
+}
+
+/* Verse */
+.c-verseModal__selector {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.c-verseModal__lang--btn {
+  padding: 0.5rem 1rem;
+  border: 1px solid #8b5a2b;
+  background: transparent;
+  cursor: pointer;
+}
+
+/* Footer */
+.c-footer {
+  background: var(--color-dark);
+  color: #faf8f5;
+}
+.c-footer__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+}
+.c-footer__top {
+  display: flex;
+  justify-content: space-between;
+  gap: 3rem;
+}
+.c-footer__links {
+  display: flex;
+  gap: 3rem;
+}
+.c-footer__column-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.c-footer__bottom {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /*---------------------------------------/*
