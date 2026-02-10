@@ -26,7 +26,9 @@ class Database
         } catch (PDOException $e) {
             // Log the error and stop execution with a clear message
             error_log("Database connection failed: " . $e->getMessage());
-            die("DATABASE_CONNECTION_FAILED: " . $e->getMessage());
+            http_response_code(500);
+            // Generic message for clients, full error kept in server logs
+            die("DATABASE_CONNECTION_FAILED");
         }
     }
 

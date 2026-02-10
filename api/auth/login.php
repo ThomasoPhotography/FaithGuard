@@ -5,6 +5,11 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     errorResponse('Method not allowed', 405);
 }
 
+// Ensure session started for CSRF and session regeneration
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 $input = getJsonInput();
 validateRequired($input, ['email', 'password']);
 
@@ -37,6 +42,14 @@ $sessionToken    = generateToken();
 
 FaithGuardRepository::createSession($sessionToken, $user['id'], $expiresAt);
 setSessionCookie($sessionToken, $expiresAt);
+
+// Regenerate PHP session id after successful authentication
+if (session_status() === PHP_SESSION_ACTIVE) {
+    session_regenerate_id(true);
+    if (empty($_SESSION['csrf_token'])) {
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    }
+}
 
 // Return user data (exclude sensitive fields)
 successResponse([

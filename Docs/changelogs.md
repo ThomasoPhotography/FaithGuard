@@ -65,6 +65,7 @@ All notable changes to this project will be documented in this file.
   - Created a new dashboard.php file for user dashboard with progress tracking, journal, quiz assessment, and scripture loading features.
 - Enhance dashboard layout, add footer and navigation components, and implement verse modal functionality.
 - Add .gitignore file to exclude IDE, OS, dependencies, environment, config, logs, temporary files, build artifacts, and package manager files.
+- Implement database connection error handling, add policies table and seed data, enhance session cookie settings, create admin dashboard and policy editing UI, and add Bible API integration for verse retrieval.
 
 ### Changed
 - `README.md` file got a professional make-over.

@@ -15,21 +15,26 @@
     require_once __DIR__ . '/db/config.php';
     require_once __DIR__ . '/db/FaithGuardRepository.php';
     // --- Core Site Session Check (Always required) ---
-    if (!isset($_SESSION['user_id'])) {
-        header('Location: /login.php');
-        exit;
+    if (! isset($_SESSION['user_id'])) {
+    header('Location: /login.php');
+    exit;
     }
-    $is_logged_in = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
-    $user = FaithGuardRepository::getUserById($_SESSION['user_id']);
-    $progress = FaithGuardRepository::getUserProgress($_SESSION['user_id']);
-    $checkins = FaithGuardRepository::getUserCheckins($_SESSION['user_id'], 7);
+    $is_logged_in   = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
+    $user           = FaithGuardRepository::getUserById($_SESSION['user_id']);
+    $progress       = FaithGuardRepository::getUserProgress($_SESSION['user_id']);
+    $checkins       = FaithGuardRepository::getUserCheckins($_SESSION['user_id'], 7);
     $lastQuizResult = FaithGuardRepository::getLastQuizResult($_SESSION['user_id']);
-    if (!$user) {
-        session_destroy();
-        header('Location: /login.php');
-        exit;
+    if (! $user) {
+    session_destroy();
+    header('Location: /login.php');
+    exit;
     }
-    $isAdmin = !empty($user['is_admin']);
+    $isAdmin = ! empty($user['is_admin']);
+    // Redirect admins to admin dashboard
+    if ($isAdmin) {
+    header('Location: /admin/dashboard.php');
+    exit;
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">

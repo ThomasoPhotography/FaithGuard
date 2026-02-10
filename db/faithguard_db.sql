@@ -275,3 +275,31 @@ CREATE TABLE IF NOT EXISTS bible_chapters (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     UNIQUE KEY unique_chapter_lang (chapter_id, language)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Policies table (legal content)
+CREATE TABLE IF NOT EXISTS policy (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    slug VARCHAR(100) NOT NULL UNIQUE,
+    content_title VARCHAR(255) DEFAULT NULL,
+    content_text LONGTEXT DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Seed default policy entries
+INSERT IGNORE INTO policy (slug, content_title, content_text) VALUES
+('terms', 'Terms of Service', 'To be completed.'),
+('privacy', 'Privacy Policy', 'To be completed.'),
+('cookie', 'Cookie Policy', 'To be completed.');
+
+-- Cache for individual verses
+CREATE TABLE IF NOT EXISTS bible_verses (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    verse_id VARCHAR(50) NOT NULL,
+    chapter_id VARCHAR(50) NOT NULL,
+    verse_number INT NOT NULL,
+    content TEXT NOT NULL,
+    language VARCHAR(10) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY unique_verse_lang (verse_id, language)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

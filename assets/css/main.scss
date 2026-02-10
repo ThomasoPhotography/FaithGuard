@@ -181,8 +181,6 @@ a {
 /*---------------------------------------/*
 	# COMPONENTS
 /*---------------------------------------*/
-
-/* Header */
 .c-header {
 	background: #e8d4b8;
 	position: sticky;
@@ -210,29 +208,6 @@ a {
 		}
 	}
 }
-
-/* Navigation */
-.c-nav {
-	display: none;
-
-	@include respond(md) {
-		display: flex;
-		gap: 2rem;
-	}
-
-	&__link {
-		font-weight: 500;
-		color: $color-text-muted;
-		transition: color 150ms ease;
-
-		&:hover,
-		&--active {
-			color: $color-primary;
-		}
-	}
-}
-
-/* Hero */
 .c-hero {
 	background: linear-gradient(135deg, #e8d4b8 0%, #faf8f5 100%);
 	text-align: center;
@@ -266,6 +241,40 @@ a {
 
 		&:hover {
 			transform: translateY(-3px);
+		}
+	}
+}
+.c-main {
+	&__title {
+		font-size: 5rem;
+	}
+	&__text {
+		font-size: 1rem;
+		color: $color-text-muted;
+		&--verse {
+			&:hover {
+				text-decoration: underline;
+				text-decoration-color: $color-border;
+			}
+		}
+	}
+}
+.c-nav {
+	display: none;
+
+	@include respond(md) {
+		display: flex;
+		gap: 2rem;
+	}
+
+	&__link {
+		font-weight: 500;
+		color: $color-text-muted;
+		transition: color 150ms ease;
+
+		&:hover,
+		&--active {
+			color: $color-primary;
 		}
 	}
 }
@@ -332,47 +341,43 @@ a {
 	}
 }
 
-/* Modal */
+/* Modal overlay */
 .c-modal {
 	position: fixed;
 	inset: 0;
-	background: rgba(28, 25, 23, 0.75);
-	display: flex;
+	background: rgba(0, 0, 0, 0.6);
+	display: none; // hidden by default
 	align-items: center;
 	justify-content: center;
-	opacity: 0;
-	visibility: hidden;
-	transition: opacity 200ms ease;
-	&--active {
-		opacity: 1;
-		visibility: visible;
+	z-index: 1000;
+	&__close {
+		position: absolute;
+		top: 0.5rem;
+		right: 0.5rem;
+		background: transparent;
+		border: none;
+		font-size: 1.2rem;
+		cursor: pointer;
 	}
-	&__content {
-		background: $color-surface;
-		border-radius: $radius-lg;
-		padding: 2rem;
-		box-shadow: $shadow-lg;
-		width: 100%;
-		max-width: 31.25rem;
-	}
-	&--verse{
-		display: none;
-		&.is-active{
-			display: flex;
-		}
+	&__dialog {
+		background: #fff;
+		padding: 1.5rem;
+		border-radius: 8px;
+		max-width: 400px;
+		width: 90%;
 	}
 }
 
 /* Verse */
-.c-verseModal{
-	&__selector{
+.c-verseModal {
+	&__selector {
 		display: flex;
 		gap: 1rem;
 		margin-bottom: 1.5rem;
 	}
-	&__lang{
-		&--btn{
-			padding: .5rem 1rem;
+	&__lang {
+		&--btn {
+			padding: 0.5rem 1rem;
 			border: 1px solid $color-primary;
 			background: transparent;
 			cursor: pointer;
@@ -408,29 +413,25 @@ a {
 		justify-content: space-between;
 		margin-top: 3rem;
 		padding-top: 2rem;
-		border-top: 1px solid rgba(255,255,255,0.1);
+		border-top: 1px solid rgba(255, 255, 255, 0.1);
 	}
 }
-
 
 /*---------------------------------------/*
 	# UTILITIES
 /*---------------------------------------*/
-
 .u-text-center {
 	text-align: center;
 }
 .u-hidden {
 	display: none !important;
 }
-
 .u-mt-lg {
 	margin-top: 2rem;
 }
 .u-mb-lg {
 	margin-bottom: 2rem;
 }
-
 .u-flex-center {
 	display: flex;
 	align-items: center;
@@ -440,13 +441,11 @@ a {
 /*---------------------------------------/*
 	# RESPONSIVE UTILITIES
 /*---------------------------------------*/
-
 .u-md-hidden {
 	@include respond(md) {
 		display: none !important;
 	}
 }
-
 // Mobile Bootstrap
 @media (max-width: 575.98px) {
 	.row {
@@ -504,5 +503,52 @@ a {
 	}
 	.c-row-span-4 {
 		grid-row: span 4;
+	}
+}
+
+/* Simple modal used by dashboard-scripture.js */
+.fg-modal {
+	position: fixed;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 1200;
+	font-family: $font-body;
+
+	&__backdrop {
+		position: absolute;
+		inset: 0;
+		background: rgba(0, 0, 0, 0.45);
+	}
+
+	&__panel {
+		position: relative;
+		background: #fff;
+		border-radius: $radius-md;
+		padding: 1.25rem;
+		width: 95%;
+		max-width: 720px;
+		box-shadow: $shadow-lg;
+		z-index: 2;
+	}
+
+	&__title {
+		margin: 0 0 0.5rem 0;
+		font-family: $font-heading;
+	}
+
+	&__body {
+		color: $color-text-muted;
+	}
+
+	&__close {
+		position: absolute;
+		right: 0.5rem;
+		top: 0.5rem;
+		border: none;
+		background: transparent;
+		font-size: 1.5rem;
+		cursor: pointer;
 	}
 }

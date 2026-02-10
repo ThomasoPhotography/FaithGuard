@@ -21,17 +21,13 @@ define('BIBLE_VERSION_ID_NL', '06125adad2d5898-01');  // NBV21
 define('BIBLE_VERSION_EN', 'NRSVUE');
 define('BIBLE_VERSION_NL', 'NBV21');
 
-// Select Bible version based on language
-$bibleId     = ($lang === 'nl') ? 'BIBLE_VERSION_ID_NL' : 'BIBLE_VERSION_ID_EN';
-$versionName = ($lang === 'nl') ? 'BIBLE_VERSION_NL' : 'BIBLE_VERSION_EN';
+// Select Bible version based on language (use defined constant values)
+$bibleId     = ($lang === 'nl') ? (defined('BIBLE_VERSION_ID_NL') ? BIBLE_VERSION_ID_NL : '') : (defined('BIBLE_VERSION_ID_EN') ? BIBLE_VERSION_ID_EN : '');
+$versionName = ($lang === 'nl') ? (defined('BIBLE_VERSION_NL') ? BIBLE_VERSION_NL : 'nl') : (defined('BIBLE_VERSION_EN') ? BIBLE_VERSION_EN : 'en');
 
-// Build API URL
-$apiUrl = sprintf(
-    '%s/bibles/%s/passages/%s',
-    'BIBLE_API_BASE_URL',
-    $bibleId,
-    urlencode($reference)
-);
+// Build API URL using configured base URL
+$apiBase = defined('BIBLE_API_BASE_URL') ? BIBLE_API_BASE_URL : 'https://api.scripture.api.bible/v1';
+$apiUrl  = sprintf('%s/bibles/%s/passages/%s', $apiBase, $bibleId, urlencode($reference));
 
 // Set up HTTP context with headers (no cURL)
 $contextOptions = [

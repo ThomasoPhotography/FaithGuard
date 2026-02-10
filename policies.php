@@ -1,16 +1,16 @@
 <?php
     // --- Core App Requirements ---
-    require_once __DIR__ . "../../../db/database.php";
-    require_once __DIR__ . "../../../db/FaithGuardRepository.php";
-    require_once __DIR__ . "../../../api/helper/debug.php";
+    require_once __DIR__ . "/db/database.php";
+    require_once __DIR__ . "/db/FaithGuardRepository.php";
+    require_once __DIR__ . "/api/helper/debug.php";
 
     // --- Session (same pattern as other pages) ---
     session_set_cookie_params([
-        'lifetime' => 302400,
-        'path'     => '/',
-        'domain'   => $_SERVER['SERVER_NAME'] ?? '',
-        'secure'   => true,
-        'httponly' => true,
+    'lifetime' => 302400,
+    'path'     => '/',
+    'domain'   => $_SERVER['SERVER_NAME'] ?? '',
+    'secure'   => true,
+    'httponly' => true,
     ]);
     session_start();
 
@@ -24,17 +24,17 @@
 
     // --- Load user if logged in ---
     if ($is_logged_in && isset($_SESSION['user_id'])) {
-        $user_data = FaithGuardRepository::getUserById($_SESSION['user_id']);
+    $user_data = FaithGuardRepository::getUserById($_SESSION['user_id']);
 
-        if ($user_data) {
-            $user        = true;
-            $accountName = htmlspecialchars($user_data['name'] ?? $user_data['email']);
-            $user_role   = $user_data['role'] ?? 'user';
-        } else {
-            // Corrupted session → reset
-            unset($_SESSION['user_id'], $_SESSION['logged_in']);
-            $is_logged_in = false;
-        }
+    if ($user_data) {
+        $user        = true;
+        $accountName = htmlspecialchars($user_data['name'] ?? $user_data['email']);
+        $user_role   = $user_data['role'] ?? 'user';
+    } else {
+        // Corrupted session → reset
+        unset($_SESSION['user_id'], $_SESSION['logged_in']);
+        $is_logged_in = false;
+    }
     }
 
     // --- Policy Logic (PUBLIC ACCESS) ---
@@ -42,27 +42,27 @@
     $validSlugs = ['terms', 'privacy', 'cookie'];
 
     if (! in_array($slug, $validSlugs, true)) {
+    $title       = 'Policy Not Found';
+    $content     = '<p>The requested policy could not be found.</p>';
+    $dateUpdated = 'Unknown';
+    $dateCreated = 'Unknown';
+    $date        = 'Date Created: ' . $dateCreated . ' - Last Updated: ' . $dateUpdated;
+    } else {
+    $policy = FaithGuardRepository::getPolicyContent($slug);
+
+    if ($policy) {
+        $title       = htmlspecialchars($policy['content_title'] ?? 'Policy');
+        $content     = nl2br(htmlspecialchars($policy['content_text'] ?? ''));
+        $dateCreated = isset($policy['created_at']) ? htmlspecialchars(date('d M Y', strtotime($policy['created_at']))) : 'Unknown';
+        $dateUpdated = isset($policy['updated_at']) ? htmlspecialchars(date('d M Y', strtotime($policy['updated_at']))) : 'Unknown';
+        $date        = 'Date Created: ' . $dateCreated . ' - Last Updated: ' . $dateUpdated;
+    } else {
         $title       = 'Policy Not Found';
         $content     = '<p>The requested policy could not be found.</p>';
         $dateUpdated = 'Unknown';
         $dateCreated = 'Unknown';
         $date        = 'Date Created: ' . $dateCreated . ' - Last Updated: ' . $dateUpdated;
-    } else {
-        $policy = FaithGuardRepository::getPolicyContent($slug);
-
-        if ($policy) {
-            $title   = htmlspecialchars($policy['content_title'] ?? 'Policy');
-            $content = nl2br(htmlspecialchars($policy['content_text'] ?? ''));
-            $dateCreated = isset($policy['created_at']) ? htmlspecialchars(date('d M Y', strtotime($policy['created_at']))) : 'Unknown';
-            $dateUpdated = isset($policy['updated_at']) ? htmlspecialchars(date('d M Y', strtotime($policy['updated_at']))) : 'Unknown';
-            $date = 'Date Created: ' . $dateCreated . ' - Last Updated: ' . $dateUpdated;
-        } else {
-            $title       = 'Policy Not Found';
-            $content     = '<p>The requested policy could not be found.</p>';
-            $dateUpdated = 'Unknown';
-            $dateCreated = 'Unknown';
-            $date        = 'Date Created: ' . $dateCreated . ' - Last Updated: ' . $dateUpdated;
-        }
+    }
     }
 ?>
 <!DOCTYPE html>
@@ -92,10 +92,10 @@
             <!-- LANGUAGE SELECTOR   -->
             <form method="post" action="../../../api/actions/set-language.php" class="d-inline c-nav__language">
                 <select name="language" class="form-select form-select-sm c-nav__selector" onchange="this.form.submit()">
-                    <option value="en" class="c-nav__selector c-nav__selector--en" <?php echo ($_SESSION['language'] ?? 'en') === 'en' ? 'selected' : ''?>>
+                    <option value="en" class="c-nav__selector c-nav__selector--en" <?php echo($_SESSION['language'] ?? 'en') === 'en' ? 'selected' : '' ?>>
                         English
                     </option>
-                    <option value="nl" class="c-nav__selector c-nav__selector--nl" <?php echo ($_SESSION['language'] ?? '') === 'nl' ? 'selected' : ''?>>
+                    <option value="nl" class="c-nav__selector c-nav__selector--nl" <?php echo($_SESSION['language'] ?? '') === 'nl' ? 'selected' : '' ?>>
                         Nederlands
                     </option>
                 </select>

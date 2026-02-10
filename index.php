@@ -1,11 +1,24 @@
 <?php
+    // Use centralized config for session cookie settings when available
+    require_once __DIR__ . '/db/config.php';
+
+    // Determine safe cookie domain (strip port, validate)
+    $rawHost      = $_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME'] ?? '';
+    $host         = preg_replace('/:.+$/', '', $rawHost);
+    $cookieDomain = '';
+    if ($host === 'localhost' || filter_var($host, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME)) {
+    $cookieDomain = $host;
+    }
+
     session_set_cookie_params([
-    'lifetime' => 302400, // 3.5 days (84 hours)
+    'lifetime' => SESSION_LIFETIME,
     'path'     => '/',
-    'domain'   => $_SERVER['SERVER_NAME'] ?? '',
-    'secure'   => true,
-    'httponly' => true,
+    'domain'   => $cookieDomain,
+    'secure'   => defined('SESSION_COOKIE_SECURE') ? SESSION_COOKIE_SECURE : true,
+    'httponly' => defined('SESSION_COOKIE_HTTPONLY') ? SESSION_COOKIE_HTTPONLY : true,
+    'samesite' => defined('SESSION_COOKIE_SAMESITE') ? SESSION_COOKIE_SAMESITE : 'Lax',
     ]);
+
     if (session_status() === PHP_SESSION_NONE) {
     session_start();
     }
@@ -42,10 +55,10 @@
     }
     }
 
-    // --- Fetch Resources for Dynamic Display ---
-    // Fetch all resources from DB
+                                                                   // --- Fetch Resources for Dynamic Display ---
+                                                                   // Fetch all resources from DB
     $resources = FaithGuardRepository::getResources($type, $category); // Adjust type as needed (e.g., 'featured', 'latest')
-    // Limit to 6 for display (adjust as needed)
+                                                                   // Limit to 6 for display (adjust as needed)
     $max_resources = 6;
 ?>
 <!DOCTYPE html>
@@ -220,7 +233,7 @@
             <h2 class="c-main__title">Join the FaithGuard Community</h2>
             <p class="c-main__text">Sign up today to access personalized resources, track your progress, and connect with others on the same journey.</p>
             <a href="/api/auth/register.php" class="btn c-btn c-main__btn">Get Started</a>
-            <p class="js-bible__ref">2 Corinthians 5:7</p>
+            <a class="c-main__text c-main__text--verse js-bible__ref">2 Corinthians 5:7</a>
         </section>
     </main>
     <!-- Community Impact Section -->
@@ -301,4 +314,5 @@
 <script src="/assets/js/quiz.js"></script>
 <script src="/assets/js/resources.js"></script>
 <script src="/assets/js/scripture-modal.js"></script>
+<script src="/assets/js/dashboard-scripture.js"></script>
 </html>
