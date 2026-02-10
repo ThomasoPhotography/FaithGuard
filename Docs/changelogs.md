@@ -64,6 +64,7 @@ All notable changes to this project will be documented in this file.
   - Implemented cookie banner functionality in cookie-banner.js for user consent.
   - Created a new dashboard.php file for user dashboard with progress tracking, journal, quiz assessment, and scripture loading features.
 - Enhance dashboard layout, add footer and navigation components, and implement verse modal functionality.
+- Add .gitignore file to exclude IDE, OS, dependencies, environment, config, logs, temporary files, build artifacts, and package manager files.
 
 ### Changed
 - `README.md` file got a professional make-over.
