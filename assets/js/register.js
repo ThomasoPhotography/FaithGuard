@@ -2,41 +2,93 @@
  * Handles fetching the modal HTML from the server and showing it
  */
 async function openRegisterModal() {
+	// Idempotent: if modal exists and is initialized, just show it
 	try {
-		const response = await fetch('/api/auth/register.php'); // Fetches the GET portion of your PHP
-		const html = await response.text();
-
 		const container = document.getElementById('modal-container');
+		if (!container) {
+			console.error('Modal container (#modal-container) not found.');
+			return;
+		}
+
+		const existing = container.querySelector('#registerModal');
+		if (existing && existing.dataset.fgInit === '1') {
+			if (typeof bootstrap !== 'undefined') new bootstrap.Modal(existing).show();
+			return;
+		}
+
+		const response = await fetch('/api/auth/register.php');
+		if (!response.ok) {
+			console.error('Failed to load register modal:', response.status, response.statusText);
+			return;
+		}
+
+		const html = await response.text();
 		container.innerHTML = html;
 
-		// The PHP script you wrote already contains the <script> to auto-show the modal,
-		// but we need to initialize the class listeners:
-		new RegisterModal();
-	} catch (error) {
-		console.error('Error loading modal:', error);
+		// Initialize RegisterModal for the injected element
+		const modalEl = container.querySelector('#registerModal');
+		if (modalEl) new RegisterModal(modalEl);
+	} catch (err) {
+		console.error('Error loading modal:', err);
 	}
 }
 
 class RegisterModal {
-	constructor() {
-		this.modalEl = document.getElementById('registerModal');
-		this.form = document.getElementById('registerForm');
-		// Your PHP didn't have a div for messages, let's look for or create one
-		this.messageContainer = this.form.querySelector('.c-form__message');
+	constructor(modalEl) {
+		this.modalEl = modalEl || document.getElementById('registerModal');
+		if (!this.modalEl) return;
 
+		// Prevent double initialization
+		if (this.modalEl.dataset.fgInit === '1') return;
+		this.modalEl.dataset.fgInit = '1';
+
+		this.form = this.modalEl.querySelector('#registerForm');
+		this.submitBtn = this.form ? this.form.querySelector('button[type="submit"]') : null;
+
+		this.messageContainer = this.form.querySelector('.c-form__message');
 		if (!this.messageContainer) {
 			this.messageContainer = document.createElement('div');
 			this.messageContainer.className = 'c-form__message mb-3';
 			this.form.prepend(this.messageContainer);
 		}
 
+		// Client-side constraints (keep in sync with server)
+		this.MIN_PASSWORD = 8;
+		this.MAX_PASSWORD = 72;
+
+		this._boundSubmit = this.handleSubmit.bind(this);
 		this.init();
 	}
 
 	init() {
-		if (this.form) {
-			this.form.addEventListener('submit', (e) => this.handleSubmit(e));
+		if (!this.form) return;
+		// Remove any previous listener and add ours
+		this.form.removeEventListener('submit', this._boundSubmit);
+		this.form.addEventListener('submit', this._boundSubmit);
+
+		// Show modal if bootstrap is available
+		if (typeof bootstrap !== 'undefined') {
+			try {
+				this.bsModal = new bootstrap.Modal(this.modalEl);
+				this.bsModal.show();
+			} catch (e) {
+				// ignore
+			}
 		}
+	}
+
+	validate(data) {
+		if (!data.full_name || data.full_name.trim().length < 3) {
+			return 'Please enter your full name (at least 3 characters).';
+		}
+		const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		if (!data.email || !emailRe.test(data.email)) {
+			return 'Please enter a valid email address.';
+		}
+		if (!data.password) return 'Please enter a password.';
+		if (data.password.length < this.MIN_PASSWORD) return `Password must be at least ${this.MIN_PASSWORD} characters.`;
+		if (data.password.length > this.MAX_PASSWORD) return `Password must be no more than ${this.MAX_PASSWORD} characters.`;
+		return null;
 	}
 
 	async handleSubmit(e) {
@@ -46,27 +98,50 @@ class RegisterModal {
 		const formData = new FormData(this.form);
 		const data = Object.fromEntries(formData);
 
+		const clientErr = this.validate(data);
+		if (clientErr) {
+			this.showMessage(clientErr, 'error');
+			return;
+		}
+
+		if (this.submitBtn) {
+			this.submitBtn.disabled = true;
+			this.prevBtnText = this.submitBtn.innerHTML;
+			this.submitBtn.innerHTML = 'Creating...';
+		}
+
 		try {
-			// Updated path to match your folder structure
 			const response = await fetch('/api/auth/register.php', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(data),
 			});
 
-			const result = await response.json();
+			let result;
+			try {
+				result = await response.json();
+			} catch (e) {
+				throw new Error('Invalid server response');
+			}
 
-			if (result.success) {
-				this.showMessage('Account created! Redirecting...', 'success');
+			if (response.ok && result.success) {
+				this.showMessage('Account created — redirecting...', 'success');
 				this.form.reset();
 				setTimeout(() => {
 					window.location.href = '/dashboard.php';
-				}, 1500);
+				}, 1200);
 			} else {
-				this.showMessage(result.error || 'Registration failed', 'error');
+				const errMsg = result && result.error ? result.error : result.message || 'Registration failed';
+				this.showMessage(errMsg, 'error');
 			}
-		} catch (error) {
-			this.showMessage('An error occurred. Please try again.', 'error');
+		} catch (err) {
+			console.error('Register error:', err);
+			this.showMessage('Network error — please try again.', 'error');
+		} finally {
+			if (this.submitBtn) {
+				this.submitBtn.disabled = false;
+				this.submitBtn.innerHTML = this.prevBtnText || 'Create account';
+			}
 		}
 	}
 
@@ -80,3 +155,6 @@ class RegisterModal {
 		this.messageContainer.className = 'c-form__message mb-3';
 	}
 }
+
+// Expose globally for inline onclick handlers
+window.openRegisterModal = openRegisterModal;

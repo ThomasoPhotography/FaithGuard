@@ -32,6 +32,53 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
     }
     $csrf = htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8');
+
+    // Emit a Bootstrap modal fragment and include the register.js bootstrapper
+    echo <<<HTML
+<div class="modal fade" id="registerModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="registerForm" class="c-form__register">
+                <div class="modal-header">
+                    <h5 class="modal-title">Create account</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="full_name" class="form-label">Full name</label>
+                        <input type="text" class="form-control" id="full_name" name="full_name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+                    <input type="hidden" name="csrf_token" value="$csrf">
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Create account</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="../../assets/js/register.js"></script>
+<script>
+    (function(){
+        var modalEl = document.getElementById('registerModal');
+        if (modalEl && typeof bootstrap !== 'undefined') {
+            var modal = new bootstrap.Modal(modalEl);
+            modal.show();
+        }
+    })();
+</script>
+HTML;
+
+    exit;
 }
 
 // Only accept POST for registration submission

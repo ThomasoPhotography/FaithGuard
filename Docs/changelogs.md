@@ -71,6 +71,7 @@ All notable changes to this project will be documented in this file.
 - Refactor registration flow, implement CSRF protection, and update links to registration page.
 - Enhance registration process with CSRF protection, update form fields, and add registration modal functionality.
 - Implement registration modal functionality, enhance user feedback, and update registration flow.
+- Implement registration modal with form validation and CSRF protection.
 
 ### Changed
 - `README.md` file got a professional make-over.
