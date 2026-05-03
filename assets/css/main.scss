@@ -21,7 +21,7 @@ $color-bg: #faf8f5;
 $color-surface: #f5f0e8;
 $color-text: #1c1917;
 $color-text-muted: #57534e;
-$color-border: #e5e0da;
+$color-text-light: #e5e0da;
 
 /* Radius */
 $radius-sm: 0.5rem;
@@ -254,7 +254,7 @@ a {
 		&--verse {
 			&:hover {
 				text-decoration: underline;
-				text-decoration-color: $color-border;
+				text-decoration-color: $color-text-light;
 			}
 		}
 	}
@@ -339,6 +339,21 @@ a {
 		background: transparent;
 		color: $color-primary;
 	}
+
+	&__submit {
+		background-color: $color-primary-dark;
+		color: $color-text-light;
+		&:hover {
+			background-color: $color-primary;
+			color: $color-text;
+			transition: ease-in 0.3s;
+		}
+	}
+
+	&__cancel {
+		background-color: $color-primary;
+		color: $color-text-muted;
+	}
 }
 
 /* Modal overlay */
@@ -367,6 +382,8 @@ a {
 		width: 90%;
 	}
 }
+
+/* Register Modal*/
 
 /* Verse */
 .c-verseModal {

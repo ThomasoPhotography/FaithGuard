@@ -282,6 +282,19 @@ a:hover {
   background: transparent;
   color: #8b5a2b;
 }
+.c-btn__submit {
+  background-color: #5d3a1a;
+  color: #e5e0da;
+}
+.c-btn__submit:hover {
+  background-color: #8b5a2b;
+  color: #1c1917;
+  transition: ease-in 0.3s;
+}
+.c-btn__cancel {
+  background-color: #8b5a2b;
+  color: #57534e;
+}
 
 /* Modal overlay */
 .c-modal {
@@ -310,6 +323,7 @@ a:hover {
   width: 90%;
 }
 
+/* Register Modal*/
 /* Verse */
 .c-verseModal__selector {
   display: flex;

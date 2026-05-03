@@ -37,16 +37,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     echo <<<HTML
 <div class="modal fade" id="registerModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content c-registerModal">
             <form id="registerForm" class="c-form__register">
-                <div class="modal-header">
-                    <h5 class="modal-title">Create account</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-header c-registerModal__header">
+                    <h5 class="modal-title c-registerModal__title">Create account</h5>
+                    <button type="button" class="btn-close c-btn c-btn__close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="full_name" class="form-label">Full name</label>
-                        <input type="text" class="form-control" id="full_name" name="full_name" required>
+                        <label for="first_name" class="form-label">First name</label>
+                        <input type="text" class="form-control" id="first_name" name="first_name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="last_name" class="form-label">Last name</label>
+                        <input type="text" class="form-control" id="last_name" name="last_name" required>
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
@@ -59,8 +63,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     <input type="hidden" name="csrf_token" value="$csrf">
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Create account</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn c-btn c-btn__submit">Create account</button>
+                    <button type="button" class="btn c-btn c-btn__cancel" data-bs-dismiss="modal">Cancel</button>
                 </div>
             </form>
         </div>
