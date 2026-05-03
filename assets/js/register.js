@@ -1,13 +1,35 @@
 /**
- * Register Modal
- * Handles the registration form modal functionality
+ * Handles fetching the modal HTML from the server and showing it
  */
+async function openRegisterModal() {
+	try {
+		const response = await fetch('/api/auth/register.php'); // Fetches the GET portion of your PHP
+		const html = await response.text();
+
+		const container = document.getElementById('modal-container');
+		container.innerHTML = html;
+
+		// The PHP script you wrote already contains the <script> to auto-show the modal,
+		// but we need to initialize the class listeners:
+		new RegisterModal();
+	} catch (error) {
+		console.error('Error loading modal:', error);
+	}
+}
 
 class RegisterModal {
 	constructor() {
-		this.modal = document.getElementById('registerModal');
-		this.form = document.querySelector('.c-form__register');
-		this.messageContainer = document.querySelector('.c-form__message');
+		this.modalEl = document.getElementById('registerModal');
+		this.form = document.getElementById('registerForm');
+		// Your PHP didn't have a div for messages, let's look for or create one
+		this.messageContainer = this.form.querySelector('.c-form__message');
+
+		if (!this.messageContainer) {
+			this.messageContainer = document.createElement('div');
+			this.messageContainer.className = 'c-form__message mb-3';
+			this.form.prepend(this.messageContainer);
+		}
+
 		this.init();
 	}
 
@@ -25,29 +47,26 @@ class RegisterModal {
 		const data = Object.fromEntries(formData);
 
 		try {
-			const response = await fetch('/api/register', {
+			// Updated path to match your folder structure
+			const response = await fetch('/api/auth/register.php', {
 				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
+				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(data),
 			});
 
 			const result = await response.json();
 
-			if (response.ok) {
-				this.showMessage('Account created successfully!', 'success');
+			if (result.success) {
+				this.showMessage('Account created! Redirecting...', 'success');
 				this.form.reset();
 				setTimeout(() => {
-					const bootstrapModal = bootstrap.Modal.getInstance(this.modal);
-					bootstrapModal?.hide();
+					window.location.href = '/dashboard.php';
 				}, 1500);
 			} else {
-				this.showMessage(result.message || 'Registration failed', 'error');
+				this.showMessage(result.error || 'Registration failed', 'error');
 			}
 		} catch (error) {
 			this.showMessage('An error occurred. Please try again.', 'error');
-			console.error('Registration error:', error);
 		}
 	}
 
@@ -61,7 +80,3 @@ class RegisterModal {
 		this.messageContainer.className = 'c-form__message mb-3';
 	}
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-	new RegisterModal();
-});

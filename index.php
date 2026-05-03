@@ -203,6 +203,8 @@
     </header>
     <!-- Main Content -->
     <main class="c-main container my-5">
+        <!-- Sign Up Modal -->
+        <div id="modal-container"></div>
         <!-- Resource Section -->
         <section class="c-main__section mb-5">
             <h2 class="c-main__title">Our Mission</h2>
@@ -241,7 +243,7 @@
         <section class="c-main__section text-center mb-5">
             <h2 class="c-main__title">Join the FaithGuard Community</h2>
             <p class="c-main__text">Sign up today to access personalized resources, track your progress, and connect with others on the same journey.</p>
-            <a href="../api/auth/register.php" class="btn c-btn c-main__btn">Get Started</a>
+            <a onclick="openRegisterModal()" class="btn c-btn c-main__btn">Get Started</a>
             <a class="c-main__text c-main__text--verse js-bible__ref">2 Corinthians 5:7</a>
         </section>
     </main>
