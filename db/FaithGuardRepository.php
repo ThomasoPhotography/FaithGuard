@@ -28,23 +28,36 @@ class FaithGuardRepository
     //Create new user
     public static function createUser(array $data): int | false
     {
-        $userId = Database::execute(
-            "INSERT INTO users (full_name, email, password_hash, first_name, last_name) VALUES (?, ?, ?, ?, ?)",
-            [
+        // Use a direct PDO insert so we can return the actual inserted ID
+        try {
+            $conn = (new ReflectionClass('Database'))->getMethod('getConnection');
+            $conn->setAccessible(true);
+            $db = $conn->invoke(null);
+
+            $stmt = $db->prepare("INSERT INTO users (full_name, email, password_hash, first_name, last_name) VALUES (?, ?, ?, ?, ?)");
+            $stmt->execute([
                 $data['full_name'] ?? null,
                 $data['email'],
                 $data['password_hash'],
                 $data['first_name'] ?? null,
                 $data['last_name'] ?? null,
-            ]
-        );
-        if ($userId) {
-            // Create default preferences
-            self::createUserPreferences($userId);
-            // Create progress record
-            self::createUserProgress($userId);
+            ]);
+
+            $userId = (int) $db->lastInsertId();
+            $db     = null;
+
+            if ($userId) {
+                // Create default preferences
+                self::createUserPreferences($userId);
+                // Create progress record
+                self::createUserProgress($userId);
+            }
+
+            return $userId;
+        } catch (Exception $e) {
+            error_log('createUser error: ' . $e->getMessage());
+            return false;
         }
-        return $userId;
     }
     //Update user
     public static function updateUser(int $id, array $data): bool
@@ -299,7 +312,7 @@ class FaithGuardRepository
         if (! $resource) {
             return [];
         }
-        $sql   = "SELECT * FROM resources WHERE id != ? AND (type = ? OR category = ?) ORDER BY is_featured DESC, created_at DESC LIMIT ?";
+        $sql    = "SELECT * FROM resources WHERE id != ? AND (type = ? OR category = ?) ORDER BY is_featured DESC, created_at DESC LIMIT ?";
         $params = [$resourceId, $resource['type'], $resource['category'], $limit];
         return Database::getRows($sql, $params);
     }

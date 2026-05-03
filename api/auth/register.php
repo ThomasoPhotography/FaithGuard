@@ -90,101 +90,106 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     errorResponse('Method not allowed', 405);
 }
 
-// Start session and ensure CSRF token exists
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-    if (empty($_SESSION['csrf_token'])) {
-        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+try {
+    // Start session and ensure CSRF token exists
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+        if (empty($_SESSION['csrf_token'])) {
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        }
     }
+
+    if (! ENABLE_REGISTRATION) {
+        errorResponse('Registration is currently disabled', 403);
+    }
+
+    $input = getJsonInput();
+    // Accept first_name/last_name (single input) or full_name (preferred)
+    if (! empty($input['full_name'])) {
+        $fullName = trim($input['full_name']);
+        // Attempt to split full name into first and last name (simple heuristic)
+        $parts     = preg_split('/\s+/', $fullName, 2);
+        $firstName = $parts[0] ?? '';
+        $lastName  = $parts[1] ?? '';
+    } else {
+        $firstName = trim($input['first_name'] ?? '');
+        $lastName  = trim($input['last_name'] ?? '');
+        $fullName  = trim($firstName . ' ' . $lastName);
+    }
+    validateRequired($input, ['first_name', 'last_name', 'email', 'password', 'csrf_token']);
+
+    // CSRF validation
+    if (! isset($input['csrf_token']) || ! isset($_SESSION['csrf_token']) || ! hash_equals($_SESSION['csrf_token'], $input['csrf_token'])) {
+        errorResponse('Invalid CSRF token', 403);
+    }
+
+    // Input validation
+    $firstName   = trim($input['first_name'] ?? '');
+    $lastName    = trim($input['last_name'] ?? '');
+    $email       = trim($input['email'] ?? '');
+    $rawPassword = $input['password'] ?? '';
+    // Add first and last name to full name
+    $fullName = trim($firstName . ' ' . $lastName);
+
+    // Validate username (first name portion)
+    if (! preg_match('/^[a-zA-Z0-9_]{3,50}$/', $firstName)) {
+        errorResponse('Username must be 3-50 characters and contain only letters, numbers, and underscores');
+    }
+
+    // Validate email
+    if (! filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        errorResponse('Invalid email address');
+    }
+
+    // Validate password length
+    if (strlen($rawPassword) < PASSWORD_MIN_LENGTH) {
+        errorResponse('Password must be at least ' . PASSWORD_MIN_LENGTH . ' characters');
+    }
+    if (strlen($rawPassword) > PASSWORD_MAX_LENGTH) {
+        errorResponse('Password must be no more than ' . PASSWORD_MAX_LENGTH . ' characters');
+    }
+
+    // Check if email exists
+    if (FaithGuardRepository::getUserByEmail($email)) {
+        errorResponse('Email is already registered');
+    }
+
+    // Hash the password now
+    $passwordHash = password_hash($rawPassword, PASSWORD_ARGON2ID);
+
+    // Create user
+    $userId = FaithGuardRepository::createUser([
+        'first_name'    => $firstName,
+        'last_name'     => $lastName,
+        'full_name'     => $fullName,
+        'email'         => $email,
+        'password_hash' => $passwordHash,
+    ]);
+
+    if (! $userId) {
+        errorResponse('Failed to create account. Please try again.', 500);
+    }
+
+    // Create session
+    $expiresAt    = time() + SESSION_LIFETIME;
+    $sessionToken = generateToken();
+
+    FaithGuardRepository::createSession($sessionToken, $userId, $expiresAt);
+    setSessionCookie($sessionToken, $expiresAt);
+
+    // Return success
+    successResponse([
+        'user' => [
+            'id'         => $userId,
+            'email'      => $email,
+            'first_name' => $firstName,
+            'last_name'  => $lastName,
+            'full_name'  => $fullName,
+            'is_admin'   => false,
+            'is_member'  => false,
+        ],
+    ]);
+} catch (\Throwable $e) {
+    error_log('Register error: ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+    errorResponse('Server error', 500);
 }
-
-if (! ENABLE_REGISTRATION) {
-    errorResponse('Registration is currently disabled', 403);
-}
-
-$input = getJsonInput();
-// Accept first_name/last_name (single input) or full_name (preferred)
-if (! empty($input['full_name'])) {
-    $fullName = trim($input['full_name']);
-    // Attempt to split full name into first and last name (simple heuristic)
-    $parts = preg_split('/\s+/', $fullName, 2);
-    $firstName = $parts[0] ?? '';
-    $lastName  = $parts[1] ?? '';
-} else {
-    $firstName = trim($input['first_name'] ?? '');
-    $lastName  = trim($input['last_name'] ?? '');
-    $fullName  = trim($firstName . ' ' . $lastName);
-}
-validateRequired($input, ['first_name', 'last_name', 'email', 'password', 'csrf_token']);
-
-// CSRF validation
-if (! isset($input['csrf_token']) || ! isset($_SESSION['csrf_token']) || ! hash_equals($_SESSION['csrf_token'], $input['csrf_token'])) {
-    errorResponse('Invalid CSRF token', 403);
-}
-
-// Input validation
-$firstName    = trim($input['first_name'] ?? '');
-$lastName     = trim($input['last_name'] ?? '');
-$email       = trim($input['email'] ?? '');
-$rawPassword = $input['password'] ?? '';
-// Add first and last name to full name
-$fullName = trim($firstName . ' ' . $lastName);
-
-// Validate username (first name portion)
-if (! preg_match('/^[a-zA-Z0-9_]{3,50}$/', $firstName)) {
-    errorResponse('Username must be 3-50 characters and contain only letters, numbers, and underscores');
-}
-
-// Validate email
-if (! filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    errorResponse('Invalid email address');
-}
-
-// Validate password length
-if (strlen($rawPassword) < PASSWORD_MIN_LENGTH) {
-    errorResponse('Password must be at least ' . PASSWORD_MIN_LENGTH . ' characters');
-}
-if (strlen($rawPassword) > PASSWORD_MAX_LENGTH) {
-    errorResponse('Password must be no more than ' . PASSWORD_MAX_LENGTH . ' characters');
-}
-
-// Check if email exists
-if (FaithGuardRepository::getUserByEmail($email)) {
-    errorResponse('Email is already registered');
-}
-
-// Hash the password now
-$passwordHash = password_hash($rawPassword, PASSWORD_ARGON2ID);
-
-// Create user
-$userId = FaithGuardRepository::createUser([
-    'first_name'    => $firstName,
-    'last_name'     => $lastName,
-    'full_name'     => $fullName,
-    'email'         => $email,
-    'password_hash' => $passwordHash,
-]);
-
-if (! $userId) {
-    errorResponse('Failed to create account. Please try again.', 500);
-}
-
-// Create session
-$expiresAt    = time() + SESSION_LIFETIME;
-$sessionToken = generateToken();
-
-FaithGuardRepository::createSession($sessionToken, $userId, $expiresAt);
-setSessionCookie($sessionToken, $expiresAt);
-
-// Return success
-successResponse([
-    'user' => [
-        'id'         => $userId,
-        'email'      => $email,
-        'first_name' => $firstName,
-        'last_name'  => $lastName,
-        'full_name'  => $fullName,
-        'is_admin'   => false,
-        'is_member'  => false,
-    ],
-]);
