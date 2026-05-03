@@ -191,5 +191,9 @@ try {
     ]);
 } catch (\Throwable $e) {
     error_log('Register error: ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+    // In debug mode or when explicitly requested, include the exception message to aid debugging
+    if ((defined('APP_DEBUG') && APP_DEBUG) || (isset($_GET['debug']) && $_GET['debug'] == '1')) {
+        errorResponse('Server error: ' . $e->getMessage(), 500);
+    }
     errorResponse('Server error', 500);
 }
