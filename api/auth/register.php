@@ -103,8 +103,19 @@ if (! ENABLE_REGISTRATION) {
 }
 
 $input = getJsonInput();
-// Accept full_name (single input) or first_name/last_name; require full_name for modal
-validateRequired($input, ['full_name', 'email', 'password', 'csrf_token']);
+// Accept first_name/last_name (single input) or full_name (preferred)
+if (! empty($input['full_name'])) {
+    $fullName = trim($input['full_name']);
+    // Attempt to split full name into first and last name (simple heuristic)
+    $parts = preg_split('/\s+/', $fullName, 2);
+    $firstName = $parts[0] ?? '';
+    $lastName  = $parts[1] ?? '';
+} else {
+    $firstName = trim($input['first_name'] ?? '');
+    $lastName  = trim($input['last_name'] ?? '');
+    $fullName  = trim($firstName . ' ' . $lastName);
+}
+validateRequired($input, ['first_name', 'last_name', 'email', 'password', 'csrf_token']);
 
 // CSRF validation
 if (! isset($input['csrf_token']) || ! isset($_SESSION['csrf_token']) || ! hash_equals($_SESSION['csrf_token'], $input['csrf_token'])) {
@@ -112,13 +123,12 @@ if (! isset($input['csrf_token']) || ! isset($_SESSION['csrf_token']) || ! hash_
 }
 
 // Input validation
-$fullName    = trim($input['full_name'] ?? '');
+$firstName    = trim($input['first_name'] ?? '');
+$lastName     = trim($input['last_name'] ?? '');
 $email       = trim($input['email'] ?? '');
 $rawPassword = $input['password'] ?? '';
-// Split full name into first/last
-$nameParts = explode(' ', $fullName, 2);
-$firstName = $nameParts[0] ?? '';
-$lastName  = $nameParts[1] ?? '';
+// Add first and last name to full name
+$fullName = trim($firstName . ' ' . $lastName);
 
 // Validate username (first name portion)
 if (! preg_match('/^[a-zA-Z0-9_]{3,50}$/', $firstName)) {

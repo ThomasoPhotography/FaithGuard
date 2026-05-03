@@ -73,6 +73,7 @@ All notable changes to this project will be documented in this file.
 - Implement registration modal functionality, enhance user feedback, and update registration flow.
 - Implement registration modal with form validation and CSRF protection.
 - Update registration modal styles and structure, enhance button functionality.
+- Refactor name handling in registration to support full name input and improve validation.
 
 ### Changed
 - `README.md` file got a professional make-over.
