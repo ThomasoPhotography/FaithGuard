@@ -78,9 +78,6 @@ class RegisterModal {
 	}
 
 	validate(data) {
-		if (!data.full_name || data.full_name.trim().length < 3) {
-			return 'Please enter your full name (at least 3 characters).';
-		}
 		const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 		if (!data.email || !emailRe.test(data.email)) {
 			return 'Please enter a valid email address.';
