@@ -1,305 +1,659 @@
--- FaithGuard Database Schema
--- MySQL 8.0+ compatible
+-- phpMyAdmin SQL Dump
+-- version 5.2.3
+-- https://www.phpmyadmin.net/
+--
+-- Host: com-linweb938.srv.combell-ops.net:3306
+-- Generation Time: May 03, 2026 at 06:55 PM
+-- Server version: 8.0.36-28
+-- PHP Version: 7.4.33
 
-CREATE DATABASE IF NOT EXISTS ID483117_faithguard CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE ID483117_faithguard;
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
 
--- Users table
-CREATE TABLE IF NOT EXISTS users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    email VARCHAR(255) NOT NULL UNIQUE,
-    password_hash VARCHAR(255) NOT NULL,
-    first_name VARCHAR(100),
-    last_name VARCHAR(100),
-    avatar_url VARCHAR(255),
-    bio TEXT,
-    bible_language ENUM('en', 'nl') DEFAULT 'en',
-    bible_version VARCHAR(20) DEFAULT 'NRSVUE',
-    bible_book VARCHAR(50),
-    is_admin BOOLEAN DEFAULT FALSE,
-    is_active BOOLEAN DEFAULT TRUE,
-    email_verified BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    last_login TIMESTAMP NULL,
-    INDEX idx_email (email)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- User roles (for future expansion, currently using is_admin flag)
-CREATE TABLE IF NOT EXISTS roles (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(50) NOT NULL UNIQUE,
-    description TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
--- User accounts
-INSERT INTO `users` (`id`, `email`, `password_hash`, `first_name`, `last_name`, `bio`, `bible_language`, `bible_version`, `bible_book`, `is_admin`, `email_verified`, `created_at`) VALUES
-(1, 'admin@faithguard.com', '$2y$12$Si3tc0jbzi7SZ85svjKhLeMkVf1aoQcpMaGis/s.obNQoKdAm7YqW', 'admin', 'admin', 'To be Written', 'en', 'NRSVUE', 'Luke', TRUE, TRUE, '2025-12-06 23:03:16'),
-(2, 'thomas.deseure@proton.me', '$2y$12$M5By2UvRbwuTvrFfYh42UOzM1tv1KnQGbedtlbWnCqu6wnNGrIATO', 'Thomas', 'user', 'To be Written', 'en', 'NRSVUE', 'Mark', FALSE, TRUE, '2025-12-07 00:04:49');
+--
+-- Database: `ID483117_faithguard`
+--
 
--- User preferences
-CREATE TABLE IF NOT EXISTS user_preferences (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
+-- --------------------------------------------------------
 
-    bible_language ENUM('en', 'nl') DEFAULT 'en',
-    bible_version VARCHAR(20) DEFAULT 'NRSVUE',
+--
+-- Table structure for table `bible_books`
+--
 
-    bible_book VARCHAR(50) DEFAULT 'Luke',
+CREATE TABLE `bible_books` (
+  `id` int NOT NULL,
+  `book_id` varchar(50) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `abbreviation` varchar(10) NOT NULL,
+  `testament` varchar(15) NOT NULL,
+  `language` varchar(10) NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-    theme ENUM('light', 'dark') DEFAULT 'light',
-    notifications_enabled BOOLEAN DEFAULT TRUE,
+-- --------------------------------------------------------
 
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+--
+-- Table structure for table `bible_chapters`
+--
 
-    CONSTRAINT chk_bible_book CHECK (
-        bible_book IN (
-            'Genesis','Exodus','Leviticus','Numbers','Deuteronomy',
-            'Joshua','Judges','Ruth','1 Samuel','2 Samuel',
-            '1 Kings','2 Kings','1 Chronicles','2 Chronicles',
-            'Ezra','Nehemiah','Esther','Job','Psalms','Proverbs',
-            'Ecclesiastes','Song of Solomon','Isaiah','Jeremiah',
-            'Lamentations','Ezekiel','Daniel','Hosea','Joel',
-            'Amos','Obadiah','Jonah','Micah','Nahum','Habakkuk',
-            'Zephaniah','Haggai','Zechariah','Malachi',
-            'Matthew','Mark','Luke','John','Acts','Romans',
-            '1 Corinthians','2 Corinthians','Galatians',
-            'Ephesians','Philippians','Colossians',
-            '1 Thessalonians','2 Thessalonians',
-            '1 Timothy','2 Timothy','Titus','Philemon',
-            'Hebrews','James','1 Peter','2 Peter',
-            '1 John','2 John','3 John','Jude','Revelation'
-        )
-    ),
+CREATE TABLE `bible_chapters` (
+  `id` int NOT NULL,
+  `chapter_id` varchar(50) NOT NULL,
+  `book_id` varchar(50) NOT NULL,
+  `chapter_number` int NOT NULL,
+  `language` varchar(10) NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    UNIQUE KEY unique_user_prefs (user_id)
+-- --------------------------------------------------------
 
+--
+-- Table structure for table `bible_verses`
+--
+
+CREATE TABLE `bible_verses` (
+  `id` int NOT NULL,
+  `verse_id` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `chapter_id` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `verse_number` int NOT NULL,
+  `content` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `language` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Progress tracking
-CREATE TABLE IF NOT EXISTS user_progress (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    streak_days INT DEFAULT 0,
-    longest_streak INT DEFAULT 0,
-    total_checkins INT DEFAULT 0,
-    last_checkin DATE NULL,
-    sobriety_date DATE NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    UNIQUE KEY unique_user_progress (user_id)
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `checkins`
+--
+
+CREATE TABLE `checkins` (
+  `id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `checkin_date` date NOT NULL,
+  `mood_rating` int DEFAULT NULL,
+  `notes` text COLLATE utf8mb4_unicode_ci,
+  `triggers` text COLLATE utf8mb4_unicode_ci,
+  `victories` text COLLATE utf8mb4_unicode_ci,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `comments`
+--
+
+CREATE TABLE `comments` (
+  `id` int NOT NULL,
+  `post_id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `content` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `is_anonymous` tinyint(1) DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Daily check-ins
-CREATE TABLE IF NOT EXISTS checkins (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    checkin_date DATE NOT NULL,
-    mood_rating INT CHECK (mood_rating BETWEEN 1 AND 5),
-    notes TEXT,
-    triggers TEXT,
-    victories TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    UNIQUE KEY unique_daily_checkin (user_id, checkin_date)
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `policy`
+--
+
+CREATE TABLE `policy` (
+  `id` int NOT NULL,
+  `slug` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `content_title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `content_text` longtext COLLATE utf8mb4_unicode_ci,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Resources
-CREATE TABLE IF NOT EXISTS resources (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
-    description TEXT,
-    content TEXT,
-    type ENUM('article', 'video', 'audio', 'guide', 'prayer') NOT NULL,
-    category VARCHAR(100),
-    author VARCHAR(100),
-    url VARCHAR(500),
-    thumbnail_url VARCHAR(255),
-    is_featured BOOLEAN DEFAULT FALSE,
-    view_count INT DEFAULT 0,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    INDEX idx_type (type),
-    INDEX idx_category (category)
+--
+-- Dumping data for table `policy`
+--
+
+INSERT INTO `policy` (`id`, `slug`, `content_title`, `content_text`, `created_at`, `updated_at`) VALUES
+(1, 'terms', 'Terms of Service', 'To be completed.', '2026-02-10 17:58:22', '2026-02-10 17:58:22'),
+(2, 'privacy', 'Privacy Policy', 'To be completed.', '2026-02-10 17:58:22', '2026-02-10 17:58:22'),
+(3, 'cookie', 'Cookie Policy', 'To be completed.', '2026-02-10 17:58:22', '2026-02-10 17:58:22');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `posts`
+--
+
+CREATE TABLE `posts` (
+  `id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `content` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `is_anonymous` tinyint(1) DEFAULT '0',
+  `is_pinned` tinyint(1) DEFAULT '0',
+  `like_count` int DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Quiz/Assessment questions
-CREATE TABLE IF NOT EXISTS quiz_questions (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    question TEXT NOT NULL,
-    category VARCHAR(100),
-    order_num INT DEFAULT 0,
-    is_active BOOLEAN DEFAULT TRUE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `prayer_requests`
+--
+
+CREATE TABLE `prayer_requests` (
+  `id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `content` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `is_anonymous` tinyint(1) DEFAULT '0',
+  `is_answered` tinyint(1) DEFAULT '0',
+  `prayer_count` int DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Quiz answers
-CREATE TABLE IF NOT EXISTS quiz_answers (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    question_id INT NOT NULL,
-    answer_text TEXT NOT NULL,
-    score_value INT DEFAULT 0,
-    order_num INT DEFAULT 0,
-    FOREIGN KEY (question_id) REFERENCES quiz_questions(id) ON DELETE CASCADE
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `quiz_answers`
+--
+
+CREATE TABLE `quiz_answers` (
+  `id` int NOT NULL,
+  `question_id` int NOT NULL,
+  `answer_text` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `score_value` int DEFAULT '0',
+  `order_num` int DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- User quiz results
-CREATE TABLE IF NOT EXISTS quiz_results (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    total_score INT NOT NULL,
-    category_scores JSON,
-    recommendations TEXT,
-    taken_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `quiz_questions`
+--
+
+CREATE TABLE `quiz_questions` (
+  `id` int NOT NULL,
+  `question` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `category` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `order_num` int DEFAULT '0',
+  `is_active` tinyint(1) DEFAULT '1',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Messages/Community posts
-CREATE TABLE IF NOT EXISTS posts (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    title VARCHAR(255),
-    content TEXT NOT NULL,
-    is_anonymous BOOLEAN DEFAULT FALSE,
-    is_pinned BOOLEAN DEFAULT FALSE,
-    like_count INT DEFAULT 0,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    INDEX idx_created (created_at)
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `quiz_results`
+--
+
+CREATE TABLE `quiz_results` (
+  `id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `total_score` int NOT NULL,
+  `category_scores` json DEFAULT NULL,
+  `recommendations` text COLLATE utf8mb4_unicode_ci,
+  `taken_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Comments on posts
-CREATE TABLE IF NOT EXISTS comments (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    post_id INT NOT NULL,
-    user_id INT NOT NULL,
-    content TEXT NOT NULL,
-    is_anonymous BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `resources`
+--
+
+CREATE TABLE `resources` (
+  `id` int NOT NULL,
+  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci,
+  `content` text COLLATE utf8mb4_unicode_ci,
+  `type` enum('article','video','audio','guide','prayer') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `category` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `author` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `url` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `thumbnail_url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `is_featured` tinyint(1) DEFAULT '0',
+  `view_count` int DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Prayer requests
-CREATE TABLE IF NOT EXISTS prayer_requests (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    title VARCHAR(255),
-    content TEXT NOT NULL,
-    is_anonymous BOOLEAN DEFAULT FALSE,
-    is_answered BOOLEAN DEFAULT FALSE,
-    prayer_count INT DEFAULT 0,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+--
+-- Dumping data for table `resources`
+--
+
+INSERT INTO `resources` (`id`, `title`, `description`, `content`, `type`, `category`, `author`, `url`, `thumbnail_url`, `is_featured`, `view_count`, `created_at`, `updated_at`) VALUES
+(1, 'Understanding Digital Addiction', 'A comprehensive guide to understanding how digital addiction affects our spiritual life.', NULL, 'article', 'education', 'FaithGuard Team', NULL, NULL, 0, 0, '2026-02-07 16:09:39', '2026-02-07 16:09:39'),
+(2, 'Daily Prayer for Strength', 'A morning prayer to start your day with purpose and protection.', NULL, 'prayer', 'spiritual', 'Pastor John Davis', NULL, NULL, 0, 0, '2026-02-07 16:09:39', '2026-02-07 16:09:39'),
+(3, 'Breaking Free: Video Series', '5-part video series on overcoming addiction through faith.', NULL, 'video', 'recovery', 'Dr. Sarah Mitchell', NULL, NULL, 0, 0, '2026-02-07 16:09:39', '2026-02-07 16:09:39'),
+(4, 'Scripture Meditation Guide', 'Learn to meditate on God\'s Word for healing and transformation.', NULL, 'guide', 'spiritual', 'FaithGuard Team', NULL, NULL, 0, 0, '2026-02-07 16:09:39', '2026-02-07 16:09:39'),
+(5, 'The Armor of God', 'Understanding and applying Ephesians 6 in your daily battle.', NULL, 'article', 'spiritual', 'Pastor Mike Johnson', NULL, NULL, 0, 0, '2026-02-07 16:09:39', '2026-02-07 16:09:39');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `roles`
+--
+
+CREATE TABLE `roles` (
+  `id` int NOT NULL,
+  `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Sessions for authentication
-CREATE TABLE IF NOT EXISTS sessions (
-    id VARCHAR(128) PRIMARY KEY,
-    user_id INT NOT NULL,
-    expires_at TIMESTAMP NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    INDEX idx_expires (expires_at)
+--
+-- Dumping data for table `roles`
+--
+
+INSERT INTO `roles` (`id`, `name`, `description`, `created_at`) VALUES
+(1, 'admin', NULL, '2026-05-03 16:52:30'),
+(2, 'user', NULL, '2026-05-03 16:52:30');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `scripture_cache`
+--
+
+CREATE TABLE `scripture_cache` (
+  `id` int NOT NULL,
+  `reference` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `version` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `content` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `fetched_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Insert sample resources
-INSERT INTO resources (title, description, type, category, author) VALUES
-('Understanding Digital Addiction', 'A comprehensive guide to understanding how digital addiction affects our spiritual life.', 'article', 'education', 'FaithGuard Team'),
-('Daily Prayer for Strength', 'A morning prayer to start your day with purpose and protection.', 'prayer', 'spiritual', 'Pastor John Davis'),
-('Breaking Free: Video Series', '5-part video series on overcoming addiction through faith.', 'video', 'recovery', 'Dr. Sarah Mitchell'),
-('Scripture Meditation Guide', 'Learn to meditate on God''s Word for healing and transformation.', 'guide', 'spiritual', 'FaithGuard Team'),
-('The Armor of God', 'Understanding and applying Ephesians 6 in your daily battle.', 'article', 'spiritual', 'Pastor Mike Johnson');
+-- --------------------------------------------------------
 
--- Insert sample quiz questions
-INSERT INTO quiz_questions (question, category, order_num) VALUES
-('How often do you find yourself using digital devices without a specific purpose?', 'usage', 1),
-('Do you feel anxious or restless when you cannot access your devices?', 'dependence', 2),
-('Has your digital usage affected your sleep patterns?', 'health', 3),
-('Do you find it difficult to focus on prayer or reading Scripture due to digital distractions?', 'spiritual', 4),
-('Have you tried to reduce your screen time but found it difficult?', 'control', 5);
+--
+-- Table structure for table `sessions`
+--
 
-INSERT INTO quiz_answers (question_id, answer_text, score_value, order_num) VALUES
-(1, 'Never or rarely', 1, 1),
-(1, 'Sometimes', 2, 2),
-(1, 'Often', 3, 3),
-(1, 'Very frequently', 4, 4),
-(2, 'Never', 1, 1),
-(2, 'Occasionally', 2, 2),
-(2, 'Frequently', 3, 3),
-(2, 'Always', 4, 4),
-(3, 'Not at all', 1, 1),
-(3, 'Slightly', 2, 2),
-(3, 'Moderately', 3, 3),
-(3, 'Significantly', 4, 4),
-(4, 'Never', 1, 1),
-(4, 'Rarely', 2, 2),
-(4, 'Sometimes', 3, 3),
-(4, 'Often', 4, 4),
-(5, 'No, I have not tried', 1, 1),
-(5, 'Tried but succeeded', 2, 2),
-(5, 'Tried with difficulty', 3, 3),
-(5, 'Tried multiple times unsuccessfully', 4, 4);
-
--- Cache for scripture content to minimize API calls
-CREATE TABLE IF NOT EXISTS scripture_cache (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    reference VARCHAR(50) NOT NULL,
-    version VARCHAR(20) NOT NULL,
-    content TEXT NOT NULL,
-    fetched_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE KEY unique_reference_version (reference, version)
+CREATE TABLE `sessions` (
+  `id` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` int NOT NULL,
+  `expires_at` timestamp NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Cache for book and chapter metadata
-CREATE TABLE IF NOT EXISTS bible_books (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    book_id VARCHAR(50) NOT NULL,
-    name VARCHAR(100) NOT NULL,
-    language VARCHAR(10) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE KEY unique_book_lang (book_id, language)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+-- --------------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS bible_chapters (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    chapter_id VARCHAR(50) NOT NULL,
-    book_id VARCHAR(50) NOT NULL,
-    chapter_number INT NOT NULL,
-    language VARCHAR(10) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE KEY unique_chapter_lang (chapter_id, language)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+--
+-- Table structure for table `users`
+--
 
--- Policies table (legal content)
-CREATE TABLE IF NOT EXISTS policy (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    slug VARCHAR(100) NOT NULL UNIQUE,
-    content_title VARCHAR(255) DEFAULT NULL,
-    content_text LONGTEXT DEFAULT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+CREATE TABLE `users` (
+  `id` int NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password_hash` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `first_name` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `last_name` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `avatar_url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `bio` text COLLATE utf8mb4_unicode_ci,
+  `bible_language` enum('en','nl') COLLATE utf8mb4_unicode_ci DEFAULT 'en',
+  `bible_version` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT 'NRSVUE',
+  `bible_book` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `is_admin` tinyint(1) DEFAULT '0',
+  `is_member` tinyint(1) DEFAULT '0',
+  `is_active` tinyint(1) DEFAULT '1',
+  `email_verified` tinyint(1) DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `last_login` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Seed default policy entries
-INSERT IGNORE INTO policy (slug, content_title, content_text) VALUES
-('terms', 'Terms of Service', 'To be completed.'),
-('privacy', 'Privacy Policy', 'To be completed.'),
-('cookie', 'Cookie Policy', 'To be completed.');
+--
+-- Dumping data for table `users`
+--
 
--- Cache for individual verses
-CREATE TABLE IF NOT EXISTS bible_verses (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    verse_id VARCHAR(50) NOT NULL,
-    chapter_id VARCHAR(50) NOT NULL,
-    verse_number INT NOT NULL,
-    content TEXT NOT NULL,
-    language VARCHAR(10) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE KEY unique_verse_lang (verse_id, language)
+INSERT INTO `users` (`id`, `email`, `password_hash`, `first_name`, `last_name`, `avatar_url`, `bio`, `bible_language`, `bible_version`, `bible_book`, `is_admin`, `is_member`, `is_active`, `email_verified`, `created_at`, `updated_at`, `last_login`) VALUES
+(1, 'admin@faithguard.com', '$2y$12$Si3tc0jbzi7SZ85svjKhLeMkVf1aoQcpMaGis/s.obNQoKdAm7YqW', 'admin', 'admin', NULL, 'To be Written', 'en', 'NRSVUE', 'Luke', 1, 0, 1, 1, '2025-12-06 22:03:16', '2026-05-03 16:52:00', NULL),
+(2, 'thomas.deseure@proton.me', '$2y$12$M5By2UvRbwuTvrFfYh42UOzM1tv1KnQGbedtlbWnCqu6wnNGrIATO', 'Thomas', 'Deseure', NULL, 'To be Written', 'en', 'NRSVUE', 'Mark', 0, 0, 1, 1, '2025-12-06 23:04:49', '2026-05-03 16:53:41', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_preferences`
+--
+
+CREATE TABLE `user_preferences` (
+  `id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `bible_language` enum('en','nl') COLLATE utf8mb4_unicode_ci DEFAULT 'en',
+  `bible_version` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT 'NRSVUE',
+  `bible_book` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT 'Luke',
+  `theme` enum('light','dark') COLLATE utf8mb4_unicode_ci DEFAULT 'light',
+  `notifications_enabled` tinyint(1) DEFAULT '1',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_progress`
+--
+
+CREATE TABLE `user_progress` (
+  `id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `streak_days` int DEFAULT '0',
+  `longest_streak` int DEFAULT '0',
+  `total_checkins` int DEFAULT '0',
+  `last_checkin` date DEFAULT NULL,
+  `sobriety_date` date DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `bible_books`
+--
+ALTER TABLE `bible_books`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `unique_book_lang` (`book_id`,`language`);
+
+--
+-- Indexes for table `bible_chapters`
+--
+ALTER TABLE `bible_chapters`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `unique_chapter_lang` (`chapter_id`,`language`);
+
+--
+-- Indexes for table `bible_verses`
+--
+ALTER TABLE `bible_verses`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `unique_verse_lang` (`verse_id`,`language`);
+
+--
+-- Indexes for table `checkins`
+--
+ALTER TABLE `checkins`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `unique_daily_checkin` (`user_id`,`checkin_date`);
+
+--
+-- Indexes for table `comments`
+--
+ALTER TABLE `comments`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `post_id` (`post_id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `policy`
+--
+ALTER TABLE `policy`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `slug` (`slug`);
+
+--
+-- Indexes for table `posts`
+--
+ALTER TABLE `posts`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `idx_created` (`created_at`);
+
+--
+-- Indexes for table `prayer_requests`
+--
+ALTER TABLE `prayer_requests`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `quiz_answers`
+--
+ALTER TABLE `quiz_answers`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `question_id` (`question_id`);
+
+--
+-- Indexes for table `quiz_questions`
+--
+ALTER TABLE `quiz_questions`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `quiz_results`
+--
+ALTER TABLE `quiz_results`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `resources`
+--
+ALTER TABLE `resources`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_type` (`type`),
+  ADD KEY `idx_category` (`category`);
+
+--
+-- Indexes for table `roles`
+--
+ALTER TABLE `roles`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name` (`name`);
+
+--
+-- Indexes for table `scripture_cache`
+--
+ALTER TABLE `scripture_cache`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `unique_reference_version` (`reference`,`version`);
+
+--
+-- Indexes for table `sessions`
+--
+ALTER TABLE `sessions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `idx_expires` (`expires_at`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`),
+  ADD KEY `idx_email` (`email`);
+
+--
+-- Indexes for table `user_preferences`
+--
+ALTER TABLE `user_preferences`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `unique_user_prefs` (`user_id`);
+
+--
+-- Indexes for table `user_progress`
+--
+ALTER TABLE `user_progress`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `unique_user_progress` (`user_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `bible_books`
+--
+ALTER TABLE `bible_books`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `bible_chapters`
+--
+ALTER TABLE `bible_chapters`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `bible_verses`
+--
+ALTER TABLE `bible_verses`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `checkins`
+--
+ALTER TABLE `checkins`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `comments`
+--
+ALTER TABLE `comments`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `policy`
+--
+ALTER TABLE `policy`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `posts`
+--
+ALTER TABLE `posts`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `prayer_requests`
+--
+ALTER TABLE `prayer_requests`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `quiz_answers`
+--
+ALTER TABLE `quiz_answers`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
+-- AUTO_INCREMENT for table `quiz_questions`
+--
+ALTER TABLE `quiz_questions`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `quiz_results`
+--
+ALTER TABLE `quiz_results`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `resources`
+--
+ALTER TABLE `resources`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `roles`
+--
+ALTER TABLE `roles`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `scripture_cache`
+--
+ALTER TABLE `scripture_cache`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `user_preferences`
+--
+ALTER TABLE `user_preferences`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `user_progress`
+--
+ALTER TABLE `user_progress`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `checkins`
+--
+ALTER TABLE `checkins`
+  ADD CONSTRAINT `checkins_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `comments`
+--
+ALTER TABLE `comments`
+  ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `posts`
+--
+ALTER TABLE `posts`
+  ADD CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `prayer_requests`
+--
+ALTER TABLE `prayer_requests`
+  ADD CONSTRAINT `prayer_requests_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `quiz_answers`
+--
+ALTER TABLE `quiz_answers`
+  ADD CONSTRAINT `quiz_answers_ibfk_1` FOREIGN KEY (`question_id`) REFERENCES `quiz_questions` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `quiz_results`
+--
+ALTER TABLE `quiz_results`
+  ADD CONSTRAINT `quiz_results_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `sessions`
+--
+ALTER TABLE `sessions`
+  ADD CONSTRAINT `sessions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `user_preferences`
+--
+ALTER TABLE `user_preferences`
+  ADD CONSTRAINT `user_preferences_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `user_progress`
+--
+ALTER TABLE `user_progress`
+  ADD CONSTRAINT `user_progress_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

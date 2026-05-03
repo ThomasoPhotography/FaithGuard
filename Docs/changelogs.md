@@ -67,6 +67,7 @@ All notable changes to this project will be documented in this file.
 - Add .gitignore file to exclude IDE, OS, dependencies, environment, config, logs, temporary files, build artifacts, and package manager files.
 - Implement database connection error handling, add policies table and seed data, enhance session cookie settings, create admin dashboard and policy editing UI, and add Bible API integration for verse retrieval.
 - Normalize user data across multiple pages and implement user normalization helper.
+- Add registration page with CSRF protection and form validation.
 
 ### Changed
 - `README.md` file got a professional make-over.
