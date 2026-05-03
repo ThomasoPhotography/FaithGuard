@@ -179,7 +179,7 @@
                             <hr class="dropdown-divider">
                         </li>
                         <li>
-                            <a class="dropdown-item c-dropdown__item js-create" href="/register.php">
+                            <a class="dropdown-item c-dropdown__item js-create" href="../api/auth/register.php">
                                 <i class="bi bi-person-plus me-2"></i>
                                 <span class="c-dropdown__text">Create Account</span>
                             </a>
@@ -241,7 +241,7 @@
         <section class="c-main__section text-center mb-5">
             <h2 class="c-main__title">Join the FaithGuard Community</h2>
             <p class="c-main__text">Sign up today to access personalized resources, track your progress, and connect with others on the same journey.</p>
-            <a href="/register.php" class="btn c-btn c-main__btn">Get Started</a>
+            <a href="../api/auth/register.php" class="btn c-btn c-main__btn">Get Started</a>
             <a class="c-main__text c-main__text--verse js-bible__ref">2 Corinthians 5:7</a>
         </section>
     </main>
@@ -324,4 +324,5 @@
 <script src="/assets/js/resources.js"></script>
 <script src="/assets/js/scripture-modal.js"></script>
 <script src="/assets/js/dashboard-scripture.js"></script>
+<script src="/assets/js/register.js"></script>
 </html>
