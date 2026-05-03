@@ -35,7 +35,7 @@
         $user_role   = $user['role'] ?? 'user';
     } else {
         session_destroy();
-        header("Location: /api/auth/register.php");
+        header("Location: /register.php");
         exit;
     }
     }
@@ -177,7 +177,7 @@
                             <hr class="dropdown-divider">
                         </li>
                         <li>
-                            <a class="dropdown-item c-dropdown__item js-create" href="/api/auth/register.php">
+                            <a class="dropdown-item c-dropdown__item js-create" href="/register.php">
                                 <i class="bi bi-person-plus me-2"></i>
                                 <span class="c-dropdown__text">Create Account</span>
                             </a>

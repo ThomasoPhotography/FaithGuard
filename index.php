@@ -52,7 +52,7 @@
         unset($_SESSION['user_id']);
         unset($_SESSION['logged_in']);
         $is_logged_in = false;
-        header("Location: /api/auth/register.php");
+        header("Location: ../api/auth/register.php");
         exit();
     }
     }
@@ -179,7 +179,7 @@
                             <hr class="dropdown-divider">
                         </li>
                         <li>
-                            <a class="dropdown-item c-dropdown__item js-create" href="/api/auth/register.php">
+                            <a class="dropdown-item c-dropdown__item js-create" href="/register.php">
                                 <i class="bi bi-person-plus me-2"></i>
                                 <span class="c-dropdown__text">Create Account</span>
                             </a>
@@ -212,14 +212,14 @@
         <section class="c-main__section mb-5">
             <h2 class="c-main__title">Featured Resources</h2>
             <div class="row c-resources__list">
-                <?php if (! empty($resources)): ?>
+                <div class="col-md-5 col-12 mb-4">
+                    <?php if (! empty($resources)): ?>
                     <?php $count = 0; ?>
                     <?php foreach ($resources as $resource): ?>
                         <?php if ($count >= $max_resources) {
                                 break;
                             }
                         // Limit to max_resources ?>
-                        <div class="col-md-4 col-12 mb-4">
                             <div class="card c-card">
                                 <div class="card-body c-card__body">
                                     <h5 class="card-title c-card__title"><?php echo htmlspecialchars($resource['title']); ?></h5>
@@ -231,7 +231,7 @@
                         <?php $count++; ?>
                     <?php endforeach; ?>
                 <?php else: ?>
-                    <div class="col-12">
+                    <div class="col-md-5 col-12 mb-4">
                         <p class="text-center">No resources available yet. Check back soon!</p>
                     </div>
                 <?php endif; ?>
@@ -241,7 +241,7 @@
         <section class="c-main__section text-center mb-5">
             <h2 class="c-main__title">Join the FaithGuard Community</h2>
             <p class="c-main__text">Sign up today to access personalized resources, track your progress, and connect with others on the same journey.</p>
-            <a href="/api/auth/register.php" class="btn c-btn c-main__btn">Get Started</a>
+            <a href="/register.php" class="btn c-btn c-main__btn">Get Started</a>
             <a class="c-main__text c-main__text--verse js-bible__ref">2 Corinthians 5:7</a>
         </section>
     </main>
@@ -252,7 +252,7 @@
             <p class="c-impact__intro text-center">Hear from those who have found hope and strength through FaithGuard's faith-based resources.</p>
             <div class="row">
                 <!-- Static input, get's changed in PHP -->
-                <div class="col-md-4 col-12 mb-4">
+                <div class="col-md-5 col-12 mb-4">
                     <div class="card c-card c-impact__card">
                         <div class="card-body c-card__body c-impact__body">
                             <blockquote class="c-impact__quote">"FaithGuard's devotionals helped me rebuild my relationship with God after years of struggle. I'm free now."</blockquote>
