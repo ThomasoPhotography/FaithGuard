@@ -28,30 +28,34 @@ class FaithGuardRepository
     //Create new user
     public static function createUser(array $data): int | false
     {
-        // Use a direct PDO insert so we can return the actual inserted ID
+        // Insert using Database helper then fetch the created user by email to obtain the ID
         try {
-            $conn = (new ReflectionClass('Database'))->getMethod('getConnection');
-            $conn->setAccessible(true);
-            $db = $conn->invoke(null);
+            $rowsAffected = Database::execute(
+                "INSERT INTO users (full_name, email, password_hash, first_name, last_name) VALUES (?, ?, ?, ?, ?)",
+                [
+                    $data['full_name'] ?? null,
+                    $data['email'],
+                    $data['password_hash'],
+                    $data['first_name'] ?? null,
+                    $data['last_name'] ?? null,
+                ]
+            );
 
-            $stmt = $db->prepare("INSERT INTO users (full_name, email, password_hash, first_name, last_name) VALUES (?, ?, ?, ?, ?)");
-            $stmt->execute([
-                $data['full_name'] ?? null,
-                $data['email'],
-                $data['password_hash'],
-                $data['first_name'] ?? null,
-                $data['last_name'] ?? null,
-            ]);
-
-            $userId = (int) $db->lastInsertId();
-            $db     = null;
-
-            if ($userId) {
-                // Create default preferences
-                self::createUserPreferences($userId);
-                // Create progress record
-                self::createUserProgress($userId);
+            if (! $rowsAffected) {
+                return false;
             }
+
+            // Fetch the user we just created to get the ID
+            $user = self::getUserByEmail($data['email']);
+            if (! $user || empty($user['id'])) {
+                return false;
+            }
+
+            $userId = (int) $user['id'];
+
+            // Create default preferences and progress
+            self::createUserPreferences($userId);
+            self::createUserProgress($userId);
 
             return $userId;
         } catch (Exception $e) {

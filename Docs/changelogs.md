@@ -81,6 +81,7 @@ All notable changes to this project will be documented in this file.
 - Updated `README.md` file to include a TODO list.
 - Rename user retrieval methods for consistency and clarity.
 - No full name needed to register, will be automatic in update.
+- ID's.
 
 ### Deprecated
 - replace lighten/darken functions with color.adjust for consistent color manipulation in `main.scss`.
