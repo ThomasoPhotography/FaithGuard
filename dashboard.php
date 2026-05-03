@@ -14,6 +14,7 @@
     require_once __DIR__ . '/db/Database.php';
     require_once __DIR__ . '/db/config.php';
     require_once __DIR__ . '/db/FaithGuardRepository.php';
+    require_once __DIR__ . '/api/helper/user.php';
     // --- Core Site Session Check (Always required) ---
     if (! isset($_SESSION['user_id'])) {
     header('Location: /login.php');
@@ -21,9 +22,14 @@
     }
     $is_logged_in   = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
     $user           = FaithGuardRepository::getUserById($_SESSION['user_id']);
+    $user           = normalize_user($user);
     $progress       = FaithGuardRepository::getUserProgress($_SESSION['user_id']);
     $checkins       = FaithGuardRepository::getUserCheckins($_SESSION['user_id'], 7);
     $lastQuizResult = FaithGuardRepository::getLastQuizResult($_SESSION['user_id']);
+    // Prepare bible/book defaults to avoid undefined variable notices in template
+    $books    = FaithGuardRepository::getAllBooks();
+    $language = $_SESSION['language'] ?? 'en';
+    $bookId   = $books[0]['id'] ?? null;
     if (! $user) {
     session_destroy();
     header('Location: /login.php');
@@ -66,7 +72,7 @@
     <div class="c-dashboard">
         <div class="c-dashboard__container container">
             <header class="c-dashboard__header">
-                <h1 class="c-dashboard__title"> Welcome, <?php echo htmlspecialchars($user['first_name'] ?: 'Friend'); ?>
+                <h1 class="c-dashboard__title"> Welcome, <?php echo htmlspecialchars($user['display_name'] ?? 'Friend'); ?>
             </h1>
             <p class="c-dashboard__subtitle">
                 Every day is a new opportunity to walk forward.
@@ -138,21 +144,19 @@
                     <form class="c-dashboard-scripture" id="c-dashboard-scripture-form">
                         <div class="c-dashboard-scripture__row">
                             <select name="book" class="c-dashboard-scripture__select">
-                                <?php foreach (FaithGuardRepository::getAllBooks() as $book): ?>
-                                    <option value="<?php echo htmlspecialchars($book['name']); ?>">
+                                <?php foreach ($books as $book): ?>
+                                    <option value="<?php echo htmlspecialchars($book['id']); ?>">
                                         <?php echo htmlspecialchars($book['name']); ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
                             <select name="chapter" class="c-dashboard-scripture__select">
-                                <?php foreach (FaithGuardRepository::getBookChapters($bookId, $language) as $bookName => $chapters): ?>
-                                    <optgroup label="<?php echo htmlspecialchars($bookName); ?>">
-                                        <?php foreach ($chapters as $chapterNum): ?>
-                                            <option value="<?php echo $chapterNum; ?>">
-                                                <?php echo $chapterNum; ?>
-                                            </option>
-                                        <?php endforeach; ?>
-                                    </optgroup>
+                                <?php $chapters = $bookId ? FaithGuardRepository::getBookChapters($bookId, $language) : []; ?>
+                                <?php foreach ($chapters as $chapterRow): ?>
+                                    <?php $chapterNum = $chapterRow['chapter_number'] ?? $chapterRow['chapter'] ?? $chapterRow; ?>
+                                    <option value="<?php echo htmlspecialchars($chapterNum); ?>">
+                                        <?php echo htmlspecialchars($chapterNum); ?>
+                                    </option>
                                 <?php endforeach; ?>
                             </select>
                             <select name="version" class="c-dashboard-scripture__select">

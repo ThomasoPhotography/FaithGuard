@@ -3,6 +3,7 @@
     require_once __DIR__ . "/db/database.php";
     require_once __DIR__ . "/db/FaithGuardRepository.php";
     require_once __DIR__ . "/api/helper/debug.php";
+    require_once __DIR__ . "/api/helper/user.php";
 
     // --- Session (same pattern as other pages) ---
     session_set_cookie_params([
@@ -27,9 +28,9 @@
     $user_data = FaithGuardRepository::getUserById($_SESSION['user_id']);
 
     if ($user_data) {
-        $user        = true;
-        $accountName = htmlspecialchars($user_data['name'] ?? $user_data['email']);
-        $user_role   = $user_data['role'] ?? 'user';
+        $user        = normalize_user($user_data);
+        $accountName = $user['display_name'] ?? ($user['email'] ?? 'User');
+        $user_role   = $user['role'] ?? 'user';
     } else {
         // Corrupted session → reset
         unset($_SESSION['user_id'], $_SESSION['logged_in']);

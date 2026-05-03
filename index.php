@@ -28,6 +28,8 @@
     require_once __DIR__ . "/db/FaithGuardRepository.php";
     // --- Optional Helper/Debug (Required, but note its function) ---
     require_once __DIR__ . "/api/helper/debug.php";
+    // User normalization helper
+    require_once __DIR__ . "/api/helper/user.php";
 
     $is_logged_in = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
 
@@ -41,10 +43,10 @@
     $user_data = FaithGuardRepository::getUserById($_SESSION['user_id']);
 
     if ($user_data) {
-        $user = true;
-        // Assuming your 'users' table has a 'name' or 'email' column and a 'role' column
-        $accountName = htmlspecialchars($user_data['name'] ?? $user_data['email']);
-        $user_role   = $user_data['role'] ?? 'user';
+        // Normalize user data for templates
+        $user        = normalize_user($user_data);
+        $accountName = $user['display_name'] ?? 'User';
+        $user_role   = $user['role'] ?? 'user';
     } else {
         // Logged-in session exists, but user not found in DB (session cleanup needed)
         unset($_SESSION['user_id']);
@@ -55,11 +57,12 @@
     }
     }
 
-                                                                   // --- Fetch Resources for Dynamic Display ---
-                                                                   // Fetch all resources from DB
-    $resources = FaithGuardRepository::getResources($type, $category); // Adjust type as needed (e.g., 'featured', 'latest')
-                                                                   // Limit to 6 for display (adjust as needed)
-    $max_resources = 6;
+                       // --- Fetch Resources for Dynamic Display ---
+                       // Fetch resources from DB. Provide explicit defaults to avoid undefined variable notices.
+    $max_resources = 6;    // Limit to 6 for display (adjust as needed)
+    $type          = null; // e.g. 'featured' or 'latest' to filter
+    $category      = null; // e.g. 'video', 'article'
+    $resources     = FaithGuardRepository::getResources($type, $category, $max_resources);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -101,15 +104,21 @@
             <div class="collapse navbar-collapse c-nav__collapse" id="navbarNav">
                 <!-- Main Navigation Links (CENTER/LEFT) -->
                 <ul class="navbar-nav c-nav__bar me-auto">
-                    <li class="nav-item c-nav__item">
-                        <a class="nav-link c-nav__link" href="about.php">About</a>
-                    </li>
-                    <li class="nav-item c-nav__item">
-                        <a class="nav-link c-nav__link" href="resources.php">Resources</a>
-                    </li>
-                    <li class="nav-item c-nav__item">
-                        <a class="nav-link c-nav__link" href="contact.php">Contact</a>
-                    </li>
+                    <?php if ($is_logged_in && $user): ?>
+                        <li class="nav-item c-nav__item">
+                            <a class="nav-link c-nav__link" href="community.php">Community</a>
+                        </li>
+                        <li class="nav-item c-nav__item">
+                            <a class="nav-link c-nav__link" href="resources.php">Resources</a>
+                        </li>
+                        <li class="nav-item c-nav__item">
+                            <a class="nav-link c-nav__link" href="about.php">About</a>
+                        </li>
+                    <?php else: ?>
+                        <li class="nav-item c-nav__item">
+                            <a class="nav-link c-nav__link" href="resources.php">Resources</a>
+                        </li>
+                    <?php endif; ?>
                 </ul>
                 <!-- RIGHT SIDE: USER/LOGIN DROPDOWN -->
                 <?php if ($is_logged_in && $user): ?>

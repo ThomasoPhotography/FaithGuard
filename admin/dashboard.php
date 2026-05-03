@@ -1,6 +1,7 @@
 <?php
     require_once __DIR__ . '/../db/database.php';
     require_once __DIR__ . '/../db/FaithGuardRepository.php';
+    require_once __DIR__ . '/../api/helper/user.php';
 
     session_start();
     if (empty($_SESSION['user_id'])) {
@@ -13,6 +14,8 @@
     header('Location: /dashboard.php');
     exit;
     }
+    // normalize user for display
+    $user = normalize_user($user);
 
 ?>
 <!doctype html>
@@ -26,7 +29,7 @@
 </head>
 <body>
     <h1>Admin Dashboard</h1>
-    <p>Welcome, <?php echo htmlspecialchars($user['first_name'] ?? $user['email']); ?></p>
+    <p>Welcome, <?php echo htmlspecialchars($user['display_name'] ?? $user['email']); ?></p>
     <ul>
         <li><a href="/admin/edit-policy.php?type=privacy">Edit Privacy Policy</a></li>
         <li><a href="/admin/edit-policy.php?type=terms">Edit Terms</a></li>

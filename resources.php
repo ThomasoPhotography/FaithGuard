@@ -1,10 +1,10 @@
 <?php
     session_set_cookie_params([
-        'lifetime' => 302400, // 3.5 days (84 hours)
-        'path'     => '/',
-        'domain'   => $_SERVER['SERVER_NAME'] ?? '',
-        'secure'   => true,
-        'httponly' => true,
+    'lifetime' => 302400, // 3.5 days (84 hours)
+    'path'     => '/',
+    'domain'   => $_SERVER['SERVER_NAME'] ?? '',
+    'secure'   => true,
+    'httponly' => true,
     ]);
     session_start();
     // --- Core App Requirements (Always required) ---
@@ -12,39 +12,40 @@
     require_once __DIR__ . "/db/FaithGuardRepository.php";
     // --- Optional Helper/Debug (Required, but note its function) ---
     require_once __DIR__ . "/api/helper/debug.php";
+    require_once __DIR__ . "/api/helper/user.php";
+    $is_logged_in = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
     // --- CRITICAL FIX: Define user variables needed for navigation bar ---
     $user        = null;
     $accountName = 'Guest';
     $user_role   = 'user';
 
     if ($is_logged_in && isset($_SESSION['user_id'])) {
-        // Fetch user data using the repository method
-        $user_data = FaithGuardRepository::getUserById($_SESSION['user_id']);
+    // Fetch user data using the repository method
+    $user_data = FaithGuardRepository::getUserById($_SESSION['user_id']);
 
-        if ($user_data) {
-            $user = true;
-            // Assuming your 'users' table has a 'name' or 'email' column and a 'role' column
-            $accountName = htmlspecialchars($user_data['name'] ?? $user_data['email']);
-            $user_role   = $user_data['role'] ?? 'user';
-        } else {
-            // Logged-in session exists, but user not found in DB (session cleanup needed)
-            unset($_SESSION['user_id']);
-            unset($_SESSION['logged_in']);
-            $is_logged_in = false;
-            header("Location: ../api/auth/register.php");
-            exit();
-        }
+    if ($user_data) {
+        $user        = normalize_user($user_data);
+        $accountName = $user['display_name'] ?? 'User';
+        $user_role   = $user['role'] ?? 'user';
+    } else {
+        // Logged-in session exists, but user not found in DB (session cleanup needed)
+        unset($_SESSION['user_id']);
+        unset($_SESSION['logged_in']);
+        $is_logged_in = false;
+        header("Location: ../api/auth/register.php");
+        exit();
+    }
     }
     // --- Fetch Resources for Dynamic Display ---
     $slug = $_GET['slug'] ?? null;
     if (! $slug) {
-        http_response_code(404);
-        exit('Resource not found');
+    http_response_code(404);
+    exit('Resource not found');
     }
     $resource = FaithGuardRepository::getResourceBySlug($slug);
     if (! $resource) {
-        http_response_code(404);
-        exit('Resource not found');
+    http_response_code(404);
+    exit('Resource not found');
     }
     $title   = htmlspecialchars($resource['title']);
     $content = nl2br(htmlspecialchars($resource['content_text']));
@@ -172,18 +173,18 @@
     <!-- Main Content -->
     <main class="container my-5">
         <article class="resource">
-            <h1><?php echo $title?></h1>
-            <p class="text-muted"><?php echo $date?></p>
+            <h1><?php echo $title ?></h1>
+            <p class="text-muted"><?php echo $date ?></p>
             <?php if ($visual): ?>
                 <div class="resource-visual mb-4">
-                    <?php echo $visual?>
+                    <?php echo $visual ?>
                 </div>
             <?php endif; ?>
             <div class="resource-content">
-                <?php echo $content?>
+                <?php echo $content ?>
             </div>
             <?php if ($tags): ?>
-                <p class="mt-4"><strong>Tags:</strong> <?php echo $tags?></p>
+                <p class="mt-4"><strong>Tags:</strong> <?php echo $tags ?></p>
             <?php endif; ?>
         </article>
     </main>

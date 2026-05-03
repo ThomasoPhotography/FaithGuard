@@ -185,12 +185,30 @@ class FaithGuardRepository
     }
 
     // ==================== RESOURCES ====================
-    //Get all resources
-    public static function getResources(string $type, string $category, int $limit = 50): array
+    //Get resources with optional filters
+    public static function getResources(?string $type = null, ?string $category = null, int $limit = 50): array
     {
-        return Database::getRows(
-            "SELECT * FROM resources WHERE type = ? AND category = ? ORDER BY is_featured DESC, created_at DESC LIMIT ?", [$type, $category, $limit]
-        );
+        $sql        = "SELECT * FROM resources";
+        $params     = [];
+        $conditions = [];
+
+        if ($type !== null) {
+            $conditions[] = "type = ?";
+            $params[]     = $type;
+        }
+        if ($category !== null) {
+            $conditions[] = "category = ?";
+            $params[]     = $category;
+        }
+
+        if (! empty($conditions)) {
+            $sql .= ' WHERE ' . implode(' AND ', $conditions);
+        }
+
+        $sql      .= " ORDER BY is_featured DESC, created_at DESC LIMIT ?";
+        $params[]  = $limit;
+
+        return Database::getRows($sql, $params);
     }
     //Get resource by ID
     public static function getResourceById(int $id): ?array
@@ -204,6 +222,187 @@ class FaithGuardRepository
     {
         return Database::execute(
             "UPDATE resources SET view_count = view_count + 1 WHERE id = ?", [$id]
+        );
+    }
+    //Create new resource
+    public static function createResource(array $data): int | false
+    {
+        return Database::execute(
+            "INSERT INTO resources (title, description, url, type, category, is_featured) VALUES (?, ?, ?, ?, ?, ?)",
+            [
+                $data['title'],
+                $data['description'] ?? null,
+                $data['url'],
+                $data['type'] ?? null,
+                $data['category'] ?? null,
+                $data['is_featured'] ?? false,
+            ]
+        );
+    }
+    //Update resource
+    public static function updateResource(int $id, array $data): bool
+    {
+        $allowed = ['title', 'description', 'url', 'type', 'category', 'is_featured'];
+        $sets    = [];
+        $values  = [];
+        foreach ($data as $key => $value) {
+            if (in_array($key, $allowed)) {
+                $sets[]   = "$key = ?";
+                $values[] = $value;
+            }
+        }
+        if (empty($sets)) {
+            return false;
+        }
+        $values[] = $id;
+        return Database::execute(
+            "UPDATE resources SET " . implode(', ', $sets) . " WHERE id = ?", $values
+        );
+    }
+    //Delete resource
+    public static function deleteResource(int $id): bool
+    {
+        return Database::execute(
+            "DELETE FROM resources WHERE id = ?", [$id]
+        );
+    }
+    // Get distinct resource types and categories for filters
+    public static function getResourceFilters(): array
+    {
+        $types      = Database::getRows("SELECT DISTINCT type FROM resources WHERE type IS NOT NULL");
+        $categories = Database::getRows("SELECT DISTINCT category FROM resources WHERE category IS NOT NULL");
+        return [
+            'types'      => array_column($types, 'type'),
+            'categories' => array_column($categories, 'category'),
+        ];
+    }
+    // Get featured resources for homepage
+    public static function getFeaturedResources(int $limit = 5): array
+    {
+        return Database::getRows(
+            "SELECT * FROM resources WHERE is_featured = 1 ORDER BY created_at DESC LIMIT ?", [$limit]
+        );
+    }
+    // Search resources by keyword in title or description
+    public static function searchResources(string $keyword, int $limit = 50): array
+    {
+        $likeKeyword = '%' . $keyword . '%';
+        return Database::getRows(
+            "SELECT * FROM resources WHERE (title LIKE ? OR description LIKE ?) ORDER BY is_featured DESC, created_at DESC LIMIT ?",
+            [$likeKeyword, $likeKeyword, $limit]
+        );
+    }
+    // Get related resources based on type/category
+    public static function getRelatedResources(int $resourceId, int $limit = 5): array
+    {
+        $resource = self::getResourceById($resourceId);
+        if (! $resource) {
+            return [];
+        }
+        $sql   = "SELECT * FROM resources WHERE id != ? AND (type = ? OR category = ?) ORDER BY is_featured DESC, created_at DESC LIMIT ?";
+        $params = [$resourceId, $resource['type'], $resource['category'], $limit];
+        return Database::getRows($sql, $params);
+    }
+    // Get most popular resources by view count
+    public static function getPopularResources(int $limit = 5): array
+    {
+        return Database::getRows(
+            "SELECT * FROM resources ORDER BY view_count DESC, created_at DESC LIMIT ?", [$limit]
+        );
+    }
+    // Get recently added resources
+    public static function getRecentResources(int $limit = 5): array
+    {
+        return Database::getRows(
+            "SELECT * FROM resources ORDER BY created_at DESC LIMIT ?", [$limit]
+        );
+    }
+    // Get resources added in the last 7 days
+    public static function getNewResources(int $limit = 5): array
+    {
+        return Database::getRows(
+            "SELECT * FROM resources WHERE created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY) ORDER BY created_at DESC LIMIT ?", [$limit]
+        );
+    }
+    // Get total count of resources (for pagination)
+    public static function getResourceCount(?string $type = null, ?string $category = null): int
+    {
+        $sql        = "SELECT COUNT(*) as count FROM resources";
+        $params     = [];
+        $conditions = [];
+
+        if ($type !== null) {
+            $conditions[] = "type = ?";
+            $params[]     = $type;
+        }
+        if ($category !== null) {
+            $conditions[] = "category = ?";
+            $params[]     = $category;
+        }
+
+        if (! empty($conditions)) {
+            $sql .= ' WHERE ' . implode(' AND ', $conditions);
+        }
+
+        $result = Database::getSingleRow($sql, $params);
+        return (int) ($result['count'] ?? 0);
+    }
+    // Get total count of resources matching search keyword
+    public static function getSearchResourceCount(string $keyword): int
+    {
+        $likeKeyword = '%' . $keyword . '%';
+        $result      = Database::getSingleRow(
+            "SELECT COUNT(*) as count FROM resources WHERE (title LIKE ? OR description LIKE ?)",
+            [$likeKeyword, $likeKeyword]
+        );
+        return (int) ($result['count'] ?? 0);
+    }
+    // Get total count of related resources
+    public static function getRelatedResourceCount(int $resourceId): int
+    {
+        $resource = self::getResourceById($resourceId);
+        if (! $resource) {
+            return 0;
+        }
+        $result = Database::getSingleRow(
+            "SELECT COUNT(*) as count FROM resources WHERE id != ? AND (type = ? OR category = ?)",
+            [$resourceId, $resource['type'], $resource['category']]
+        );
+        return (int) ($result['count'] ?? 0);
+    }
+    // Get Resource statistics (e.g. total views, average views)
+    public static function getResourceStatistics(): array
+    {
+        $totalViews   = Database::getSingleRow("SELECT SUM(view_count) as total_views FROM resources");
+        $averageViews = Database::getSingleRow("SELECT AVG(view_count) as average_views FROM resources");
+        return [
+            'total_views'   => (int) ($totalViews['total_views'] ?? 0),
+            'average_views' => (float) ($averageViews['average_views'] ?? 0),
+        ];
+    }
+    // Get resource counts by type and category for dashboard analytics
+    public static function getResourceCountsByTypeAndCategory(): array
+    {
+        $types      = Database::getRows("SELECT type, COUNT(*) as count FROM resources WHERE type IS NOT NULL GROUP BY type");
+        $categories = Database::getRows("SELECT category, COUNT(*) as count FROM resources WHERE category IS NOT NULL GROUP BY category");
+        return [
+            'by_type'     => array_column($types, 'count', 'type'),
+            'by_category' => array_column($categories, 'count', 'category'),
+        ];
+    }
+    // Get recently viewed resources for a user (requires user activity tracking)
+    public static function getRecentlyViewedResources(int $userId, int $limit = 5): array
+    {
+        return Database::getRows(
+            "SELECT r.* FROM resource_views rv JOIN resources r ON rv.resource_id = r.id WHERE rv.user_id = ? ORDER BY rv.viewed_at DESC LIMIT ?",
+            [$userId, $limit]
+        );
+    }
+    // Get Resources by slug (for friendly URLs)
+    public static function getResourceBySlug(string $slug): ?array
+    {
+        return Database::getSingleRow(
+            "SELECT * FROM resources WHERE slug = ?", [$slug]
         );
     }
     // ==================== POSTS ====================
@@ -237,6 +436,17 @@ class FaithGuardRepository
             $question['answers'] = Database::getRows("SELECT * FROM quiz_answers WHERE question_id = ? ORDER BY order_num", [$question['id']]);
         }
         return $questions;
+    }
+    // Backwards-compatible alias used by some pages
+    public static function getAllQuizQuestions(): array
+    {
+        return self::getQuizQuestions();
+    }
+
+    // Get all answer options for a specific quiz question
+    public static function getAllQuizAnswerOptions(int $questionId): array
+    {
+        return Database::getRows("SELECT * FROM quiz_answers WHERE question_id = ? ORDER BY order_num ASC", [$questionId]);
     }
     //Save quiz result
     public static function saveQuizResult(array $data): int | false

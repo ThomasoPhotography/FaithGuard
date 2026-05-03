@@ -5,17 +5,18 @@
    SESSION + SECURITY
 ========================================================= */
     session_set_cookie_params([
-        'lifetime' => 302400,
-        'path'     => '/',
-        'domain'   => $_SERVER['SERVER_NAME'] ?? '',
-        'secure'   => true,
-        'httponly' => true,
+    'lifetime' => 302400,
+    'path'     => '/',
+    'domain'   => $_SERVER['SERVER_NAME'] ?? '',
+    'secure'   => true,
+    'httponly' => true,
     ]);
     session_start();
 
     require_once __DIR__ . "/db/database.php";
     require_once __DIR__ . "/db/FaithGuardRepository.php";
     require_once __DIR__ . "/api/helper/debug.php";
+    require_once __DIR__ . "/api/helper/user.php";
 
     /* =========================================================
    AUTH GUARD
@@ -27,34 +28,30 @@
     $user_role   = 'user';
 
     if ($is_logged_in && isset($_SESSION['user_id'])) {
-        $user_data = FaithGuardRepository::getUserById($_SESSION['user_id']);
-        if ($user_data) {
-            $user        = true;
-            $accountName = htmlspecialchars($user_data['name'] ?? $user_data['email']);
-            $user_role   = $user_data['role'] ?? 'user';
-        } else {
-            session_destroy();
-            header("Location: /api/auth/register.php");
-            exit;
-        }
+    $user_data = FaithGuardRepository::getUserById($_SESSION['user_id']);
+    if ($user_data) {
+        $user        = normalize_user($user_data);
+        $accountName = $user['display_name'] ?? ($user['email'] ?? 'User');
+        $user_role   = $user['role'] ?? 'user';
+    } else {
+        session_destroy();
+        header("Location: /api/auth/register.php");
+        exit;
     }
-
+    }
     /* =========================================================
    USER CONTEXT
 ========================================================= */
     $userId = $_SESSION['user_id'] ?? null;
     if (! $userId) {
-        session_destroy();
-        header("Location: /index.php");
-        exit;
+    session_destroy();
+    header("Location: /index.php");
+    exit;
     }
 
-    $accountName = htmlspecialchars(
-        $user_data['name'] ?? $user_data['email'],
-        ENT_QUOTES,
-        'UTF-8'
-    );
-    $user_role = $user_data['role'] ?? 'user';
+    // Ensure account name and role come from normalized user
+    $accountName = $accountName ?? ($user['display_name'] ?? ($user['email'] ?? 'User'));
+    $user_role   = $user_role ?? ($user['role'] ?? 'user');
 
     /* =========================================================
    QUIZ DATA
@@ -63,26 +60,26 @@
 
     $addictionQuestion = null;
     foreach ($questions as $q) {
-        if ((int) $q['id'] === 1) {
-            $addictionQuestion = $q;
-            break;
-        }
+    if ((int) $q['id'] === 1) {
+        $addictionQuestion = $q;
+        break;
+    }
     }
 
     if (! $addictionQuestion) {
-        throw new RuntimeException('Addiction selection question (ID 1) missing.');
+    throw new RuntimeException('Addiction selection question (ID 1) missing.');
     }
 
     /* =========================================================
    ADDICTION TYPES (still static by design)
 ========================================================= */
     $addictionTypes = [
-        'Pornography'            => 'Pornography',
-        'Alcohol'                => 'Alcohol',
-        'Substance Use'          => 'Substance',
-        'Gambling'               => 'Gambling',
-        'Digital / Social Media' => 'Digital',
-        'Smoking / Vaping'       => 'Smoking',
+    'Pornography'            => 'Pornography',
+    'Alcohol'                => 'Alcohol',
+    'Substance Use'          => 'Substance',
+    'Gambling'               => 'Gambling',
+    'Digital / Social Media' => 'Digital',
+    'Smoking / Vaping'       => 'Smoking',
     ];
 ?>
 <!DOCTYPE html>
@@ -230,21 +227,22 @@
             <!-- =====================================================
                 ALL QUESTIONS EXCEPT ID 1
             ===================================================== -->
-            <?php $stepIndex = 1; foreach ($questions as $q): $questionId = (int) $q['id']; if ($questionId === 1) { continue;} $answerOptions = FaithGuardRepository::getAllQuizAnswerOptions($questionId);?>
+            <?php $stepIndex = 1;foreach ($questions as $q): $questionId = (int) $q['id'];if ($questionId === 1) {continue;}
+                $answerOptions              = FaithGuardRepository::getAllQuizAnswerOptions($questionId); ?>
                 <section class="c-quiz__question" data-step="<?php echo $stepIndex; ?>" data-question-id="<?php echo $questionId; ?>" data-required="true">
                     <h5 class="mb-3">
                         <?php echo htmlspecialchars($q['question'], ENT_QUOTES, 'UTF-8'); ?>
                     </h5>
-                    <?php foreach ($answerOptions as $option): ?>
+                    <?php foreach ($answerOptions as $optIndex => $option): ?>
                         <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" name="answers[<?php echo $questionId; ?>]" value="<?php echo $i; ?>" required>
+                            <input class="form-check-input" type="radio" name="answers[<?php echo $questionId; ?>]" value="<?php echo htmlspecialchars($option['id'] ?? $optIndex, ENT_QUOTES); ?>" required>
                             <label class="form-check-label">
-                                <?php echo htmlspecialchars($option['label'], ENT_QUOTES, 'UTF-8'); ?>
+                                <?php echo htmlspecialchars($option['label'] ?? ($option['value'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>
                             </label>
                         </div>
                     <?php endforeach; ?>
                 </section>
-            <?php $stepIndex++; endforeach;?>
+            <?php $stepIndex++;endforeach; ?>
             <!-- =====================================================
                 NAVIGATION
             ===================================================== -->
@@ -253,11 +251,11 @@
                 <button type="button" id="nextButton" class="btn c-btn">Next</button>
                 <button type="submit" id="submitButton" class="btn c-btn" hidden>
                     <?php
-                    if(!isset($userId)){
-                        throw new RuntimeException('Quiz submission error: User not authenticated.');
-                    }else{
-                        echo 'Submit Assessment'. 'ID: ' . htmlspecialchars((string)$userId, ENT_QUOTES, 'UTF-8');
-                    }
+                        if (! isset($userId)) {
+                            throw new RuntimeException('Quiz submission error: User not authenticated.');
+                        } else {
+                            echo 'Submit Assessment' . 'ID: ' . htmlspecialchars((string) $userId, ENT_QUOTES, 'UTF-8');
+                        }
                     ?>
                 </button>
             </div>
