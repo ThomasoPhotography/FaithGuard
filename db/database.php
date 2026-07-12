@@ -22,8 +22,20 @@ class Database
             $hosts[] = '127.0.0.1';
         }
 
+        $hostCandidates = [];
+        if ($host !== '') {
+            $hostCandidates[] = $host;
+        }
+        if ($host !== 'localhost' && $host !== '127.0.0.1') {
+            $hostCandidates[] = 'localhost';
+            $hostCandidates[] = '127.0.0.1';
+        }
+        $hostCandidates[] = 'com-linweb938.srv.combell-ops.net';
+        $hostCandidates[] = 'ID483117_faithguard.db.webhosting.be';
+        $hostCandidates   = array_values(array_unique($hostCandidates));
+
         $lastError = null;
-        foreach ($hosts as $candidateHost) {
+        foreach ($hostCandidates as $candidateHost) {
             try {
                 $dsn     = 'mysql:host=' . $candidateHost . ';port=' . $port . ';dbname=' . $dbName . ';charset=' . $charset;
                 $options = [

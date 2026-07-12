@@ -273,6 +273,7 @@ All notable changes to this project will be documented in this file.
 - Update require_once paths to use __DIR__ for better portability.
 - Enhance database connection handling and CSRF token validation.
 - Include CSRF token in registration form submission.
+- Enhance CSRF protection and session management in registration process.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.

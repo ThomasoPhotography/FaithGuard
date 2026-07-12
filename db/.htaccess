@@ -1,26 +1,42 @@
 # ----------------------------------------------------------------------
 # FaithGuard .htaccess Configuration
 # ----------------------------------------------------------------------
-
 # Turn on URL Rewriting
 RewriteEngine On
 
 # 1. Force HTTPS
-# Redirects all traffic to the secure https version
-RewriteCond %{HTTPS} off
-RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+RewriteCond %{HTTPS} off [OR]
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
 
 # 2. Security: Disable Directory Browsing
 # Prevents visitors from seeing a list of your files if no index.php exists
 Options -Indexes
 
 # 3. Security: Block Sensitive File Extensions
-# Blocks access to .git, .env, .sql dumps (crucial for you!), logs, and ini files
+# Blocks access to .git, .env, .sql dumps, logs, and ini files
 <FilesMatch "^\.|^\.env|\.sql$|\.log$|\.ini$">
-    Order allow,deny
-    Deny from all
     Require all denied
 </FilesMatch>
+
+# 3b. Security: Protect PHP Session Cookies from XSS and CSRF
+<IfModule mod_php.c>
+    php_value session.cookie_httponly 1
+    php_value session.cookie_secure 1
+    php_value session.cookie_samesite "Strict"
+</IfModule>
+
+# 3c. Security: Harden HTTP Headers
+<IfModule mod_headers.c>
+    # Enforce HTTPS strictly for 1 year (HSTS)
+    Header set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+    
+    # Prevent clickjacking attacks by forbidding your site to be framed
+    Header set X-Frame-Options "DENY"
+    
+    # Prevent browsers from trying to guess asset mime-types (blocks XSS)
+    Header set X-Content-Type-Options "nosniff"
+</IfModule>
 
 # 4. Security: Protect Internal Directories
 # Prevents direct HTTP access to your database connection logic

@@ -114,7 +114,10 @@ class RegisterModal {
 		try {
 			const response = await fetch('/api/auth/register.php', {
 				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRF-Token': data.csrf_token || '',
+				},
 				credentials: 'same-origin',
 				body: JSON.stringify(data),
 			});

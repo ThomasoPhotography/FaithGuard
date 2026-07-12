@@ -88,18 +88,15 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 try {
-    // Start session and ensure CSRF token exists
-    if (empty($_SESSION['csrf_token'])) {
-        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-    }
-
-    $input['csrf_token'] = $input['csrf_token'] ?? '';
-
     if (! ENABLE_REGISTRATION) {
         errorResponse('Registration is currently disabled', 403);
     }
 
-    $input = getJsonInput();
+    startAppSession();
+    $input        = getJsonInput();
+    $postedToken  = getCsrfTokenFromRequest($input);
+    $sessionToken = ensureCsrfToken();
+
     // Accept first_name/last_name (single input) or full_name (preferred)
     if (! empty($input['full_name'])) {
         $fullName = trim($input['full_name']);
@@ -115,8 +112,6 @@ try {
     validateRequired($input, ['first_name', 'last_name', 'email', 'password', 'csrf_token']);
 
     // CSRF validation
-    $postedToken  = (string) ($input['csrf_token'] ?? '');
-    $sessionToken = (string) ($_SESSION['csrf_token'] ?? '');
     if ($postedToken === '' || $sessionToken === '' || ! hash_equals($sessionToken, $postedToken)) {
         errorResponse('Invalid CSRF token', 403);
     }
