@@ -217,6 +217,11 @@ a {
 		padding: 6rem 0;
 	}
 
+	&__btn {
+		background-color: $color-primary;
+		color: $color-text;
+	}
+
 	&__title {
 		font-family: $font-heading;
 		font-size: 2.25rem;
@@ -245,23 +250,21 @@ a {
 	}
 }
 .c-main {
-	&__title {
-		font-size: 5rem;
-	}
 	&__text {
 		font-size: 1rem;
 		color: $color-text-muted;
 		&--verse {
 			&:hover {
-				text-decoration: underline;
+				text-decoration: none;
 				text-decoration-color: $color-text-light;
+				cursor: pointer;
 			}
 		}
 	}
 }
 .c-nav {
 	display: none;
-	background-color: $color-primary-dark;
+	background-color: $color-primary-dark !important;
 
 	@include respond(md) {
 		display: flex;
@@ -270,7 +273,7 @@ a {
 
 	&__link {
 		font-weight: 500;
-		color: $color-text-muted;
+		color: $color-text-light;
 		transition: color 150ms ease;
 
 		&:hover,
@@ -280,34 +283,7 @@ a {
 	}
 }
 
-/* Card */
-.c-card {
-	background: $color-surface;
-	border-radius: $radius-md;
-	box-shadow: $shadow-md;
-	padding: 1.5rem;
-
-	@include respond(md) {
-		padding: 2rem;
-	}
-
-	&--hover {
-		transition: transform 200ms ease;
-
-		&:hover {
-			transform: translateY(-3px);
-			box-shadow: $shadow-lg;
-		}
-	}
-
-	&__title {
-		font-family: $font-heading;
-		font-weight: 600;
-		margin-bottom: 0.75rem;
-	}
-}
-
-/* Button */
+// Button
 .c-btn {
 	@include button-base;
 
@@ -357,7 +333,34 @@ a {
 	}
 }
 
-/* Modal overlay */
+// Card
+.c-card {
+	background: $color-surface;
+	border-radius: $radius-md;
+	box-shadow: $shadow-md;
+	padding: 1.5rem;
+
+	@include respond(md) {
+		padding: 2rem;
+	}
+
+	&--hover {
+		transition: transform 200ms ease;
+
+		&:hover {
+			transform: translateY(-3px);
+			box-shadow: $shadow-lg;
+		}
+	}
+
+	&__title {
+		font-family: $font-heading;
+		font-weight: 600;
+		margin-bottom: 0.75rem;
+	}
+}
+
+// Modal overlay
 .c-modal {
 	position: fixed;
 	inset: 0;
@@ -384,7 +387,7 @@ a {
 	}
 }
 
-/* Register Modal*/
+// Register Modal
 
 /* Verse */
 .c-verseModal {

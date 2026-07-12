@@ -59,10 +59,13 @@
 
     // --- Fetch Resources for Dynamic Display ---
     // Fetch resources from DB. Provide explicit defaults to avoid undefined variable notices.
-    $category = null; // e.g. 'video', 'article'
-    $max_resources = 6;    // Limit to 6 for display (adjust as needed)
+    $category           = null; // e.g. 'video', 'article'
+    $max_resources      = 6;    // Limit to 6 for display (adjust as needed)
     $featured_resources = FaithGuardRepository::getFeaturedResources($max_resources);
-    $resources = FaithGuardRepository::getResources();
+    $resources          = FaithGuardRepository::getResources();
+
+    // --- Testimonials (Community Impact) ---
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -217,7 +220,7 @@
                 <?php if (! empty($featured_resources)): ?>
                     <?php foreach ($featured_resources as $resource): ?>
                         <?php $excerpt = $resource['content'] ?: ($resource['description'] ?? ''); ?>
-                        <div class="col-md-5 col-12 mb-4">
+                        <div class="col-md-5 col-12 col-lg-5 mb-4">
                             <div class="card c-card">
                                 <div class="card-body c-card__body">
                                     <h5 class="card-title c-card__title"><?php echo htmlspecialchars($resource['title']); ?></h5>
@@ -228,7 +231,7 @@
                         </div>
                     <?php endforeach; ?>
                 <?php else: ?>
-                    <div class="col-md-5 col-12 mb-4">
+                    <div class="col-md-5 col-12 col-lg-5 mb-4">
                         <p class="text-center">No featured resources available yet. Check back soon!</p>
                     </div>
                 <?php endif; ?>
@@ -249,7 +252,7 @@
             <p class="c-impact__intro text-center">Hear from those who have found hope and strength through FaithGuard's faith-based resources.</p>
             <div class="row">
                 <!-- Static input, get's changed in PHP -->
-                <div class="col-md-5 col-12 mb-4">
+                <div class="col-md-5 col-12 col-lg-5 mb-4">
                     <div class="card c-card c-impact__card">
                         <div class="card-body c-card__body c-impact__body">
                             <blockquote class="c-impact__quote">"FaithGuard's devotionals helped me rebuild my relationship with God after years of struggle. I'm free now."</blockquote>

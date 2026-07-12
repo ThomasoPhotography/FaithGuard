@@ -310,14 +310,6 @@ CREATE TABLE `users` (
   `last_login` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`id`, `email`, `password_hash`, `first_name`, `last_name`, `avatar_url`, `bio`, `bible_language`, `bible_version`, `bible_book`, `is_admin`, `is_member`, `is_active`, `email_verified`, `created_at`, `updated_at`, `last_login`) VALUES
-(1, 'admin@faithguard.com', '$2y$12$Si3tc0jbzi7SZ85svjKhLeMkVf1aoQcpMaGis/s.obNQoKdAm7YqW', 'admin', 'admin', NULL, 'To be Written', 'en', 'NRSVUE', 'Luke', 1, 0, 1, 1, '2025-12-06 22:03:16', '2026-05-03 16:52:00', NULL),
-(2, 'thomas.deseure@proton.me', '$2y$12$M5By2UvRbwuTvrFfYh42UOzM1tv1KnQGbedtlbWnCqu6wnNGrIATO', 'Thomas', 'Deseure', NULL, 'To be Written', 'en', 'NRSVUE', 'Mark', 0, 0, 1, 1, '2025-12-06 23:04:49', '2026-05-03 16:53:41', NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -353,6 +345,23 @@ CREATE TABLE `user_progress` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `testimonials`
+--
+
+CREATE TABLE `testimonials` (
+  `id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `content` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `is_approved` tinyint(1) DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
 
 --
 -- Indexes for dumped tables
@@ -489,6 +498,13 @@ ALTER TABLE `user_progress`
   ADD UNIQUE KEY `unique_user_progress` (`user_id`);
 
 --
+-- Indexes for table `testimonials`
+--
+ALTER TABLE `testimonials`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -595,6 +611,12 @@ ALTER TABLE `user_progress`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `testimonials`
+--
+ALTER TABLE `testimonials`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
 -- Constraints for dumped tables
 --
 
@@ -653,6 +675,12 @@ ALTER TABLE `user_preferences`
 ALTER TABLE `user_progress`
   ADD CONSTRAINT `user_progress_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 COMMIT;
+
+--
+-- Constraints for table `testimonials`
+--
+ALTER TABLE `testimonials`
+  ADD CONSTRAINT `testimonials_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

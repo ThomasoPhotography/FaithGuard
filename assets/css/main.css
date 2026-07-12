@@ -156,6 +156,10 @@ a:hover {
     padding: 6rem 0;
   }
 }
+.c-hero__btn {
+  background-color: #8b5a2b;
+  color: #1c1917;
+}
 .c-hero__title {
   font-family: "Merriweather", Georgia, serif;
   font-size: 2.25rem;
@@ -181,21 +185,19 @@ a:hover {
   transform: translateY(-3px);
 }
 
-.c-main__title {
-  font-size: 5rem;
-}
 .c-main__text {
   font-size: 1rem;
   color: #57534e;
 }
 .c-main__text--verse:hover {
-  text-decoration: underline;
+  text-decoration: none;
   text-decoration-color: #e5e0da;
+  cursor: pointer;
 }
 
 .c-nav {
   display: none;
-  background-color: #5d3a1a;
+  background-color: #5d3a1a !important;
 }
 @media (min-width: 768px) {
   .c-nav {
@@ -205,39 +207,13 @@ a:hover {
 }
 .c-nav__link {
   font-weight: 500;
-  color: #57534e;
+  color: #e5e0da;
   transition: color 150ms ease;
 }
 .c-nav__link:hover, .c-nav__link--active {
   color: #8b5a2b;
 }
 
-/* Card */
-.c-card {
-  background: #f5f0e8;
-  border-radius: 0.75rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  padding: 1.5rem;
-}
-@media (min-width: 768px) {
-  .c-card {
-    padding: 2rem;
-  }
-}
-.c-card--hover {
-  transition: transform 200ms ease;
-}
-.c-card--hover:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-}
-.c-card__title {
-  font-family: "Merriweather", Georgia, serif;
-  font-weight: 600;
-  margin-bottom: 0.75rem;
-}
-
-/* Button */
 .c-btn {
   display: inline-flex;
   align-items: center;
@@ -297,7 +273,30 @@ a:hover {
   color: #57534e;
 }
 
-/* Modal overlay */
+.c-card {
+  background: #f5f0e8;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+}
+@media (min-width: 768px) {
+  .c-card {
+    padding: 2rem;
+  }
+}
+.c-card--hover {
+  transition: transform 200ms ease;
+}
+.c-card--hover:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+.c-card__title {
+  font-family: "Merriweather", Georgia, serif;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
 .c-modal {
   position: fixed;
   inset: 0;
@@ -324,7 +323,6 @@ a:hover {
   width: 90%;
 }
 
-/* Register Modal*/
 /* Verse */
 .c-verseModal__selector {
   display: flex;

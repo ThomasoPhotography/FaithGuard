@@ -8,7 +8,7 @@ class FaithGuardRepository
     public static function getUserById(int $id): ?array
     {
         return Database::getSingleRow(
-            "SELECT id, full_name, email, first_name, last_name, avatar_url, bio, is_admin, is_active, created_at, last_login FROM users WHERE id = ?", [$id]
+            "SELECT id, email, first_name, last_name, avatar_url, bio, is_admin, is_active, created_at, last_login FROM users WHERE id = ?", [$id]
         );
     }
     //Find user by email (includes password hash for auth)
@@ -31,9 +31,8 @@ class FaithGuardRepository
         // Insert using Database helper then fetch the created user by email to obtain the ID
         try {
             $rowsAffected = Database::execute(
-                "INSERT INTO users (full_name, email, password_hash, first_name, last_name) VALUES (?, ?, ?, ?, ?)",
+                "INSERT INTO users (email, password_hash, first_name, last_name) VALUES (?, ?, ?, ?)",
                 [
-                    $data['full_name'] ?? null,
                     $data['email'],
                     $data['password_hash'],
                     $data['first_name'] ?? null,
@@ -66,7 +65,7 @@ class FaithGuardRepository
     //Update user
     public static function updateUser(int $id, array $data): bool
     {
-        $allowed = ['full_name', 'email', 'first_name', 'last_name', 'avatar_url', 'bio'];
+        $allowed = ['email', 'first_name', 'last_name', 'avatar_url', 'bio'];
         $sets    = [];
         $values  = [];
         foreach ($data as $key => $value) {
@@ -441,6 +440,85 @@ class FaithGuardRepository
                 $data['content'],
                 $data['is_anonymous'] ?? false,
             ]
+        );
+    }
+
+    // ==================== COMMENTS ====================
+    // Get comments for a specific post
+    public static function getComments(int $postId): array
+    {
+        return Database::getRows(
+            "SELECT c.*, u.username, u.avatar_url FROM comments c JOIN users u ON c.user_id = u.id WHERE c.post_id = ? ORDER BY c.created_at ASC",
+            [$postId]
+        );
+    }
+    // Create a comment for a specific post
+    public static function createComment(array $data): int | false
+    {
+        return Database::execute(
+            "INSERT INTO comments (post_id, user_id, content, is_anonymous) VALUES (?, ?, ?, ?)",
+            [
+                $data['post_id'],
+                $data['user_id'],
+                $data['content'],
+                $data['is_anonymous'] ?? false,
+            ]
+        );
+    }
+    // Delete a comment by ID - only the comment owner or an admin can delete
+    public static function deleteComment(int $commentId, int $userId, bool $isAdmin): bool
+    {
+        if ($isAdmin) {
+            // Admin can delete any comment
+            return Database::execute(
+                "DELETE FROM comments WHERE id = ?", [$commentId]
+            );
+        } else {
+            // Regular user can only delete their own comment
+            return Database::execute(
+                "DELETE FROM comments WHERE id = ? AND user_id = ?", [$commentId, $userId]
+            );
+        }
+    }
+    // Get comment count for a specific post
+    public static function getCommentCount(int $postId): int
+    {
+        $result = Database::getSingleRow(
+            "SELECT COUNT(*) as count FROM comments WHERE post_id = ?", [$postId]
+        );
+        return (int) ($result['count'] ?? 0);
+    }
+    // Get all comments made by a specific user
+    public static function getUserComments(int $userId, int $limit = 20, int $offset = 0): array
+    {
+        return Database::getRows(
+            "SELECT c.*, p.title as post_title FROM comments c JOIN posts p ON c.post_id = p.id WHERE c.user_id = ? ORDER BY c.created_at DESC LIMIT ? OFFSET ?",
+            [$userId, $limit, $offset]
+        );
+    }
+    // Get the most recent comments across all posts (for admin dashboard)
+    public static function getRecentComments(int $limit = 20): array
+    {
+        return Database::getRows(
+            "SELECT c.*, u.username, p.title as post_title FROM comments c JOIN users u ON c.user_id = u.id JOIN posts p ON c.post_id = p.id ORDER BY c.created_at DESC LIMIT ?",
+            [$limit]
+        );
+    }
+    // Get the most active commenters (users with the highest number of comments)
+    public static function getMostActiveCommenters(int $limit = 10): array
+    {
+        return Database::getRows(
+            "SELECT u.id, u.username, COUNT(c.id) as comment_count FROM users u JOIN comments c ON u.id = c.user_id GROUP BY u.id ORDER BY comment_count DESC LIMIT ?",
+            [$limit]
+        );
+    }
+
+    // ==================== TESTIMONIALS ====================
+    // Get all testimonials
+    public static function getTestimonials(int $limit = 10): array
+    {
+        return Database::getRows(
+            "SELECT * FROM testimonials WHERE is_approved = 1 ORDER BY created_at DESC LIMIT ?", [$limit]
         );
     }
 
