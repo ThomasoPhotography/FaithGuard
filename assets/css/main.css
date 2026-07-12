@@ -379,7 +379,7 @@ a:hover {
   max-width: 20%;
   height: auto;
 }
-.c-footer__items {
+.c-footer__item {
   display: flex;
   gap: 0.5rem;
 }
