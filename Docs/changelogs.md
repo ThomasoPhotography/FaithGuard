@@ -258,6 +258,8 @@ All notable changes to this project will be documented in this file.
 - Minor code changes to implement C2-I-4.
 - Implement language selector to pages => 'en' modified to implementation.
 - Keypoints updated.
+- Update authorization header retrieval in getCurrentUser function and adjust file includes in FaithGuardRepository
+feat: Add test.php for basic PHP functionality testing.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.

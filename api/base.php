@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 /**
  * Send JSON response
  */
-function jsonResponse($data, int $statusCode = 200): void {
+function jsonResponse(mixed $data, int $statusCode = 200): void {
     http_response_code($statusCode);
     echo json_encode($data);
     exit;
@@ -51,9 +51,22 @@ function getCurrentUser(): ?array {
     $sessionId = $_COOKIE[SESSION_COOKIE_NAME] ?? null;
     
     if (!$sessionId) {
-        // Check Authorization header as fallback
-        $headers = getallheaders();
-        $authHeader = $headers['Authorization'] ?? '';
+        // Check Authorization header as fallback. getallheaders() is not
+        // available with every PHP SAPI (for example PHP-FPM).
+        $authHeader = $_SERVER['HTTP_AUTHORIZATION']
+            ?? $_SERVER['REDIRECT_HTTP_AUTHORIZATION']
+            ?? '';
+
+        if ($authHeader === '' && function_exists('getallheaders')) {
+            $headers = getallheaders();
+            foreach ($headers as $name => $value) {
+                if (strcasecmp($name, 'Authorization') === 0) {
+                    $authHeader = $value;
+                    break;
+                }
+            }
+        }
+
         if (preg_match('/Bearer\s+(\S+)/', $authHeader, $matches)) {
             $sessionId = $matches[1];
         }
