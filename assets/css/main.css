@@ -185,6 +185,13 @@ a:hover {
   transform: translateY(-3px);
 }
 
+.c-main__titlepop {
+  font-size: 5rem;
+}
+.c-main__title {
+  text-decoration: underline;
+  text-decoration-style: wavy;
+}
 .c-main__text {
   font-size: 1rem;
   color: #57534e;

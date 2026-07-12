@@ -84,12 +84,12 @@
     <!-- Title -->
     <title>FaithGuard</title>
     <!-- Favicon -->
-    <link rel="icon" href="../assets/uploads/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/assets/uploads/favicon.ico" type="image/x-icon">
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <!-- Stylesheet -->
-    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/main.css">
 </head>
 
 <body>
@@ -239,7 +239,7 @@
         </section>
         <!-- Call to Action Section -->
         <section class="c-main__section text-center mb-5">
-            <h2 class="c-main__title">Join the FaithGuard Community</h2>
+            <h2 class="c-main__titlepop">Join the FaithGuard Community</h2>
             <p class="c-main__text">Sign up today to access personalized resources, track your progress, and connect with others on the same journey.</p>
             <a onclick="openRegisterModal()" class="btn c-btn c-main__btn">Get Started</a>
             <a class="c-main__text c-main__text--verse js-bible__ref">2 Corinthians 5:7</a>
