@@ -108,7 +108,7 @@ class RegisterModal {
 		}
 
 		try {
-			const response = await fetch('/api/auth/register.php', {
+			const response = await fetch('../../api/auth/register.php', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				credentials: 'same-origin',

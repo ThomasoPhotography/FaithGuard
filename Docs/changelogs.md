@@ -81,6 +81,7 @@ All notable changes to this project will be documented in this file.
 - Enhance typography styles and update title structure in `main.css` and `main.scss`.
 - Add new button and card styles; update cookie banner header and footer logo.
 - Implement session management improvements across authentication endpoints and update secure cookie settings.
+- Add `test.php` for basic PHP functionality testing.
 
 ### Changed
 - `README.md` file got a professional make-over.
@@ -261,8 +262,8 @@ All notable changes to this project will be documented in this file.
 - Minor code changes to implement C2-I-4.
 - Implement language selector to pages => 'en' modified to implementation.
 - Keypoints updated.
-- Update authorization header retrieval in getCurrentUser function and adjust file includes in FaithGuardRepository
-feat: Add test.php for basic PHP functionality testing.
+- Update authorization header retrieval in getCurrentUser function and adjust file includes in FaithGuardRepository.
+- Update fetch path for register API in openRegisterModal function.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.
