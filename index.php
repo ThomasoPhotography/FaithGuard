@@ -241,7 +241,7 @@
         <section class="c-main__section text-center mb-5">
             <h2 class="c-main__titlepop">Join the FaithGuard Community</h2>
             <p class="c-main__text">Sign up today to access personalized resources, track your progress, and connect with others on the same journey.</p>
-            <a onclick="openRegisterModal()" class="btn c-btn c-main__btn">Get Started</a>
+            <a onclick="openRegisterModal()" class="btn c-btn c-btn__outline">Get Started</a>
             <a class="c-main__text c-main__text--verse js-bible__ref">2 Corinthians 5:7</a>
         </section>
     </main>
@@ -270,7 +270,7 @@
             <div class="row">
                 <!-- Footer Content: Left -->
                 <div class="col-md-6 col-12">
-                    <img class="c-footer__logo" src="/assets/uploads/FaithGuard_Secondary_Logo.svg" alt="Secondary Logo">
+                    <img class="c-footer__logo" src="/assets/uploads/FaithGuard_Primary_Logo.svg" alt="Primary Logo">
                     <p class="c-footer__text">&copy; 2025 FaithGuard. All rights reserved. Overcoming addiction through Christ &amp; Protecting your digital faith with hope and redemption.</p>
                 </div>
                 <!-- Footer Content: Right -->

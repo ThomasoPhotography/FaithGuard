@@ -79,6 +79,7 @@ All notable changes to this project will be documented in this file.
 - Add testimonials feature and enhance resource display in `index.php`.
 - Update footer styles and implement dynamic testimonials display in `index.php`.
 - Enhance typography styles and update title structure in `main.css` and `main.scss`.
+- Add new button and card styles; update cookie banner header and footer logo.
 
 ### Changed
 - `README.md` file got a professional make-over.

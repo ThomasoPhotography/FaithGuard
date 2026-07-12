@@ -181,115 +181,6 @@ a {
 /*---------------------------------------/*
 	# COMPONENTS
 /*---------------------------------------*/
-.c-header {
-	background: #e8d4b8;
-	position: sticky;
-	top: 0;
-	z-index: 200;
-	box-shadow: $shadow-sm;
-
-	&__inner {
-		@extend .o-container;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		padding: 1rem 0;
-	}
-
-	&__logo {
-		display: flex;
-		align-items: center;
-		gap: 0.75rem;
-
-		&-text {
-			font-family: $font-heading;
-			font-weight: 700;
-			color: $color-primary;
-		}
-	}
-}
-.c-hero {
-	background: linear-gradient(135deg, #e8d4b8 0%, #faf8f5 100%);
-	text-align: center;
-	padding: 4rem 0;
-
-	@include respond(md) {
-		padding: 6rem 0;
-	}
-
-	&__btn {
-		background-color: $color-primary;
-		color: $color-text;
-	}
-
-	&__title {
-		font-family: $font-heading;
-		font-size: 2.25rem;
-		margin-bottom: 1.5rem;
-
-		span {
-			color: $color-primary;
-		}
-
-		@include respond(md) {
-			font-size: 3rem;
-		}
-	}
-
-	&__verse {
-		background: #fff;
-		padding: 1.5rem;
-		border-radius: $radius-md;
-		box-shadow: $shadow-md;
-		cursor: pointer;
-		transition: transform 200ms ease;
-
-		&:hover {
-			transform: translateY(-3px);
-		}
-	}
-}
-.c-main {
-	&__titlepop {
-		font-size: 5rem;
-	}
-	&__title {
-		text-decoration: underline;
-		text-decoration-style: wavy;
-	}
-	&__text {
-		font-size: 1rem;
-		color: $color-text-muted;
-		&--verse {
-			&:hover {
-				text-decoration: none;
-				text-decoration-color: $color-text-light;
-				cursor: pointer;
-			}
-		}
-	}
-}
-.c-nav {
-	display: none;
-	background-color: $color-primary-dark !important;
-
-	@include respond(md) {
-		display: flex;
-		gap: 2rem;
-	}
-
-	&__link {
-		font-weight: 500;
-		color: $color-text-light;
-		transition: color 150ms ease;
-
-		&:hover,
-		&--active {
-			color: $color-primary;
-		}
-	}
-}
-
 // Button
 .c-btn {
 	@include button-base;
@@ -367,6 +258,136 @@ a {
 	}
 }
 
+// Cookie
+.c-cookie {
+	&__title {
+		padding-top: 0.25rem;
+		padding-left: 1.5rem;
+	}
+	&__icon {
+		max-width: 10%;
+		height: auto;
+	}
+}
+
+// Header
+.c-header {
+	background: #e8d4b8;
+	position: sticky;
+	top: 0;
+	z-index: 200;
+	box-shadow: $shadow-sm;
+
+	&__inner {
+		@extend .o-container;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 1rem 0;
+	}
+
+	&__logo {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+
+		&-text {
+			font-family: $font-heading;
+			font-weight: 700;
+			color: $color-primary;
+		}
+	}
+}
+
+// Hero
+.c-hero {
+	background: linear-gradient(135deg, #e8d4b8 0%, #faf8f5 100%);
+	text-align: center;
+	padding: 4rem 0;
+
+	@include respond(md) {
+		padding: 6rem 0;
+	}
+
+	&__btn {
+		background-color: $color-primary;
+		color: $color-text;
+		&:hover {
+			background-color: lighten($color-primary, 30%);
+		}
+	}
+
+	&__title {
+		font-family: $font-heading;
+		font-size: 2.25rem;
+		margin-bottom: 1.5rem;
+
+		span {
+			color: $color-primary;
+		}
+
+		@include respond(md) {
+			font-size: 3rem;
+		}
+	}
+
+	&__verse {
+		background: #fff;
+		padding: 1.5rem;
+		border-radius: $radius-md;
+		box-shadow: $shadow-md;
+		cursor: pointer;
+		transition: transform 200ms ease;
+
+		&:hover {
+			transform: translateY(-3px);
+		}
+	}
+}
+
+// Main
+.c-main {
+	&__titlepop {
+		font-size: 5rem;
+	}
+	&__title {
+		text-decoration: underline;
+	}
+	&__text {
+		font-size: 1rem;
+		color: $color-text-muted;
+		&--verse {
+			&:hover {
+				text-decoration: none;
+				text-decoration-color: $color-text-light;
+				cursor: pointer;
+			}
+		}
+	}
+}
+
+// Nav
+.c-nav {
+	display: none;
+	background-color: $color-primary-dark !important;
+
+	@include respond(md) {
+		display: flex;
+		gap: 2rem;
+	}
+
+	&__link {
+		font-weight: 500;
+		color: $color-text-light;
+		transition: color 150ms ease;
+
+		&:hover,
+		&--active {
+			color: $color-primary;
+		}
+	}
+}
+
 // Modal overlay
 .c-modal {
 	position: fixed;
@@ -396,7 +417,7 @@ a {
 
 // Register Modal
 
-/* Verse */
+// Verse Modal
 .c-verseModal {
 	&__selector {
 		display: flex;
@@ -413,7 +434,7 @@ a {
 	}
 }
 
-/* Footer */
+// Footer
 .c-footer {
 	background: $color-primary-dark;
 	color: $color-text-light;
@@ -427,12 +448,15 @@ a {
 		justify-content: space-between;
 		gap: 3rem;
 	}
+	&__nav {
+		list-style-type: none;
+	}
 	&__links {
 		display: flex;
 		gap: 3rem;
 	}
 	&__logo {
-		max-width: 35%;
+		max-width: 20%;
 		height: auto;
 	}
 	&__column-list {
