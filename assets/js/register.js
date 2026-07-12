@@ -93,7 +93,11 @@ class RegisterModal {
 		this.clearMessage();
 
 		const formData = new FormData(this.form);
-		const data = Object.fromEntries(formData);
+		const data = Object.fromEntries(formData.entries());
+		const csrfToken = this.form.querySelector('input[name="csrf_token"]')?.value || '';
+		if (csrfToken) {
+			data.csrf_token = csrfToken;
+		}
 
 		const clientErr = this.validate(data);
 		if (clientErr) {
@@ -108,7 +112,7 @@ class RegisterModal {
 		}
 
 		try {
-			const response = await fetch('../../api/auth/register.php', {
+			const response = await fetch('/api/auth/register.php', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				credentials: 'same-origin',

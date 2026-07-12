@@ -272,6 +272,7 @@ All notable changes to this project will be documented in this file.
 - Adjusting footer flex properties for better layout V3.
 - Update require_once paths to use __DIR__ for better portability.
 - Enhance database connection handling and CSRF token validation.
+- Include CSRF token in registration form submission.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.
