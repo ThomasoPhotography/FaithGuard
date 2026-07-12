@@ -1,9 +1,9 @@
 <?php
     // --- Core App Requirements ---
-    require_once __DIR__ . "/db/database.php";
-    require_once __DIR__ . "/db/FaithGuardRepository.php";
-    require_once __DIR__ . "/api/helper/debug.php";
-    require_once __DIR__ . "/api/helper/user.php";
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/db/database.php';
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/db/FaithGuardRepository.php';
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/api/helper/debug.php';
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/api/helper/user.php';
 
     // --- Session (same pattern as other pages) ---
     session_set_cookie_params([

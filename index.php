@@ -1,6 +1,6 @@
 <?php
     // Use centralized config for session cookie settings when available
-    require_once __DIR__ . '/db/config.php';
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/db/config.php';
 
     // Determine safe cookie domain (strip port, validate)
     $rawHost      = $_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME'] ?? '';
@@ -24,12 +24,12 @@
     }
 
     // --- Core App Requirements (Always required) ---
-    require_once __DIR__ . "/db/database.php";
-    require_once __DIR__ . "/db/FaithGuardRepository.php";
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/db/database.php';
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/db/FaithGuardRepository.php';
     // --- Optional Helper/Debug (Required, but note its function) ---
-    require_once __DIR__ . "/api/helper/debug.php";
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/api/helper/debug.php';
     // User normalization helper
-    require_once __DIR__ . "/api/helper/user.php";
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/api/helper/user.php';
 
     $is_logged_in = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
 

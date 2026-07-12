@@ -86,6 +86,7 @@ All notable changes to this project will be documented in this file.
 - Rename user retrieval methods for consistency and clarity.
 - No full name needed to register, will be automatic in update.
 - ID's.
+- Update file includes to use DOCUMENT_ROOT for consistent path resolution across multiple files.
 
 ### Deprecated
 - replace lighten/darken functions with color.adjust for consistent color manipulation in `main.scss`.

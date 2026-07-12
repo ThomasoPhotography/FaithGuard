@@ -10,11 +10,11 @@
     session_start();
     }
     // --- Core Site Requirements (Always required) ---
-    require_once __DIR__ . '/config.php';
-    require_once __DIR__ . '/db/Database.php';
-    require_once __DIR__ . '/db/config.php';
-    require_once __DIR__ . '/db/FaithGuardRepository.php';
-    require_once __DIR__ . '/api/helper/user.php';
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/db/database.php';
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/db/config.php';
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/db/FaithGuardRepository.php';
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/api/helper/user.php';
     // --- Core Site Session Check (Always required) ---
     if (! isset($_SESSION['user_id'])) {
     header('Location: /login.php');
