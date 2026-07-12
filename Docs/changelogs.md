@@ -274,6 +274,7 @@ All notable changes to this project will be documented in this file.
 - Enhance database connection handling and CSRF token validation.
 - Include CSRF token in registration form submission.
 - Enhance CSRF protection and session management in registration process.
+- Remove unnecessary redirection to registration page after logout.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.

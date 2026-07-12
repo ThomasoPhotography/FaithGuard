@@ -52,8 +52,6 @@
         unset($_SESSION['user_id']);
         unset($_SESSION['logged_in']);
         $is_logged_in = false;
-        header("Location: ../api/auth/register.php");
-        exit();
     }
     }
 
