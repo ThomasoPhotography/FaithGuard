@@ -65,7 +65,7 @@
     $resources          = FaithGuardRepository::getResources();
 
     // --- Testimonials (Community Impact) ---
-
+    $testimonials = FaithGuardRepository::getTestimonials(3); // Fetch 3 testimonials for display
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -251,15 +251,16 @@
             <h2 class="c-impact__title text-center">Community Impact</h2>
             <p class="c-impact__intro text-center">Hear from those who have found hope and strength through FaithGuard's faith-based resources.</p>
             <div class="row">
-                <!-- Static input, get's changed in PHP -->
-                <div class="col-md-5 col-12 col-lg-5 mb-4">
-                    <div class="card c-card c-impact__card">
-                        <div class="card-body c-card__body c-impact__body">
-                            <blockquote class="c-impact__quote">"FaithGuard's devotionals helped me rebuild my relationship with God after years of struggle. I'm free now."</blockquote>
-                            <cite class="c-impact__cite">- Anonymous User</cite>
+                <?php foreach ($testimonials as $testimonial): ?>
+                    <div class="col-md-5 col-12 col-lg-4 mb-4">
+                        <div class="card c-card c-impact__card">
+                            <div class="card-body c-card__body c-impact__body">
+                                <blockquote class="c-impact__quote"><?php echo htmlspecialchars($testimonial['testimonial']); ?></blockquote>
+                                <cite class="c-impact__cite">- <?php echo htmlspecialchars($testimonial['first_name'] ?? 'Anonymous'); ?></cite>
+                            </div>
                         </div>
                     </div>
-                </div>
+                <?php endforeach; ?>
             </div>
         </section>
     </article>

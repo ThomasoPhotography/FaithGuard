@@ -338,8 +338,8 @@ a:hover {
 
 /* Footer */
 .c-footer {
-  background: var(--color-dark);
-  color: #faf8f5;
+  background: #5d3a1a;
+  color: #e5e0da;
 }
 .c-footer__inner {
   max-width: 1200px;
@@ -354,6 +354,10 @@ a:hover {
 .c-footer__links {
   display: flex;
   gap: 3rem;
+}
+.c-footer__logo {
+  max-width: 35%;
+  height: auto;
 }
 .c-footer__column-list {
   display: flex;

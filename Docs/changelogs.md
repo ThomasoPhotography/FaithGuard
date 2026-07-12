@@ -77,6 +77,7 @@ All notable changes to this project will be documented in this file.
 - Enhance user registration process with improved CSRF handling and error logging.
 - Update navigation background color and adjust resource fetching limits.
 - Add testimonials feature and enhance resource display in index.php.
+- Update footer styles and implement dynamic testimonials display in index.php.
 
 ### Changed
 - `README.md` file got a professional make-over.

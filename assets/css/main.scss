@@ -408,8 +408,8 @@ a {
 
 /* Footer */
 .c-footer {
-	background: var(--color-dark);
-	color: $color-bg;
+	background: $color-primary-dark;
+	color: $color-text-light;
 	&__inner {
 		max-width: 1200px;
 		margin: 0 auto;
@@ -423,6 +423,10 @@ a {
 	&__links {
 		display: flex;
 		gap: 3rem;
+	}
+	&__logo {
+		max-width: 35%;
+		height: auto;
 	}
 	&__column-list {
 		display: flex;
