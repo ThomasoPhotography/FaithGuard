@@ -268,6 +268,7 @@ All notable changes to this project will be documented in this file.
 - Adjust max-width for cookie icon and update button hover background color.
 - Rename footer class and adjust flex properties for better layout.
 - Adjusting footer flex properties for better layout.
+- Adjusting footer flex properties for better layout V2.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.

@@ -291,7 +291,7 @@
                 </ul>
             </div>
             <!-- Footer Content: Policies -->
-            <div class="row">
+            <div class="row c-footer__row">
                 <div class="col-md-3">
                     <li class="c-footer__item">
                             <a class="c-footer__links" href="policies.php?slug=terms">Terms of Service</a>
