@@ -274,7 +274,7 @@
                     <p class="c-footer__text">&copy; 2025 FaithGuard. All rights reserved. Overcoming addiction through Christ &amp; Protecting your digital faith with hope and redemption.</p>
                 </div>
                 <!-- Footer Content: Right -->
-                <div class="col-md-6 col-12 text-md-end">
+                <div class="col-md-6 col-12 text-md-end mb-0 mt-lg-5">
                     <ul class="footer-nav c-footer__nav">
                         <li class="c-footer__item">
                             <a class="c-footer__links" href="index.php">Home</a>

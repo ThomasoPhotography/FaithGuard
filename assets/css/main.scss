@@ -450,6 +450,10 @@ a {
 	}
 	&__nav {
 		list-style-type: none;
+		display: flex;
+		flex-direction: column;
+		align-content: flex-end;
+		align-items: flex-end;
 	}
 	&__links {
 		display: flex;

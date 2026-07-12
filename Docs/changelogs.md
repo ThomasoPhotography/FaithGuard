@@ -269,6 +269,7 @@ All notable changes to this project will be documented in this file.
 - Rename footer class and adjust flex properties for better layout.
 - Adjusting footer flex properties for better layout.
 - Adjusting footer flex properties for better layout V2.
+- Adjusting footer flex properties for better layout V3.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.

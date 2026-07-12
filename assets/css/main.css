@@ -369,6 +369,10 @@ a:hover {
 }
 .c-footer__nav {
   list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  align-content: flex-end;
+  align-items: flex-end;
 }
 .c-footer__links {
   display: flex;
