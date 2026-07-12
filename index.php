@@ -57,14 +57,14 @@
     }
     }
 
-    // --- Fetch Resources for Dynamic Display ---
-    // Fetch resources from DB. Provide explicit defaults to avoid undefined variable notices.
+                            // --- Fetch Resources for Dynamic Display ---
+                            // Fetch resources from DB. Provide explicit defaults to avoid undefined variable notices.
     $category           = null; // e.g. 'video', 'article'
     $max_resources      = 6;    // Limit to 6 for display (adjust as needed)
     $featured_resources = FaithGuardRepository::getFeaturedResources($max_resources);
     $resources          = FaithGuardRepository::getResources();
 
-    // --- Testimonials (Community Impact) ---
+                                                          // --- Testimonials (Community Impact) ---
     $testimonials = FaithGuardRepository::getTestimonials(3); // Fetch 3 testimonials for display
 ?>
 <!DOCTYPE html>
@@ -84,12 +84,12 @@
     <!-- Title -->
     <title>FaithGuard</title>
     <!-- Favicon -->
-    <link rel="icon" href="/assets/uploads/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../assets/uploads/favicon.ico" type="image/x-icon">
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <!-- Stylesheet -->
-    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/main.css">
 </head>
 
 <body>
