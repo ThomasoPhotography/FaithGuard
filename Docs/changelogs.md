@@ -270,6 +270,7 @@ All notable changes to this project will be documented in this file.
 - Adjusting footer flex properties for better layout.
 - Adjusting footer flex properties for better layout V2.
 - Adjusting footer flex properties for better layout V3.
+- Update require_once paths to use __DIR__ for better portability.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.

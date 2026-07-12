@@ -1,17 +1,17 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/db/config.php';
+require_once __DIR__ . '/config.php';
 class Database
 {
-    const BIBLE_API_KEY = 'jhCTF0KSddJvqBAb-na7pQ'; // Example key, replace with actual key if needed
+    const BIBLE_API_KEY      = 'jhCTF0KSddJvqBAb-na7pQ'; // Example key, replace with actual key if needed
     const BIBLE_API_BASE_URL = 'https://api.scripture.api.bible/v1';
     public static function getConnection()
     {
         try {
-            $dsn = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=' . DB_CHARSET;
+            $dsn     = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=' . DB_CHARSET;
             $options = [
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                PDO::ATTR_EMULATE_PREPARES => false,
+                PDO::ATTR_EMULATE_PREPARES   => false,
             ];
             return new PDO($dsn, DB_USER, DB_PASS, $options);
         } catch (PDOException $e) {
