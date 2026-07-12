@@ -373,6 +373,7 @@ a:hover {
 .c-footer__links {
   display: flex;
   gap: 3rem;
+  list-style-type: none;
 }
 .c-footer__logo {
   max-width: 20%;

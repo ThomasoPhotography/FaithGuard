@@ -170,7 +170,7 @@ try {
 
     FaithGuardRepository::createSession($sessionToken, $userId, $expiresAt);
     setSessionCookie($sessionToken, $expiresAt);
-    $_SESSION['user_id'] = (int) $userId;
+    $_SESSION['user_id']   = (int) $userId;
     $_SESSION['logged_in'] = true;
 
     // Return success
@@ -187,9 +187,13 @@ try {
     ]);
 } catch (\Throwable $e) {
     error_log('Register error: ' . $e->getMessage() . "\n" . $e->getTraceAsString());
-    // In debug mode or when explicitly requested, include the exception message to aid debugging
     if ((defined('APP_DEBUG') && APP_DEBUG) || (isset($_GET['debug']) && $_GET['debug'] == '1')) {
         errorResponse('Server error: ' . $e->getMessage(), 500);
     }
+
+    if (stripos($e->getMessage(), 'SQLSTATE') !== false || stripos($e->getMessage(), 'PDO') !== false || stripos($e->getMessage(), 'Database connection failed') !== false) {
+        errorResponse('We could not connect to the database. Please verify your database credentials and try again.', 500);
+    }
+
     errorResponse('Server error', 500);
 }

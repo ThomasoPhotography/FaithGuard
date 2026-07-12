@@ -1,22 +1,37 @@
 <?php
 /**
  * FaithGuard Configuration
- * 
+ *
  * Central configuration file for database and API credentials.
  * This file should be kept secure and not exposed to public access.
  */
 
 // Prevent direct access
-if (!defined('FAITHGUARD_ROOT')) {
+if (! defined('FAITHGUARD_ROOT')) {
     define('FAITHGUARD_ROOT', dirname(__DIR__));
 }
 
 // Database Configuration
-define('DB_HOST', $_ENV['DB_HOST'] ?? 'localhost');
-define('DB_NAME', $_ENV['DB_NAME'] ?? 'faithguard');
-define('DB_USER', $_ENV['DB_USER'] ?? 'faithguard_user');
-define('DB_PASS', $_ENV['DB_PASS'] ?? 'your_secure_password_here');
-define('DB_CHARSET', 'utf8mb4');
+function faithguardEnv($name, $default = null)
+{
+    $value = getenv($name);
+    if ($value !== false && $value !== '') {
+        return $value;
+    }
+
+    $value = $_ENV[$name] ?? null;
+    if ($value !== null && $value !== '') {
+        return $value;
+    }
+
+    return $default;
+}
+
+define('DB_HOST', faithguardEnv('DB_HOST', 'ID483117_faithguard.db.webhosting.be'));
+define('DB_NAME', faithguardEnv('DB_NAME', 'ID483117_faithguard'));
+define('DB_USER', faithguardEnv('DB_USER', 'ID483117_faithguard'));
+define('DB_PASS', faithguardEnv('DB_PASS', 'LowLeague13_'));
+define('DB_CHARSET', faithguardEnv('DB_CHARSET', 'utf8mb4'));
 
 // API.Bible Configuration
 // API Key for scripture access - NRSVUE (English) and NBV21 (Dutch)

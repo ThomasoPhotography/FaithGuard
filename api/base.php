@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 /**
  * Send JSON response
  */
-function jsonResponse(mixed $data, int $statusCode = 200): void {
+function jsonResponse($data, int $statusCode = 200): void {
     http_response_code($statusCode);
     echo json_encode($data);
     exit;

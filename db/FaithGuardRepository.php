@@ -26,7 +26,7 @@ class FaithGuardRepository
         );
     }
     //Create new user
-    public static function createUser(array $data): int | false
+    public static function createUser(array $data)
     {
         // Insert using Database helper then fetch the created user by email to obtain the ID
         try {
@@ -171,7 +171,7 @@ class FaithGuardRepository
 
     // ==================== CHECK-INS ====================
     //Create daily check-in
-    public static function createCheckin(array $data): int | false
+    public static function createCheckin(array $data)
     {
         return Database::execute(
             "INSERT INTO checkins (user_id, checkin_date, mood_rating, notes, triggers, victories) VALUES (?, ?, ?, ?, ?, ?)",
@@ -241,7 +241,7 @@ class FaithGuardRepository
         );
     }
     //Create new resource
-    public static function createResource(array $data): int | false
+    public static function createResource(array $data)
     {
         return Database::execute(
             "INSERT INTO resources (title, description, url, type, category, is_featured) VALUES (?, ?, ?, ?, ?, ?)",
@@ -430,7 +430,7 @@ class FaithGuardRepository
         );
     }
     //Create post
-    public static function createPost(array $data): int | false
+    public static function createPost(array $data)
     {
         return Database::execute(
             "INSERT INTO posts (user_id, title, content, is_anonymous) VALUES (?, ?, ?, ?)",
@@ -453,7 +453,7 @@ class FaithGuardRepository
         );
     }
     // Create a comment for a specific post
-    public static function createComment(array $data): int | false
+    public static function createComment(array $data)
     {
         return Database::execute(
             "INSERT INTO comments (post_id, user_id, content, is_anonymous) VALUES (?, ?, ?, ?)",
@@ -544,7 +544,7 @@ class FaithGuardRepository
         return Database::getRows("SELECT * FROM quiz_answers WHERE question_id = ? ORDER BY order_num ASC", [$questionId]);
     }
     //Save quiz result
-    public static function saveQuizResult(array $data): int | false
+    public static function saveQuizResult(array $data)
     {
         return Database::execute(
             "INSERT INTO quiz_results (user_id, total_score, category_scores, recommendations) VALUES (?, ?, ?, ?)",
@@ -764,7 +764,7 @@ class FaithGuardRepository
     }
 
     // Create a new policy (if not exists)
-    public static function createPolicy(string $slug, string $title, string $content): int | false
+    public static function createPolicy(string $slug, string $title, string $content)
     {
         return Database::execute(
             "INSERT INTO policy (slug, content_title, content_text) VALUES (?, ?, ?)",

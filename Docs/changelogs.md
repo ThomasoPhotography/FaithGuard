@@ -82,6 +82,7 @@ All notable changes to this project will be documented in this file.
 - Add new button and card styles; update cookie banner header and footer logo.
 - Implement session management improvements across authentication endpoints and update secure cookie settings.
 - Add `test.php` for basic PHP functionality testing.
+- Enhance error handling in registration process and improve database connection management.
 
 ### Changed
 - `README.md` file got a professional make-over.

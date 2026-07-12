@@ -1,37 +1,24 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/db/config.php';
 class Database
 {
     const BIBLE_API_KEY = 'jhCTF0KSddJvqBAb-na7pQ'; // Example key, replace with actual key if needed
-    private static function getConnection()
+    const BIBLE_API_BASE_URL = 'https://api.scripture.api.bible/v1';
+    public static function getConnection()
     {
-        // NOTE: Credentials provided by user. Ensure the password is correct.
-        $user    = 'ID483117_faithguard';
-        $pass    = 'LowLeague13_';
-        $host    = 'ID483117_faithguard.db.webhosting.be';
-        $db_name = 'ID483117_faithguard';
-
-        $dsn = "mysql:host=$host;dbname=$db_name;charset=utf8mb4";
-
-        $options = [
-            // CRITICAL FIX: Set a low connection timeout (e.g., 5 seconds)
-            PDO::ATTR_TIMEOUT            => 5,
-            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_EMULATE_PREPARES   => false,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-        ];
-
         try {
-            $db = new PDO($dsn, $user, $pass, $options);
-            return $db;
+            $dsn = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=' . DB_CHARSET;
+            $options = [
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                PDO::ATTR_EMULATE_PREPARES => false,
+            ];
+            return new PDO($dsn, DB_USER, DB_PASS, $options);
         } catch (PDOException $e) {
-            // Log the error and stop execution with a clear message
             error_log("Database connection failed: " . $e->getMessage());
-            http_response_code(500);
-            // Generic message for clients, full error kept in server logs
-            die("DATABASE_CONNECTION_FAILED");
+            throw new Exception("Database connection failed");
         }
     }
-
     // ... (rest of the class methods remain unchanged) ...
     public static function getRows($sql, $params = [], $type = null)
     {
