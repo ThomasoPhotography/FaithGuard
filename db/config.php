@@ -31,6 +31,7 @@ define('DB_HOST', faithguardEnv('DB_HOST', 'ID483117_faithguard.db.webhosting.be
 define('DB_NAME', faithguardEnv('DB_NAME', 'ID483117_faithguard'));
 define('DB_USER', faithguardEnv('DB_USER', 'ID483117_faithguard'));
 define('DB_PASS', faithguardEnv('DB_PASS', 'LowLeague13_'));
+define('DB_PORT', faithguardEnv('DB_PORT', '3306'));
 define('DB_CHARSET', faithguardEnv('DB_CHARSET', 'utf8mb4'));
 
 // API.Bible Configuration

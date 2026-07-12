@@ -93,6 +93,8 @@ try {
         $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
     }
 
+    $input['csrf_token'] = $input['csrf_token'] ?? '';
+
     if (! ENABLE_REGISTRATION) {
         errorResponse('Registration is currently disabled', 403);
     }
@@ -113,7 +115,9 @@ try {
     validateRequired($input, ['first_name', 'last_name', 'email', 'password', 'csrf_token']);
 
     // CSRF validation
-    if (! isset($input['csrf_token']) || ! isset($_SESSION['csrf_token']) || ! hash_equals($_SESSION['csrf_token'], $input['csrf_token'])) {
+    $postedToken  = (string) ($input['csrf_token'] ?? '');
+    $sessionToken = (string) ($_SESSION['csrf_token'] ?? '');
+    if ($postedToken === '' || $sessionToken === '' || ! hash_equals($sessionToken, $postedToken)) {
         errorResponse('Invalid CSRF token', 403);
     }
 
@@ -161,7 +165,7 @@ try {
     ]);
 
     if (! $userId) {
-        errorResponse('Failed to create account. Please try again.', 500);
+        errorResponse('We could not create your account. Please verify your database connection and try again.', 500);
     }
 
     // Create session

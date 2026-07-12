@@ -6,18 +6,40 @@ class Database
     const BIBLE_API_BASE_URL = 'https://api.scripture.api.bible/v1';
     public static function getConnection()
     {
-        try {
-            $dsn     = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=' . DB_CHARSET;
-            $options = [
-                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                PDO::ATTR_EMULATE_PREPARES   => false,
-            ];
-            return new PDO($dsn, DB_USER, DB_PASS, $options);
-        } catch (PDOException $e) {
-            error_log("Database connection failed: " . $e->getMessage());
-            throw new Exception("Database connection failed");
+        $host    = defined('DB_HOST') ? DB_HOST : 'localhost';
+        $dbName  = defined('DB_NAME') ? DB_NAME : '';
+        $user    = defined('DB_USER') ? DB_USER : '';
+        $pass    = defined('DB_PASS') ? DB_PASS : '';
+        $charset = defined('DB_CHARSET') ? DB_CHARSET : 'utf8mb4';
+        $port    = defined('DB_PORT') ? DB_PORT : '3306';
+
+        $hosts = [];
+        if ($host !== '') {
+            $hosts[] = $host;
         }
+        if ($host !== 'localhost' && $host !== '127.0.0.1') {
+            $hosts[] = 'localhost';
+            $hosts[] = '127.0.0.1';
+        }
+
+        $lastError = null;
+        foreach ($hosts as $candidateHost) {
+            try {
+                $dsn     = 'mysql:host=' . $candidateHost . ';port=' . $port . ';dbname=' . $dbName . ';charset=' . $charset;
+                $options = [
+                    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                    PDO::ATTR_EMULATE_PREPARES   => false,
+                    PDO::ATTR_TIMEOUT            => 5,
+                ];
+                return new PDO($dsn, $user, $pass, $options);
+            } catch (PDOException $e) {
+                $lastError = $e;
+            }
+        }
+
+        error_log('Database connection failed: ' . $lastError->getMessage());
+        throw new Exception('Database connection failed');
     }
     // ... (rest of the class methods remain unchanged) ...
     public static function getRows($sql, $params = [], $type = null)
@@ -33,7 +55,7 @@ class Database
             }
             $conn = null;
             return $rows;
-        } catch (PDOException $e) {
+        } catch (Throwable $e) {
             error_log("Query error in getRows: " . $e->getMessage() . " SQL: " . $sql);
             return [];
         }
@@ -53,7 +75,7 @@ class Database
             }
             $conn = null;
             return $row;
-        } catch (PDOException $e) {
+        } catch (Throwable $e) {
             error_log("Query error in getSingleRow: " . $e->getMessage() . " SQL: " . $sql);
             return false;
         }
@@ -67,7 +89,7 @@ class Database
             $stmt->execute($params);
             $aantalRijen = $stmt->rowCount();
             return $aantalRijen;
-        } catch (PDOException $e) {
+        } catch (Throwable $e) {
             error_log("Query error in execute: " . $e->getMessage() . " SQL: " . $sql);
             return 0;
         }
