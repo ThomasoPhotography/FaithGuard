@@ -460,9 +460,8 @@ a {
 		max-width: 20%;
 		height: auto;
 	}
-	&__column-list {
+	&__items {
 		display: flex;
-		flex-direction: column;
 		gap: 0.5rem;
 	}
 	&__bottom {

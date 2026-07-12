@@ -266,6 +266,7 @@ All notable changes to this project will be documented in this file.
 - Update authorization header retrieval in getCurrentUser function and adjust file includes in FaithGuardRepository.
 - Update fetch path for register API in openRegisterModal function.
 - Adjust max-width for cookie icon and update button hover background color.
+- Rename footer class and adjust flex properties for better layout.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.

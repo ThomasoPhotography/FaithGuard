@@ -379,9 +379,8 @@ a:hover {
   max-width: 20%;
   height: auto;
 }
-.c-footer__column-list {
+.c-footer__items {
   display: flex;
-  flex-direction: column;
   gap: 0.5rem;
 }
 .c-footer__bottom {
