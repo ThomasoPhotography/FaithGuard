@@ -7,6 +7,24 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
 
+/**
+ * Start the PHP session using the same cookie settings as API authentication.
+ */
+function startAppSession(): void {
+    if (session_status() !== PHP_SESSION_NONE) {
+        return;
+    }
+
+    session_set_cookie_params([
+        'lifetime' => SESSION_LIFETIME,
+        'path' => '/',
+        'secure' => SESSION_COOKIE_SECURE,
+        'httponly' => SESSION_COOKIE_HTTPONLY,
+        'samesite' => SESSION_COOKIE_SAMESITE,
+    ]);
+    session_start();
+}
+
 // Handle preflight requests
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);

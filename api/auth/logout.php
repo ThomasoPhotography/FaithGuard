@@ -12,4 +12,8 @@ if ($sessionId) {
     clearSessionCookie();
 }
 
+startAppSession();
+$_SESSION = [];
+session_destroy();
+
 successResponse();

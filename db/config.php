@@ -43,7 +43,11 @@ define('APP_DEBUG', $_ENV['APP_DEBUG'] ?? false);
 // Session Configuration
 define('SESSION_LIFETIME', 60 * 60 * 24 * 7); // 7 days
 define('SESSION_COOKIE_NAME', 'fg_session');
-define('SESSION_COOKIE_SECURE', true);
+define(
+    'SESSION_COOKIE_SECURE',
+    (! empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+    || (int) ($_SERVER['SERVER_PORT'] ?? 0) === 443
+);
 define('SESSION_COOKIE_HTTPONLY', true);
 define('SESSION_COOKIE_SAMESITE', 'Strict');
 

@@ -16,7 +16,7 @@ async function openRegisterModal() {
 			return;
 		}
 
-		const response = await fetch('/api/auth/register.php');
+		const response = await fetch('/api/auth/register.php', { credentials: 'same-origin' });
 		if (!response.ok) {
 			console.error('Failed to load register modal:', response.status, response.statusText);
 			return;
@@ -111,6 +111,7 @@ class RegisterModal {
 			const response = await fetch('/api/auth/register.php', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
+				credentials: 'same-origin',
 				body: JSON.stringify(data),
 			});
 

@@ -576,7 +576,7 @@ class FaithGuardRepository
     public static function getSession(string $sessionId): ?array
     {
         return Database::getSingleRow(
-            "SELECT s.*, u.id as user_id, u.username, u.email, u.is_admin FROM sessions s JOIN users u ON s.user_id = u.id WHERE s.id = ? AND s.expires_at > NOW()", [$sessionId]
+            "SELECT s.*, u.id AS user_id, u.first_name AS username, u.email, u.is_admin FROM sessions s JOIN users u ON s.user_id = u.id WHERE s.id = ? AND s.expires_at > NOW()", [$sessionId]
         );
     }
     //Delete session

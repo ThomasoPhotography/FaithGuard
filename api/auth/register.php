@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../base.php';
 
-session_start();
+startAppSession();
 if (! empty($_SESSION['user_id'])) {
     header('Location: /dashboard.php');
     exit;
@@ -25,9 +25,6 @@ if (! defined('PASSWORD_ARGON2ID')) {
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // Return HTML for modal so front-end can inject it
     header('Content-Type: text/html; charset=utf-8');
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
-    }
     if (empty($_SESSION['csrf_token'])) {
         $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
     }
@@ -92,11 +89,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 try {
     // Start session and ensure CSRF token exists
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
-        if (empty($_SESSION['csrf_token'])) {
-            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-        }
+    if (empty($_SESSION['csrf_token'])) {
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
     }
 
     if (! ENABLE_REGISTRATION) {
@@ -176,6 +170,8 @@ try {
 
     FaithGuardRepository::createSession($sessionToken, $userId, $expiresAt);
     setSessionCookie($sessionToken, $expiresAt);
+    $_SESSION['user_id'] = (int) $userId;
+    $_SESSION['logged_in'] = true;
 
     // Return success
     successResponse([

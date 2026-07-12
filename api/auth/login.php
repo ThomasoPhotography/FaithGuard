@@ -5,10 +5,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     errorResponse('Method not allowed', 405);
 }
 
-// Ensure session started for CSRF and session regeneration
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+startAppSession();
 
 $input = getJsonInput();
 validateRequired($input, ['email', 'password']);
@@ -42,6 +39,11 @@ $sessionToken    = generateToken();
 
 FaithGuardRepository::createSession($sessionToken, $user['id'], $expiresAt);
 setSessionCookie($sessionToken, $expiresAt);
+
+// Page guards use PHP session state, while API authentication uses fg_session.
+// Keep both in sync after a successful login.
+$_SESSION['user_id'] = (int) $user['id'];
+$_SESSION['logged_in'] = true;
 
 // Regenerate PHP session id after successful authentication
 if (session_status() === PHP_SESSION_ACTIVE) {

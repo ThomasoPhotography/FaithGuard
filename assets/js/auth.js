@@ -1,7 +1,7 @@
 // #region ***  DOM references                           ***********
 const loginForm = document.querySelector('.c-form__login');
 const registerForm = document.querySelector('.c-form__register');
-const logoutBtn = document.querySelector('[data-action="logout"]');
+const logoutButtons = document.querySelectorAll('.js-logout-btn, [data-action="logout"]');
 // #endregion
 
 // #region ***  Callback-Visualisation - show___         ***********
@@ -18,7 +18,12 @@ const callbackLogin = function (data) {
 	if (data.success) {
 		window.location.href = '/dashboard.php';
 	} else {
-		showAuthMessage(loginForm, data.error || 'Login failed');
+		const message = data.error || 'Login failed';
+		if (loginForm) {
+			showAuthMessage(loginForm, message);
+		} else {
+			window.alert(message);
+		}
 	}
 };
 
@@ -45,6 +50,7 @@ const postAuthData = async function (url, payload) {
 		const response = await fetch(url, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
+			credentials: 'same-origin',
 			body: JSON.stringify(payload),
 		});
 
@@ -58,7 +64,18 @@ const postAuthData = async function (url, payload) {
 
 // #region ***  Event Listeners - listenTo___            ***********
 const listenToLogin = function () {
-	if (!loginForm) return;
+	if (!loginForm) {
+		const loginButton = document.querySelector('.js-log');
+		if (!loginButton) return;
+
+		loginButton.addEventListener('click', async function () {
+			const email = document.getElementById('signupUsername')?.value.trim();
+			const password = document.getElementById('signupPassword')?.value;
+			const data = await postAuthData('/api/auth/login.php', { email, password });
+			callbackLogin(data);
+		});
+		return;
+	}
 
 	loginForm.addEventListener('submit', async function (e) {
 		e.preventDefault();
@@ -86,12 +103,16 @@ const listenToRegister = function () {
 };
 
 const listenToLogout = function () {
-	if (!logoutBtn) return;
-
-	logoutBtn.addEventListener('click', async function () {
+	logoutButtons.forEach((logoutButton) => logoutButton.addEventListener('click', async function (event) {
+		event.preventDefault();
 		const data = await postAuthData('/api/auth/logout.php', {});
 		callbackLogout(data);
-	});
+	}));
+};
+
+window.logout = async function () {
+	const data = await postAuthData('/api/auth/logout.php', {});
+	callbackLogout(data);
 };
 // #endregion
 

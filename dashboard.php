@@ -3,21 +3,20 @@
     'lifetime' => 302400, // 3.5 days (84 hours)
     'path'     => '/',
     'domain'   => $_SERVER['SERVER_NAME'] ?? '',
-    'secure'   => true,
+    'secure'   => (! empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || (int) ($_SERVER['SERVER_PORT'] ?? 0) === 443,
     'httponly' => true,
     ]);
     if (session_status() === PHP_SESSION_NONE) {
     session_start();
     }
     // --- Core Site Requirements (Always required) ---
-    require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
-    require_once $_SERVER['DOCUMENT_ROOT'] . '/db/database.php';
     require_once $_SERVER['DOCUMENT_ROOT'] . '/db/config.php';
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/db/database.php';
     require_once $_SERVER['DOCUMENT_ROOT'] . '/db/FaithGuardRepository.php';
     require_once $_SERVER['DOCUMENT_ROOT'] . '/api/helper/user.php';
     // --- Core Site Session Check (Always required) ---
     if (! isset($_SESSION['user_id'])) {
-    header('Location: /login.php');
+    header('Location: /');
     exit;
     }
     $is_logged_in   = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
@@ -67,7 +66,7 @@
 </head>
 <body>
     <!-- Nav -->
-    <?php require_once __DIR__ . '/partials/nav.php'; ?>
+    <?php $nav = __DIR__ . '/partials/nav.php'; if (is_file($nav)) require_once $nav; ?>
     <!-- Dashboard Content -->
     <div class="c-dashboard">
         <div class="c-dashboard__container container">
@@ -195,7 +194,7 @@
         <?php endif; ?>
     </div>
     <!-- Footer -->
-    <?php require_once __DIR__ . '/partials/footer.php'; ?>
+    <?php $footer = __DIR__ . '/partials/footer.php'; if (is_file($footer)) require_once $footer; ?>
 </body>
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>

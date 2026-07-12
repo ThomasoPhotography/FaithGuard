@@ -150,7 +150,7 @@
                             <hr class="dropdown-divider">
                         </li>
                         <li>
-                            <a class="dropdown-item c-dropdown__item js-logout-btn" href="#" onclick="logout()">
+                            <a class="dropdown-item c-dropdown__item js-logout-btn" href="#">
                                 <i class="bi bi-box-arrow-right me-2"></i>
                                 <span class="c-dropdown__text">Logout</span>
                             </a>

@@ -10,7 +10,7 @@
     'lifetime' => 302400,
     'path'     => '/',
     'domain'   => $_SERVER['SERVER_NAME'] ?? '',
-    'secure'   => true,
+    'secure'   => (! empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || (int) ($_SERVER['SERVER_PORT'] ?? 0) === 443,
     'httponly' => true,
     ]);
     session_start();
@@ -142,7 +142,7 @@
                             <hr class="dropdown-divider">
                         </li>
                         <li>
-                            <a class="dropdown-item c-dropdown__item js-logout-btn" href="#" onclick="logout()">
+                            <a class="dropdown-item c-dropdown__item js-logout-btn" href="#">
                                 <i class="bi bi-box-arrow-right me-2"></i>
                                 <span class="c-dropdown__text">Logout</span>
                             </a>
@@ -174,7 +174,7 @@
                             <hr class="dropdown-divider">
                         </li>
                         <li>
-                            <a class="dropdown-item c-dropdown__item js-create" href="/register.php">
+                            <a class="dropdown-item c-dropdown__item js-create" href="#" onclick="openRegisterModal(); return false;">
                                 <i class="bi bi-person-plus me-2"></i>
                                 <span class="c-dropdown__text">Create Account</span>
                             </a>
@@ -185,6 +185,7 @@
             </div>
         </div>
     </nav>
+    <div id="modal-container"></div>
     <!-- Main Content -->
     <main class="container my-5">
         <h1 class="c-main__title"><?php echo $title; ?></h1>
@@ -240,7 +241,8 @@
     </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../../assets/js/auth.js"></script>
-<script src="../../assets/js/cookie-banner.js"></script>
+<script src="/assets/js/auth.js"></script>
+<script src="/assets/js/cookie-banner.js"></script>
+<script src="/assets/js/register.js"></script>
 </body>
 </html>
