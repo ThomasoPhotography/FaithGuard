@@ -265,7 +265,7 @@ a {
 		padding-left: 1.5rem;
 	}
 	&__icon {
-		max-width: 10%;
+		max-width: 5%;
 		height: auto;
 	}
 }
@@ -313,7 +313,7 @@ a {
 		background-color: $color-primary;
 		color: $color-text;
 		&:hover {
-			background-color: lighten($color-primary, 30%);
+			background-color: adjust($color-primary, 30%);
 		}
 	}
 
@@ -454,6 +454,7 @@ a {
 	&__links {
 		display: flex;
 		gap: 3rem;
+		list-style-type: none;
 	}
 	&__logo {
 		max-width: 20%;

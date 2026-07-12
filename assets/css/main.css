@@ -210,7 +210,7 @@ a:hover {
   padding-left: 1.5rem;
 }
 .c-cookie__icon {
-  max-width: 10%;
+  max-width: 5%;
   height: auto;
 }
 
@@ -253,7 +253,7 @@ a:hover {
   color: #1c1917;
 }
 .c-hero__btn:hover {
-  background-color: rgb(213.6538461538, 166.5384615385, 121.3461538462);
+  background-color: adjust(#8b5a2b, 30%);
 }
 .c-hero__title {
   font-family: "Merriweather", Georgia, serif;
