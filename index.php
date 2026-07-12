@@ -57,12 +57,12 @@
     }
     }
 
-                       // --- Fetch Resources for Dynamic Display ---
-                       // Fetch resources from DB. Provide explicit defaults to avoid undefined variable notices.
+    // --- Fetch Resources for Dynamic Display ---
+    // Fetch resources from DB. Provide explicit defaults to avoid undefined variable notices.
+    $category = null; // e.g. 'video', 'article'
     $max_resources = 6;    // Limit to 6 for display (adjust as needed)
-    $type          = null; // e.g. 'featured' or 'latest' to filter
-    $category      = null; // e.g. 'video', 'article'
-    $resources     = FaithGuardRepository::getResources($type, $category, $max_resources);
+    $featured_resources = FaithGuardRepository::getFeaturedResources($max_resources);
+    $resources = FaithGuardRepository::getResources();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -214,27 +214,22 @@
         <section class="c-main__section mb-5">
             <h2 class="c-main__title">Featured Resources</h2>
             <div class="row c-resources__list">
-                <div class="col-md-5 col-12 mb-4">
-                    <?php if (! empty($resources)): ?>
-                    <?php $count = 0; ?>
-                    <?php foreach ($resources as $resource): ?>
-                        <?php if ($count >= $max_resources) {
-                                break;
-                            }
-                        // Limit to max_resources ?>
+                <?php if (! empty($featured_resources)): ?>
+                    <?php foreach ($featured_resources as $resource): ?>
+                        <?php $excerpt = $resource['content'] ?: ($resource['description'] ?? ''); ?>
+                        <div class="col-md-5 col-12 mb-4">
                             <div class="card c-card">
                                 <div class="card-body c-card__body">
                                     <h5 class="card-title c-card__title"><?php echo htmlspecialchars($resource['title']); ?></h5>
-                                    <p class="card-text c-card__text"><?php echo htmlspecialchars(substr($resource['content'], 0, 100)) . (strlen($resource['content']) > 100 ? '...' : ''); ?></p>
+                                    <p class="card-text c-card__text"><?php echo htmlspecialchars(substr($excerpt, 0, 100)) . (strlen($excerpt) > 100 ? '...' : ''); ?></p>
                                     <a href="/resources.php?id=<?php echo $resource['id']; ?>" class="btn c-btn c-card__btn">Learn More</a>
                                 </div>
                             </div>
                         </div>
-                        <?php $count++; ?>
                     <?php endforeach; ?>
                 <?php else: ?>
                     <div class="col-md-5 col-12 mb-4">
-                        <p class="text-center">No resources available yet. Check back soon!</p>
+                        <p class="text-center">No featured resources available yet. Check back soon!</p>
                     </div>
                 <?php endif; ?>
             </div>

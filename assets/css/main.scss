@@ -261,6 +261,7 @@ a {
 }
 .c-nav {
 	display: none;
+	background-color: $color-primary-dark;
 
 	@include respond(md) {
 		display: flex;

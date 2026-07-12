@@ -195,6 +195,7 @@ a:hover {
 
 .c-nav {
   display: none;
+  background-color: #5d3a1a;
 }
 @media (min-width: 768px) {
   .c-nav {

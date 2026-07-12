@@ -203,7 +203,7 @@ class FaithGuardRepository
 
     // ==================== RESOURCES ====================
     //Get resources with optional filters
-    public static function getResources(?string $type = null, ?string $category = null, int $limit = 50): array
+    public static function getResources(?string $type = null, ?string $category = null, int $limit = 6): array
     {
         $sql        = "SELECT * FROM resources";
         $params     = [];
@@ -294,7 +294,7 @@ class FaithGuardRepository
         ];
     }
     // Get featured resources for homepage
-    public static function getFeaturedResources(int $limit = 5): array
+    public static function getFeaturedResources(int $limit = 6): array
     {
         return Database::getRows(
             "SELECT * FROM resources WHERE is_featured = 1 ORDER BY created_at DESC LIMIT ?", [$limit]
