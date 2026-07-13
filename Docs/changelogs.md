@@ -48,6 +48,21 @@ All notable changes to this project will be documented in this file.
   - Introduced a new call-to-action section in index.php to encourage user registration.
   - Added bible.js for handling Bible verse fetching and modal display.
   - Created config.php for centralized database and API configuration settings.
+- **Implement database-backed CSRF token management system:**
+  - Added `csrf_tokens` table to store CSRF tokens per user with expiration timestamps.
+  - Implemented `createCsrfToken()`, `validateCsrfToken()`, `consumeCsrfToken()`, `cleanupExpiredCsrfTokens()`, and `getUserCsrfTokens()` methods in FaithGuardRepository.
+  - Updated registration flow to use database-backed CSRF tokens instead of session-based tokens.
+  - CSRF tokens now expire after 1 hour and support both anonymous and per-user token generation.
+  - Added token consumption to prevent replay attacks during registration.
+  - Comprehensive test suite for CSRF token functionality in `tests/register_csrf_test.php`.
+- **Enhanced CSRF tokens with embedded biblical character identity:**
+  - Created `CsrfTokenGenerator` class to generate tokens with encoded biblical character references.
+  - Token format: `{timestamp}_{database_id}_{biblical_char_hex}_{random_hex}` (e.g., `1720864000_2d_0f_a8b3c9d2`).
+  - Supports all 56 biblical books as encoded characters (Genesis through Revelation).
+  - Token generation is automatic and uses database ID as unique identifier.
+  - Methods to extract biblical reference, ID, and timestamp from tokens: `getCsrfTokenBiblicalRef()`, `getCsrfTokenId()`, `getCsrfTokenTimestamp()`.
+  - Token validation includes format verification with `isCsrfTokenFormatValid()`.
+  - Comprehensive biblical CSRF testing in `tests/csrf_biblical_test.php`.
 - Implement user authentication endpoints for login, logout, and registration.
 - Add API endpoints for managing posts, check-ins, quizzes, and resources.
 - Added quadruple features:
@@ -91,6 +106,12 @@ All notable changes to this project will be documented in this file.
 - No full name needed to register, will be automatic in update.
 - ID's.
 - Update file includes to use DOCUMENT_ROOT for consistent path resolution across multiple files.
+- Implement CSRF token system with biblical character encoding
+- Added a new helper class `CsrfTokenGenerator` for generating CSRF tokens that include a biblical character reference.
+- Enhanced `FaithGuardRepository` with methods for creating, validating, consuming, and managing CSRF tokens in the database.
+- Created a new database table `csrf_tokens` to store CSRF tokens with user association and expiration.
+- Developed comprehensive tests for the CSRF token functionality, ensuring token generation, validation, and consumption work as intended.
+- Documented the CSRF token system in `CSRF_BIBLICAL_TOKENS.md` and provided a quick reference guide in `CSRF_QUICK_REFERENCE.md`.
 
 ### Deprecated
 - replace lighten/darken functions with color.adjust for consistent color manipulation in `main.scss`.

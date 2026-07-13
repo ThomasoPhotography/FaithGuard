@@ -364,6 +364,20 @@ CREATE TABLE `testimonials` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `csrf_tokens`
+--
+
+CREATE TABLE `csrf_tokens` (
+  `id` int NOT NULL,
+  `user_id` int DEFAULT NULL,
+  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `expires_at` timestamp NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Indexes for dumped tables
 --
 
@@ -476,6 +490,15 @@ ALTER TABLE `sessions`
   ADD KEY `idx_expires` (`expires_at`);
 
 --
+-- Indexes for table `csrf_tokens`
+--
+ALTER TABLE `csrf_tokens`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `unique_token` (`token`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `idx_expires` (`expires_at`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -536,6 +559,12 @@ ALTER TABLE `checkins`
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `csrf_tokens`
+--
+ALTER TABLE `csrf_tokens`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
@@ -662,6 +691,12 @@ ALTER TABLE `quiz_results`
 --
 ALTER TABLE `sessions`
   ADD CONSTRAINT `sessions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `csrf_tokens`
+--
+ALTER TABLE `csrf_tokens`
+  ADD CONSTRAINT `csrf_tokens_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `user_preferences`

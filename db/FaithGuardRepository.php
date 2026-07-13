@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/database.php';
 require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/../api/helper/CsrfTokenGenerator.php';
 class FaithGuardRepository
 {
     // ==================== USER OPERATIONS ====================
@@ -799,5 +800,182 @@ class FaithGuardRepository
         return (bool) Database::execute(
             "DELETE FROM policy WHERE slug = ?", [$slug]
         );
+    }
+
+    // ==================== CSRF TOKEN MANAGEMENT ====================
+    /**
+     * Generate and store a new CSRF token for a user or session
+     *
+     * Tokens are generated with an encoded biblical character for spiritual identity.
+     * Format: {timestamp}_{id}_{biblical_char}_{random}
+     * Example: 1720864000_12345_f_a8b3c9d2
+     *
+     * @param int|null $userId User ID, or null for session-based token
+     * @param int $expirationSeconds Token expiration time in seconds (default: 3600 = 1 hour)
+     * @param string|null $biblicalRef Optional biblical reference to encode
+     * @return string The generated CSRF token with encoded biblical character
+     */
+    public static function createCsrfToken(?int $userId = null, int $expirationSeconds = 3600, ?string $biblicalRef = null): string
+    {
+        try {
+            // Insert placeholder row to get the auto-increment ID
+            $stmt = Database::execute(
+                "INSERT INTO csrf_tokens (user_id, token, expires_at) VALUES (?, ?, ?)",
+                [$userId, 'placeholder', date('Y-m-d H:i:s', time() + $expirationSeconds)]
+            );
+
+            // Get the last inserted ID from the database connection
+            $conn   = Database::getConnection();
+            $lastId = $conn->lastInsertId();
+            $conn   = null;
+
+            // Generate token with the database ID and optional biblical reference
+            $token     = CsrfTokenGenerator::generateToken((int) $lastId, $biblicalRef);
+            $expiresAt = date('Y-m-d H:i:s', time() + $expirationSeconds);
+
+            // Update the placeholder with the actual token
+            Database::execute(
+                "UPDATE csrf_tokens SET token = ?, expires_at = ? WHERE id = ?",
+                [$token, $expiresAt, $lastId]
+            );
+
+            return $token;
+        } catch (\Throwable $e) {
+            error_log('Failed to create CSRF token: ' . $e->getMessage());
+            return '';
+        }
+    }
+
+    /**
+     * Validate a CSRF token
+     *
+     * @param string $token The token to validate
+     * @param int|null $userId Optional user ID to check token belongs to this user
+     * @return bool True if token is valid and not expired
+     */
+    public static function validateCsrfToken(string $token, ?int $userId = null): bool
+    {
+        if (empty($token)) {
+            return false;
+        }
+
+        try {
+            $sql    = "SELECT id, user_id, expires_at FROM csrf_tokens WHERE token = ? AND expires_at > NOW()";
+            $params = [$token];
+
+            if ($userId !== null) {
+                $sql      .= " AND user_id = ?";
+                $params[]  = $userId;
+            }
+
+            $row = Database::getSingleRow($sql, $params);
+            return $row !== null && $row !== false;
+        } catch (\Throwable $e) {
+            error_log('Failed to validate CSRF token: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Consume a CSRF token (delete it after validation to prevent replay attacks)
+     *
+     * @param string $token The token to consume
+     * @return bool True if token was successfully consumed
+     */
+    public static function consumeCsrfToken(string $token): bool
+    {
+        if (empty($token)) {
+            return false;
+        }
+
+        try {
+            return (bool) Database::execute(
+                "DELETE FROM csrf_tokens WHERE token = ?",
+                [$token]
+            );
+        } catch (\Throwable $e) {
+            error_log('Failed to consume CSRF token: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Clean up expired CSRF tokens (call this periodically)
+     *
+     * @return int Number of tokens deleted
+     */
+    public static function cleanupExpiredCsrfTokens(): int
+    {
+        try {
+            return Database::execute(
+                "DELETE FROM csrf_tokens WHERE expires_at < NOW()"
+            );
+        } catch (\Throwable $e) {
+            error_log('Failed to cleanup expired CSRF tokens: ' . $e->getMessage());
+            return 0;
+        }
+    }
+
+    /**
+     * Get all valid CSRF tokens for a user
+     *
+     * @param int $userId The user ID
+     * @return array Array of token records
+     */
+    public static function getUserCsrfTokens(int $userId): array
+    {
+        try {
+            return Database::getRows(
+                "SELECT id, token, expires_at, created_at FROM csrf_tokens WHERE user_id = ? AND expires_at > NOW() ORDER BY created_at DESC",
+                [$userId]
+            );
+        } catch (\Throwable $e) {
+            error_log('Failed to get user CSRF tokens: ' . $e->getMessage());
+            return [];
+        }
+    }
+
+    /**
+     * Get the biblical reference encoded in a CSRF token
+     *
+     * @param string $token The CSRF token
+     * @return string|null The biblical reference name (e.g., "Genesis", "John"), or null if invalid
+     */
+    public static function getCsrfTokenBiblicalRef(string $token): ?string
+    {
+        return CsrfTokenGenerator::extractBiblicalRef($token);
+    }
+
+    /**
+     * Get the database ID embedded in a CSRF token
+     *
+     * @param string $token The CSRF token
+     * @return int|null The database ID of the token record
+     */
+    public static function getCsrfTokenId(string $token): ?int
+    {
+        return CsrfTokenGenerator::extractId($token);
+    }
+
+    /**
+     * Get the creation timestamp from a CSRF token
+     *
+     * @param string $token The CSRF token
+     * @return int|null The Unix timestamp when token was created
+     */
+    public static function getCsrfTokenTimestamp(string $token): ?int
+    {
+        return CsrfTokenGenerator::extractTimestamp($token);
+    }
+
+    /**
+     * Check if a CSRF token has valid format
+     *
+     * @param string $token The CSRF token
+     * @return bool True if token structure is valid
+     */
+    public static function isCsrfTokenFormatValid(string $token): bool
+    {
+        return CsrfTokenGenerator::isValidFormat($token);
     }
 }

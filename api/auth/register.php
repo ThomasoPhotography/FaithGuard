@@ -25,10 +25,16 @@ if (! defined('PASSWORD_ARGON2ID')) {
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // Return HTML for modal so front-end can inject it
     header('Content-Type: text/html; charset=utf-8');
-    if (empty($_SESSION['csrf_token'])) {
-        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+
+    // Generate a new CSRF token and store it in the database
+    // CSRF tokens expire after 1 hour
+    $csrf = FaithGuardRepository::createCsrfToken(null, 3600);
+
+    if (empty($csrf)) {
+        errorResponse('Failed to generate CSRF token', 500);
     }
-    $csrf = htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8');
+
+    $csrfHtml = htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8');
 
     // Emit a Bootstrap modal fragment and include the register.js bootstrapper
     echo <<<HTML
@@ -57,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                         <label for="password" class="form-label">Password</label>
                         <input type="password" class="form-control" id="password" name="password" required>
                     </div>
-                    <input type="hidden" name="csrf_token" value="$csrf">
+                    <input type="hidden" name="csrf_token" value="$csrfHtml">
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn c-btn c-btn__submit">Create account</button>
@@ -93,9 +99,8 @@ try {
     }
 
     startAppSession();
-    $input        = getJsonInput();
-    $postedToken  = getCsrfTokenFromRequest($input);
-    $sessionToken = ensureCsrfToken();
+    $input       = getJsonInput();
+    $postedToken = getCsrfTokenFromRequest($input);
 
     // Accept first_name/last_name (single input) or full_name (preferred)
     if (! empty($input['full_name'])) {
@@ -111,9 +116,9 @@ try {
     }
     validateRequired($input, ['first_name', 'last_name', 'email', 'password', 'csrf_token']);
 
-    // CSRF validation
-    if ($postedToken === '' || $sessionToken === '' || ! hash_equals($sessionToken, $postedToken)) {
-        errorResponse('Invalid CSRF token', 403);
+    // CSRF validation - validate against database
+    if (empty($postedToken) || ! FaithGuardRepository::validateCsrfToken($postedToken)) {
+        errorResponse('Invalid or expired CSRF token', 403);
     }
 
     // Input validation
@@ -162,6 +167,9 @@ try {
     if (! $userId) {
         errorResponse('We could not create your account. Please verify your database connection and try again.', 500);
     }
+
+    // Consume the CSRF token (prevent replay attacks)
+    FaithGuardRepository::consumeCsrfToken($postedToken);
 
     // Create session
     $expiresAt    = time() + SESSION_LIFETIME;
