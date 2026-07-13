@@ -1,17 +1,26 @@
 <?php
+    // Use centralized config for session cookie settings
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/db/config.php';
+
+    // Determine safe cookie domain (strip port, validate)
+    $rawHost      = $_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME'] ?? '';
+    $host         = preg_replace('/:.+$/', '', $rawHost);
+    $cookieDomain = '';
+    if ($host === 'localhost' || filter_var($host, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME)) {
+    $cookieDomain = $host;
+    }
     session_set_cookie_params([
-    'lifetime' => 302400, // 3.5 days (84 hours)
+    'lifetime' => SESSION_LIFETIME,
     'path'     => '/',
-    'domain'   => $_SERVER['SERVER_NAME'] ?? '',
-    'secure'   => (! empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || (int) ($_SERVER['SERVER_PORT'] ?? 0) === 443,
-    'httponly' => true,
+    'domain'   => $cookieDomain,
+    'secure'   => defined('SESSION_COOKIE_SECURE') ? SESSION_COOKIE_SECURE : true,
+    'httponly' => defined('SESSION_COOKIE_HTTPONLY') ? SESSION_COOKIE_HTTPONLY : true,
+    'samesite' => defined('SESSION_COOKIE_SAMESITE') ? SESSION_COOKIE_SAMESITE : 'Lax',
     ]);
     if (session_status() === PHP_SESSION_NONE) {
     session_start();
     }
     // --- Core Site Requirements (Always required) ---
-    require_once $_SERVER['DOCUMENT_ROOT'] . '/db/config.php';
-    require_once $_SERVER['DOCUMENT_ROOT'] . '/db/database.php';
     require_once $_SERVER['DOCUMENT_ROOT'] . '/db/FaithGuardRepository.php';
     require_once $_SERVER['DOCUMENT_ROOT'] . '/api/helper/user.php';
     // --- Core Site Session Check (Always required) ---
@@ -31,7 +40,7 @@
     $bookId   = $books[0]['id'] ?? null;
     if (! $user) {
     session_destroy();
-    header('Location: /login.php');
+    header('Location: /');
     exit;
     }
     $isAdmin = ! empty($user['is_admin']);

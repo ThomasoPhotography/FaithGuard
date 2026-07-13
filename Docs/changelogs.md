@@ -296,11 +296,13 @@ All notable changes to this project will be documented in this file.
 - Include CSRF token in registration form submission.
 - Enhance CSRF protection and session management in registration process.
 - Remove unnecessary redirection to registration page after logout.
+- Update session cookie settings and redirect logic for unauthorized access.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.
 - Update session cookie parameters for improved security and consistency across profile pages.
 - Enforce HTTPS and harden server configuration via `.htaccess`.
+- Adding internal CSRF-Tokens.
 
 
 ## [0.1.3-beta] - 2025-12-06

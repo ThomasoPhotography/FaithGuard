@@ -4,9 +4,11 @@
 # Turn on URL Rewriting
 RewriteEngine On
 
-# 1. Force HTTPS
-RewriteCond %{HTTPS} off [OR]
-RewriteCond %{HTTP:X-Forwarded-Proto} !https
+# 1. Force HTTPS (with loop prevention)
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP:X-Forwarded-Proto} !https [OR]
+RewriteCond %{HTTP:X-Forwarded-Proto} =''
+RewriteCond %{REQUEST_URI} !^/api/
 RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
 
 # 2. Security: Disable Directory Browsing
