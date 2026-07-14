@@ -297,6 +297,7 @@ All notable changes to this project will be documented in this file.
 - Enhance CSRF protection and session management in registration process.
 - Remove unnecessary redirection to registration page after logout.
 - Update session cookie settings and redirect logic for unauthorized access.
+- Update timestamp functions to use UTC for consistency across database operations.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.
