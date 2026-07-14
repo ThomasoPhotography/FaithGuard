@@ -18,7 +18,13 @@ async function openRegisterModal() {
 
 		const response = await fetch('/api/auth/register.php', { credentials: 'same-origin' });
 		if (!response.ok) {
-			console.error('Failed to load register modal:', response.status, response.statusText);
+			let errMsg = 'Failed to load registration form (HTTP ' + response.status + ').';
+			try {
+				const errData = await response.json();
+				if (errData && errData.error) errMsg = errData.error;
+			} catch (_) {}
+			console.error(errMsg);
+			alert(errMsg);
 			return;
 		}
 
@@ -30,6 +36,7 @@ async function openRegisterModal() {
 		if (modalEl) new RegisterModal(modalEl);
 	} catch (err) {
 		console.error('Error loading modal:', err);
+		alert('Could not open the registration form. Please try again later.');
 	}
 }
 
@@ -163,3 +170,4 @@ class RegisterModal {
 
 // Expose globally for inline onclick handlers
 window.openRegisterModal = openRegisterModal;
+

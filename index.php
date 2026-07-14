@@ -180,7 +180,7 @@
                             <hr class="dropdown-divider">
                         </li>
                         <li>
-                            <a class="dropdown-item c-dropdown__item js-create" href="#" onclick="openRegisterModal()">
+                            <a class="dropdown-item c-dropdown__item js-create" href="#" onclick="openRegisterModal(); return false;">
                                 <i class="bi bi-person-plus me-2"></i>
                                 <span class="c-dropdown__text">Create Account</span>
                             </a>
@@ -239,7 +239,7 @@
         <section class="c-main__section text-center mb-5">
             <h2 class="c-main__titlepop">Join the FaithGuard Community</h2>
             <p class="c-main__text">Sign up today to access personalized resources, track your progress, and connect with others on the same journey.</p>
-            <a onclick="openRegisterModal()" class="btn c-btn c-btn__outline">Get Started</a>
+            <a onclick="openRegisterModal(); return false;" class="btn c-btn c-btn__outline">Get Started</a>
             <a class="c-main__text c-main__text--verse js-bible__ref">2 Corinthians 5:7</a>
         </section>
     </main>
