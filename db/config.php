@@ -27,7 +27,7 @@ function faithguardEnv(string $name, mixed $default = null): mixed
     return $default;
 }
 
-define('DB_HOST', faithguardEnv('DB_HOST', 'com-linweb938.srv.combell-ops.net'));
+define('DB_HOST', faithguardEnv('DB_HOST', 'ID483117_faithguard.db.webhosting.be'));
 define('DB_NAME', faithguardEnv('DB_NAME', 'ID483117_faithguard'));
 define('DB_USER', faithguardEnv('DB_USER', 'ID483117_faithguard'));
 $pass = faithguardEnv('DB_PASS', 'LowLeague13_');

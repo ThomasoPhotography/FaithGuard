@@ -314,7 +314,8 @@ All notable changes to this project will be documented in this file.
 - Fix registration validation in `api/auth/register.php` by replacing strict username regex on `first_name` with standard length checks (2-50 characters) for both `first_name` and `last_name`.
 - Align local database schema with `db/faithguard_db.sql` to ensure correct columns (`first_name`, `last_name`) and foreign key constraints on `csrf_tokens`.
 - Define `APP_DEBUG`, `APP_ENV`, `APP_URL`, and `APP_NAME` as aliases of `WEB_*` constants in `db/config.php` for cross-endpoint compatibility.
-- fix(assets,auth): resolve 404 JS errors and 500 CSRF token generation error
+- fix(assets,auth): resolve 404 JS errors and 500 CSRF token generation error.
+- Database Hosting link and html.
 
 
 ### Security
