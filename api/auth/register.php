@@ -129,9 +129,14 @@ try {
     // Add first and last name to full name
     $fullName = trim($firstName . ' ' . $lastName);
 
-    // Validate username (first name portion)
-    if (! preg_match('/^[a-zA-Z0-9_]{3,50}$/', $firstName)) {
-        errorResponse('Username must be 3-50 characters and contain only letters, numbers, and underscores');
+    // Validate first name
+    if (mb_strlen($firstName) < 2 || mb_strlen($firstName) > 50) {
+        errorResponse('First name must be between 2 and 50 characters');
+    }
+
+    // Validate last name
+    if (mb_strlen($lastName) < 2 || mb_strlen($lastName) > 50) {
+        errorResponse('Last name must be between 2 and 50 characters');
     }
 
     // Validate email

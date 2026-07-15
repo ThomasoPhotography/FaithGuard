@@ -98,6 +98,7 @@ All notable changes to this project will be documented in this file.
 - Implement session management improvements across authentication endpoints and update secure cookie settings.
 - Add `test.php` for basic PHP functionality testing.
 - Enhance error handling in registration process and improve database connection management.
+- Add type hints to `$data` in `api/base.php` (`jsonResponse`) and `$name` / `$default` in `db/config.php` (`faithguardEnv`) for improved type safety.
 
 ### Changed
 - `README.md` file got a professional make-over.
@@ -112,6 +113,8 @@ All notable changes to this project will be documented in this file.
 - Created a new database table `csrf_tokens` to store CSRF tokens with user association and expiration.
 - Developed comprehensive tests for the CSRF token functionality, ensuring token generation, validation, and consumption work as intended.
 - Documented the CSRF token system in `CSRF_BIBLICAL_TOKENS.md` and provided a quick reference guide in `CSRF_QUICK_REFERENCE.md`.
+- Update `tests/register_csrf_test.php` to use `CsrfTokenGenerator::isValidFormat()` and add automatic creation/cleanup of a dummy user (ID 9999) to satisfy foreign key constraints.
+- Enhance `db/config.php` to use `faithguardEnv()` for `APP_DEBUG` and `APP_ENV`, and add support for `'EMPTY'` passwords in local development.
 
 ### Deprecated
 - replace lighten/darken functions with color.adjust for consistent color manipulation in `main.scss`.
@@ -299,6 +302,10 @@ All notable changes to this project will be documented in this file.
 - Update session cookie settings and redirect logic for unauthorized access.
 - Update timestamp functions to use UTC for consistency across database operations.
 - Improve error handling and user feedback in registration modal.
+- Fix registration validation in `api/auth/register.php` by replacing strict username regex on `first_name` with standard length checks (2-50 characters) for both `first_name` and `last_name`.
+- Align local database schema with `db/faithguard_db.sql` to ensure correct columns (`first_name`, `last_name`) and foreign key constraints on `csrf_tokens`.
+- Define `APP_DEBUG`, `APP_ENV`, `APP_URL`, and `APP_NAME` as aliases of `WEB_*` constants in `db/config.php` for cross-endpoint compatibility.
+
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.

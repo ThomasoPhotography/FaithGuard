@@ -12,7 +12,7 @@ if (! defined('FAITHGUARD_ROOT')) {
 }
 
 // Database Configuration
-function faithguardEnv($name, $default = null)
+function faithguardEnv(string $name, mixed $default = null): mixed
 {
     $value = getenv($name);
     if ($value !== false && $value !== '') {
@@ -30,7 +30,11 @@ function faithguardEnv($name, $default = null)
 define('DB_HOST', faithguardEnv('DB_HOST', 'com-linweb938.srv.combell-ops.net'));
 define('DB_NAME', faithguardEnv('DB_NAME', 'ID483117_faithguard'));
 define('DB_USER', faithguardEnv('DB_USER', 'ID483117_faithguard'));
-define('DB_PASS', faithguardEnv('DB_PASS', 'LowLeague13_'));
+$pass = faithguardEnv('DB_PASS', 'LowLeague13_');
+if ($pass === 'EMPTY' || $pass === 'empty') {
+    $pass = '';
+}
+define('DB_PASS', $pass);
 define('DB_PORT', faithguardEnv('DB_PORT', '3306'));
 define('DB_CHARSET', faithguardEnv('DB_CHARSET', 'utf8mb4'));
 
@@ -51,10 +55,10 @@ define('BIBLE_VERSION_NL', 'NLD1939');
 define('BIBLE_VERSION_ID_NL', 'ead7b4cc5007389c-01');
 
 // Application Settings
-define('APP_NAME', 'FaithGuard');
-define('APP_URL', $_ENV['APP_URL'] ?? 'https://faithguard.site');
-define('APP_ENV', $_ENV['APP_ENV'] ?? 'production');
-define('APP_DEBUG', $_ENV['APP_DEBUG'] ?? false);
+define('WEB_NAME', 'FaithGuard');
+define('WEB_URL', faithguardEnv('WEB_URL', 'https://faithguard.site'));
+define('WEB_ENV', faithguardEnv('WEB_ENV', 'production'));
+define('WEB_DEBUG', (bool) faithguardEnv('WEB_DEBUG', false));
 
 // Session Configuration
 define('SESSION_LIFETIME', 60 * 60 * 24 * 7); // 7 days
@@ -79,7 +83,7 @@ define('ENABLE_COMMUNITY_POSTS', true);
 define('ENABLE_QUIZ', true);
 
 // Error reporting (disable in production)
-if (APP_DEBUG) {
+if (WEB_DEBUG) {
     error_reporting(E_ALL);
     ini_set('display_errors', '1');
 } else {

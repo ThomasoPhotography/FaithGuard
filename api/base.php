@@ -27,7 +27,7 @@ function startAppSession(): void
 }
 
 // Handle preflight requests
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit;
 }
@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 /**
  * Send JSON response
  */
-function jsonResponse($data, int $statusCode = 200): void
+function jsonResponse(mixed $data, int $statusCode = 200): void
 {
     http_response_code($statusCode);
     echo json_encode($data);
