@@ -325,3 +325,4 @@
 <script src="/assets/js/dashboard-scripture.js"></script>
 <script src="/assets/js/register.js"></script>
 </html>
+
