@@ -1,190 +1,91 @@
-async handleSubmit(e) {
-
-	console.log(
-		'REGISTER SUBMIT FIRED'
-	);
-
-	e.preventDefault();
-}
-
-/**
- * Register Modal Handler
- * Loads registration form and handles account creation
- */
 async function openRegisterModal() {
-	try {
-		const container = document.getElementById('modal-container');
-		if (!container) {
-			console.error('Modal container missing');
-			return;
-		}
+	const container = document.getElementById('modal-container');
 
+	if (!container) {
+		console.error('modal-container missing');
+		return;
+	}
+
+	try {
 		const response = await fetch('/api/auth/register.php', {
 			method: 'GET',
 			credentials: 'same-origin',
-			headers: {
-				Accept: 'text/html',
-			},
 		});
 
 		const html = await response.text();
 
 		if (!response.ok) {
 			console.error(html);
-			alert('Could not load registration form');
+
 			return;
 		}
 
 		container.innerHTML = html;
 
-		const modalEl = document.getElementById('registerModal');
+		const modal = document.getElementById('registerModal');
 
-		if (!modalEl) {
-			console.error('registerModal missing');
-			return;
-		}
-
-		new RegisterModal(modalEl);
-
-		if (typeof bootstrap !== 'undefined') {
-			const modal = new bootstrap.Modal(modalEl);
-			modal.show();
-		}
+		new RegisterModal(modal);
 	} catch (error) {
-		console.error('Register modal error:', error);
+		console.error('Modal error:', error);
 	}
 }
 
 class RegisterModal {
-	constructor(modalElement) {
-		this.modalEl = modalElement;
-		if (!this.modalEl) {
-			return;
-		}
-		if (this.modalEl.dataset.fgInit === '1') {
-			return;
-		}
-		this.modalEl.dataset.fgInit = '1';
-		this.form = document.getElementById('registerForm');
-		if (!this.form) {
-			console.error('Register form not found.');
-			return;
-		}
-		this.submitBtn = this.form.querySelector('button[type="submit"]');
-		this.messageContainer = this.form.querySelector('.c-form__message');
-		if (!this.messageContainer) {
-			this.messageContainer = document.createElement('div');
-			this.messageContainer.className = 'c-form__message mb-3';
-			this.form.prepend(this.messageContainer);
-		}
-		this.MIN_PASSWORD = 8;
-		this.MAX_PASSWORD = 72;
+	constructor(modal) {
+		this.modalEl = modal;
+
+		this.form = modal.querySelector('#registerForm');
+
+		this.message = this.form.querySelector('.c-form__message');
+
 		this.form.addEventListener('submit', this.handleSubmit.bind(this));
-		this.show();
-	}
 
-	show() {
 		if (typeof bootstrap !== 'undefined') {
-			const modal = bootstrap.Modal.getOrCreateInstance(this.modalEl);
-			modal.show();
+			bootstrap.Modal.getOrCreateInstance(modal).show();
 		}
 	}
 
-	validate(data) {
-		if (!data.first_name || data.first_name.trim().length < 2 || data.first_name.trim().length > 50) {
-			return 'First name must be between 2 and 50 characters.';
-		}
-		if (!data.last_name || data.last_name.trim().length < 2 || data.last_name.trim().length > 50) {
-			return 'Last name must be between 2 and 50 characters.';
-		}
-		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-		if (!data.email || !emailRegex.test(data.email)) {
-			return 'Please enter a valid email address.';
-		}
-		if (!data.password) {
-			return 'Please enter a password.';
-		}
-		if (data.password.length < this.MIN_PASSWORD) {
-			return `Password must be at least ${this.MIN_PASSWORD} characters.`;
-		}
-		if (data.password.length > this.MAX_PASSWORD) {
-			return `Password must be no more than ${this.MAX_PASSWORD} characters.`;
-		}
-		return null;
-	}
+	async handleSubmit(e) {
+		e.preventDefault();
 
-	async handleSubmit(event) {
-		event.preventDefault();
-		this.clearMessage();
+		console.log('REGISTER SUBMIT');
+
 		const formData = new FormData(this.form);
+
 		const data = Object.fromEntries(formData.entries());
-		const validationError = this.validate(data);
-		if (validationError) {
-			this.showMessage(validationError, 'error');
-			return;
-		}
-		if (this.submitBtn) {
-			this.submitBtn.disabled = true;
-			this.submitBtn.innerHTML = 'Creating...';
-		}
 
 		try {
 			const response = await fetch('/api/auth/register.php', {
 				method: 'POST',
+
+				credentials: 'same-origin',
+
 				headers: {
 					'Content-Type': 'application/json',
-					'X-CSRF-Token': data.csrf_token || '',
+
+					'X-CSRF-Token': data.csrf_token,
 				},
-				credentials: 'same-origin',
+
 				body: JSON.stringify(data),
 			});
-			let result;
 
-			try {
-				result = await response.json();
-			} catch {
-				const text = await response.text();
-				throw new Error(text || 'Invalid server response');
-			}
-			if (response.ok && result.success) {
-				this.showMessage('Account created. Redirecting...', 'success');
-				this.form.reset();
+			const result = await response.json();
+
+			if (result.success) {
+				this.message.innerHTML = 'Account created';
+
 				setTimeout(() => {
 					window.location.href = '/dashboard.php';
-				}, 1200);
+				}, 1000);
 			} else {
-				this.showMessage(result.error || 'Registration failed.', 'error');
+				this.message.innerHTML = result.error || 'Registration failed';
 			}
 		} catch (error) {
-			console.error('Registration error:', error);
-			this.showMessage(error.message || 'Network error. Please try again.', 'error');
-		} finally {
-			if (this.submitBtn) {
-				this.submitBtn.disabled = false;
-				this.submitBtn.innerHTML = 'Create account';
-			}
+			console.error(error);
+
+			this.message.innerHTML = 'Server connection failed';
 		}
 	}
-
-	showMessage(message, type) {
-		this.messageContainer.textContent = message;
-		this.messageContainer.className = `c-form__message mb-3 alert ${type === 'success' ? 'alert-success' : 'alert-danger'}`;
-	}
-
-	clearMessage() {
-		this.messageContainer.textContent = '';
-		this.messageContainer.className = 'c-form__message mb-3';
-	}
 }
+
 window.openRegisterModal = openRegisterModal;
-
-const init = function () {
-	console.log('Register init', this.form);
-
-	if (!this.form) {
-		console.error('REGISTER FORM NOT FOUND');
-		return;
-	}
-};
-
-document.addEventListener('DOMContentLoaded', init);
