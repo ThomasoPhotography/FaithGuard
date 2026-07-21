@@ -334,6 +334,7 @@ All notable changes to this project will be documented in this file.
 - Correct path for CsrfTokenGenerator require statements.
 - Add CSRF END echo statement for better debugging visibility.
 - Remove debug echo statements from registration and CSRF token generator files.
+- Enhance CSRF token creation logging and error handling.
 
 
 ### Security
