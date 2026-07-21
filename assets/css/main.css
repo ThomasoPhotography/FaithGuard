@@ -221,22 +221,25 @@ a:hover {
 }
 
 .c-dropdown__menu {
-  background-color: #5d3a1a;
-  color: #e5e0da;
+  background-color: #5d3a1a !important;
+  color: #e5e0da !important;
 }
 .c-dropdown__info {
-  background-color: #5d3a1a;
-  color: #57534e;
+  background-color: #5d3a1a !important;
+  color: #57534e !important;
 }
 .c-dropdown__info:focus {
-  border-color: #57534e;
-  color: #e5e0da;
+  border-color: #57534e !important;
+  color: #e5e0da !important;
 }
 .c-dropdown__item {
   color: #57534e;
 }
 .c-dropdown__item:active {
   background-color: #8b5a2b;
+}
+.c-dropdown__icon {
+  color: #e5e0da !important;
 }
 
 .c-header {

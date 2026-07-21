@@ -318,6 +318,7 @@ All notable changes to this project will be documented in this file.
 - fix(assets,auth): resolve 404 JS errors and 500 CSRF token generation error.
 - Database Hosting link and html.
 - Add !important to dropdown button styles for better specificity.
+- Add !important to dropdown styles for better specificity.
 
 
 ### Security

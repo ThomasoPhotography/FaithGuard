@@ -281,15 +281,15 @@ a {
 // Dropdown
 .c-dropdown {
 	&__menu {
-		background-color: $color-primary-dark;
-		color: $color-text-light;
+		background-color: $color-primary-dark !important;
+		color: $color-text-light !important;
 	}
 	&__info {
-		background-color: $color-primary-dark;
-		color: $color-text-muted;
+		background-color: $color-primary-dark !important;
+		color: $color-text-muted !important;
 		&:focus {
-			border-color: $color-text-muted;
-			color: $color-text-light;
+			border-color: $color-text-muted !important;
+			color: $color-text-light !important;
 		}
 	}
 	&__item {
@@ -297,6 +297,9 @@ a {
 		&:active {
 			background-color: $color-primary;
 		}
+	}
+	&__icon {
+		color: $color-text-light !important;
 	}
 }
 
