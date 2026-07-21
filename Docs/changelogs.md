@@ -338,6 +338,7 @@ All notable changes to this project will be documented in this file.
 - Improve formatting and logging in CSRF token creation.
 - Enhance logging in registration process and adjust content type header.
 - Reorder and enhance logging for request method, URI, and content type in registration process.
+- Add handling for preflight OPTIONS requests in API.
 
 
 ### Security
