@@ -322,6 +322,7 @@ All notable changes to this project will be documented in this file.
 - Add !important to dropdown and button styles for better specificity.
 - Update focusable elements in cookie banner for improved accessibility.
 - Correct event handling in language button callback in footer.
+- Add styles for loginDropdown ID class in CSS and SCSS files.
 
 
 ### Security
