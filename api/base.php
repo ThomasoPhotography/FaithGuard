@@ -18,14 +18,14 @@ require_once __DIR__ . '/../db/FaithGuardRepository.php';
 
 echo "BASE 4<br>";
 
-require_once __DIR__ . '/../helper/CsrfTokenGenerator.php';
+require_once __DIR__ . '/helper/CsrfTokenGenerator.php';
 
 echo "BASE 5<br>";
 
 require_once __DIR__ . '/../db/database.php';
 require_once __DIR__ . '/../db/config.php';
 require_once __DIR__ . '/../db/FaithGuardRepository.php';
-require_once __DIR__ . '/../helper/CsrfTokenGenerator.php';
+require_once __DIR__ . '/helper/CsrfTokenGenerator.php';
 
 // Set headers for JSON API
 header('Content-Type: application/json; charset=utf-8');

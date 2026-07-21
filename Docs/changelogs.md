@@ -331,6 +331,7 @@ All notable changes to this project will be documented in this file.
 - Enhance error handling and improve CSRF token generation in registration process.
 - Remove duplicate require statements and enhance error reporting in base file.
 - Enable error reporting and display for CSRF token generation.
+- Correct path for CsrfTokenGenerator require statements.
 
 
 ### Security
