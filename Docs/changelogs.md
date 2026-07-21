@@ -332,6 +332,7 @@ All notable changes to this project will be documented in this file.
 - Remove duplicate require statements and enhance error reporting in base file.
 - Enable error reporting and display for CSRF token generation.
 - Correct path for CsrfTokenGenerator require statements.
+- Add CSRF END echo statement for better debugging visibility.
 
 
 ### Security

@@ -4,6 +4,7 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
 echo "CSRF START<br>";
+echo "CSRF END<br>";
 
 /**
  * CSRF Token Generator with Biblical Character Encoding
