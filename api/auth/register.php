@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     // Generate a new CSRF token and store it in the database
     // CSRF tokens expire after 1 hour
-    $csrf = FaithGuardRepository::createCsrfToken(null, 3600);
+    $csrf = FaithGuardRepository::createCsrfToken($_SESSION['user_id'] ?? null, 3600);
 
     if (empty($csrf)) {
         errorResponse('Failed to generate CSRF token', 500);
@@ -178,11 +178,11 @@ try {
     FaithGuardRepository::consumeCsrfToken($postedToken);
 
     // Create session
-    $expiresAt    = time() + SESSION_LIFETIME;
-    $sessionToken = generateToken();
+    $expiresAt = time() + SESSION_LIFETIME;
+    $token     = CsrfTokenGenerator::generate();
 
-    FaithGuardRepository::createSession($sessionToken, $userId, $expiresAt);
-    setSessionCookie($sessionToken, $expiresAt);
+    FaithGuardRepository::createSession($$token, $userId, $expiresAt);
+    setSessionCookie($token, $expiresAt);
     $_SESSION['user_id']   = (int) $userId;
     $_SESSION['logged_in'] = true;
 

@@ -125,6 +125,7 @@ All notable changes to this project will be documented in this file.
 - Documented the CSRF token system in `CSRF_BIBLICAL_TOKENS.md` and provided a quick reference guide in `CSRF_QUICK_REFERENCE.md`.
 - Update `tests/register_csrf_test.php` to use `CsrfTokenGenerator::isValidFormat()` and add automatic creation/cleanup of a dummy user (ID 9999) to satisfy foreign key constraints.
 - Enhance `db/config.php` to use `faithguardEnv()` for `APP_DEBUG` and `APP_ENV`, and add support for `'EMPTY'` passwords in local development.
+- Code structure for improved readability and maintainability.
 
 ### Deprecated
 - replace lighten/darken functions with color.adjust for consistent color manipulation in `main.scss`.
