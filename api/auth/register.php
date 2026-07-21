@@ -1,5 +1,18 @@
 <?php
 ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+echo "STEP 1<br>";
+
+require_once __DIR__ . '/../base.php';
+
+echo "STEP 2<br>";
+
+require_once __DIR__ . '/../rate_limiter.php';
+
+echo "STEP 3<br>";
+
+ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
@@ -34,9 +47,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // Generate a new CSRF token
 // CSRF tokens expire after 1 hour
 try {
-    $csrf = FaithGuardRepository::createCsrfToken($_SESSION['user_id'] ?? null, 3600);
+    $csrf = FaithGuardRepository::createCsrfToken(
+        $_SESSION['user_id'] ?? null,
+        3600
+    );
 } catch (Throwable $e) {
-    die($e->getMessage());
+    echo "<pre>";
+    echo $e->getMessage();
+    echo "\n\n";
+    echo $e->getTraceAsString();
+    echo "</pre>";
+    exit;
 }
 
     if (empty($csrf)) {

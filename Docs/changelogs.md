@@ -328,6 +328,7 @@ All notable changes to this project will be documented in this file.
 - Update session handling to use CSRF token and improve error reporting.
 - Update CSRF token generation and validation for improved security.
 - Reorder require statements for proper dependency loading in register and base files.
+- Enhance error handling and improve CSRF token generation in registration process.
 
 
 ### Security
