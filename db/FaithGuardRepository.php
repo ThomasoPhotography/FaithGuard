@@ -2057,25 +2057,25 @@ class FaithGuardRepository
 // ==================== CSRF ====================
 // Create CSRF token
     public static function createCsrfToken(
-    ?int $userId = null,
-    int $lifetime = 3600
-): ?string {
+        ?int $userId = null,
+        int $lifetime = 3600
+    ): ?string {
 
-    error_log("CREATE CSRF START");
+        error_log("CREATE CSRF START");
 
-    $token = CsrfTokenGenerator::generate();
+        $token = CsrfTokenGenerator::generate();
 
-    error_log("TOKEN GENERATED: " . $token);
+        error_log("TOKEN GENERATED: " . $token);
 
-    $expires = gmdate(
-        'Y-m-d H:i:s',
-        time() + $lifetime
-    );
+        $expires = gmdate(
+            'Y-m-d H:i:s',
+            time() + $lifetime
+        );
 
-    error_log("EXPIRE: " . $expires);
+        error_log("EXPIRE: " . $expires);
 
-    $result = Database::execute(
-        "
+        $result = Database::execute(
+            "
         INSERT INTO csrf_tokens
         (
             user_id,
@@ -2084,24 +2084,24 @@ class FaithGuardRepository
         )
         VALUES (?, ?, ?)
         ",
-        [
-            $userId,
-            $token,
-            $expires,
-        ]
-    );
+            [
+                $userId,
+                $token,
+                $expires,
+            ]
+        );
 
-    error_log("DATABASE RESULT: " . var_export($result, true));
+        error_log("DATABASE RESULT: " . var_export($result, true));
 
-    if (! $result) {
-        error_log("CREATE CSRF FAILED");
-        return null;
+        if (! $result) {
+            error_log("CREATE CSRF FAILED");
+            return null;
+        }
+
+        error_log("CREATE CSRF SUCCESS");
+
+        return $token;
     }
-
-    error_log("CREATE CSRF SUCCESS");
-
-    return $token;
-}
 // Consume CSRF token
     public static function consumeCsrfToken(
         string $token): bool {

@@ -335,6 +335,7 @@ All notable changes to this project will be documented in this file.
 - Add CSRF END echo statement for better debugging visibility.
 - Remove debug echo statements from registration and CSRF token generator files.
 - Enhance CSRF token creation logging and error handling.
+- Improve formatting and logging in CSRF token creation.
 
 
 ### Security
