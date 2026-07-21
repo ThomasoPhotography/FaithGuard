@@ -1,9 +1,10 @@
 <?php
-require_once __DIR__ . '/../base.php';
-require_once __DIR__ . '/../rate_limiter.php';
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
+require_once __DIR__ . '/../base.php';
+require_once __DIR__ . '/../rate_limiter.php';
 
 startAppSession();
 if (! empty($_SESSION['user_id'])) {
@@ -32,8 +33,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     // Generate a new CSRF token
 // CSRF tokens expire after 1 hour
-
+try {
     $csrf = FaithGuardRepository::createCsrfToken($_SESSION['user_id'] ?? null, 3600);
+} catch (Throwable $e) {
+    die($e->getMessage());
+}
 
     if (empty($csrf)) {
         errorResponse('Failed to generate CSRF token', 500);

@@ -327,6 +327,7 @@ All notable changes to this project will be documented in this file.
 - Remove unnecessary return false from openRegisterModal onclick handler.
 - Update session handling to use CSRF token and improve error reporting.
 - Update CSRF token generation and validation for improved security.
+- Reorder require statements for proper dependency loading in register and base files.
 
 
 ### Security
