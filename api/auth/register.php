@@ -6,6 +6,8 @@ error_reporting(E_ALL);
 require_once __DIR__ . '/../base.php';
 require_once __DIR__ . '/../rate_limiter.php';
 
+error_log("REGISTER METHOD: " . $_SERVER['REQUEST_METHOD']);
+
 startAppSession();
 if (! empty($_SESSION['user_id'])) {
     header('Location: /dashboard.php');
@@ -28,24 +30,36 @@ if (! defined('PASSWORD_ARGON2ID')) {
 }
 // If caller requests the registration modal (GET), return HTML fragment
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+
+    error_log("REGISTER GET BLOCK ENTERED");
+    try {
+        $csrf = FaithGuardRepository::createCsrfToken(
+            $_SESSION['user_id'] ?? null, 3600
+        );
+    } catch (Throwable $e) {
+        error_log("CSRF ERROR: " . $e->getMessage());
+        die($e->getMessage());
+    }
+}
+/*if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // Return HTML for modal so front-end can inject it
     header('Content-Type: text/html; charset=utf-8');
 
     // Generate a new CSRF token
-// CSRF tokens expire after 1 hour
-try {
-    $csrf = FaithGuardRepository::createCsrfToken(
-        $_SESSION['user_id'] ?? null,
-        3600
-    );
-} catch (Throwable $e) {
-    echo "<pre>";
-    echo $e->getMessage();
-    echo "\n\n";
-    echo $e->getTraceAsString();
-    echo "</pre>";
-    exit;
-}
+    // CSRF tokens expire after 1 hour
+    try {
+        $csrf = FaithGuardRepository::createCsrfToken(
+            $_SESSION['user_id'] ?? null,
+            3600
+        );
+    } catch (Throwable $e) {
+        echo "<pre>";
+        echo $e->getMessage();
+        echo "\n\n";
+        echo $e->getTraceAsString();
+        echo "</pre>";
+        exit;
+    }
 
     if (empty($csrf)) {
         errorResponse('Failed to generate CSRF token', 500);
@@ -55,55 +69,54 @@ try {
 
     // Emit a Bootstrap modal fragment and include the register.js bootstrapper
     echo <<<HTML
-<div class="modal fade" id="registerModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content c-register__modal">
-            <form id="registerForm" class="c-form__register">
-                <div class="modal-header c-register__modal--header">
-                    <h5 class="modal-title c-register__modal--title">Create account</h5>
-                    <button type="button" class="btn-close c-btn c-btn__close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="first_name" class="form-label">First name</label>
-                        <input type="text" class="form-control" id="first_name" name="first_name" required>
+    <div class="modal fade" id="registerModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content c-register__modal">
+                < id="registerForm" class="c-form__register">
+                    <div class="modal-header c-register__modal--header">
+                        <h5 class="modal-title c-register__modal--title">Create account</h5>
+                        <button type="button" class="btn-close c-btn c-btn__close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="mb-3">
-                        <label for="last_name" class="form-label">Last name</label>
-                        <input type="text" class="form-control" id="last_name" name="last_name" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="first_name" class="form-label">First name</label>
+                            <input type="text" class="form-control" id="first_name" name="first_name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="last_name" class="form-label">Last name</label>
+                            <input type="text" class="form-control" id="last_name" name="last_name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
                     </div>
                     <input type="hidden" name="csrf_token" value="$csrfHtml">
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn c-btn c-btn__submit">Create account</button>
-                    <button type="button" class="btn c-btn c-btn__cancel" data-bs-dismiss="modal">Cancel</button>
-                </div>
-            </form>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn c-btn c-btn__submit">Create account</button>
+                        <button type="button" class="btn c-btn c-btn__cancel" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</div>
-<script src="../../assets/js/register.js"></script>
-<script>
-    (function(){
-        var modalEl = document.getElementById('registerModal');
-        if (modalEl && typeof bootstrap !== 'undefined') {
-            var modal = new bootstrap.Modal(modalEl);
-            modal.show();
-        }
-    })();
-</script>
+    <script src="../../assets/js/register.js"></script>
+    <script>
+        (function(){
+            var modalEl = document.getElementById('registerModal');
+            if (modalEl && typeof bootstrap !== 'undefined') {
+                var modal = new bootstrap.Modal(modalEl);
+                modal.show();
+            }
+        })();
+    </script>
 HTML;
-
     exit;
-}
+}*/
 
 // Only accept POST for registration submission
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
