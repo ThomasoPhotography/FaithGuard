@@ -11,13 +11,38 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 require_once __DIR__ . '/../base.php';
+
+file_put_contents(
+    __DIR__ . '/register_debug.txt',
+    "BASE LOADED\n",
+    FILE_APPEND
+);
+
 require_once __DIR__ . '/../rate_limiter.php';
 
+file_put_contents(
+    __DIR__ . '/register_debug.txt',
+    "RATE LIMITER LOADED\n",
+    FILE_APPEND
+);
+
 startAppSession();
+
+file_put_contents(
+    __DIR__ . '/register_debug.txt',
+    "SESSION STARTED\n",
+    FILE_APPEND
+);
 
 if (! defined('PASSWORD_MIN_LENGTH')) {
     define('PASSWORD_MIN_LENGTH', 8);
 }
+
+file_put_contents(
+    __DIR__ . '/register_debug.txt',
+    "PASSWORD CONSTANTS\n",
+    FILE_APPEND
+);
 
 if (! defined('PASSWORD_MAX_LENGTH')) {
     define('PASSWORD_MAX_LENGTH', 72);
@@ -101,9 +126,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 /*--------------------------------------------------------------------------
 | POST REQUEST ONLY FROM HERE
 --------------------------------------------------------------------------*/
+
+file_put_contents(
+    __DIR__ . '/register_debug.txt',
+    "REQUEST METHOD: " . $_SERVER['REQUEST_METHOD'] . "\n",
+    FILE_APPEND
+);
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     errorResponse('Method not allowed', 405);
 }
+
+file_put_contents(
+    __DIR__ . '/register_debug.txt',
+    "BEFORE TRY BLOCK\n",
+    FILE_APPEND
+);
 
 try {
     echo "POST START<br>";

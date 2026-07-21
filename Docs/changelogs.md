@@ -344,6 +344,7 @@ All notable changes to this project will be documented in this file.
 - Improve error handling in registration process by providing detailed error output for CSRF token generation failures.
 - Improve error handling and user feedback in registration process.
 - Add debug logging for registration hits and clean up input assignment.
+- Enhance debug logging for registration process to track request method and flow.
 
 
 ### Security
