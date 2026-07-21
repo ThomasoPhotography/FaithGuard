@@ -233,10 +233,10 @@ a:hover {
   color: #e5e0da !important;
 }
 .c-dropdown__item {
-  color: #57534e;
+  color: #57534e !important;
 }
 .c-dropdown__item:active {
-  background-color: #8b5a2b;
+  background-color: #8b5a2b !important;
 }
 .c-dropdown__icon {
   color: #e5e0da !important;

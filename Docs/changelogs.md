@@ -319,6 +319,9 @@ All notable changes to this project will be documented in this file.
 - Database Hosting link and html.
 - Add !important to dropdown button styles for better specificity.
 - Add !important to dropdown styles for better specificity.
+- Add !important to dropdown and button styles for better specificity.
+- Update focusable elements in cookie banner for improved accessibility.
+- Correct event handling in language button callback in footer.
 
 
 ### Security

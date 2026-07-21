@@ -43,7 +43,7 @@ const showCookieBanner = () => {
 		const declineBtn = document.getElementById('decline-cookies');
 		const trapFocus = (e) => {
 			if (e.key === 'Tab') {
-				const focusable = [acceptBtn, declineBtn].filter(Boolean);
+				const focusable = [...panel.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')];
 				if (focusable.length === 0) return;
 				const idx = focusable.indexOf(document.activeElement);
 				if (e.shiftKey) {

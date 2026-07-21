@@ -31,8 +31,8 @@ const showVerse = function (text, reference) {
 // #endregion
 
 // #region ***  Callback-No Visualisation - callback___  ***********
-const callbackLanguageClick = function ({ currentTarget }) {
-	const { lang } = currentTarget.dataset;
+const callbackLanguageClick = function ({ e }) {
+	const { lang } = e.currentTarget.dataset;
 
 	languageButtons.forEach((btn) => btn.classList.remove('verse-modal__lang-btn--active'));
 
