@@ -44,9 +44,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             throw new Exception('Could not generate CSRF token');
         }
     } catch (Throwable $e) {
-        error_log("CSRF generation failed: " . $e->getMessage());
-        http_response_code(500);
-        echo "Unable to load registration form.";
+        echo "<pre>";
+        echo "REGISTER ERROR\n\n";
+        echo "Message: " . $e->getMessage() . "\n\n";
+        echo "File: " . $e->getFile() . "\n";
+        echo "Line: " . $e->getLine() . "\n\n";
+        echo "Trace:\n";
+        echo $e->getTraceAsString();
+        echo "</pre>";
+
+        error_log(
+            "REGISTER ERROR: " .
+            $e->getMessage()
+        );
+
         exit;
     }
 
