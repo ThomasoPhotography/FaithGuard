@@ -1,3 +1,12 @@
+async handleSubmit(e) {
+
+	console.log(
+		'REGISTER SUBMIT FIRED'
+	);
+
+	e.preventDefault();
+}
+
 /**
  * Register Modal Handler
  * Loads registration form and handles account creation
@@ -6,37 +15,43 @@ async function openRegisterModal() {
 	try {
 		const container = document.getElementById('modal-container');
 		if (!container) {
-			console.error('Modal container not found.');
+			console.error('Modal container missing');
 			return;
 		}
-		const existingModal = container.querySelector('#registerModal');
-		if (existingModal && existingModal.dataset.fgInit === '1') {
-			if (typeof bootstrap !== 'undefined') {
-				const modal = bootstrap.Modal.getOrCreateInstance(existingModal);
-				modal.show();
-			}
-			return;
-		}
+
 		const response = await fetch('/api/auth/register.php', {
 			method: 'GET',
 			credentials: 'same-origin',
+			headers: {
+				Accept: 'text/html',
+			},
 		});
+
 		const html = await response.text();
+
 		if (!response.ok) {
-			console.error('Register modal error:', html);
-			alert('Could not load registration form.');
+			console.error(html);
+			alert('Could not load registration form');
 			return;
 		}
+
 		container.innerHTML = html;
-		const modalElement = container.querySelector('#registerModal');
-		if (!modalElement) {
-			console.error('Register modal HTML missing.');
+
+		const modalEl = document.getElementById('registerModal');
+
+		if (!modalEl) {
+			console.error('registerModal missing');
 			return;
 		}
-		new RegisterModal(modalElement);
+
+		new RegisterModal(modalEl);
+
+		if (typeof bootstrap !== 'undefined') {
+			const modal = new bootstrap.Modal(modalEl);
+			modal.show();
+		}
 	} catch (error) {
-		console.error('Modal loading failed:', error);
-		alert('Could not open registration form.');
+		console.error('Register modal error:', error);
 	}
 }
 
@@ -50,7 +65,7 @@ class RegisterModal {
 			return;
 		}
 		this.modalEl.dataset.fgInit = '1';
-		this.form = this.modalEl.querySelector('#registerForm');
+		this.form = document.getElementById('registerForm');
 		if (!this.form) {
 			console.error('Register form not found.');
 			return;
@@ -162,3 +177,14 @@ class RegisterModal {
 	}
 }
 window.openRegisterModal = openRegisterModal;
+
+const init = function () {
+	console.log('Register init', this.form);
+
+	if (!this.form) {
+		console.error('REGISTER FORM NOT FOUND');
+		return;
+	}
+};
+
+document.addEventListener('DOMContentLoaded', init);

@@ -351,6 +351,7 @@ All notable changes to this project will be documented in this file.
 - Enhance debug logging in registration process to track password constant definitions and flow.
 - Enhance debug logging to track request method and flow in registration process.
 - Enhance debug logging to track request method, content type, and post data after GET block.
+- Improve error handling and logging in registration modal.
 
 
 ### Security
