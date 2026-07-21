@@ -190,6 +190,18 @@ function ensureCsrfToken(): string
 }
 
 /**
+ * Validate CSRF token from request against database.
+ */
+function validateCsrfToken(): void
+{
+    $input = getJsonInput();
+    $token = getCsrfTokenFromRequest($input);
+    if (empty($token) || ! FaithGuardRepository::validateCsrfToken($token)) {
+        errorResponse('Invalid or expired CSRF token', 403);
+    }
+}
+
+/**
  * Sanitize string input
  */
 function sanitize(string $input): string

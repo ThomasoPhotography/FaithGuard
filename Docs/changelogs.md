@@ -108,6 +108,7 @@ All notable changes to this project will be documented in this file.
 - Define `APP_DEBUG`, `APP_ENV`, `APP_URL`, and `APP_NAME` as aliases of `WEB_*` constants in `db/config.php` for cross-endpoint compatibility.
 - Update `tests/register_csrf_test.php` to use `CsrfTokenGenerator::isValidFormat()` and add automatic creation/cleanup of a dummy user (ID 9999) to satisfy foreign key constraints.
 - Add type hints to `$data` in `api/base.php` (`jsonResponse`) and `$name` / `$default` in `db/config.php` (`faithguardEnv`) for improved type safety.
+- Implement rate limiting and CSRF validation in login and registration.
 
 ### Changed
 - `README.md` file got a professional make-over.

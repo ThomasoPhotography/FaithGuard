@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../base.php';
+require_once __DIR__ . '/../rate_limiter.php';
 
 startAppSession();
 if (! empty($_SESSION['user_id'])) {
@@ -40,10 +41,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     echo <<<HTML
 <div class="modal fade" id="registerModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content c-registerModal">
+        <div class="modal-content c-register__modal">
             <form id="registerForm" class="c-form__register">
-                <div class="modal-header c-registerModal__header">
-                    <h5 class="modal-title c-registerModal__title">Create account</h5>
+                <div class="modal-header c-register__modal--header">
+                    <h5 class="modal-title c-register__modal--title">Create account</h5>
                     <button type="button" class="btn-close c-btn c-btn__close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">

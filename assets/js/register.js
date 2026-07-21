@@ -85,6 +85,12 @@ class RegisterModal {
 	}
 
 	validate(data) {
+		if (!data.first_name || data.first_name.trim().length < 2 || data.first_name.trim().length > 50) {
+			return 'First name must be between 2 and 50 characters.';
+		}
+		if (!data.last_name || data.last_name.trim().length < 2 || data.last_name.trim().length > 50) {
+			return 'Last name must be between 2 and 50 characters.';
+		}
 		const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 		if (!data.email || !emailRe.test(data.email)) {
 			return 'Please enter a valid email address.';
@@ -133,6 +139,10 @@ class RegisterModal {
 			try {
 				result = await response.json();
 			} catch (e) {
+				if (!response.ok) {
+					this.showMessage(`Server error (HTTP ${response.status})`, 'error');
+					return;
+				}
 				throw new Error('Invalid server response');
 			}
 

@@ -229,6 +229,14 @@ a {
 		background-color: $color-primary;
 		color: $color-text-muted;
 	}
+
+	&__dropdown {
+		color: $color-text-light;
+		&:hover,
+		&:active {
+			background-color: $color-primary;
+		}
+	}
 }
 
 // Card
@@ -267,6 +275,28 @@ a {
 	&__icon {
 		max-width: 5%;
 		height: auto;
+	}
+}
+
+// Dropdown
+.c-dropdown {
+	&__menu {
+		background-color: $color-primary-dark;
+		color: $color-text-light;
+	}
+	&__info {
+		background-color: $color-primary-dark;
+		color: $color-text-muted;
+		&:focus {
+			border-color: $color-text-muted;
+			color: $color-text-light;
+		}
+	}
+	&__item {
+		color: $color-text-muted;
+		&:active {
+			background-color: $color-primary;
+		}
 	}
 }
 

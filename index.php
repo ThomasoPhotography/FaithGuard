@@ -174,7 +174,10 @@
                             <input type="password" id="signupPassword" class="form-control c-dropdown__info mb-2" placeholder="Password">
                         </li>
                         <li>
-                            <button class="btn c-btn c-dropdown__login js-log mb-2">Login</button>
+                            <a class="dropdown-item c-dropdown__item js-log mb-2" href="#">
+                                <i class="bi bi-person-check me-2"></i>
+                                <span class="c-dropdown__text">Login</span>
+                            </a>
                         </li>
                         <li>
                             <hr class="dropdown-divider">

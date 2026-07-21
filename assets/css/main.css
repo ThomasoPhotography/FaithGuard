@@ -180,6 +180,12 @@ a:hover {
   background-color: #8b5a2b;
   color: #57534e;
 }
+.c-btn__dropdown {
+  color: #e5e0da;
+}
+.c-btn__dropdown:hover, .c-btn__dropdown:active {
+  background-color: #8b5a2b;
+}
 
 .c-card {
   background: #f5f0e8;
@@ -212,6 +218,25 @@ a:hover {
 .c-cookie__icon {
   max-width: 5%;
   height: auto;
+}
+
+.c-dropdown__menu {
+  background-color: #5d3a1a;
+  color: #e5e0da;
+}
+.c-dropdown__info {
+  background-color: #5d3a1a;
+  color: #57534e;
+}
+.c-dropdown__info:focus {
+  border-color: #57534e;
+  color: #e5e0da;
+}
+.c-dropdown__item {
+  color: #57534e;
+}
+.c-dropdown__item:active {
+  background-color: #8b5a2b;
 }
 
 .c-header {
