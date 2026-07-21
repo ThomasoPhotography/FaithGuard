@@ -6,9 +6,12 @@ error_reporting(E_ALL);
 require_once __DIR__ . '/../base.php';
 require_once __DIR__ . '/../rate_limiter.php';
 
-error_log("REGISTER METHOD: " . $_SERVER['REQUEST_METHOD']);
-
 startAppSession();
+
+error_log('REQUEST METHOD: ' . $_SERVER['REQUEST_METHOD']);
+error_log('REQUEST URI: ' . $_SERVER['REQUEST_URI']);
+error_log('CONTENT TYPE: ' . ($_SERVER['CONTENT_TYPE'] ?? 'none'));
+
 if (! empty($_SESSION['user_id'])) {
     header('Location: /dashboard.php');
     exit;
