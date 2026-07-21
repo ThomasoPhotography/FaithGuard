@@ -323,6 +323,7 @@ All notable changes to this project will be documented in this file.
 - Update focusable elements in cookie banner for improved accessibility.
 - Correct event handling in language button callback in footer.
 - Add styles for loginDropdown ID class in CSS and SCSS files.
+- Remove unnecessary return false from openRegisterModal onclick handler.
 
 
 ### Security
