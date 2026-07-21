@@ -349,6 +349,7 @@ All notable changes to this project will be documented in this file.
 - Enhance debug logging in registration process to track steps and input validation.
 - Refactor debug logging in registration process to use registerDebug function for improved readability.
 - Enhance debug logging in registration process to track password constant definitions and flow.
+- Enhance debug logging to track request method and flow in registration process.
 
 
 ### Security

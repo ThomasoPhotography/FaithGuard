@@ -68,6 +68,20 @@ if (! defined('PASSWORD_ALGORITHM')) {
 
 file_put_contents(__DIR__ . '/register_debug.txt', "STEP G\n", FILE_APPEND);
 
+file_put_contents(
+    __DIR__ . '/register_debug.txt',
+    "REQUEST: " . $_SERVER['REQUEST_METHOD'] . "\n",
+    FILE_APPEND
+);
+
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    file_put_contents(
+        __DIR__ . '/register_debug.txt',
+        "ENTERED GET\n",
+        FILE_APPEND
+    );
+}
+
 /*--------------------------------------------------------------------------
 | Already logged in
 --------------------------------------------------------------------------*/
@@ -146,6 +160,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 file_put_contents(
     __DIR__ . '/register_debug.txt',
     "REQUEST METHOD: " . $_SERVER['REQUEST_METHOD'] . "\n",
+    FILE_APPEND
+);
+
+file_put_contents(
+    __DIR__ . '/register_debug.txt',
+    "ENTERING POST\n",
     FILE_APPEND
 );
 
