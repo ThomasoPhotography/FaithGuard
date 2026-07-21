@@ -48,9 +48,18 @@ if (! defined('PASSWORD_MAX_LENGTH')) {
     define('PASSWORD_MAX_LENGTH', 72);
 }
 
-if (! defined('PASSWORD_ARGON2ID')) {
-    define('PASSWORD_ARGON2ID', defined('PASSWORD_ARGON2ID') ? PASSWORD_ARGON2ID : PASSWORD_DEFAULT);
+if (!defined('PASSWORD_ALGORITHM')) {
+    if (defined('PASSWORD_ARGON2ID')) {
+        define('PASSWORD_ALGORITHM', PASSWORD_ARGON2ID);
+    } else {
+        define('PASSWORD_ALGORITHM', PASSWORD_DEFAULT);
+    }
 }
+file_put_contents(
+    __DIR__ . '/register_debug.txt',
+    "ARGON2 CHECK PASSED\n",
+    FILE_APPEND
+);
 
 /*--------------------------------------------------------------------------
 | Already logged in
@@ -203,10 +212,7 @@ try {
     | Create user
     --------------------------------------------------------------------------*/
 
-    $passwordHash = password_hash(
-        $password,
-        PASSWORD_ARGON2ID
-    );
+    $passwordHash = password_hash($password, PASSWORD_ALGORITHM);
     echo "POST STEP 5 - BEFORE CREATE USER<br>";
     $userId = FaithGuardRepository::createUser([
         'first_name'    => $firstName,
