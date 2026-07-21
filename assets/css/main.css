@@ -369,6 +369,22 @@ a:hover {
   width: 90%;
 }
 
+.c-register__body {
+  background-color: #5d3a1a;
+  color: #e5e0da;
+}
+.c-register__input {
+  background-color: #5d3a1a;
+  color: #57534e;
+}
+.c-register__input:focus {
+  background-color: #8b5a2b;
+  color: #e5e0da;
+}
+.c-register__footer {
+  background-color: #8b5a2b;
+}
+
 .c-verseModal__selector {
   display: flex;
   gap: 1rem;
@@ -424,13 +440,6 @@ a:hover {
 }
 .c-footer__row {
   justify-content: center;
-}
-
-/*---------------------------------------/*
-	# ID CLASSES
-/*---------------------------------------*/
-#loginDropdown {
-  color: #e5e0da;
 }
 
 /*---------------------------------------/*

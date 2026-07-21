@@ -449,6 +449,23 @@ a {
 }
 
 // Register Modal
+.c-register {
+	&__body {
+		background-color: $color-primary-dark;
+		color: $color-text-light;
+	}
+	&__input {
+		background-color: $color-primary-dark;
+		color: $color-text-muted;
+		&:focus {
+			background-color: $color-primary;
+			color: $color-text-light;
+		}
+	}
+	&__footer {
+		background-color: $color-primary;
+	}
+}
 
 // Verse Modal
 .c-verseModal {
@@ -511,13 +528,6 @@ a {
 	&__row {
 		justify-content: center;
 	}
-}
-
-/*---------------------------------------/*
-	# ID CLASSES
-/*---------------------------------------*/
-#loginDropdown {
-	color: $color-text-light;
 }
 
 /*---------------------------------------/*

@@ -59,16 +59,7 @@ class FaithGuardRepository
             $pdo->beginTransaction();
 
             $stmt = $pdo->prepare(
-                "
-            INSERT INTO users
-            (
-                email,
-                password_hash,
-                first_name,
-                last_name
-            )
-            VALUES (?, ?, ?, ?)
-            "
+                "INSERT INTO users (email, password_hash, first_name, last_name) VALUES (?, ?, ?, ?)"
             );
 
             $stmt->execute([
@@ -2056,49 +2047,20 @@ class FaithGuardRepository
 
 // ==================== CSRF ====================
 // Create CSRF token
-    public static function createCsrfToken(
-        ?int $userId = null,
-        int $lifetime = 3600
-    ): ?string {
-
-        error_log("CREATE CSRF START");
-
+    public static function createCsrfToken(?int $userId = null, int $lifetime = 3600): ?string {
         $token = CsrfTokenGenerator::generate();
-
-        error_log("TOKEN GENERATED: " . $token);
-
         $expires = gmdate(
             'Y-m-d H:i:s',
             time() + $lifetime
         );
 
-        error_log("EXPIRE: " . $expires);
-
-        $result = Database::execute(
-            "
-        INSERT INTO csrf_tokens
-        (
-            user_id,
-            token,
-            expires_at
-        )
-        VALUES (?, ?, ?)
-        ",
-            [
-                $userId,
-                $token,
-                $expires,
-            ]
-        );
-
-        error_log("DATABASE RESULT: " . var_export($result, true));
+        $result = Database::execute("INSERT INTO csrf_tokens (user_id, token, expires_at)
+        VALUES (?, ?, ?)",[$userId, $token, $expires,]);
 
         if (! $result) {
             error_log("CREATE CSRF FAILED");
             return null;
         }
-
-        error_log("CREATE CSRF SUCCESS");
 
         return $token;
     }
