@@ -1,5 +1,11 @@
 <?php
 
+file_put_contents(
+    __DIR__ . '/register_debug.txt',
+    date('Y-m-d H:i:s') . " REGISTER HIT\n",
+    FILE_APPEND
+);
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -105,7 +111,7 @@ try {
     if (! ENABLE_REGISTRATION) {
         errorResponse('Registration is currently disabled', 403);
     }
-    $input       = getJsonInput();
+    $input = getJsonInput();
     echo "POST STEP 2<br>";
     $postedToken = getCsrfTokenFromRequest($input);
     echo "POST STEP 3<br>";
