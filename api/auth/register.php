@@ -44,20 +44,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             throw new Exception('Could not generate CSRF token');
         }
     } catch (Throwable $e) {
-        echo "<pre>";
-        echo "REGISTER ERROR\n\n";
-        echo "Message: " . $e->getMessage() . "\n\n";
-        echo "File: " . $e->getFile() . "\n";
-        echo "Line: " . $e->getLine() . "\n\n";
-        echo "Trace:\n";
-        echo $e->getTraceAsString();
-        echo "</pre>";
-
-        error_log(
-            "REGISTER ERROR: " .
-            $e->getMessage()
-        );
-
+        error_log("CSRF generation failed: " . $e->getMessage());
+        http_response_code(500);
+        echo "Unable to load registration form.";
         exit;
     }
 
@@ -111,17 +100,21 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 try {
+    echo "POST START<br>";
+    echo "POST STEP 1<br>";
     if (! ENABLE_REGISTRATION) {
         errorResponse('Registration is currently disabled', 403);
     }
     $input       = getJsonInput();
+    echo "POST STEP 2<br>";
     $postedToken = getCsrfTokenFromRequest($input);
+    echo "POST STEP 3<br>";
     validateRequired($input, ['first_name', 'last_name', 'email', 'password', 'csrf_token']);
 
     /*--------------------------------------------------------------------------
     | CSRF CHECK
     --------------------------------------------------------------------------*/
-
+    echo "POST STEP 4<br>";
     if (empty($postedToken) || ! FaithGuardRepository::validateCsrfToken($postedToken)) {
         errorResponse('Invalid or expired CSRF token', 403);
     }
@@ -170,7 +163,7 @@ try {
         $password,
         PASSWORD_ARGON2ID
     );
-
+    echo "POST STEP 5 - BEFORE CREATE USER<br>";
     $userId = FaithGuardRepository::createUser([
         'first_name'    => $firstName,
         'last_name'     => $lastName,
@@ -178,6 +171,7 @@ try {
         'password_hash' => $passwordHash,
 
     ]);
+    echo "POST STEP 6 - AFTER CREATE USER<br>";
 
     if (! $userId) {
         errorResponse(
@@ -199,12 +193,14 @@ try {
         'Y-m-d H:i:s',
         time() + SESSION_LIFETIME
     );
-
+    echo "POST STEP 7 - BEFORE CREATE SESSION<br>";
     FaithGuardRepository::createSession(
         $token,
         $userId,
         $expiresAt
     );
+    echo "POST STEP 8 - AFTER CREATE SESSION<br>";
+    echo "POST STOP";
 
     setSessionCookie(
         $token,
@@ -223,8 +219,19 @@ try {
         ],
     ]);
 } catch (Throwable $e) {
+    echo "<pre>";
+    echo "REGISTER ERROR\n\n";
+    echo "Message: " . $e->getMessage() . "\n\n";
+    echo "File: " . $e->getFile() . "\n";
+    echo "Line: " . $e->getLine() . "\n\n";
+    echo "Trace:\n";
+    echo $e->getTraceAsString();
+    echo "</pre>";
 
     error_log(
+        "REGISTER ERROR: " . $e->getMessage()
+    );
+    /*error_log(
         "REGISTER ERROR: " .
         $e->getMessage()
     );
@@ -232,6 +239,6 @@ try {
     errorResponse(
         'Server error',
         500
-    );
+    );*/
 
 }

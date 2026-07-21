@@ -342,6 +342,7 @@ All notable changes to this project will be documented in this file.
 - Enhance registration modal styling and improve CSRF token handling.
 - Enforce important styles for registration modal elements and improve error handling in registration process.
 - Improve error handling in registration process by providing detailed error output for CSRF token generation failures.
+- Improve error handling and user feedback in registration process.
 
 
 ### Security
