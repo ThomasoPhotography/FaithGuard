@@ -19,18 +19,48 @@ class FaithGuardRepository
     }
 
 // Find user by email (authentication)
-    public static function getUserByEmail(string $email): ?array
-    {
-        return Database::getSingleRow(
-            "
-        SELECT *
-        FROM users
-        WHERE email = ?
-        LIMIT 1
-        ",
-            [$email]
+public static function getUserByEmail(string $email): ?array
+{
+    try {
+        $pdo = Database::getConnection();
+        $stmt = $pdo->prepare(
+            "SELECT 
+                id,
+                first_name,
+                last_name,
+                avatar_url,
+                bio,
+                bible_language,
+                bible_version,
+                is_active,
+                last_login
+            FROM users
+            WHERE email = ?
+            LIMIT 1"
         );
+
+
+        $stmt->execute([
+            $email
+        ]);
+
+
+        $user = $stmt->fetch(
+            PDO::FETCH_ASSOC
+        );
+
+
+        return $user ?: null;
+
+
+    } catch (\Throwable $e) {
+        error_log(
+            "getUserByEmail failed: " .
+            $e->getMessage()
+        );
+        return null;
     }
+}
 
 // Find user by first and last name
     public static function getUserByName(string $firstName, string $lastName): ?array
@@ -50,55 +80,60 @@ class FaithGuardRepository
     }
 
 // Create new user
-    public static function createUser(array $data)
-    {
-        try {
+public static function createUser(array $data): int|false
+{
+    try {
 
-            $pdo = Database::getConnection();
+        $pdo = Database::getConnection();
 
-            $pdo->beginTransaction();
+        $pdo->beginTransaction();
 
-            $stmt = $pdo->prepare(
-                "INSERT INTO users (email, password_hash, first_name, last_name) VALUES (?, ?, ?, ?)"
-            );
+        $stmt = $pdo->prepare(
+            "INSERT INTO users (email, password_hash, first_name, last_name)
+            VALUES (?, ?, ?, ?)"
+        );
 
-            $stmt->execute([
-                $data['email'],
-                $data['password_hash'],
-                $data['first_name'] ?? null,
-                $data['last_name'] ?? null,
-            ]);
+        $stmt->execute([
+            $data['email'],
+            $data['password_hash'],
+            $data['first_name'] ?? null,
+            $data['last_name'] ?? null,
+        ]);
 
-            $userId = (int) $pdo->lastInsertId();
+        $userId = (int) $pdo->lastInsertId();
 
-            $preferences = self::createUserPreferences($userId);
 
-            $progress = self::createUserProgress($userId);
+        $preferences = self::createUserPreferences($userId);
 
-            if (! $preferences || ! $progress) {
+        $progress = self::createUserProgress($userId);
 
-                $pdo->rollBack();
 
-                return false;
-            }
+        if (!$preferences || !$progress) {
 
-            $pdo->commit();
-
-            return $userId;
-
-        } catch (\Throwable $e) {
-
-            if (isset($pdo) && $pdo->inTransaction()) {
-                $pdo->rollBack();
-            }
-
-            error_log(
-                "createUser failed: " . $e->getMessage()
-            );
+            $pdo->rollBack();
 
             return false;
         }
+
+
+        $pdo->commit();
+
+        return $userId;
+
+
+    } catch (\Throwable $e) {
+
+        if (isset($pdo) && $pdo->inTransaction()) {
+            $pdo->rollBack();
+        }
+
+        error_log(
+            "createUser failed: " . $e->getMessage()
+        );
+
+        return false;
     }
+}
 
 // Update user
     public static function updateUser(int $id, array $data): bool
@@ -2047,15 +2082,16 @@ class FaithGuardRepository
 
 // ==================== CSRF ====================
 // Create CSRF token
-    public static function createCsrfToken(?int $userId = null, int $lifetime = 3600): ?string {
-        $token = CsrfTokenGenerator::generate();
+    public static function createCsrfToken(?int $userId = null, int $lifetime = 3600): ?string
+    {
+        $token   = CsrfTokenGenerator::generate();
         $expires = gmdate(
             'Y-m-d H:i:s',
             time() + $lifetime
         );
 
         $result = Database::execute("INSERT INTO csrf_tokens (user_id, token, expires_at)
-        VALUES (?, ?, ?)",[$userId, $token, $expires,]);
+        VALUES (?, ?, ?)", [$userId, $token, $expires]);
 
         if (! $result) {
             error_log("CREATE CSRF FAILED");
