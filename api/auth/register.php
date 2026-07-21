@@ -159,6 +159,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
 file_put_contents(
     __DIR__ . '/register_debug.txt',
+    "AFTER GET BLOCK\n",
+    FILE_APPEND
+);
+
+file_put_contents(
+    __DIR__ . '/register_debug.txt',
+    "REQUEST METHOD: " . $_SERVER['REQUEST_METHOD'] . "\n",
+    FILE_APPEND
+);
+
+file_put_contents(
+    __DIR__ . '/register_debug.txt',
+    "CONTENT TYPE: " . ($_SERVER['CONTENT_TYPE'] ?? 'NONE') . "\n",
+    FILE_APPEND
+);
+
+file_put_contents(
+    __DIR__ . '/register_debug.txt',
+    "POST DATA: " . file_get_contents("php://input") . "\n",
+    FILE_APPEND
+);
+
+file_put_contents(
+    __DIR__ . '/register_debug.txt',
     "REQUEST METHOD: " . $_SERVER['REQUEST_METHOD'] . "\n",
     FILE_APPEND
 );
