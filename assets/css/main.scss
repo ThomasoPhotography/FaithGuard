@@ -451,19 +451,19 @@ a {
 // Register Modal
 .c-register {
 	&__body {
-		background-color: $color-primary-dark;
-		color: $color-text-light;
+		background-color: $color-primary-dark !important;
+		color: $color-text-light !important;
 	}
 	&__input {
-		background-color: $color-primary-dark;
-		color: $color-text-muted;
+		background-color: $color-primary-dark !important;
+		color: $color-text-muted !important;
 		&:focus {
-			background-color: $color-primary;
-			color: $color-text-light;
+			background-color: $color-primary !important;
+			color: $color-text-light !important;
 		}
 	}
 	&__footer {
-		background-color: $color-primary;
+		background-color: $color-primary !important;
 	}
 }
 

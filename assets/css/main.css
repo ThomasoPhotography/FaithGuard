@@ -370,19 +370,19 @@ a:hover {
 }
 
 .c-register__body {
-  background-color: #5d3a1a;
-  color: #e5e0da;
+  background-color: #5d3a1a !important;
+  color: #e5e0da !important;
 }
 .c-register__input {
-  background-color: #5d3a1a;
-  color: #57534e;
+  background-color: #5d3a1a !important;
+  color: #57534e !important;
 }
 .c-register__input:focus {
-  background-color: #8b5a2b;
-  color: #e5e0da;
+  background-color: #8b5a2b !important;
+  color: #e5e0da !important;
 }
 .c-register__footer {
-  background-color: #8b5a2b;
+  background-color: #8b5a2b !important;
 }
 
 .c-verseModal__selector {

@@ -340,6 +340,7 @@ All notable changes to this project will be documented in this file.
 - Reorder and enhance logging for request method, URI, and content type in registration process.
 - Add handling for preflight OPTIONS requests in API.
 - Enhance registration modal styling and improve CSRF token handling.
+- Enforce important styles for registration modal elements and improve error handling in registration process.
 
 
 ### Security
