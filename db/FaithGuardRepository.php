@@ -2004,9 +2004,9 @@ class FaithGuardRepository
 // ==================== SESSIONS ====================
 
     public static function createSession(
-        string $sessionId,
+        string $token,
         int $userId,
-        string $expires): bool {
+        string $expiresAt): bool {
 
         return (bool) Database::execute(
             "
@@ -2020,15 +2020,15 @@ class FaithGuardRepository
         VALUES (?, ?, ?)
         ",
             [
-                $sessionId,
+                $token,
                 $userId,
-                $expires,
+                $expiresAt,
             ]
         );
     }
 
     public static function getSession(
-        string $sessionId): ?array {
+        string $token): ?array {
 
         return Database::getSingleRow(
             "
@@ -2038,19 +2038,19 @@ class FaithGuardRepository
         AND expires_at > UTC_TIMESTAMP()
         LIMIT 1
         ",
-            [$sessionId]
+            [$token]
         );
     }
 
     public static function deleteSession(
-        string $sessionId): bool {
+        string $token): bool {
 
         return (bool) Database::execute(
             "
         DELETE FROM sessions
         WHERE id = ?
         ",
-            [$sessionId]
+            [$token]
         );
     }
 
@@ -2060,7 +2060,7 @@ class FaithGuardRepository
         ?int $userId = null,
         int $lifetime = 3600): ?string {
 
-        $token = generateToken();
+        $token = CsrfTokenGenerator::generate();
 
         $expires = gmdate(
             'Y-m-d H:i:s',

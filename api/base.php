@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../db/FaithGuardRepository.php';
+require_once __DIR__ . '/../helper/CsrfTokenGenerator.php';
 
 // Set headers for JSON API
 header('Content-Type: application/json; charset=utf-8');

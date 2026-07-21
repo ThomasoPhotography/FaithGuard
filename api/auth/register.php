@@ -1,6 +1,10 @@
 <?php
 require_once __DIR__ . '/../base.php';
 require_once __DIR__ . '/../rate_limiter.php';
+require_once __DIR__ . '/../helper/CsrfTokenGenerator.php';
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 startAppSession();
 if (! empty($_SESSION['user_id'])) {
@@ -27,8 +31,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // Return HTML for modal so front-end can inject it
     header('Content-Type: text/html; charset=utf-8');
 
-    // Generate a new CSRF token and store it in the database
-    // CSRF tokens expire after 1 hour
+    // Generate a new CSRF token
+// CSRF tokens expire after 1 hour
+
     $csrf = FaithGuardRepository::createCsrfToken($_SESSION['user_id'] ?? null, 3600);
 
     if (empty($csrf)) {
