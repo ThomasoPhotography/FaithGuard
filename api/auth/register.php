@@ -1,18 +1,5 @@
 <?php
 ini_set('display_errors', 1);
-error_reporting(E_ALL);
-
-echo "STEP 1<br>";
-
-require_once __DIR__ . '/../base.php';
-
-echo "STEP 2<br>";
-
-require_once __DIR__ . '/../rate_limiter.php';
-
-echo "STEP 3<br>";
-
-ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
