@@ -153,34 +153,76 @@ file_put_contents(
 );
 
 try {
-    echo "POST START<br>";
-    echo "POST STEP 1<br>";
+
+    file_put_contents(
+        __DIR__ . '/register_debug.txt',
+        date('Y-m-d H:i:s') . " STEP 1 - TRY START\n",
+        FILE_APPEND
+    );
+
+
     if (! ENABLE_REGISTRATION) {
+
+        file_put_contents(
+            __DIR__ . '/register_debug.txt',
+            "STEP 2 - REGISTRATION DISABLED\n",
+            FILE_APPEND
+        );
+
         errorResponse('Registration is currently disabled', 403);
     }
+
+
+    file_put_contents(
+        __DIR__ . '/register_debug.txt',
+        "STEP 3 - ENABLE_REGISTRATION OK\n",
+        FILE_APPEND
+    );
+
+
     $input = getJsonInput();
-    echo "POST STEP 2<br>";
+
+
+    file_put_contents(
+        __DIR__ . '/register_debug.txt',
+        "STEP 4 - JSON INPUT OK\n" .
+        print_r($input, true) .
+        "\n",
+        FILE_APPEND
+    );
+
+
     $postedToken = getCsrfTokenFromRequest($input);
-    echo "POST STEP 3<br>";
-    validateRequired($input, ['first_name', 'last_name', 'email', 'password', 'csrf_token']);
 
-    /*--------------------------------------------------------------------------
-    | CSRF CHECK
-    --------------------------------------------------------------------------*/
-    echo "POST STEP 4<br>";
-    if (empty($postedToken) || ! FaithGuardRepository::validateCsrfToken($postedToken)) {
-        errorResponse('Invalid or expired CSRF token', 403);
-    }
 
-    /*--------------------------------------------------------------------------
-    | Validate fields
-    --------------------------------------------------------------------------*/
-    $firstName = trim($input['first_name']);
-    $lastName  = trim($input['last_name']);
-    $email     = trim($input['email']);
-    $password  = $input['password'];
+    file_put_contents(
+        __DIR__ . '/register_debug.txt',
+        "STEP 5 - TOKEN RECEIVED: " .
+        ($postedToken ? "YES" : "NO") .
+        "\n",
+        FILE_APPEND
+    );
 
-    if (mb_strlen($firstName) < 2 || mb_strlen($firstName) > 50) {
+
+    validateRequired(
+        $input,
+        [
+            'first_name',
+            'last_name',
+            'email',
+            'password',
+            'csrf_token'
+        ]
+    );
+
+
+    file_put_contents(
+        __DIR__ . '/register_debug.txt',
+        "STEP 6 - REQUIRED VALIDATION OK\n",
+        FILE_APPEND
+    );
+
+    /*if (mb_strlen($firstName) < 2 || mb_strlen($firstName) > 50) {
         errorResponse('First name must be between 2 and 50 characters');
     }
 
@@ -198,21 +240,21 @@ try {
 
     if (strlen($password) > PASSWORD_MAX_LENGTH) {
         errorResponse('Password must be no more than ' . PASSWORD_MAX_LENGTH . ' characters');
-    }
+    }*/
 
     /*--------------------------------------------------------------------------
     | Existing user
     --------------------------------------------------------------------------*/
 
-    if (FaithGuardRepository::getUserByEmail($email)) {
+    /*if (FaithGuardRepository::getUserByEmail($email)) {
         errorResponse('Email is already registered');
-    }
+    }*/
 
     /*--------------------------------------------------------------------------
     | Create user
     --------------------------------------------------------------------------*/
 
-    $passwordHash = password_hash($password, PASSWORD_ALGORITHM);
+    /*$passwordHash = password_hash($password, PASSWORD_ALGORITHM);
     echo "POST STEP 5 - BEFORE CREATE USER<br>";
     $userId = FaithGuardRepository::createUser([
         'first_name'    => $firstName,
@@ -230,12 +272,12 @@ try {
         );
     }
 
-    FaithGuardRepository::consumeCsrfToken($postedToken);
+    FaithGuardRepository::consumeCsrfToken($postedToken);*/
 
     /*--------------------------------------------------------------------------
     | Session creation
     --------------------------------------------------------------------------*/
-    $token = bin2hex(
+    /*$token = bin2hex(
         random_bytes(32)
     );
 
