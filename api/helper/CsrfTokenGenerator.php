@@ -1,5 +1,10 @@
 <?php
 
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+echo "CSRF START<br>";
+
 /**
  * CSRF Token Generator with Biblical Character Encoding
  *
