@@ -123,6 +123,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     );
 
 
+    file_put_contents(
+    __DIR__ . '/register_debug.txt',
+    "BEFORE HTML OUTPUT\n",
+    FILE_APPEND
+);
 
     echo <<<HTML
 
@@ -226,8 +231,25 @@ Create account
 
 HTML;
 
+file_put_contents(
+    __DIR__ . '/register_debug.txt',
+    "AFTER HTML OUTPUT\n",
+    FILE_APPEND
+);
 
 exit;
+
+file_put_contents(
+    __DIR__ . '/register_debug.txt',
+    "PASSED GET BLOCK\n",
+    FILE_APPEND
+);
+
+file_put_contents(
+    __DIR__ . '/register_debug.txt',
+    "METHOD NOW: " . $_SERVER['REQUEST_METHOD'] . "\n",
+    FILE_APPEND
+);
 
 }
 
@@ -269,7 +291,19 @@ if (!ENABLE_REGISTRATION) {
 
 
 
-$input = getJsonInput();
+$raw = file_get_contents("php://input");
+
+file_put_contents(
+    __DIR__ . '/register_debug.txt',
+    "RAW POST:\n" . $raw . "\n",
+    FILE_APPEND
+);
+
+$input = json_decode($raw, true);
+
+if (!is_array($input)) {
+    throw new Exception("JSON decode failed");
+}
 
 
 registerDebug(
@@ -372,10 +406,13 @@ if (
 
 
 
-$passwordHash =
-password_hash(
+$passwordHash = password_hash(
     $password,
-    PASSWORD_ALGORITHM
+    PASSWORD_BCRYPT
+);
+
+registerDebug(
+    "PASSWORD HASH CREATED: " . substr($passwordHash,0,20)
 );
 
 
@@ -384,8 +421,9 @@ registerDebug("PASSWORD HASH CREATED");
 
 
 
-$userId =
-FaithGuardRepository::createUser([
+registerDebug("BEFORE CREATE USER");
+
+$userId = FaithGuardRepository::createUser([
 
     'first_name'=>$firstName,
 
@@ -396,6 +434,10 @@ FaithGuardRepository::createUser([
     'password_hash'=>$passwordHash
 
 ]);
+
+registerDebug(
+    "AFTER CREATE USER RESULT: " . print_r($userId,true)
+);
 
 
 
