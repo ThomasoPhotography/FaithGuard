@@ -231,10 +231,10 @@ a {
 	}
 
 	&__dropdown {
-		color: $color-text-light;
+		color: $color-text-light !important;
 		&:hover,
 		&:active {
-			background-color: $color-primary;
+			background-color: $color-primary !important;
 		}
 	}
 }

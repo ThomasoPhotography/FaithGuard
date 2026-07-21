@@ -317,6 +317,7 @@ All notable changes to this project will be documented in this file.
 - Define `APP_DEBUG`, `APP_ENV`, `APP_URL`, and `APP_NAME` as aliases of `WEB_*` constants in `db/config.php` for cross-endpoint compatibility.
 - fix(assets,auth): resolve 404 JS errors and 500 CSRF token generation error.
 - Database Hosting link and html.
+- Add !important to dropdown button styles for better specificity.
 
 
 ### Security

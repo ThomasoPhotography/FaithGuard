@@ -181,10 +181,10 @@ a:hover {
   color: #57534e;
 }
 .c-btn__dropdown {
-  color: #e5e0da;
+  color: #e5e0da !important;
 }
 .c-btn__dropdown:hover, .c-btn__dropdown:active {
-  background-color: #8b5a2b;
+  background-color: #8b5a2b !important;
 }
 
 .c-card {
