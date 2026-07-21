@@ -1,7 +1,6 @@
 <?php
 require_once __DIR__ . '/../base.php';
 require_once __DIR__ . '/../rate_limiter.php';
-require_once __DIR__ . '/../helper/CsrfTokenGenerator.php';
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -183,11 +182,22 @@ try {
     FaithGuardRepository::consumeCsrfToken($postedToken);
 
     // Create session
-    $expiresAt = time() + SESSION_LIFETIME;
-    $token     = CsrfTokenGenerator::generate();
+    $token = bin2hex(random_bytes(32));
 
-    FaithGuardRepository::createSession($$token, $userId, $expiresAt);
-    setSessionCookie($token, $expiresAt);
+    $expiresAt = gmdate(
+        'Y-m-d H:i:s',
+        time() + SESSION_LIFETIME
+    );
+
+    if (! FaithGuardRepository::createSession($token, $userId, $expiresAt)) {
+        errorResponse('Could not create session', 500);
+    }
+
+    setSessionCookie(
+        $token,
+        strtotime($expiresAt)
+    );
+
     $_SESSION['user_id']   = (int) $userId;
     $_SESSION['logged_in'] = true;
 
@@ -198,7 +208,6 @@ try {
             'email'      => $email,
             'first_name' => $firstName,
             'last_name'  => $lastName,
-            'full_name'  => $fullName,
             'is_admin'   => false,
             'is_member'  => false,
         ],

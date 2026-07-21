@@ -4,16 +4,15 @@
  * CSRF Token Generator with Biblical Character Encoding
  *
  * Generates secure CSRF tokens containing:
- * - Timestamp
  * - Optional database identifier
  * - Biblical reference encoding
  * - Random entropy
  *
  * Token format:
- * timestamp_id_biblical_reference_random
+ * database_id_biblical_reference_random
  *
  * Example:
- * 1720864000_0_23_a8b3c9d2
+ * 0_23_a8b3c9d2...
  */
 
 class CsrfTokenGenerator
@@ -83,15 +82,10 @@ class CsrfTokenGenerator
 
     /**
      * Generate a standard CSRF token
-     *
-     * Used during:
-     * - Registration
-     * - Login
-     * - Forms before database records exist
      */
     public static function generate(): string
     {
-        return self::generateToken(0);
+        return bin2hex(random_bytes(32));
     }
 
     /**
@@ -102,8 +96,7 @@ class CsrfTokenGenerator
      */
     public static function generateToken(
         int $databaseId,
-        ?string $biblicalRef = null
-    ): string {
+        ?string $biblicalRef = null): string {
 
         if ($biblicalRef === null) {
 
@@ -128,16 +121,15 @@ class CsrfTokenGenerator
             $biblicalChar = '0' . $biblicalChar;
         }
 
-        $timestamp = time();
-
+        // Encode database identifier
         $idPortion = dechex($databaseId);
 
+        // Secure random entropy
         $randomPortion = bin2hex(
-            random_bytes(16)
+            random_bytes(32)
         );
 
         return implode('_', [
-            $timestamp,
             $idPortion,
             $biblicalChar,
             $randomPortion,
@@ -148,16 +140,15 @@ class CsrfTokenGenerator
      * Extract biblical reference
      */
     public static function extractBiblicalRef(
-        string $token
-    ): ?string {
+        string $token): ?string {
 
         $parts = explode('_', $token);
 
-        if (count($parts) !== 4) {
+        if (count($parts) !== 3) {
             return null;
         }
 
-        $index = hexdec($parts[2]);
+        $index = hexdec($parts[1]);
 
         if (
             $index < 0 ||
@@ -173,100 +164,23 @@ class CsrfTokenGenerator
      * Extract database ID
      */
     public static function extractId(
-        string $token
-    ): ?int {
+        string $token): ?int {
 
         $parts = explode('_', $token);
 
-        if (count($parts) !== 4) {
+        if (count($parts) !== 3) {
             return null;
         }
 
-        return hexdec($parts[1]);
-    }
-
-    /**
-     * Extract timestamp
-     */
-    public static function extractTimestamp(
-        string $token
-    ): ?int {
-
-        $parts = explode('_', $token);
-
-        if (
-            empty($parts[0]) ||
-            ! is_numeric($parts[0])
-        ) {
-            return null;
-        }
-
-        return (int) $parts[0];
-    }
-
-    /**
-     * Check token age
-     */
-    public static function isExpired(
-        string $token,
-        int $expirationSeconds = 3600
-    ): bool {
-
-        $timestamp = self::extractTimestamp($token);
-
-        if (! $timestamp) {
-            return true;
-        }
-
-        return (
-            time() - $timestamp
-        ) > $expirationSeconds;
+        return hexdec($parts[0]);
     }
 
     /**
      * Validate token format
      */
-    public static function isValidFormat(
-        string $token
-    ): bool {
-
-        $parts = explode('_', $token);
-
-        if (count($parts) !== 4) {
-            return false;
-        }
-
-        // Timestamp
-        if (
-            ! is_numeric($parts[0]) ||
-            strlen($parts[0]) < 10
-        ) {
-            return false;
-        }
-
-        // Database ID
-        if (
-            ! ctype_xdigit($parts[1])
-        ) {
-            return false;
-        }
-
-        // Biblical encoding
-        if (
-            ! ctype_xdigit($parts[2]) ||
-            strlen($parts[2]) !== 2
-        ) {
-            return false;
-        }
-
-        // Random section
-        if (
-            ! ctype_xdigit($parts[3])
-        ) {
-            return false;
-        }
-
-        return true;
+    public static function isValidFormat(string $token): bool
+    {
+        return preg_match('/^[a-f0-9]{64}$/', $token) === 1;
     }
 
     /**

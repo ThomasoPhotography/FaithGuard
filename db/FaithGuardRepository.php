@@ -2108,9 +2108,12 @@ class FaithGuardRepository
     public static function validateCsrfToken(
         string $token): bool {
 
+        if (! CsrfTokenGenerator::isValidFormat($token)) {
+            return false;
+        }
+
         $result = Database::getSingleRow(
-            "
-        SELECT id
+            "SELECT id
         FROM csrf_tokens
         WHERE token = ?
         AND expires_at > UTC_TIMESTAMP()
