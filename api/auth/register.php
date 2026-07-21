@@ -34,28 +34,39 @@ file_put_contents(
     FILE_APPEND
 );
 
+file_put_contents(__DIR__ . '/register_debug.txt', "STEP A\n", FILE_APPEND);
+
 if (! defined('PASSWORD_MIN_LENGTH')) {
     define('PASSWORD_MIN_LENGTH', 8);
 }
 
-file_put_contents(
-    __DIR__ . '/register_debug.txt',
-    "PASSWORD CONSTANTS\n",
-    FILE_APPEND
-);
+file_put_contents(__DIR__ . '/register_debug.txt', "STEP B\n", FILE_APPEND);
 
 if (! defined('PASSWORD_MAX_LENGTH')) {
     define('PASSWORD_MAX_LENGTH', 72);
 }
 
-if (!defined('PASSWORD_ALGORITHM')) {
+file_put_contents(__DIR__ . '/register_debug.txt', "STEP C\n", FILE_APPEND);
+
+if (! defined('PASSWORD_ALGORITHM')) {
+
+    file_put_contents(__DIR__ . '/register_debug.txt', "STEP D\n", FILE_APPEND);
+
     if (defined('PASSWORD_ARGON2ID')) {
+
+        file_put_contents(__DIR__ . '/register_debug.txt', "STEP E\n", FILE_APPEND);
+
         define('PASSWORD_ALGORITHM', PASSWORD_ARGON2ID);
+
     } else {
+
+        file_put_contents(__DIR__ . '/register_debug.txt', "STEP F\n", FILE_APPEND);
+
         define('PASSWORD_ALGORITHM', PASSWORD_DEFAULT);
     }
 }
 
+file_put_contents(__DIR__ . '/register_debug.txt', "STEP G\n", FILE_APPEND);
 
 /*--------------------------------------------------------------------------
 | Already logged in
@@ -152,7 +163,7 @@ try {
 
     registerDebug("STEP 1 - TRY START");
 
-    if (!ENABLE_REGISTRATION) {
+    if (! ENABLE_REGISTRATION) {
         registerDebug("STEP 2 - REGISTRATION DISABLED");
         errorResponse('Registration is currently disabled', 403);
     }
@@ -178,7 +189,7 @@ try {
             'last_name',
             'email',
             'password',
-            'csrf_token'
+            'csrf_token',
         ]
     );
 
@@ -186,7 +197,7 @@ try {
 
     if (
         empty($postedToken) ||
-        !FaithGuardRepository::validateCsrfToken($postedToken)
+        ! FaithGuardRepository::validateCsrfToken($postedToken)
     ) {
         registerDebug("STEP 7 - CSRF FAILED");
         errorResponse('Invalid or expired CSRF token', 403);
@@ -225,7 +236,7 @@ try {
     registerDebug("STEP 13 - CREATE USER RETURNED");
     registerDebug("USER ID = " . print_r($userId, true));
 
-    if (!$userId) {
+    if (! $userId) {
         registerDebug("STEP 14 - USER CREATION FAILED");
         errorResponse('Unable to create account', 500);
     }
@@ -260,17 +271,17 @@ try {
 
     registerDebug("STEP 19 - COOKIE SET");
 
-    $_SESSION['user_id'] = $userId;
+    $_SESSION['user_id']   = $userId;
     $_SESSION['logged_in'] = true;
 
     registerDebug("STEP 20 - SESSION VARIABLES SET");
 
     successResponse([
         'user' => [
-            'id' => $userId,
-            'email' => $email,
+            'id'         => $userId,
+            'email'      => $email,
             'first_name' => $firstName,
-            'last_name' => $lastName,
+            'last_name'  => $lastName,
         ],
     ]);
 
