@@ -347,6 +347,7 @@ All notable changes to this project will be documented in this file.
 - Enhance debug logging for registration process to track request method and flow.
 - Update password hashing to use PASSWORD_ALGORITHM and enhance debug logging for Argon2 check.
 - Enhance debug logging in registration process to track steps and input validation.
+- Refactor debug logging in registration process to use registerDebug function for improved readability.
 
 
 ### Security

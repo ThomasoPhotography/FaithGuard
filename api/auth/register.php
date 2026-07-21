@@ -55,11 +55,7 @@ if (!defined('PASSWORD_ALGORITHM')) {
         define('PASSWORD_ALGORITHM', PASSWORD_DEFAULT);
     }
 }
-file_put_contents(
-    __DIR__ . '/register_debug.txt',
-    "ARGON2 CHECK PASSED\n",
-    FILE_APPEND
-);
+
 
 /*--------------------------------------------------------------------------
 | Already logged in
@@ -154,55 +150,26 @@ file_put_contents(
 
 try {
 
-    file_put_contents(
-        __DIR__ . '/register_debug.txt',
-        date('Y-m-d H:i:s') . " STEP 1 - TRY START\n",
-        FILE_APPEND
-    );
+    registerDebug("STEP 1 - TRY START");
 
-
-    if (! ENABLE_REGISTRATION) {
-
-        file_put_contents(
-            __DIR__ . '/register_debug.txt',
-            "STEP 2 - REGISTRATION DISABLED\n",
-            FILE_APPEND
-        );
-
+    if (!ENABLE_REGISTRATION) {
+        registerDebug("STEP 2 - REGISTRATION DISABLED");
         errorResponse('Registration is currently disabled', 403);
     }
 
-
-    file_put_contents(
-        __DIR__ . '/register_debug.txt',
-        "STEP 3 - ENABLE_REGISTRATION OK\n",
-        FILE_APPEND
-    );
-
+    registerDebug("STEP 3 - REGISTRATION ENABLED");
 
     $input = getJsonInput();
 
-
-    file_put_contents(
-        __DIR__ . '/register_debug.txt',
-        "STEP 4 - JSON INPUT OK\n" .
-        print_r($input, true) .
-        "\n",
-        FILE_APPEND
-    );
-
+    registerDebug("STEP 4 - JSON RECEIVED");
+    registerDebug(print_r($input, true));
 
     $postedToken = getCsrfTokenFromRequest($input);
 
-
-    file_put_contents(
-        __DIR__ . '/register_debug.txt',
-        "STEP 5 - TOKEN RECEIVED: " .
-        ($postedToken ? "YES" : "NO") .
-        "\n",
-        FILE_APPEND
+    registerDebug(
+        "STEP 5 - TOKEN " .
+        (empty($postedToken) ? "MISSING" : "FOUND")
     );
-
 
     validateRequired(
         $input,
@@ -215,122 +182,112 @@ try {
         ]
     );
 
+    registerDebug("STEP 6 - REQUIRED VALIDATION OK");
 
-    file_put_contents(
-        __DIR__ . '/register_debug.txt',
-        "STEP 6 - REQUIRED VALIDATION OK\n",
-        FILE_APPEND
+    if (
+        empty($postedToken) ||
+        !FaithGuardRepository::validateCsrfToken($postedToken)
+    ) {
+        registerDebug("STEP 7 - CSRF FAILED");
+        errorResponse('Invalid or expired CSRF token', 403);
+    }
+
+    registerDebug("STEP 8 - CSRF VALID");
+
+    $firstName = trim($input['first_name']);
+    $lastName  = trim($input['last_name']);
+    $email     = trim($input['email']);
+    $password  = $input['password'];
+
+    registerDebug("STEP 9 - FIELDS EXTRACTED");
+
+    if (FaithGuardRepository::getUserByEmail($email)) {
+        registerDebug("STEP 10 - EMAIL EXISTS");
+        errorResponse('Email is already registered');
+    }
+
+    registerDebug("STEP 11 - EMAIL AVAILABLE");
+
+    $passwordHash = password_hash(
+        $password,
+        PASSWORD_ALGORITHM
     );
 
-    /*if (mb_strlen($firstName) < 2 || mb_strlen($firstName) > 50) {
-        errorResponse('First name must be between 2 and 50 characters');
-    }
+    registerDebug("STEP 12 - PASSWORD HASHED");
 
-    if (mb_strlen($lastName) < 2 || mb_strlen($lastName) > 50) {
-        errorResponse('Last name must be between 2 and 50 characters');
-    }
-
-    if (! filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        errorResponse('Invalid email address');
-    }
-
-    if (strlen($password) < PASSWORD_MIN_LENGTH) {
-        errorResponse('Password must be at least ' . PASSWORD_MIN_LENGTH . ' characters');
-    }
-
-    if (strlen($password) > PASSWORD_MAX_LENGTH) {
-        errorResponse('Password must be no more than ' . PASSWORD_MAX_LENGTH . ' characters');
-    }*/
-
-    /*--------------------------------------------------------------------------
-    | Existing user
-    --------------------------------------------------------------------------*/
-
-    /*if (FaithGuardRepository::getUserByEmail($email)) {
-        errorResponse('Email is already registered');
-    }*/
-
-    /*--------------------------------------------------------------------------
-    | Create user
-    --------------------------------------------------------------------------*/
-
-    /*$passwordHash = password_hash($password, PASSWORD_ALGORITHM);
-    echo "POST STEP 5 - BEFORE CREATE USER<br>";
     $userId = FaithGuardRepository::createUser([
         'first_name'    => $firstName,
         'last_name'     => $lastName,
         'email'         => $email,
         'password_hash' => $passwordHash,
-
     ]);
-    echo "POST STEP 6 - AFTER CREATE USER<br>";
 
-    if (! $userId) {
-        errorResponse(
-            'Unable to create account',
-            500
-        );
+    registerDebug("STEP 13 - CREATE USER RETURNED");
+    registerDebug("USER ID = " . print_r($userId, true));
+
+    if (!$userId) {
+        registerDebug("STEP 14 - USER CREATION FAILED");
+        errorResponse('Unable to create account', 500);
     }
 
-    FaithGuardRepository::consumeCsrfToken($postedToken);*/
+    registerDebug("STEP 15 - USER CREATED");
 
-    /*--------------------------------------------------------------------------
-    | Session creation
-    --------------------------------------------------------------------------*/
-    /*$token = bin2hex(
-        random_bytes(32)
-    );
+    FaithGuardRepository::consumeCsrfToken($postedToken);
+
+    registerDebug("STEP 16 - TOKEN CONSUMED");
+
+    $token = bin2hex(random_bytes(32));
+
+    registerDebug("STEP 17 - SESSION TOKEN CREATED");
 
     $expiresAt = gmdate(
         'Y-m-d H:i:s',
         time() + SESSION_LIFETIME
     );
-    echo "POST STEP 7 - BEFORE CREATE SESSION<br>";
+
     FaithGuardRepository::createSession(
         $token,
         $userId,
         $expiresAt
     );
-    echo "POST STEP 8 - AFTER CREATE SESSION<br>";
-    echo "POST STOP";
+
+    registerDebug("STEP 18 - SESSION CREATED");
 
     setSessionCookie(
         $token,
         strtotime($expiresAt)
     );
 
-    $_SESSION['user_id']   = $userId;
+    registerDebug("STEP 19 - COOKIE SET");
+
+    $_SESSION['user_id'] = $userId;
     $_SESSION['logged_in'] = true;
+
+    registerDebug("STEP 20 - SESSION VARIABLES SET");
 
     successResponse([
         'user' => [
-            'id'         => $userId,
-            'email'      => $email,
+            'id' => $userId,
+            'email' => $email,
             'first_name' => $firstName,
-            'last_name'  => $lastName,
+            'last_name' => $lastName,
         ],
     ]);
-} catch (Throwable $e) {
-    echo "<pre>";
-    echo "REGISTER ERROR\n\n";
-    echo "Message: " . $e->getMessage() . "\n\n";
-    echo "File: " . $e->getFile() . "\n";
-    echo "Line: " . $e->getLine() . "\n\n";
-    echo "Trace:\n";
-    echo $e->getTraceAsString();
-    echo "</pre>";
 
-    error_log(
-        "REGISTER ERROR: " . $e->getMessage()
-    );
-    /*error_log(
-        "REGISTER ERROR: " .
-        $e->getMessage()
-    );
+} catch (Throwable $e) {
+
+    registerDebug("EXCEPTION");
+
+    registerDebug($e->getMessage());
+
+    registerDebug($e->getFile());
+
+    registerDebug("LINE " . $e->getLine());
+
+    registerDebug($e->getTraceAsString());
 
     errorResponse(
         'Server error',
         500
-    );*/
-
+    );
 }
