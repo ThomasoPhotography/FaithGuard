@@ -329,6 +329,7 @@ All notable changes to this project will be documented in this file.
 - Update CSRF token generation and validation for improved security.
 - Reorder require statements for proper dependency loading in register and base files.
 - Enhance error handling and improve CSRF token generation in registration process.
+- Remove duplicate require statements and enhance error reporting in base file.
 
 
 ### Security

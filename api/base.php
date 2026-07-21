@@ -1,4 +1,27 @@
 <?php
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+echo "BASE 1<br>";
+
+require_once __DIR__ . '/../db/database.php';
+
+echo "BASE 2<br>";
+
+require_once __DIR__ . '/../db/config.php';
+
+echo "BASE 3<br>";
+
+require_once __DIR__ . '/../db/FaithGuardRepository.php';
+
+echo "BASE 4<br>";
+
+require_once __DIR__ . '/../helper/CsrfTokenGenerator.php';
+
+echo "BASE 5<br>";
+
 require_once __DIR__ . '/../db/database.php';
 require_once __DIR__ . '/../db/config.php';
 require_once __DIR__ . '/../db/FaithGuardRepository.php';
