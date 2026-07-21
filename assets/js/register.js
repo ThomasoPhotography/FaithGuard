@@ -6,65 +6,53 @@ async function openRegisterModal() {
 		return;
 	}
 
-	try {
-		const response = await fetch('/api/auth/register.php', {
-			method: 'GET',
-			credentials: 'same-origin',
-		});
+	const response = await fetch('/api/auth/register.php', {
+		method: 'GET',
+		credentials: 'same-origin',
+	});
 
-		const html = await response.text();
+	const html = await response.text();
 
-		if (!response.ok) {
-			console.error(html);
+	if (!response.ok) {
+		console.error(html);
 
-			return;
-		}
-
-		container.innerHTML = html;
-
-		const modal = document.getElementById('registerModal');
-
-		new RegisterModal(modal);
-	} catch (error) {
-		console.error('Modal error:', error);
+		return;
 	}
+
+	container.innerHTML = html;
+
+	const modal = document.getElementById('registerModal');
+
+	new RegisterModal(modal);
 }
 
 class RegisterModal {
 	constructor(modal) {
-		this.modalEl = modal;
+		this.modal = modal;
 
 		this.form = modal.querySelector('#registerForm');
 
-		this.message = this.form.querySelector('.c-form__message');
+		this.message = modal.querySelector('.c-form__message');
 
-		this.form.addEventListener('submit', this.handleSubmit.bind(this));
+		this.form.addEventListener('submit', this.submit.bind(this));
 
-		if (typeof bootstrap !== 'undefined') {
-			bootstrap.Modal.getOrCreateInstance(modal).show();
-		}
+		bootstrap.Modal.getOrCreateInstance(modal).show();
 	}
 
-	async handleSubmit(e) {
+	async submit(e) {
 		e.preventDefault();
 
-		console.log('REGISTER SUBMIT');
-
-		const formData = new FormData(this.form);
-
-		const data = Object.fromEntries(formData.entries());
+		const data = Object.fromEntries(new FormData(this.form));
 
 		try {
 			const response = await fetch('/api/auth/register.php', {
 				method: 'POST',
 
-				credentials: 'same-origin',
-
 				headers: {
 					'Content-Type': 'application/json',
-
-					'X-CSRF-Token': data.csrf_token,
 				},
+
+				credentials: 'same-origin',
 
 				body: JSON.stringify(data),
 			});
@@ -72,18 +60,20 @@ class RegisterModal {
 			const result = await response.json();
 
 			if (result.success) {
-				this.message.innerHTML = 'Account created';
+				this.message.className = 'alert alert-success';
+
+				this.message.textContent = 'Account created';
 
 				setTimeout(() => {
 					window.location.href = '/dashboard.php';
 				}, 1000);
 			} else {
-				this.message.innerHTML = result.error || 'Registration failed';
+				throw new Error(result.error || 'Registration failed');
 			}
 		} catch (error) {
-			console.error(error);
+			this.message.className = 'alert alert-danger';
 
-			this.message.innerHTML = 'Server connection failed';
+			this.message.textContent = error.message;
 		}
 	}
 }

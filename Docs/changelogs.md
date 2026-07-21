@@ -354,6 +354,7 @@ All notable changes to this project will be documented in this file.
 - Improve error handling and logging in registration modal.
 - Refactor registration process logging and improve error handling.
 - Enhance debug logging in registration process to track HTML output and request method.
+- Enhance debug logging in registration process and improve error handling in modal.
 
 
 ### Security

@@ -1,64 +1,33 @@
 <?php
 
+file_put_contents(
+    __DIR__ . '/register_debug.txt',
+    date('Y-m-d H:i:s') . " REGISTER HIT\n",
+    FILE_APPEND
+);
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-
-function registerDebug($message)
-{
-    file_put_contents(
-        __DIR__ . '/register_debug.txt',
-        date('Y-m-d H:i:s') . " " . $message . "\n",
-        FILE_APPEND
-    );
-}
-
-
-registerDebug("REGISTER HIT");
-
-
 require_once __DIR__ . '/../base.php';
-registerDebug("BASE LOADED");
-
-
 require_once __DIR__ . '/../rate_limiter.php';
-registerDebug("RATE LIMITER LOADED");
-
 
 startAppSession();
-registerDebug("SESSION STARTED");
 
+file_put_contents(
+    __DIR__ . '/register_debug.txt',
+    "SESSION STARTED\n",
+    FILE_APPEND
+);
 
-
-if (!defined('PASSWORD_MIN_LENGTH')) {
+if (! defined('PASSWORD_MIN_LENGTH')) {
     define('PASSWORD_MIN_LENGTH', 8);
 }
 
-if (!defined('PASSWORD_MAX_LENGTH')) {
+if (! defined('PASSWORD_MAX_LENGTH')) {
     define('PASSWORD_MAX_LENGTH', 72);
 }
-
-
-/*
-|--------------------------------------------------------------------------
-| Use BCRYPT for Combell/shared hosting compatibility
-|--------------------------------------------------------------------------
-*/
-
-if (!defined('PASSWORD_ALGORITHM')) {
-    define(
-        'PASSWORD_ALGORITHM',
-        PASSWORD_BCRYPT
-    );
-}
-
-
-registerDebug(
-    "REQUEST METHOD: " . $_SERVER['REQUEST_METHOD']
-);
-
-
 
 /*
 |--------------------------------------------------------------------------
@@ -68,66 +37,45 @@ registerDebug(
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
-    registerDebug("ENTER GET");
-
-
-    header(
-        'Content-Type: text/html; charset=utf-8'
+    file_put_contents(
+        __DIR__ . '/register_debug.txt',
+        "GET REQUEST\n",
+        FILE_APPEND
     );
 
+    header('Content-Type: text/html; charset=utf-8');
 
     try {
-
-        registerDebug("BEFORE CSRF");
-
 
         $csrf = FaithGuardRepository::createCsrfToken(
             $_SESSION['user_id'] ?? null,
             3600
         );
 
-
-        registerDebug(
-            "AFTER CSRF " . ($csrf ? "SUCCESS" : "FAILED")
-        );
-
-
-        if (!$csrf) {
+        if (! $csrf) {
             throw new Exception(
-                "CSRF token empty"
+                'CSRF token creation failed'
             );
         }
 
+    } catch (Throwable $e) {
 
-    } catch(Throwable $e) {
-
-
-        registerDebug(
-            "CSRF ERROR: " . $e->getMessage()
+        file_put_contents(
+            __DIR__ . '/register_debug.txt',
+            "CSRF ERROR: " . $e->getMessage() . "\n",
+            FILE_APPEND
         );
 
-
         http_response_code(500);
-
-        echo "Could not create registration form";
-
+        echo "Unable to load registration form.";
         exit;
     }
-
-
 
     $csrf = htmlspecialchars(
         $csrf,
         ENT_QUOTES,
         'UTF-8'
     );
-
-
-    file_put_contents(
-    __DIR__ . '/register_debug.txt',
-    "BEFORE HTML OUTPUT\n",
-    FILE_APPEND
-);
 
     echo <<<HTML
 
@@ -147,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 Create account
 </h5>
 
-<button 
+<button
 type="button"
 class="btn-close"
 data-bs-dismiss="modal">
@@ -163,39 +111,60 @@ data-bs-dismiss="modal">
 <div class="c-form__message mb-3"></div>
 
 
+<div class="mb-3">
+<label>
+First name
+</label>
 
-<input 
-class="form-control mb-3"
+<input
+class="form-control"
 name="first_name"
-placeholder="First name"
 required>
+</div>
 
 
-<input 
-class="form-control mb-3"
+
+<div class="mb-3">
+<label>
+Last name
+</label>
+
+<input
+class="form-control"
 name="last_name"
-placeholder="Last name"
 required>
+</div>
 
 
-<input 
-class="form-control mb-3"
+
+<div class="mb-3">
+<label>
+Email
+</label>
+
+<input
 type="email"
+class="form-control"
 name="email"
-placeholder="Email"
 required>
+</div>
 
 
-<input 
-class="form-control mb-3"
+
+<div class="mb-3">
+<label>
+Password
+</label>
+
+<input
 type="password"
+class="form-control"
 name="password"
-placeholder="Password"
 required>
+</div>
 
 
-
-<input 
+<input
 type="hidden"
 name="csrf_token"
 value="$csrf">
@@ -207,8 +176,7 @@ value="$csrf">
 
 <div class="modal-footer">
 
-
-<button 
+<button
 type="submit"
 class="btn btn-primary">
 
@@ -216,6 +184,15 @@ Create account
 
 </button>
 
+
+<button
+type="button"
+class="btn btn-secondary"
+data-bs-dismiss="modal">
+
+Cancel
+
+</button>
 
 </div>
 
@@ -231,29 +208,9 @@ Create account
 
 HTML;
 
-file_put_contents(
-    __DIR__ . '/register_debug.txt',
-    "AFTER HTML OUTPUT\n",
-    FILE_APPEND
-);
-
-exit;
-
-file_put_contents(
-    __DIR__ . '/register_debug.txt',
-    "PASSED GET BLOCK\n",
-    FILE_APPEND
-);
-
-file_put_contents(
-    __DIR__ . '/register_debug.txt',
-    "METHOD NOW: " . $_SERVER['REQUEST_METHOD'] . "\n",
-    FILE_APPEND
-);
+    exit;
 
 }
-
-
 
 /*
 |--------------------------------------------------------------------------
@@ -261,278 +218,260 @@ file_put_contents(
 |--------------------------------------------------------------------------
 */
 
-
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
     errorResponse(
-        "Method not allowed",
+        'Method not allowed',
         405
     );
 
 }
 
-
-
 try {
 
-
-registerDebug("POST START");
-
-
-
-if (!ENABLE_REGISTRATION) {
-
-    errorResponse(
-        "Registration disabled",
-        403
+    file_put_contents(
+        __DIR__ . '/register_debug.txt',
+        "POST START\n",
+        FILE_APPEND
     );
 
-}
+    if (! ENABLE_REGISTRATION) {
 
+        errorResponse(
+            'Registration disabled',
+            403
+        );
 
+    }
 
-$raw = file_get_contents("php://input");
+/*
+|--------------------------------------------------------------------------
+| Read JSON
+|--------------------------------------------------------------------------
+*/
 
-file_put_contents(
-    __DIR__ . '/register_debug.txt',
-    "RAW POST:\n" . $raw . "\n",
-    FILE_APPEND
-);
-
-$input = json_decode($raw, true);
-
-if (!is_array($input)) {
-    throw new Exception("JSON decode failed");
-}
-
-
-registerDebug(
-    "INPUT: " . print_r($input,true)
-);
-
-
-
-$token = getCsrfTokenFromRequest(
-    $input
-);
-
-
-
-if (
-    empty($token) ||
-    !FaithGuardRepository::validateCsrfToken($token)
-) {
-
-    registerDebug("CSRF FAILED");
-
-    errorResponse(
-        "Invalid CSRF token",
-        403
+    $body = file_get_contents(
+        "php://input"
     );
 
-}
-
-
-
-$firstName =
-trim($input['first_name'] ?? '');
-
-$lastName =
-trim($input['last_name'] ?? '');
-
-$email =
-trim($input['email'] ?? '');
-
-$password =
-$input['password'] ?? '';
-
-
-
-if (
-    mb_strlen($firstName)<2 ||
-    mb_strlen($firstName)>50
-) {
-
-    errorResponse(
-        "Invalid first name"
+    file_put_contents(
+        __DIR__ . '/register_debug.txt',
+        "BODY:\n" . $body . "\n",
+        FILE_APPEND
     );
 
-}
-
-
-if (
-    mb_strlen($lastName)<2 ||
-    mb_strlen($lastName)>50
-) {
-
-    errorResponse(
-        "Invalid last name"
+    $data = json_decode(
+        $body,
+        true
     );
 
-}
+    if (! is_array($data)) {
 
+        errorResponse(
+            'Invalid JSON',
+            400
+        );
 
-if (!filter_var($email,FILTER_VALIDATE_EMAIL)) {
+    }
 
-    errorResponse(
-        "Invalid email"
+    validateRequired(
+        $data,
+        [
+            'first_name',
+            'last_name',
+            'email',
+            'password',
+            'csrf_token',
+        ]
     );
 
-}
+/*
+|--------------------------------------------------------------------------
+| CSRF
+|--------------------------------------------------------------------------
+*/
 
+    if (
+        ! FaithGuardRepository::validateCsrfToken(
+            $data['csrf_token']
+        )
+    ) {
 
-if (
-    strlen($password)<PASSWORD_MIN_LENGTH
-) {
+        errorResponse(
+            'Invalid CSRF token',
+            403
+        );
 
-    errorResponse(
-        "Password too short"
+    }
+
+/*
+|--------------------------------------------------------------------------
+| Validate input
+|--------------------------------------------------------------------------
+*/
+
+    $firstName = trim($data['first_name']);
+    $lastName  = trim($data['last_name']);
+    $email     = trim($data['email']);
+    $password  = $data['password'];
+
+    if (
+        mb_strlen($firstName) < 2 ||
+        mb_strlen($firstName) > 50
+    ) {
+
+        errorResponse(
+            'Invalid first name'
+        );
+
+    }
+
+    if (
+        mb_strlen($lastName) < 2 ||
+        mb_strlen($lastName) > 50
+    ) {
+
+        errorResponse(
+            'Invalid last name'
+        );
+
+    }
+
+    if (! filter_var($email, FILTER_VALIDATE_EMAIL)) {
+
+        errorResponse(
+            'Invalid email'
+        );
+
+    }
+
+    if (
+        strlen($password) < PASSWORD_MIN_LENGTH
+    ) {
+
+        errorResponse(
+            'Password too short'
+        );
+
+    }
+
+/*
+|--------------------------------------------------------------------------
+| Existing account
+|--------------------------------------------------------------------------
+*/
+
+    if (
+        FaithGuardRepository::getUserByEmail($email)
+    ) {
+
+        errorResponse(
+            'Email already registered'
+        );
+
+    }
+
+/*
+|--------------------------------------------------------------------------
+| Create account
+|--------------------------------------------------------------------------
+*/
+
+    $passwordHash = password_hash(
+        $password,
+        PASSWORD_BCRYPT
     );
 
-}
-
-
-
-
-if (
-    FaithGuardRepository::getUserByEmail($email)
-) {
-
-    errorResponse(
-        "Email already registered"
+    file_put_contents(
+        __DIR__ . '/register_debug.txt',
+        "PASSWORD HASH CREATED\n",
+        FILE_APPEND
     );
 
-}
+    $userId = FaithGuardRepository::createUser([
 
+        'first_name'    =>
+        $firstName,
 
+        'last_name'     =>
+        $lastName,
 
-$passwordHash = password_hash(
-    $password,
-    PASSWORD_BCRYPT
-);
+        'email'         =>
+        $email,
 
-registerDebug(
-    "PASSWORD HASH CREATED: " . substr($passwordHash,0,20)
-);
+        'password_hash' =>
+        $passwordHash,
 
+    ]);
 
+    if (! $userId) {
 
-registerDebug("PASSWORD HASH CREATED");
+        errorResponse(
+            'Could not create user',
+            500
+        );
 
+    }
 
+/*
+|--------------------------------------------------------------------------
+| Login session
+|--------------------------------------------------------------------------
+*/
 
-registerDebug("BEFORE CREATE USER");
+    FaithGuardRepository::consumeCsrfToken(
+        $data['csrf_token']
+    );
 
-$userId = FaithGuardRepository::createUser([
+    $sessionToken = bin2hex(
+        random_bytes(32)
+    );
 
-    'first_name'=>$firstName,
+    $expires = gmdate(
+        'Y-m-d H:i:s',
+        time() + SESSION_LIFETIME
+    );
 
-    'last_name'=>$lastName,
+    FaithGuardRepository::createSession(
+        $sessionToken,
+        $userId,
+        $expires
+    );
 
-    'email'=>$email,
+    setSessionCookie(
+        $sessionToken,
+        strtotime($expires)
+    );
 
-    'password_hash'=>$passwordHash
+    $_SESSION['user_id'] = $userId;
 
-]);
+    successResponse([
 
-registerDebug(
-    "AFTER CREATE USER RESULT: " . print_r($userId,true)
-);
+        'user' => [
 
+            'id'         => $userId,
 
+            'email'      => $email,
 
-registerDebug(
-    "USER ID: ".$userId
-);
+            'first_name' => $firstName,
 
+            'last_name'  => $lastName,
 
+        ],
 
-if(!$userId){
+    ]);
+
+} catch (Throwable $e) {
+
+    file_put_contents(
+        __DIR__ . '/register_debug.txt',
+        "ERROR: " . $e->getMessage() . "\n",
+        FILE_APPEND
+    );
 
     errorResponse(
-        "Unable to create account",
+        'Server error',
         500
     );
-
-}
-
-
-
-FaithGuardRepository::consumeCsrfToken(
-    $token
-);
-
-
-
-$sessionToken =
-bin2hex(
-    random_bytes(32)
-);
-
-
-
-$expires =
-gmdate(
-    'Y-m-d H:i:s',
-    time()+SESSION_LIFETIME
-);
-
-
-
-FaithGuardRepository::createSession(
-    $sessionToken,
-    $userId,
-    $expires
-);
-
-
-
-setSessionCookie(
-    $sessionToken,
-    strtotime($expires)
-);
-
-
-
-$_SESSION['user_id']=$userId;
-
-
-
-successResponse([
-
-'user'=>[
-
-'id'=>$userId,
-
-'email'=>$email,
-
-'first_name'=>$firstName,
-
-'last_name'=>$lastName
-
-]
-
-]);
-
-
-}
-catch(Throwable $e){
-
-
-registerDebug(
-"ERROR: ".$e->getMessage()
-);
-
-
-registerDebug(
-$e->getTraceAsString()
-);
-
-
-errorResponse(
-"Server error",
-500
-);
-
 
 }
