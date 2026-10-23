@@ -303,6 +303,12 @@ img {
 	&__nav {
 		list-style: none;
 	}
+	&__item {
+		padding-bottom: 0.5rem;
+		&--last {
+			padding-bottom: 0;
+		}
+	}
 }
 
 /*---------------------------------------/*

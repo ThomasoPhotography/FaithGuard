@@ -366,6 +366,7 @@ All notable changes to this project will be documented in this file.
 - Enhance user creation method with detailed debug logging and error handling.
 - Update room header tag to uppercase for improved emphasis and consistency.
 - Add footer navigation styling and structure for improved layout and accessibility.
+- Enhance footer navigation styling and structure for improved layout and accessibility.
 
 
 ### Security

@@ -280,6 +280,12 @@ img {
 .c-footer__nav {
   list-style: none;
 }
+.c-footer__item {
+  padding-bottom: 0.5rem;
+}
+.c-footer__item--last {
+  padding-bottom: 0;
+}
 
 /*---------------------------------------/*
 # UTILITIES
