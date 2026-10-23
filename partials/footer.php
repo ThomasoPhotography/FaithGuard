@@ -30,16 +30,3 @@
         </div>
     </div>
 </footer>
-<div class="verse-modal" id="verse-modal" role="dialog" aria-modal="true" aria-labelledby="verse-modal-title">
-    <div class="verse-modal__panel">
-        <div class="verse-modal__header">
-            <h2 class="verse-modal__title" id="verse-modal-title">Scripture</h2>
-            <button type="button" class="verse-modal__close" id="close-verse-modal" aria-label="Close">&times;</button>
-        </div>
-        <div class="verse-modal__langs" role="group" aria-label="Bible language">
-            <button type="button" class="verse-modal__lang-btn verse-modal__lang-btn--active" data-lang="en">English</button>
-            <button type="button" class="verse-modal__lang-btn" data-lang="nl" lang="nl">Nederlands</button>
-        </div>
-        <div class="verse-modal__body" id="verse-content" aria-live="polite"></div>
-    </div>
-</div>

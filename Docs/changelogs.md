@@ -115,6 +115,7 @@ All notable changes to this project will be documented in this file.
 - Enhance HTML structure with meta tags for SEO; add conditional rendering for dropdown menu; improve room section layout and accessibility.
 - Update changelog with recent enhancements; improve SEO and accessibility in HTML structure.
 - Add room numbers to each section for better organization and clarity.
+- Implement scripture modal functionality and remove unused modal markup from footer.
 
 ### Changed
 - `README.md` file got a professional make-over.
