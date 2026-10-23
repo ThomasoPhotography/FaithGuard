@@ -78,134 +78,51 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     );
 
     echo <<<HTML
-
 <div class="modal fade" id="registerModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Explicit action and method prevent silent GET reloads if JS interception fails -->
+            <form id="registerForm" action="/api/auth/register.php" method="POST">
+                <div class="modal-header">
+                    <h5 class="modal-title">Create account</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
 
-<div class="modal-dialog">
+                <div class="modal-body">
+                    <div class="c-form__message mb-3"></div>
 
-<div class="modal-content">
+                    <div class="mb-3">
+                        <label for="first_name">First name</label>
+                        <!-- Added id to match the label's 'for' attribute -->
+                        <input class="form-control" id="first_name" name="first_name" required>
+                    </div>
 
+                    <div class="mb-3">
+                        <label for="last_name">Last name</label>
+                        <input class="form-control" id="last_name" name="last_name" required>
+                    </div>
 
-<form id="registerForm">
+                    <div class="mb-3">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
 
+                    <div class="mb-3">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
 
-<div class="modal-header">
+                    <input type="hidden" name="csrf_token" value="$csrf">
+                </div>
 
-<h5 class="modal-title">
-Create account
-</h5>
-
-<button
-type="button"
-class="btn-close"
-data-bs-dismiss="modal">
-</button>
-
+                <div class="modal-footer">
+                    <button type="submit" class="btn c-btn btn-primary">Create account</button>
+                    <button type="button" class="c-btn btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
-
-
-
-<div class="modal-body">
-
-
-<div class="c-form__message mb-3"></div>
-
-
-<div class="mb-3">
-<label for="first_name">
-First name
-</label>
-
-<input
-class="form-control"
-name="first_name"
-required>
-</div>
-
-
-
-<div class="mb-3">
-<label for="last_name">
-Last name
-</label>
-
-<input
-class="form-control"
-name="last_name"
-required>
-</div>
-
-
-
-<div class="mb-3">
-<label for="email">
-Email
-</label>
-
-<input
-type="email"
-class="form-control"
-name="email"
-required>
-</div>
-
-
-
-<div class="mb-3">
-<label for="password">
-Password
-</label>
-
-<input
-type="password"
-class="form-control"
-name="password"
-required>
-</div>
-
-
-<input
-type="hidden"
-name="csrf_token"
-value="$csrf">
-
-
-</div>
-
-
-
-<div class="modal-footer">
-
-<button
-type="submit"
-class="btn btn-primary">
-
-Create account
-
-</button>
-
-
-<button
-type="button"
-class="btn btn-secondary"
-data-bs-dismiss="modal">
-
-Cancel
-
-</button>
-
-</div>
-
-
-</form>
-
-
-</div>
-
-</div>
-
-</div>
-
 HTML;
 
     exit;

@@ -377,6 +377,7 @@ All notable changes to this project will be documented in this file.
 - Update navigation link styles and fix current page condition with register update.
 - Update navigation styles and improve dropdown structure for better accessibility.
 - Add 'for' attributes to labels in registration modal for improved accessibility.
+- Enhance registration modal structure and improve form handling for better usability.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.
