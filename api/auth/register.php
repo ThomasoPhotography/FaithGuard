@@ -112,7 +112,7 @@ data-bs-dismiss="modal">
 
 
 <div class="mb-3">
-<label>
+<label for="first_name">
 First name
 </label>
 
@@ -125,7 +125,7 @@ required>
 
 
 <div class="mb-3">
-<label>
+<label for="last_name">
 Last name
 </label>
 
@@ -138,7 +138,7 @@ required>
 
 
 <div class="mb-3">
-<label>
+<label for="email">
 Email
 </label>
 
@@ -152,7 +152,7 @@ required>
 
 
 <div class="mb-3">
-<label>
+<label for="password">
 Password
 </label>
 
