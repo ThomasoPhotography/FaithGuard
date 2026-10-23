@@ -1,8 +1,9 @@
 -- =====================================================
 -- FaithGuard Database
--- Part 1/6: Core User & Authentication Tables
+-- Complete fresh-install schema for FaithGuard
 -- MySQL 8.0.36+
--- PHP 7.4 Compatible
+-- PHP 8.0+ application compatibility
+-- Fresh-install schema aligned to FaithGuard/db/FaithGuardRepository.php
 -- =====================================================
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -47,10 +48,7 @@ CREATE TABLE `users` (
     PRIMARY KEY (`id`),
 
     UNIQUE KEY `unique_email` (`email`),
-    UNIQUE KEY `unique_username` (`username`),
-
-    INDEX `idx_email` (`email`),
-    INDEX `idx_username` (`username`)
+    UNIQUE KEY `unique_username` (`username`)
 
 ) ENGINE=InnoDB
 DEFAULT CHARSET=utf8mb4
@@ -375,16 +373,7 @@ CREATE TABLE `bible_verses` (
     `chapter_id`
         VARCHAR(50)
         NOT NULL,
-
-
-    -- Translation identifier
-    -- Required by FaithGuardRepository::getVerseFromCache()
-    `bible_id`
-        VARCHAR(50)
-        NOT NULL,
-
-
-    `verse_number`
+`verse_number`
         INT
         NOT NULL,
 
@@ -411,12 +400,7 @@ CREATE TABLE `bible_verses` (
     PRIMARY KEY (`id`),
 
 
-    UNIQUE KEY `unique_verse_cache`
-        (
-            `bible_id`,
-            `chapter_id`,
-            `verse_number`
-        ),
+    UNIQUE KEY `unique_verse_language` (`verse_id`, `language`),
 
 
     INDEX `idx_verse_chapter`
@@ -472,6 +456,29 @@ CREATE TABLE `scripture_cache` (
 ) ENGINE=InnoDB
 DEFAULT CHARSET=utf8mb4
 COLLATE=utf8mb4_unicode_ci;
+
+
+-- =====================================================
+-- CHECK-INS
+-- Required by FaithGuardRepository::createCheckin()
+-- =====================================================
+
+CREATE TABLE `checkins` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `user_id` INT NOT NULL,
+    `checkin_date` DATE NOT NULL,
+    `mood_rating` TINYINT UNSIGNED DEFAULT NULL,
+    `notes` TEXT DEFAULT NULL,
+    `triggers` TEXT DEFAULT NULL,
+    `victories` TEXT DEFAULT NULL,
+    `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `unique_user_checkin_date` (`user_id`, `checkin_date`),
+    KEY `idx_checkins_date` (`checkin_date`),
+    CONSTRAINT `fk_checkins_user`
+        FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- =====================================================
 -- POSTS
@@ -1174,143 +1181,24 @@ DEFAULT CHARSET=utf8mb4
 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
--- Foreign Key Constraints
+-- Composite Bible relationships
+-- The parent keys include language, so child rows cannot
+-- reference a book/chapter in a different language.
 -- --------------------------------------------------------
 
 ALTER TABLE `bible_chapters`
-  ADD CONSTRAINT `fk_bible_chapters_book`
-  FOREIGN KEY (`book_id`)
-  REFERENCES `bible_books` (`book_id`)
-  ON DELETE CASCADE;
-
-
-ALTER TABLE `bible_verses`
-  ADD CONSTRAINT `fk_bible_verses_chapter`
-  FOREIGN KEY (`chapter_id`)
-  REFERENCES `bible_chapters` (`chapter_id`)
-  ON DELETE CASCADE;
-
-
-ALTER TABLE `checkins`
-  ADD CONSTRAINT `fk_checkins_user`
-  FOREIGN KEY (`user_id`)
-  REFERENCES `users` (`id`)
-  ON DELETE CASCADE;
-
-
-ALTER TABLE `comments`
-  ADD CONSTRAINT `fk_comments_post`
-  FOREIGN KEY (`post_id`)
-  REFERENCES `posts` (`id`)
-  ON DELETE CASCADE,
-
-  ADD CONSTRAINT `fk_comments_user`
-  FOREIGN KEY (`user_id`)
-  REFERENCES `users` (`id`)
-  ON DELETE CASCADE;
-
-
-ALTER TABLE `posts`
-  ADD CONSTRAINT `fk_posts_user`
-  FOREIGN KEY (`user_id`)
-  REFERENCES `users` (`id`)
-  ON DELETE CASCADE;
-
-
-ALTER TABLE `prayer_requests`
-  ADD CONSTRAINT `fk_prayer_requests_user`
-  FOREIGN KEY (`user_id`)
-  REFERENCES `users` (`id`)
-  ON DELETE CASCADE;
-
-
-ALTER TABLE `quiz_answers`
-  ADD CONSTRAINT `fk_quiz_answers_question`
-  FOREIGN KEY (`question_id`)
-  REFERENCES `quiz_questions` (`id`)
-  ON DELETE CASCADE;
-
-
-ALTER TABLE `quiz_results`
-  ADD CONSTRAINT `fk_quiz_results_user`
-  FOREIGN KEY (`user_id`)
-  REFERENCES `users` (`id`)
-  ON DELETE CASCADE;
-
-
-ALTER TABLE `sessions`
-  ADD CONSTRAINT `fk_sessions_user`
-  FOREIGN KEY (`user_id`)
-  REFERENCES `users` (`id`)
-  ON DELETE CASCADE;
-
-
-ALTER TABLE `csrf_tokens`
-  ADD CONSTRAINT `fk_csrf_tokens_user`
-  FOREIGN KEY (`user_id`)
-  REFERENCES `users` (`id`)
-  ON DELETE CASCADE;
-
-
-ALTER TABLE `user_preferences`
-  ADD CONSTRAINT `fk_user_preferences_user`
-  FOREIGN KEY (`user_id`)
-  REFERENCES `users` (`id`)
-  ON DELETE CASCADE;
-
-
-ALTER TABLE `user_progress`
-  ADD CONSTRAINT `fk_user_progress_user`
-  FOREIGN KEY (`user_id`)
-  REFERENCES `users` (`id`)
-  ON DELETE CASCADE;
-
-
-ALTER TABLE `testimonials`
-  ADD CONSTRAINT `fk_testimonials_user`
-  FOREIGN KEY (`user_id`)
-  REFERENCES `users` (`id`)
-  ON DELETE CASCADE;
-
-
--- --------------------------------------------------------
--- Additional Performance Indexes
--- --------------------------------------------------------
-
-ALTER TABLE `bible_books`
-  ADD INDEX `idx_language`
-  (`language`);
-
-
-ALTER TABLE `bible_chapters`
-  ADD INDEX `idx_book_language`
-  (`book_id`,`language`);
-
+    ADD KEY `idx_bible_chapters_book_language` (`book_id`, `language`),
+    ADD CONSTRAINT `fk_bible_chapters_book_language`
+        FOREIGN KEY (`book_id`, `language`)
+        REFERENCES `bible_books` (`book_id`, `language`)
+        ON DELETE CASCADE;
 
 ALTER TABLE `bible_verses`
-  ADD INDEX `idx_chapter_language`
-  (`chapter_id`,`language`);
-
-
-ALTER TABLE `policy`
-  ADD INDEX `idx_policy_slug`
-  (`slug`);
-
-
-ALTER TABLE `quiz_results`
-  ADD INDEX `idx_quiz_user_date`
-  (`user_id`,`taken_at`);
-
-
-ALTER TABLE `resources`
-  ADD INDEX `idx_featured_created`
-  (`is_featured`,`created_at`);
-
-
-ALTER TABLE `csrf_tokens`
-  ADD INDEX `idx_token_expiry`
-  (`token`,`expires_at`);
-
+    ADD KEY `idx_bible_verses_chapter_language` (`chapter_id`, `language`),
+    ADD CONSTRAINT `fk_bible_verses_chapter_language`
+        FOREIGN KEY (`chapter_id`, `language`)
+        REFERENCES `bible_chapters` (`chapter_id`, `language`)
+        ON DELETE CASCADE;
 
 COMMIT;
 

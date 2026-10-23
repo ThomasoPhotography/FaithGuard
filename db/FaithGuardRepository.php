@@ -1,4 +1,6 @@
 <?php
+declare (strict_types = 1);
+
 require_once __DIR__ . '/database.php';
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/../api/helper/CsrfTokenGenerator.php';
@@ -26,13 +28,19 @@ class FaithGuardRepository
             $stmt = $pdo->prepare(
                 "SELECT
                 id,
+                email,
+                password_hash,
                 first_name,
                 last_name,
                 avatar_url,
                 bio,
                 bible_language,
                 bible_version,
+                is_admin,
+                is_member,
                 is_active,
+                email_verified,
+                created_at,
                 last_login
             FROM users
             WHERE email = ?
@@ -78,122 +86,45 @@ class FaithGuardRepository
 // Create new user
     public static function createUser(array $data): int | false
     {
-        $debugFile = __DIR__ . '/create_user_debug.txt';
+        $email        = strtolower(trim((string) ($data['email'] ?? '')));
+        $passwordHash = (string) ($data['password_hash'] ?? '');
+        $firstName    = isset($data['first_name']) ? trim((string) $data['first_name']) : null;
+        $lastName     = isset($data['last_name']) ? trim((string) $data['last_name']) : null;
+
+        if (! filter_var($email, FILTER_VALIDATE_EMAIL) || $passwordHash === '') {
+            return false;
+        }
 
         try {
-
-            file_put_contents(
-                $debugFile,
-                date('Y-m-d H:i:s') . " CREATE USER START\n",
-                FILE_APPEND
-            );
-
             $pdo = Database::getConnection();
-
-            file_put_contents(
-                $debugFile,
-                "DATABASE CONNECTED\n",
-                FILE_APPEND
-            );
-
             $pdo->beginTransaction();
 
-            file_put_contents(
-                $debugFile,
-                "TRANSACTION STARTED\n",
-                FILE_APPEND
-            );
-
             $stmt = $pdo->prepare(
-                "INSERT INTO users
-            (email, password_hash, first_name, last_name)
-            VALUES (?, ?, ?, ?)"
+                'INSERT INTO users (email, password_hash, first_name, last_name)
+                 VALUES (?, ?, ?, ?)'
             );
-
-            file_put_contents(
-                $debugFile,
-                "INSERT PREPARED\n",
-                FILE_APPEND
-            );
-
-            $stmt->execute([
-                $data['email'],
-                $data['password_hash'],
-                $data['first_name'] ?? null,
-                $data['last_name'] ?? null,
-            ]);
-
-            file_put_contents(
-                $debugFile,
-                "USER INSERTED\n",
-                FILE_APPEND
-            );
+            $stmt->execute([$email, $passwordHash, $firstName, $lastName]);
 
             $userId = (int) $pdo->lastInsertId();
-
-            file_put_contents(
-                $debugFile,
-                "USER ID: " . $userId . "\n",
-                FILE_APPEND
-            );
-
-            $preferences = self::createUserPreferences($userId);
-
-            file_put_contents(
-                $debugFile,
-                "PREFERENCES RESULT: " . print_r($preferences, true) . "\n",
-                FILE_APPEND
-            );
-
-            $progress = self::createUserProgress($userId);
-
-            file_put_contents(
-                $debugFile,
-                "PROGRESS RESULT: " . print_r($progress, true) . "\n",
-                FILE_APPEND
-            );
-
-            if (! $preferences || ! $progress) {
-
-                file_put_contents(
-                    $debugFile,
-                    "ROLLBACK REQUIRED\n",
-                    FILE_APPEND
-                );
-
-                $pdo->rollBack();
-
+            if ($userId < 1
+                || ! self::createUserPreferences($userId)
+                || ! self::createUserProgress($userId)
+            ) {
+                if ($pdo->inTransaction()) {
+                    $pdo->rollBack();
+                }
                 return false;
             }
 
             $pdo->commit();
-
-            file_put_contents(
-                $debugFile,
-                "COMMIT SUCCESS\n",
-                FILE_APPEND
-            );
-
             return $userId;
-
         } catch (\Throwable $e) {
-
-            file_put_contents(
-                $debugFile,
-                "ERROR:\n" .
-                $e->getMessage() .
-                "\nFILE: " .
-                $e->getFile() .
-                "\nLINE: " .
-                $e->getLine() .
-                "\n\n",
-                FILE_APPEND
-            );
-
-            if (isset($pdo) && $pdo->inTransaction()) {
+            if (isset($pdo) && $pdo instanceof \PDO  && $pdo->inTransaction()) {
                 $pdo->rollBack();
             }
 
+            // Do not expose database details or write diagnostics into a public directory.
+            error_log('FaithGuardRepository::createUser failed (' . get_class($e) . ').');
             return false;
         }
     }
@@ -1504,9 +1435,10 @@ class FaithGuardRepository
         VALUES (?, ?, ?, ?, ?)
 
         ON DUPLICATE KEY UPDATE
-
-            content = VALUES(content)
-
+            chapter_id = VALUES(chapter_id),
+            verse_number = VALUES(verse_number),
+            content = VALUES(content),
+            fetched_at = CURRENT_TIMESTAMP
         ",
             [
                 $verseId,
@@ -2147,8 +2079,9 @@ class FaithGuardRepository
 // Create CSRF token
     public static function createCsrfToken(?int $userId = null, int $lifetime = 3600): ?string
     {
-        $token   = CsrfTokenGenerator::generate();
-        $expires = gmdate(
+        $lifetime = max(60, min($lifetime, 86400));
+        $token    = CsrfTokenGenerator::generate();
+        $expires  = gmdate(
             'Y-m-d H:i:s',
             time() + $lifetime
         );
@@ -2171,6 +2104,7 @@ class FaithGuardRepository
             "
         DELETE FROM csrf_tokens
         WHERE token = ?
+        AND expires_at > UTC_TIMESTAMP()
         ",
             [
                 $token,

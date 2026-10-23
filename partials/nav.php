@@ -11,11 +11,14 @@
     $user_role   = (string) ($user['role'] ?? $user_role);
     }
     $profileUrl = $user_role === 'admin' ? '/admin/dashboard.php' : '/dashboard.php';
+    if (! isset($meta) || ! is_array($meta)) {
+    $meta = [];
+    }
 ?>
 <nav class="navbar navbar-expand-lg navbar-light c-nav" aria-label="Main">
     <div class="container-fluid">
         <a class="navbar-brand c-nav__brand" href="/">
-            <img src="/assets/uploads/FaithGuard_Primary_Logo.svg" alt="" class="c-nav__logo" width="40" height="40">
+            <img src="/assets/uploads/FaithGuard_Primary_Logo.svg" alt="FaithGuard logo" class="c-nav__logo" width="40" height="40">
             <span class="visually-hidden">FaithGuard, home</span>
         </a>
         <button class="navbar-toggler c-nav__toggler c-nav__toggler--btn" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
