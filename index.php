@@ -1,6 +1,6 @@
 <?php
     // Use centralized config for session cookie settings when available
-    require_once $_SERVER['DOCUMENT_ROOT'] . '/db/config.php';
+    require_once __DIR__ . '/db/config.php';
 
     // Determine safe cookie domain (strip port, validate)
     $rawHost      = $_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME'] ?? '';
@@ -24,12 +24,12 @@
     }
 
     // --- Core App Requirements (Always required) ---
-    require_once $_SERVER['DOCUMENT_ROOT'] . '/db/database.php';
-    require_once $_SERVER['DOCUMENT_ROOT'] . '/db/FaithGuardRepository.php';
+    require_once __DIR__ . '/db/database.php';
+    require_once __DIR__ . '/db/FaithGuardRepository.php';
     // --- Optional Helper/Debug (Required, but note its function) ---
-    require_once $_SERVER['DOCUMENT_ROOT'] . '/api/helper/debug.php';
+    require_once __DIR__ . '/api/helper/debug.php';
     // User normalization helper
-    require_once $_SERVER['DOCUMENT_ROOT'] . '/api/helper/user.php';
+    require_once __DIR__ . '/api/helper/user.php';
 
     $is_logged_in = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
 
@@ -65,154 +65,50 @@
                                                           // --- Testimonials (Community Impact) ---
     $testimonials = FaithGuardRepository::getTestimonials(3); // Fetch 3 testimonials for display
 ?>
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <!-- Meta tags -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="FaithGuard - Protecting Your Digital Faith">
-    <meta name="keywords" content="FaithGuard, Digital Security, Faith Protection, Online Safety">
-    <meta name="author" content="WWTW - FaithGuard">
-    <meta name="robots" content="noindex">
-    <!-- Version -->
-    <meta name="version" content="0.1.4-alpha">
-    <meta name="release" content="current">
-    <!-- Title -->
-    <title>FaithGuard</title>
-    <!-- Favicon -->
-    <link rel="icon" href="/assets/uploads/favicon.ico" type="image/x-icon">
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-    <!-- Stylesheet -->
-    <link rel="stylesheet" href="/assets/css/main.css">
-</head>
-
-<body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light c-nav">
-        <div class="container-fluid">
-            <!-- LEFT SIDE: LOGO + BRAND -->
-            <a class="navbar-brand c-nav__brand" href="index.php">
-                <img src="assets/uploads/FaithGuard_Primary_Logo.svg" alt="FaithGuard Logo" class="c-nav__logo">
-            </a>
-            <button class="navbar-toggler c-nav__toggler c-nav__toggler--btn" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <!-- NAV -->
-            <div class="collapse navbar-collapse c-nav__collapse" id="navbarNav">
-                <!-- Main Navigation Links (CENTER/LEFT) -->
-                <ul class="navbar-nav c-nav__bar me-auto">
-                    <?php if ($is_logged_in && $user): ?>
-                        <li class="nav-item c-nav__item">
-                            <a class="nav-link c-nav__link" href="community.php">Community</a>
-                        </li>
-                        <li class="nav-item c-nav__item">
-                            <a class="nav-link c-nav__link" href="resources.php">Resources</a>
-                        </li>
-                        <li class="nav-item c-nav__item">
-                            <a class="nav-link c-nav__link" href="about.php">About</a>
-                        </li>
-                    <?php else: ?>
-                        <li class="nav-item c-nav__item">
-                            <a class="nav-link c-nav__link" href="resources.php">Resources</a>
-                        </li>
-                    <?php endif; ?>
-                </ul>
-                <!-- RIGHT SIDE: USER/LOGIN DROPDOWN -->
-                <?php if ($is_logged_in && $user): ?>
-                <!-- Logged-in user menu -->
-                <div class="d-flex dropdown c-nav__dropdown c-dropdown">
-                    <button class="btn c-btn c-dropdown__btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="c-dropdown__icon bi bi-person-check me-1"></i>
-                        <span class="c-dropdown__text">Welcome                                                                                                                                                                                                                                                                                                                                                                                                                                                   <?php echo $accountName; ?></span>
-                    </button>
-                    <!-- LOGGED-IN DROPDOWN MENU -->
-                    <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu" aria-labelledby="userDropdown">
-                        <li>
-                            <h6 class="dropdown-header c-dropdown__header">Signed in as:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         <?php echo ucfirst($user_role); ?></h6>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <!-- Profile Link (Role-Based) -->
-                        <li>
-                            <a class="dropdown-item c-dropdown__item" href="<?php echo($user_role === 'admin') ? 'admin/profile.php' : 'users/profile.php'; ?>">
-                                <i class="bi bi-person-badge me-2"></i>
-                                <span class="c-dropdown__text">Profile / Dashboard</span>
-                            </a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li>
-                            <a class="dropdown-item c-dropdown__item js-logout-btn" href="#">
-                                <i class="bi bi-box-arrow-right me-2"></i>
-                                <span class="c-dropdown__text">Logout</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <?php else: ?>
-                <!-- Guest login/register dropdown -->
-                <div class="d-flex dropdown c-nav__dropdown c-dropdown">
-                    <button class="btn c-btn c-dropdown__btn js-dropdown-btn dropdown-toggle" type="button" id="loginDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="c-dropdown__icon bi bi-person-circle me-1"></i>
-                        <span class="c-dropdown__text">Login / Register</span>
-                    </button>
-                    <!-- LOGGED-OUT DROPDOWN MENU (Login Form) -->
-                    <ul class="dropdown-menu dropdown-menu-end c-dropdown__menu js-dropdown-menu" aria-labelledby="loginDropdown">
-                        <li>
-                            <h6 class="dropdown-header c-dropdown__header">Sign Up / Log In</h6>
-                        </li>
-                        <li>
-                            <input type="email" id="signupUsername" class="form-control c-dropdown__info mb-2" placeholder="Email">
-                        </li>
-                        <li>
-                            <input type="password" id="signupPassword" class="form-control c-dropdown__info mb-2" placeholder="Password">
-                        </li>
-                        <li>
-                            <a class="dropdown-item c-dropdown__item js-log mb-2" href="#">
-                                <i class="bi bi-person-check me-2"></i>
-                                <span class="c-dropdown__text">Login</span>
-                            </a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li>
-                            <a class="dropdown-item c-dropdown__item js-create" href="#" onclick="openRegisterModal();">
-                                <i class="bi bi-person-plus me-2"></i>
-                                <span class="c-dropdown__text">Create Account</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <?php endif; ?>
-            </div>
-        </div>
-    </nav>
+<?php
+    require_once __DIR__ . '/includes/seo.php';
+    require_once __DIR__ . '/includes/rooms.php';
+    require_once __DIR__ . '/includes/pages.php';
+    $meta = fg_page_meta('home');
+    fg_render_head($meta);
+?>
+<?php require __DIR__ . '/partials/nav.php'; ?>
     <!-- Hero Content -->
     <header class="c-hero">
         <div class="container-fluid">
             <div class="c-hero__content text-center">
-                <h1 class="c-hero__title">Welcome to FaithGuard</h1>
-                <h2 class="c-hero__subtitle">Faith-Based Resources for Recovery</h2>
+                <h1 class="c-hero__title">Take back your time online with Scripture, prayer and community</h1>
                 <p class="c-hero__text">Free, vetted resources to support your journey toward spiritual freedom. Rooted in Christian hope and redemption.</p>
                 <a href="quiz.php" class="btn c-btn c-hero__btn">Take the Quiz</a>
             </div>
         </div>
     </header>
     <!-- Main Content -->
-    <main class="c-main container my-5">
-        <!-- Sign Up Modal -->
-        <div id="modal-container"></div>
-        <!-- Resource Section -->
+    <main id="main" class="c-main container my-5">
+    <!-- The eight rooms -->
+    <section class="c-main__section c-rooms mb-5" id="rooms" aria-labelledby="rooms-title">
+    <div class="c-rooms__header">
+    <div class="c-rooms__intro">
+    <h2 class="c-main__title" id="rooms-title">Scripture is the doorway; eight rooms behind it.</h2>
+    <p class="c-main__text">Read by walking in, lived by walking further. Each doorway opens onto the same home.</p>
+    </div>
+    <a class="btn c-btn c-btn__outline" href="/contact.php">Ask about a room</a>
+    </div>
+    <ul class="c-rooms__grid">
+    <?php foreach (rooms() as $room): ?>
+    <li class="c-rooms__item<?php echo $room['slug'] === 'scripture' ? ' c-rooms__item--featured' : ''; ?>">
+    <a class="c-room-card<?php echo $room['slug'] === 'scripture' ? ' c-room-card--featured' : ''; ?>" href="/rooms/<?php echo fg_e($room['slug']); ?>">
+    <h3 class="c-room-card__name"><?php echo fg_e($room['name']); ?></h3>
+    <p class="c-room-card__short"><?php echo fg_e($room['short']); ?></p>
+    </a>
+    </li>
+    <?php endforeach; ?>
+    </ul>
+    </section>
+    <!-- Resource Section -->
         <section class="c-main__section mb-5">
             <h2 class="c-main__title">Our Mission</h2>
-            <p class="c-main__text">At FaithGuard, we are dedicated to providing resources and tools to help individuals regain and protect their faith from digital influenced addictions like porn.</p>
+            <p class="c-main__text">FaithGuard provides resources and tools to help people regain and protect their faith from digital addictions, including pornography. Read <a href="/about.php">how FaithGuard approaches recovery</a>.</p>
         </section>
         <!-- Featured Resources Section -->
         <section class="c-main__section mb-5">
@@ -226,7 +122,7 @@
                                 <div class="card-body c-card__body">
                                     <h5 class="card-title c-card__title"><?php echo htmlspecialchars($resource['title']); ?></h5>
                                     <p class="card-text c-card__text"><?php echo htmlspecialchars(substr($excerpt, 0, 100)) . (strlen($excerpt) > 100 ? '...' : ''); ?></p>
-                                    <a href="/resources.php?id=<?php echo $resource['id']; ?>" class="btn c-btn c-card__btn">Learn More</a>
+                                    <a href="/resources.php?slug=<?php echo rawurlencode((string) ($resource['slug'] ?? '')); ?>" class="btn c-btn c-card__btn">Learn More</a>
                                 </div>
                             </div>
                         </div>
@@ -242,10 +138,11 @@
         <section class="c-main__section text-center mb-5">
             <h2 class="c-main__titlepop">Join the FaithGuard Community</h2>
             <p class="c-main__text">Sign up today to access personalized resources, track your progress, and connect with others on the same journey.</p>
-            <a onclick="openRegisterModal(); return false;" class="btn c-btn c-btn__outline">Get Started</a>
-            <a class="c-main__text c-main__text--verse js-bible__ref">2 Corinthians 5:7</a>
+            <a href="#" role="button" onclick="openRegisterModal(); return false;" class="btn c-btn c-btn__outline">Get Started</a>
+            <a href="#" role="button" class="c-main__text c-main__text--verse" data-action="open-verse-modal">2 Corinthians 5:7</a>
         </section>
     </main>
+    <?php if (! empty($testimonials)): ?>
     <!-- Community Impact Section -->
     <article class="container-fluid mb-4">
         <section class="c-main__section c-impact mb-5">
@@ -265,67 +162,8 @@
             </div>
         </section>
     </article>
-    <!-- Footer -->
-    <footer class="c-footer">
-        <div class="container">
-            <div class="row">
-                <!-- Footer Content: Left -->
-                <div class="col-md-6 col-12">
-                    <img class="c-footer__logo" src="/assets/uploads/FaithGuard_Primary_Logo.svg" alt="Primary Logo">
-                    <p class="c-footer__text">&copy; 2025 FaithGuard. All rights reserved. Overcoming addiction through Christ &amp; Protecting your digital faith with hope and redemption.</p>
-                </div>
-                <!-- Footer Content: Right -->
-                <div class="col-md-6 col-12 text-md-end mb-0 mt-lg-5">
-                    <ul class="footer-nav c-footer__nav">
-                        <li class="c-footer__item">
-                            <a class="c-footer__links" href="index.php">Home</a>
-                        </li>
-                        <li class="c-footer__item">
-                            <a class="c-footer__links" href="resources.php">Resources</a>
-                        </li>
-                        <li class="c-footer__item">
-                            <a class="c-footer__links" href="about.php">About</a>
-                    </li>
-                    <li class="c-footer__item">
-                        <a class="c-footer__links" href="contact.php">Contact</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- Footer Content: Policies -->
-            <div class="row c-footer__row">
-                <div class="col-md-3">
-                    <li class="c-footer__item">
-                            <a class="c-footer__links" href="policies.php?slug=terms">Terms of Service</a>
-                        </li>
-                </div>
-                <div class="col-md-3">
-                    <li class="c-footer__item">
-                            <a class="c-footer__links" href="policies.php?slug=privacy">Privacy Policy</a>
-                        </li>
-                </div>
-                <div class="col-md-3">
-                    <li class="c-footer__item">
-                            <a class="c-footer__links" href="policies.php?slug=cookie">Cookie Policy</a>
-                        </li>
-                </div>
-            </div>
-        </div>
-    </footer>
+    <?php endif; ?>
+<?php require __DIR__ . '/partials/footer.php'; ?>
+<?php require __DIR__ . '/partials/scripts.php'; ?>
 </body>
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-<!-- Custom JS -->
-<script src="/assets/js/auth.js"></script>
-<script src="/assets/js/cookie-banner.js"></script>
-<script src="/assets/js/journal.js"></script>
-<script src="/assets/js/profile-timeline-modal.js"></script>
-<script src="/assets/js/profile-pastoral-modal.js"></script>
-<script src="/assets/js/messaging.js"></script>
-<script src="/assets/js/progress.js"></script>
-<script src="/assets/js/quiz.js"></script>
-<script src="/assets/js/resources.js"></script>
-<script src="/assets/js/scripture-modal.js"></script>
-<script src="/assets/js/dashboard-scripture.js"></script>
-<script src="/assets/js/register.js"></script>
 </html>
-

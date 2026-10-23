@@ -1,6 +1,6 @@
 <?php
     // Use centralized config for session cookie settings
-    require_once $_SERVER['DOCUMENT_ROOT'] . '/db/config.php';
+    require_once __DIR__ . '/db/config.php';
 
     // Determine safe cookie domain (strip port, validate)
     $rawHost      = $_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME'] ?? '';
@@ -21,8 +21,8 @@
     session_start();
     }
     // --- Core Site Requirements (Always required) ---
-    require_once $_SERVER['DOCUMENT_ROOT'] . '/db/FaithGuardRepository.php';
-    require_once $_SERVER['DOCUMENT_ROOT'] . '/api/helper/user.php';
+    require_once __DIR__ . '/db/FaithGuardRepository.php';
+    require_once __DIR__ . '/api/helper/user.php';
     // --- Core Site Session Check (Always required) ---
     if (! isset($_SESSION['user_id'])) {
     header('Location: /');
@@ -50,34 +50,17 @@
     exit;
     }
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <!-- Meta tags -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="FaithGuard - Protecting Your Digital Faith">
-    <meta name="keywords" content="FaithGuard, Digital Security, Faith Protection, Online Safety">
-    <meta name="author" content="WWTW - FaithGuard">
-    <meta name="robots" content="noindex">
-    <!-- Version -->
-    <meta name="version" content="0.1.4-alpha">
-    <meta name="release" content="current">
-    <!-- Title -->
-    <title>FaithGuard</title>
-    <!-- Favicon -->
-    <link rel="icon" href="/assets/uploads/favicon.ico" type="image/x-icon">
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-    <!-- Stylesheet -->
-    <link rel="stylesheet" href="/assets/css/main.css">
-</head>
-<body>
+<?php
+    require_once __DIR__ . '/includes/seo.php';
+    require_once __DIR__ . '/includes/rooms.php';
+    require_once __DIR__ . '/includes/pages.php';
+    $meta = fg_private_meta('Dashboard', '/dashboard.php');
+    fg_render_head($meta);
+?>
     <!-- Nav -->
-    <?php $nav = __DIR__ . '/partials/nav.php'; if (is_file($nav)) require_once $nav; ?>
+    <?php require __DIR__ . '/partials/nav.php'; ?>
     <!-- Dashboard Content -->
-    <div class="c-dashboard">
+    <main id="main" class="c-dashboard">
         <div class="c-dashboard__container container">
             <header class="c-dashboard__header">
                 <h1 class="c-dashboard__title"> Welcome, <?php echo htmlspecialchars($user['display_name'] ?? 'Friend'); ?>
@@ -201,17 +184,10 @@
                 </div>
             </section>
         <?php endif; ?>
-    </div>
+        </div>
+    </main>
     <!-- Footer -->
-    <?php $footer = __DIR__ . '/partials/footer.php'; if (is_file($footer)) require_once $footer; ?>
+    <?php require __DIR__ . '/partials/footer.php'; ?>
+<?php require __DIR__ . '/partials/scripts.php'; ?>
 </body>
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-<!-- Custom JS -->
-<script src="/assets/js/auth.js"></script>
-<script src="/assets/js/cookie-banner.js"></script>
-<script src="/assets/js/nav.js"></script>
-<script src="/assets/js/footer.js"></script>
-<script src="/assets/js/verse-modal.js"></script>
-<script src="/assets/js/dashboard.js"></script>
 </html>

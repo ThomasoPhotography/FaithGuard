@@ -19,12 +19,12 @@ class FaithGuardRepository
     }
 
 // Find user by email (authentication)
-public static function getUserByEmail(string $email): ?array
-{
-    try {
-        $pdo = Database::getConnection();
-        $stmt = $pdo->prepare(
-            "SELECT 
+    public static function getUserByEmail(string $email): ?array
+    {
+        try {
+            $pdo  = Database::getConnection();
+            $stmt = $pdo->prepare(
+                "SELECT
                 id,
                 first_name,
                 last_name,
@@ -37,30 +37,26 @@ public static function getUserByEmail(string $email): ?array
             FROM users
             WHERE email = ?
             LIMIT 1"
-        );
+            );
 
+            $stmt->execute([
+                $email,
+            ]);
 
-        $stmt->execute([
-            $email
-        ]);
+            $user = $stmt->fetch(
+                PDO::FETCH_ASSOC
+            );
 
+            return $user ?: null;
 
-        $user = $stmt->fetch(
-            PDO::FETCH_ASSOC
-        );
-
-
-        return $user ?: null;
-
-
-    } catch (\Throwable $e) {
-        error_log(
-            "getUserByEmail failed: " .
-            $e->getMessage()
-        );
-        return null;
+        } catch (\Throwable $e) {
+            error_log(
+                "getUserByEmail failed: " .
+                $e->getMessage()
+            );
+            return null;
+        }
     }
-}
 
 // Find user by first and last name
     public static function getUserByName(string $firstName, string $lastName): ?array
@@ -80,142 +76,127 @@ public static function getUserByEmail(string $email): ?array
     }
 
 // Create new user
-public static function createUser(array $data): int|false
-{
-    $debugFile = __DIR__ . '/create_user_debug.txt';
+    public static function createUser(array $data): int | false
+    {
+        $debugFile = __DIR__ . '/create_user_debug.txt';
 
-    try {
-
-        file_put_contents(
-            $debugFile,
-            date('Y-m-d H:i:s') . " CREATE USER START\n",
-            FILE_APPEND
-        );
-
-
-        $pdo = Database::getConnection();
-
-        file_put_contents(
-            $debugFile,
-            "DATABASE CONNECTED\n",
-            FILE_APPEND
-        );
-
-
-        $pdo->beginTransaction();
-
-        file_put_contents(
-            $debugFile,
-            "TRANSACTION STARTED\n",
-            FILE_APPEND
-        );
-
-
-        $stmt = $pdo->prepare(
-            "INSERT INTO users 
-            (email, password_hash, first_name, last_name)
-            VALUES (?, ?, ?, ?)"
-        );
-
-        file_put_contents(
-            $debugFile,
-            "INSERT PREPARED\n",
-            FILE_APPEND
-        );
-
-
-        $stmt->execute([
-            $data['email'],
-            $data['password_hash'],
-            $data['first_name'] ?? null,
-            $data['last_name'] ?? null,
-        ]);
-
-        file_put_contents(
-            $debugFile,
-            "USER INSERTED\n",
-            FILE_APPEND
-        );
-
-
-        $userId = (int) $pdo->lastInsertId();
-
-
-        file_put_contents(
-            $debugFile,
-            "USER ID: " . $userId . "\n",
-            FILE_APPEND
-        );
-
-
-        $preferences = self::createUserPreferences($userId);
-
-        file_put_contents(
-            $debugFile,
-            "PREFERENCES RESULT: " . print_r($preferences, true) . "\n",
-            FILE_APPEND
-        );
-
-
-        $progress = self::createUserProgress($userId);
-
-        file_put_contents(
-            $debugFile,
-            "PROGRESS RESULT: " . print_r($progress, true) . "\n",
-            FILE_APPEND
-        );
-
-
-        if (!$preferences || !$progress) {
+        try {
 
             file_put_contents(
                 $debugFile,
-                "ROLLBACK REQUIRED\n",
+                date('Y-m-d H:i:s') . " CREATE USER START\n",
                 FILE_APPEND
             );
 
-            $pdo->rollBack();
+            $pdo = Database::getConnection();
+
+            file_put_contents(
+                $debugFile,
+                "DATABASE CONNECTED\n",
+                FILE_APPEND
+            );
+
+            $pdo->beginTransaction();
+
+            file_put_contents(
+                $debugFile,
+                "TRANSACTION STARTED\n",
+                FILE_APPEND
+            );
+
+            $stmt = $pdo->prepare(
+                "INSERT INTO users
+            (email, password_hash, first_name, last_name)
+            VALUES (?, ?, ?, ?)"
+            );
+
+            file_put_contents(
+                $debugFile,
+                "INSERT PREPARED\n",
+                FILE_APPEND
+            );
+
+            $stmt->execute([
+                $data['email'],
+                $data['password_hash'],
+                $data['first_name'] ?? null,
+                $data['last_name'] ?? null,
+            ]);
+
+            file_put_contents(
+                $debugFile,
+                "USER INSERTED\n",
+                FILE_APPEND
+            );
+
+            $userId = (int) $pdo->lastInsertId();
+
+            file_put_contents(
+                $debugFile,
+                "USER ID: " . $userId . "\n",
+                FILE_APPEND
+            );
+
+            $preferences = self::createUserPreferences($userId);
+
+            file_put_contents(
+                $debugFile,
+                "PREFERENCES RESULT: " . print_r($preferences, true) . "\n",
+                FILE_APPEND
+            );
+
+            $progress = self::createUserProgress($userId);
+
+            file_put_contents(
+                $debugFile,
+                "PROGRESS RESULT: " . print_r($progress, true) . "\n",
+                FILE_APPEND
+            );
+
+            if (! $preferences || ! $progress) {
+
+                file_put_contents(
+                    $debugFile,
+                    "ROLLBACK REQUIRED\n",
+                    FILE_APPEND
+                );
+
+                $pdo->rollBack();
+
+                return false;
+            }
+
+            $pdo->commit();
+
+            file_put_contents(
+                $debugFile,
+                "COMMIT SUCCESS\n",
+                FILE_APPEND
+            );
+
+            return $userId;
+
+        } catch (\Throwable $e) {
+
+            file_put_contents(
+                $debugFile,
+                "ERROR:\n" .
+                $e->getMessage() .
+                "\nFILE: " .
+                $e->getFile() .
+                "\nLINE: " .
+                $e->getLine() .
+                "\n\n",
+                FILE_APPEND
+            );
+
+            if (isset($pdo) && $pdo->inTransaction()) {
+                $pdo->rollBack();
+            }
 
             return false;
         }
-
-
-        $pdo->commit();
-
-        file_put_contents(
-            $debugFile,
-            "COMMIT SUCCESS\n",
-            FILE_APPEND
-        );
-
-
-        return $userId;
-
-
-    } catch (\Throwable $e) {
-
-
-        file_put_contents(
-            $debugFile,
-            "ERROR:\n" .
-            $e->getMessage() .
-            "\nFILE: " .
-            $e->getFile() .
-            "\nLINE: " .
-            $e->getLine() .
-            "\n\n",
-            FILE_APPEND
-        );
-
-
-        if (isset($pdo) && $pdo->inTransaction()) {
-            $pdo->rollBack();
-        }
-
-
-        return false;
     }
-}
 
 // Update user
     public static function updateUser(int $id, array $data): bool
@@ -573,7 +554,7 @@ public static function createUser(array $data): int|false
 
         $limit = max(1, min($limit, 100));
 
-        $sql .= "ORDER BY is_featured DESC, created_at DESCLIMIT $limit ";
+        $sql .= " ORDER BY is_featured DESC, created_at DESC LIMIT $limit";
 
         return Database::getRows(
             $sql,
