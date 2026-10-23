@@ -364,6 +364,7 @@ All notable changes to this project will be documented in this file.
 - Enhance debug logging in registration process and improve error handling in modal.
 - Improve user retrieval and creation methods with enhanced error handling and logging.
 - Enhance user creation method with detailed debug logging and error handling.
+- Update room header tag to uppercase for improved emphasis and consistency.
 
 
 ### Security

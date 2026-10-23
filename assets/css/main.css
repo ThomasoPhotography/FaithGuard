@@ -1,25 +1,20 @@
 /*---------------------------------------/*
- # SETTINGS
+# SETTINGS
 /*---------------------------------------*/
 :root {
   /* Primary brand colours */
   --color-orange-primary: #e56a00;
   --color-orange-footer: #d95f00;
-  /* Backgrounds & Surfaces */
-  --color-cream-warm: #ffffc2;
-  --color-white: #ffffff;
-  --color-neutral-pale: #f3f0ec;
-  --color-bg-dark: #221814;
-  --color-surface-dark: #2a1e19;
-  --color-border-dark: #3d2d25;
+  /* Backgrounds & Surfaces mapped to dark theme */
+  --color-bg-dark: #2c211b; /* Deep brown background matching design */
+  --color-surface-dark: #3a2c24; /* Subtle hover state for cards */
+  --color-border-dark: rgba(255, 255, 255, 0.15); /* Thin transparent borders */
   /* Typography colours */
-  --color-brown-deep: #2c211b;
-  --color-brown-muted: #6b5f54;
-  --color-text-main: #ffffff;
-  --color-text-muted: #a3968c;
+  --color-text-main: #ffffff; /* Primary white text */
+  --color-text-muted: rgba(255, 255, 255, 0.65); /* Muted descriptions */
   /* Typography stacks */
-  --font-family-heading: 'Playfair Display', serif;
-  --font-family-body: 'Inter', sans-serif;
+  --font-family-serif: 'Playfair Display', serif; /* Used for headings, card titles, and numbers */
+  --font-family-sans: 'Inter', sans-serif; /* Used for body text and tags */
   --font-base-size: 16px;
   --font-line-height: 1.6;
   /* Spacing (4px base) */
@@ -35,7 +30,7 @@
   /* Layout Standards */
   --layout-max-width: 1200px;
   --border-radius-card: 8px;
-  --border-radius-control: 4px; /* Standard corners, strict avoidance of pill-shapes */
+  --border-radius-control: 4px;
 }
 
 /*---------------------------------------/*
@@ -50,14 +45,12 @@
 }
 
 body {
-  font-family: var(--font-family-body);
+  font-family: var(--font-family-sans);
   font-size: var(--font-base-size);
   line-height: var(--font-line-height);
-  color: var(--color-brown-deep);
-  background-color: var(--color-neutral-pale);
-  -webkit-font-smoothing: antialiased;
-  background-color: var(--color-bg-dark);
+  background-color: var(--color-bg-dark); /* Enforce unified dark background */
   color: var(--color-text-main);
+  -webkit-font-smoothing: antialiased;
 }
 
 /*---------------------------------------/*
@@ -69,15 +62,15 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: var(--font-family-heading);
-  color: var(--color-brown-deep);
+  font-family: var(--font-family-serif);
+  color: var(--color-text-main);
   margin-bottom: var(--space-4);
   font-weight: 700;
   line-height: 1.2;
 }
 
 p {
-  color: var(--color-brown-muted);
+  color: var(--color-text-muted);
   margin-bottom: var(--space-4);
 }
 
@@ -128,46 +121,48 @@ img {
   align-items: center;
   justify-content: center;
   padding: var(--space-3) var(--space-6);
-  background-color: var(--color-orange-primary);
-  color: var(--color-white);
-  font-family: var(--font-family-body);
+  background-color: var(--color-orange-primary); /* Solid orange fill */
+  color: var(--color-text-main); /* White text */
+  font-family: var(--font-family-sans);
   font-size: var(--font-base-size);
   font-weight: 600;
   border: none;
-  border-radius: var(--border-radius-control);
+  border-radius: var(--border-radius-control); /* Rectangular with slight radius */
   cursor: pointer;
   text-align: center;
   transition: background-color 0.2s ease;
 }
 .c-btn:hover, .c-btn:focus-visible {
   background-color: var(--color-orange-footer);
-  outline: 2px solid var(--color-brown-deep);
+  outline: 2px solid var(--color-text-main);
   outline-offset: 2px;
+  color: var(--color-text-main);
 }
 
 /* Header */
 .c-header {
-  background-color: var(--color-cream-warm);
+  background-color: transparent;
   padding: var(--space-4) 0;
-  border-bottom: 1px solid var(--color-neutral-pale);
+  border-bottom: 1px solid var(--color-border-dark);
 }
 
 /* Dashboard */
 .c-dashboard__card {
-  background: var(--color-white);
+  background: var(--color-surface-dark);
   border-radius: var(--border-radius-card);
   padding: var(--space-6);
   margin-bottom: var(--space-6);
-  box-shadow: 0 2px 4px rgba(44, 33, 27, 0.05);
+  border: 1px solid var(--color-border-dark);
 }
 .c-dashboard__card-title {
-  font-family: var(--font-family-heading);
+  font-family: var(--font-family-serif);
   font-size: 1.25rem;
   margin-bottom: var(--space-4);
+  color: var(--color-text-main);
 }
 .c-dashboard__card-text {
   margin-bottom: var(--space-4);
-  color: var(--color-brown-muted);
+  color: var(--color-text-muted);
 }
 .c-dashboard__activity-list {
   display: flex;
@@ -179,11 +174,11 @@ img {
   align-items: center;
   gap: var(--space-4);
   padding: var(--space-3);
-  background: var(--color-neutral-pale);
+  background: rgba(255, 255, 255, 0.05);
   border-radius: var(--border-radius-control);
 }
 
-/* Rooms */
+/* Rooms Header */
 .c-roomsheader {
   display: flex;
   flex-direction: column;
@@ -198,7 +193,8 @@ img {
   }
 }
 .c-roomsheader__tag {
-  color: var(--color-orange-primary);
+  color: var(--color-orange-primary); /* Orange overline */
+  font-family: var(--font-family-sans); /* Sans-serif tag */
   text-transform: uppercase;
   font-size: 0.75rem;
   letter-spacing: 0.05em;
@@ -207,14 +203,17 @@ img {
   margin-bottom: var(--space-2);
 }
 .c-roomsheader__title {
+  font-family: var(--font-family-serif); /* Serif primary heading */
   color: var(--color-text-main);
   font-size: 2.5rem;
   max-width: 600px;
   margin-bottom: var(--space-4);
 }
 .c-roomsheader__desc {
-  color: var(--color-text-muted);
+  font-family: var(--font-family-sans);
+  color: var(--color-text-muted); /* Muted white description */
   max-width: 500px;
+  margin: 0;
 }
 
 /* Rooms Grid & Cards */
@@ -231,24 +230,25 @@ img {
 
 .c-roomscard {
   background-color: transparent;
-  border: 1px solid var(--color-border-dark);
+  border: 1px solid var(--color-border-dark); /* Thin transparent border */
   border-radius: var(--border-radius-control);
   padding: var(--space-6) var(--space-6) var(--space-12) var(--space-6);
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
   transition: border-color 0.2s ease, background-color 0.2s ease;
+  text-decoration: none;
 }
 .c-roomscard:hover {
   background-color: var(--color-surface-dark);
   border-color: var(--color-text-muted);
 }
 .c-roomscard--featured {
-  border-color: var(--color-text-main);
+  border-color: var(--color-text-main); /* Solid white border for featured card */
 }
 @media (min-width: 768px) {
   .c-roomscard--featured {
-    grid-column: span 2;
+    grid-column: span 2; /* Featured card spans two columns */
   }
 }
 .c-roomscard__header {
@@ -258,88 +258,22 @@ img {
   margin-bottom: var(--space-4);
 }
 .c-roomscard__number {
-  color: var(--color-orange-primary);
-  font-weight: 600;
+  font-family: var(--font-family-serif); /* Serif numbers */
+  color: var(--color-orange-primary); /* Orange numbers */
+  font-weight: 700;
   font-size: 1.25rem;
 }
 .c-roomscard__title {
+  font-family: var(--font-family-serif); /* Serif card titles */
   color: var(--color-text-main);
   font-size: 1.25rem;
   margin: 0;
 }
 .c-roomscard__desc {
+  font-family: var(--font-family-sans); /* Sans-serif card descriptions */
   color: var(--color-text-muted);
   font-size: 0.875rem;
   margin: 0;
-}
-
-/* Footer */
-.c-footer {
-  background-color: var(--color-orange-footer);
-  color: var(--color-white);
-  padding: var(--space-12) 0 var(--space-6);
-}
-.c-footer__inner {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-8);
-}
-@media (min-width: 768px) {
-  .c-footer__inner {
-    flex-direction: row;
-    justify-content: space-between;
-  }
-}
-.c-footer__brand {
-  max-width: 300px;
-}
-.c-footer__brand-text {
-  color: var(--color-cream-warm);
-  margin-top: var(--space-2);
-}
-.c-footer__links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-8);
-}
-.c-footer__column-title {
-  font-family: var(--font-family-heading);
-  color: var(--color-cream-warm);
-  margin-bottom: var(--space-4);
-}
-.c-footer__column-links {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
-.c-footer__column-link {
-  color: var(--color-white);
-  transition: color 0.2s ease;
-}
-.c-footer__column-link:hover, .c-footer__column-link:focus {
-  color: var(--color-cream-warm);
-  text-decoration: underline;
-}
-.c-footer__bottom {
-  margin-top: var(--space-12);
-  padding-top: var(--space-4);
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-}
-@media (min-width: 768px) {
-  .c-footer__bottom {
-    flex-direction: row;
-    justify-content: space-between;
-  }
-}
-.c-footer__legal-link {
-  color: var(--color-cream-warm);
-}
-.c-footer__legal-link:hover {
-  text-decoration: underline;
 }
 
 /*---------------------------------------/*

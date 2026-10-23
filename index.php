@@ -108,7 +108,7 @@
             <div class="container">
                 <div class="c-roomsheader">
                     <div class="c-roomsheader__content">
-                        <span class="c-roomsheader__tag">Under one roof</span>
+                        <span class="c-roomsheader__tag">UNDER ONE ROOF</span>
                         <h2 class="c-roomsheader__title">Scripture as the doorway; eight rooms behind it.</h2>
                         <p class="c-roomsheader__desc">Read by walking in, lived by walking further — each doorway opens onto the same home, slowly.</p>
                     </div>
