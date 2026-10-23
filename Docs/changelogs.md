@@ -112,6 +112,8 @@ All notable changes to this project will be documented in this file.
 - Enhance HTML structure with meta tags for improved SEO and accessibility.
 - Add conditional rendering for dropdown menu based on the current page.
 - Enhance room section with new layout and styling; update HTML structure for better accessibility.
+- Enhance HTML structure with meta tags for SEO; add conditional rendering for dropdown menu; improve room section layout and accessibility.
+- Update changelog with recent enhancements; improve SEO and accessibility in HTML structure.
 
 ### Changed
 - `README.md` file got a professional make-over.
