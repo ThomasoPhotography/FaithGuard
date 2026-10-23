@@ -279,6 +279,10 @@ img {
 /* Footer */
 .c-footer__nav {
   list-style: none;
+  padding-left: 0;
+}
+.c-footer__row {
+  display: flex;
 }
 .c-footer__item {
   padding-bottom: 0.5rem;

@@ -371,7 +371,7 @@ All notable changes to this project will be documented in this file.
 - Update room header tag to uppercase for improved emphasis and consistency.
 - Add footer navigation styling and structure for improved layout and accessibility.
 - Enhance footer navigation styling and structure for improved layout and accessibility.
-
+- Enhance footer navigation layout with padding and flex display.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.
