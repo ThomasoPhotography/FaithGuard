@@ -162,8 +162,14 @@
         <section class="c-main__section text-center mb-5">
             <h2 class="c-main__titlepop">Join the FaithGuard Community</h2>
             <p class="c-main__text">Sign up today to access personalized resources, track your progress, and connect with others on the same journey.</p>
-            <a href="#" role="button" onclick="openRegisterModal(); return false;" class="btn c-btn c-btn__outline">Get Started</a>
-            <a href="#" role="button" class="c-main__text c-main__text--verse" data-action="open-verse-modal">2 Corinthians 5:7</a>
+            <div class="row">
+                <div class="col-12 col-md-5 offset-md-1 text-center">
+                    <a href="#" role="button" onclick="openRegisterModal(); return false;" class="btn c-btn c-btn__outline">Get Started</a>
+                </div>
+                <div class="col-12 col-md-5 text-center">
+                    <a href="#" role="button" class="c-main__text c-main__text--verse" data-action="open-verse-modal">2 Corinthians 5:7</a>
+                </div>
+            </div>
         </section>
     </main>
     <?php if (! empty($testimonials)): ?>

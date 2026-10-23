@@ -372,6 +372,7 @@ All notable changes to this project will be documented in this file.
 - Add footer navigation styling and structure for improved layout and accessibility.
 - Enhance footer navigation styling and structure for improved layout and accessibility.
 - Enhance footer navigation layout with padding and flex display.
+- Adjust layout of main section and footer for improved responsiveness.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.
