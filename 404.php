@@ -11,6 +11,7 @@
     fg_render_head($meta);
     require __DIR__ . '/partials/nav.php';
 ?>
+<link rel="stylesheet" href="/assets/css/main.css">
 <main id="main" class="c-main container my-5">
     <h1 class="c-main__title">Page not found</h1>
     <p class="c-main__subtitle">The page you asked for does not exist or has moved.</p>

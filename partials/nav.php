@@ -15,6 +15,7 @@
     $meta = [];
     }
 ?>
+<link rel="stylesheet" href="/assets/css/main.css">
 <nav class="navbar navbar-expand-lg navbar-light c-nav" aria-label="Main">
     <div class="container-fluid">
         <a class="navbar-brand c-nav__brand" href="/">
@@ -44,7 +45,7 @@
                     <a class="nav-link c-nav__link" href="/about.php"<?php echo fg_aria_current('/about.php', $meta) ?>>A Quieter Way</a>
                 </li>
                 <li class="nav-item c-nav__item">
-                    <a class="nav-link c-nav__link" href="/contact.php"<?php echo fg_aria_current('/contact.php', $meta) ?>>Reach the Hearth</a>
+                    <a class="nav-link c-nav__link" href="/contact.php"<?php echo fg_aria_current('/contact.php', $meta) ?>>Reach FaithGuard</a>
                 </li>
             </ul>
 <?php if ($is_logged_in && $user): ?>

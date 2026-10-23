@@ -1,6 +1,7 @@
 <?php
     declare (strict_types = 1);
 ?>
+<link rel="stylesheet" href="/assets/css/main.css">
 <footer class="c-footer">
     <div class="container">
         <div class="row">
