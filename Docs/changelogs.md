@@ -109,6 +109,9 @@ All notable changes to this project will be documented in this file.
 - Update `tests/register_csrf_test.php` to use `CsrfTokenGenerator::isValidFormat()` and add automatic creation/cleanup of a dummy user (ID 9999) to satisfy foreign key constraints.
 - Add type hints to `$data` in `api/base.php` (`jsonResponse`) and `$name` / `$default` in `db/config.php` (`faithguardEnv`) for improved type safety.
 - Implement rate limiting and CSRF validation in login and registration.
+- Enhance HTML structure with meta tags for improved SEO and accessibility.
+- Add conditional rendering for dropdown menu based on the current page.
+- Enhance room section with new layout and styling; update HTML structure for better accessibility.
 
 ### Changed
 - `README.md` file got a professional make-over.
@@ -126,6 +129,7 @@ All notable changes to this project will be documented in this file.
 - Update `tests/register_csrf_test.php` to use `CsrfTokenGenerator::isValidFormat()` and add automatic creation/cleanup of a dummy user (ID 9999) to satisfy foreign key constraints.
 - Enhance `db/config.php` to use `faithguardEnv()` for `APP_DEBUG` and `APP_ENV`, and add support for `'EMPTY'` passwords in local development.
 - Code structure for improved readability and maintainability.
+- Refactor CSS/SCSS and HTML structure for improved styling and layout.
 
 ### Deprecated
 - replace lighten/darken functions with color.adjust for consistent color manipulation in `main.scss`.
