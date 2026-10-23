@@ -137,6 +137,7 @@ All notable changes to this project will be documented in this file.
 - Refactor CSS/SCSS and HTML structure for improved styling and layout.
 - Refactor encapsulate scripture modal logic within an IIFE for improved structure.
 - Refactor update scripture modal IIFE structure and add placeholder for local API fetch.
+- Refactor streamline modal handling and cleanup in scripture modal logic.
 
 ### Deprecated
 - replace lighten/darken functions with color.adjust for consistent color manipulation in `main.scss`.

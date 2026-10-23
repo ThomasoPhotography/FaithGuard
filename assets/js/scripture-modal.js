@@ -2,23 +2,43 @@
 	// #region *** DOM references                           ***********
 	const dom = {
 		verseTriggers: null,
-		modalEl: null,
+		modalContainer: null,
 		modalInstance: null,
-		modalTitle: null,
-		modalBody: null,
 	};
 	// #endregion
 
 	// #region *** Callback-Visualisation - show___         ***********
 	const showVerseModal = function (title, content) {
-		if (dom.modalTitle && title) dom.modalTitle.textContent = title;
-		if (dom.modalBody && content) dom.modalBody.innerHTML = `<p>${content}</p>`;
+		if (!dom.modalContainer) return;
 
-		if (dom.modalInstance) {
+		// Inject the modal markup into the container
+		dom.modalContainer.innerHTML = `
+            <div class="modal fade c-modal" id="verseModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered c-modal__dialog">
+                    <div class="modal-content c-modal__content">
+                        <div class="modal-header c-modal__header">
+                            <h5 class="modal-title c-modal__title">${title}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body c-modal__body">
+                            <p>${content}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+		// Select the newly injected element and initialize Bootstrap modal
+		const modalEl = document.getElementById('verseModal');
+		if (modalEl && typeof bootstrap !== 'undefined') {
+			dom.modalInstance = new bootstrap.Modal(modalEl);
 			dom.modalInstance.show();
-		} else if (dom.modalEl && typeof bootstrap !== 'undefined') {
-			dom.modalInstance = new bootstrap.Modal(dom.modalEl);
-			dom.modalInstance.show();
+
+			// Clean up the DOM when the modal is fully hidden
+			modalEl.addEventListener('hidden.bs.modal', () => {
+				dom.modalContainer.innerHTML = '';
+				dom.modalInstance = null;
+			});
 		}
 	};
 	// #endregion
@@ -28,15 +48,19 @@
 
 	// #region *** Data Access - get___                     ***********
 	const getVerseData = async function (reference) {
-		// Placeholder for your planned local API (L-API) fetch
-		/*
-        try {
-            const response = await fetch(`/api/scripture.php?ref=${encodeURIComponent(reference)}`);
-            return await response.json();
-        } catch (error) {
-            console.error("Failed to fetch Scripture:", error);
-        }
-        */
+		try {
+			// Calls your L-API endpoint, safely encoding the Scripture reference (e.g., "2 Corinthians 5:7")
+			const response = await fetch(`/api/scripture/verse.php?ref=${encodeURIComponent(reference)}`);
+
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+
+			return await response.json();
+		} catch (error) {
+			console.error('Failed to fetch Scripture from L-API:', error);
+			return null;
+		}
 	};
 	// #endregion
 
@@ -45,13 +69,19 @@
 		if (!dom.verseTriggers) return;
 
 		dom.verseTriggers.forEach((trigger) => {
-			trigger.addEventListener('click', function (e) {
+			trigger.addEventListener('click', async function (e) {
 				e.preventDefault();
 				const reference = this.textContent.trim();
 
-				// Hardcoded fallback for current static implementation
-				const fallbackText = 'For we walk by faith, not by sight.';
-				showVerseModal(reference, fallbackText);
+				// Fetch the verse data dynamically
+				const data = await getVerseData(reference);
+
+				if (data && data.text) {
+					showVerseModal(reference, data.text);
+				} else {
+					// Fallback if the API fails or returns empty
+					showVerseModal(reference, 'Could not load the verse at this time. Please try again later.');
+				}
 			});
 		});
 	};
@@ -59,13 +89,9 @@
 
 	// #region *** Init / DOMContentLoaded                  ***********
 	const init = function () {
+		// Target your existing <div id="modal-container"></div>
+		dom.modalContainer = document.getElementById('modal-container');
 		dom.verseTriggers = document.querySelectorAll('[data-action="open-verse-modal"]');
-		dom.modalEl = document.getElementById('verseModal');
-
-		if (dom.modalEl) {
-			dom.modalTitle = dom.modalEl.querySelector('.c-modal__title');
-			dom.modalBody = dom.modalEl.querySelector('.c-modal__body');
-		}
 
 		listenToVerseClicks();
 	};
