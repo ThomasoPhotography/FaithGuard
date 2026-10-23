@@ -317,6 +317,9 @@ img {
 
 /* Nav */
 .c-nav {
+	&__bar {
+		list-style-type: none;
+	}
 	&__link {
 		color: #ffffff;
 		&:hover {

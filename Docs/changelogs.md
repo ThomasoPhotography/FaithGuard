@@ -375,6 +375,7 @@ All notable changes to this project will be documented in this file.
 - Enhance footer navigation layout with padding and flex display.
 - Adjust layout of main section and footer for improved responsiveness.
 - Update navigation link styles and fix current page condition with register update.
+- Update navigation styles and improve dropdown structure for better accessibility.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.

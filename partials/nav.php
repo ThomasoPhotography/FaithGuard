@@ -35,12 +35,12 @@
                 <li class="nav-item dropdown c-nav__item">
                     <a class="nav-link dropdown-toggle c-nav__link" href="#" id="ecosystemDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">The Ecosystem</a>
                     <ul class="dropdown-menu c-dropdown__menu" aria-labelledby="ecosystemDropdown">
-<?php foreach (rooms() as $room): ?>
-                        <li><a class="dropdown-item c-dropdown__item" href="/rooms/<?php echo fg_e($room['slug']) ?>"<?php echo fg_aria_current('/rooms/' . $room['slug'], $meta) ?>><?php echo fg_e($room['name']) ?></a></li>
-<?php endforeach; ?>
-<?php endif; ?>
+                        <?php foreach (rooms() as $room): ?>
+                            <li><a class="dropdown-item c-dropdown__item" href="/rooms/<?php echo fg_e($room['slug']) ?>"<?php echo fg_aria_current('/rooms/' . $room['slug'], $meta) ?>><?php echo fg_e($room['name']) ?></a></li>
+                        <?php endforeach; ?>
                     </ul>
                 </li>
+                <?php endif; ?>
                 <li class="nav-item c-nav__item">
                     <a class="nav-link c-nav__link" href="/resources.php"<?php echo fg_aria_current('/resources.php', $meta) ?>>Resources</a>
                 </li>
@@ -51,7 +51,7 @@
                     <a class="nav-link c-nav__link" href="/contact.php"<?php echo fg_aria_current('/contact.php', $meta) ?>>Reach FaithGuard</a>
                 </li>
             </ul>
-<?php if ($is_logged_in && $user): ?>
+            <?php if ($is_logged_in && $user): ?>
             <div class="d-flex dropdown c-nav__dropdown c-dropdown">
                 <button class="btn c-btn c-dropdown__btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="c-dropdown__icon bi bi-person-check me-1" aria-hidden="true"></i>
@@ -75,7 +75,7 @@
                     </li>
                 </ul>
             </div>
-<?php else: ?>
+            <?php else: ?>
             <div class="d-flex dropdown c-nav__dropdown c-dropdown">
                 <button class="btn c-btn c-dropdown__btn js-dropdown-btn dropdown-toggle" type="button" id="loginDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="c-dropdown__icon bi bi-person-circle me-1" aria-hidden="true"></i>
@@ -106,7 +106,7 @@
                     </li>
                 </ul>
             </div>
-<?php endif; ?>
+            <?php endif; ?>
         </div>
     </div>
 </nav>

@@ -292,6 +292,9 @@ img {
 }
 
 /* Nav */
+.c-nav__bar {
+  list-style-type: none;
+}
 .c-nav__link {
   color: #ffffff;
 }
