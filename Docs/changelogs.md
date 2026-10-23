@@ -116,6 +116,7 @@ All notable changes to this project will be documented in this file.
 - Update changelog with recent enhancements; improve SEO and accessibility in HTML structure.
 - Add room numbers to each section for better organization and clarity.
 - Implement scripture modal functionality and remove unused modal markup from footer.
+- Add scripture modal script to enhance functionality.
 
 ### Changed
 - `README.md` file got a professional make-over.

@@ -6,3 +6,4 @@
 <script src="/assets/js/cookie-banner.js"></script>
 <script src="/assets/js/footer.js"></script>
 <script src="/assets/js/register.js"></script>
+<script src="/assets/js/scripture-modal.js"></script>
