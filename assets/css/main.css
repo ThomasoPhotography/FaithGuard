@@ -291,6 +291,15 @@ img {
   padding-bottom: 0;
 }
 
+/* Nav */
+.c-nav__link {
+  color: #ffffff;
+}
+.c-nav__link:hover {
+  color: #e56a00;
+  transition: 0.3s ease-in-out;
+}
+
 /*---------------------------------------/*
 # UTILITIES
 /*---------------------------------------*/

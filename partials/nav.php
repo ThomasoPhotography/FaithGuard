@@ -31,7 +31,7 @@
                 <li class="nav-item c-nav__item">
                     <a class="nav-link c-nav__link" href="/rooms/scripture"<?php echo fg_aria_current('/rooms/scripture', $meta) ?>>The Word</a>
                 </li>
-                <?php if ($currentPage === 'index.php'): ?>
+                <?php if ($currentPage === './../index.php'): ?>
                 <li class="nav-item dropdown c-nav__item">
                     <a class="nav-link dropdown-toggle c-nav__link" href="#" id="ecosystemDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">The Ecosystem</a>
                     <ul class="dropdown-menu c-dropdown__menu" aria-labelledby="ecosystemDropdown">

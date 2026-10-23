@@ -315,6 +315,17 @@ img {
 	}
 }
 
+/* Nav */
+.c-nav {
+	&__link {
+		color: #ffffff;
+		&:hover {
+			color: #e56a00;
+			transition: 0.3s ease-in-out;
+		}
+	}
+}
+
 /*---------------------------------------/*
 # UTILITIES
 /*---------------------------------------*/

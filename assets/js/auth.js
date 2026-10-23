@@ -1,127 +1,144 @@
-// #region ***  DOM references                           ***********
-const loginForm = document.querySelector('.c-form__login');
-const registerForm = document.querySelector('.c-form__register');
-const logoutButtons = document.querySelectorAll('.js-logout-btn, [data-action="logout"]');
-// #endregion
+(function () {
+	// #region *** DOM references                           ***********
+	// Static forms are removed from global variables to support dynamic modal injection.
+	// #endregion
 
-// #region ***  Callback-Visualisation - show___         ***********
-const showAuthMessage = function (form, message, type = 'error') {
-	const container = form?.querySelector('.c-form__message');
-	if (!container) return;
-
-	container.innerHTML = `<div class="alert alert--${type}">${message}</div>`;
-};
-// #endregion
-
-// #region ***  Callback-No Visualisation - callback___  ***********
-const callbackLogin = function (data) {
-	if (data.success) {
-		window.location.href = '/dashboard.php';
-	} else {
-		const message = data.error || 'Login failed';
-		if (loginForm) {
-			showAuthMessage(loginForm, message);
-		} else {
+	// #region *** Callback-Visualisation - show___         ***********
+	const showAuthMessage = function (formElement, message, type = 'error') {
+		if (!formElement) {
 			window.alert(message);
+			return;
 		}
-	}
-};
 
-const callbackRegister = function (data) {
-	if (data.success) {
-		window.location.href = '/dashboard.php';
-	} else {
-		showAuthMessage(registerForm, data.error || 'Registration failed');
-	}
-};
+		const container = formElement.querySelector('.c-form__message');
+		if (!container) {
+			window.alert(message);
+			return;
+		}
 
-const callbackLogout = function (data) {
-	if (data.success) {
-		window.location.href = '/';
-	} else {
-		console.log('Logout failed:', data.error);
-	}
-};
-// #endregion
+		container.innerHTML = `<div class="alert alert--${type}">${message}</div>`;
+	};
+	// #endregion
 
-// #region ***  Data Access - get___                     ***********
-const postAuthData = async function (url, payload) {
-	try {
-		const response = await fetch(url, {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			credentials: 'same-origin',
-			body: JSON.stringify(payload),
+	// #region *** Callback-No Visualisation - callback___  ***********
+	const callbackLogin = function (data, formElement = null) {
+		if (data.success) {
+			window.location.href = '/dashboard.php';
+		} else {
+			const message = data.error || 'Login failed';
+			showAuthMessage(formElement, message);
+		}
+	};
+
+	const callbackRegister = function (data, formElement) {
+		if (data.success) {
+			window.location.href = '/dashboard.php';
+		} else {
+			showAuthMessage(formElement, data.error || 'Registration failed');
+		}
+	};
+
+	const callbackLogout = function (data) {
+		if (data.success) {
+			window.location.href = '/';
+		} else {
+			console.log('Logout failed:', data.error);
+		}
+	};
+	// #endregion
+
+	// #region *** Data Access - get___                     ***********
+	const postAuthData = async function (url, payload) {
+		try {
+			const response = await fetch(url, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				credentials: 'same-origin',
+				body: JSON.stringify(payload),
+			});
+
+			return await response.json();
+		} catch (error) {
+			console.error('Auth request failed:', error);
+			return { success: false, error: 'Network error' };
+		}
+	};
+	// #endregion
+
+	// #region *** Event Listeners - listenTo___            ***********
+	const listenToLogin = function () {
+		// Handle navbar dropdown login (no form wrapper)
+		document.addEventListener('click', async function (e) {
+			const loginBtn = e.target.closest('.js-log');
+			if (loginBtn) {
+				e.preventDefault();
+				const emailInput = document.getElementById('signupUsername');
+				const passwordInput = document.getElementById('signupPassword');
+
+				const email = emailInput ? emailInput.value.trim() : '';
+				const password = passwordInput ? passwordInput.value : '';
+
+				const data = await postAuthData('/api/auth/login.php', { email, password });
+
+				// Dropdown lacks a `.c-form__message` container, so pass null to trigger alert fallback
+				callbackLogin(data, null);
+			}
 		});
 
-		return await response.json();
-	} catch (error) {
-		console.error('Auth request failed:', error);
-		return { success: false, error: 'Network error' };
-	}
-};
-// #endregion
+		// Handle dedicated login forms (standalone page or future modals)
+		document.addEventListener('submit', async function (e) {
+			if (e.target && e.target.classList.contains('c-form__login')) {
+				e.preventDefault();
+				const form = e.target;
+				const formData = new FormData(form);
+				const payload = Object.fromEntries(formData);
 
-// #region ***  Event Listeners - listenTo___            ***********
-const listenToLogin = function () {
-	if (!loginForm) {
-		const loginButton = document.querySelector('.js-log');
-		if (!loginButton) return;
-
-		loginButton.addEventListener('click', async function () {
-			const email = document.getElementById('signupUsername')?.value.trim();
-			const password = document.getElementById('signupPassword')?.value;
-			const data = await postAuthData('/api/auth/login.php', { email, password });
-			callbackLogin(data);
+				const data = await postAuthData('/api/auth/login.php', payload);
+				callbackLogin(data, form);
+			}
 		});
-		return;
-	}
+	};
 
-	loginForm.addEventListener('submit', async function (e) {
-		e.preventDefault();
+	const listenToRegister = function () {
+		document.addEventListener('submit', async function (e) {
+			// Matches the <form id="registerForm"> generated by /api/auth/register.php
+			if (e.target && e.target.id === 'registerForm') {
+				e.preventDefault();
+				const form = e.target;
+				const formData = new FormData(form);
+				const payload = Object.fromEntries(formData);
 
-		const formData = new FormData(loginForm);
-		const payload = Object.fromEntries(formData);
+				const data = await postAuthData('/api/auth/register.php', payload);
+				callbackRegister(data, form);
+			}
+		});
+	};
 
-		const data = await postAuthData('/api/auth/login.php', payload);
-		callbackLogin(data);
-	});
-};
+	const listenToLogout = function () {
+		document.addEventListener('click', async function (e) {
+			const logoutBtn = e.target.closest('.js-logout-btn, [data-action="logout"]');
+			if (logoutBtn) {
+				e.preventDefault();
+				const data = await postAuthData('/api/auth/logout.php', {});
+				callbackLogout(data);
+			}
+		});
+	};
 
-const listenToRegister = function () {
-	if (!registerForm) return;
-
-	registerForm.addEventListener('submit', async function (e) {
-		e.preventDefault();
-
-		const formData = new FormData(registerForm);
-		const payload = Object.fromEntries(formData);
-
-		const data = await postAuthData('/api/auth/register.php', payload);
-		callbackRegister(data);
-	});
-};
-
-const listenToLogout = function () {
-	logoutButtons.forEach((logoutButton) => logoutButton.addEventListener('click', async function (event) {
-		event.preventDefault();
+	// Expose logout globally for inline onclick handlers if needed
+	window.logout = async function () {
 		const data = await postAuthData('/api/auth/logout.php', {});
 		callbackLogout(data);
-	}));
-};
+	};
+	// #endregion
 
-window.logout = async function () {
-	const data = await postAuthData('/api/auth/logout.php', {});
-	callbackLogout(data);
-};
-// #endregion
+	// #region *** Init / DOMContentLoaded                  ***********
+	const init = function () {
+		listenToLogin();
+		listenToRegister();
+		listenToLogout();
+	};
 
-// #region ***  Init / DOMContentLoaded                  ***********
-const init = function () {
-	listenToLogin();
-	listenToRegister();
-	listenToLogout();
-};
-
-document.addEventListener('DOMContentLoaded', init);
-// #endregion
+	document.addEventListener('DOMContentLoaded', init);
+	// #endregion
+})();
