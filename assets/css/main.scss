@@ -10,10 +10,15 @@
 	--color-cream-warm: #ffffc2;
 	--color-white: #ffffff;
 	--color-neutral-pale: #f3f0ec;
+	--color-bg-dark: #221814;
+	--color-surface-dark: #2a1e19;
+	--color-border-dark: #3d2d25;
 
 	/* Typography colours */
 	--color-brown-deep: #2c211b;
 	--color-brown-muted: #6b5f54;
+	--color-text-main: #ffffff;
+	--color-text-muted: #a3968c;
 
 	/* Typography stacks */
 	--font-family-heading: 'Playfair Display', serif;
@@ -39,7 +44,7 @@
 }
 
 /*---------------------------------------/*
- # GENERIC - BOOTSTRAP
+# GENERIC - BOOTSTRAP
 /*---------------------------------------*/
 *,
 *::before,
@@ -56,10 +61,12 @@ body {
 	color: var(--color-brown-deep);
 	background-color: var(--color-neutral-pale);
 	-webkit-font-smoothing: antialiased;
+	background-color: var(--color-bg-dark);
+	color: var(--color-text-main);
 }
 
 /*---------------------------------------/*
- # ELEMENTS
+# ELEMENTS
 /*---------------------------------------*/
 h1,
 h2,
@@ -97,7 +104,7 @@ img {
 }
 
 /*---------------------------------------/*
- # OBJECTS
+# OBJECTS
 /*---------------------------------------*/
 .container {
 	max-width: var(--layout-max-width);
@@ -118,11 +125,11 @@ img {
 }
 
 /*---------------------------------------/*
- # COMPONENTS
+# COMPONENTS
 /*---------------------------------------*/
 
 /* Buttons */
-.btn {
+.c-btn {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -147,14 +154,14 @@ img {
 }
 
 /* Header */
-.header {
+.c-header {
 	background-color: var(--color-cream-warm);
 	padding: var(--space-4) 0;
 	border-bottom: 1px solid var(--color-neutral-pale);
 }
 
 /* Dashboard */
-.dashboard {
+.c-dashboard {
 	&__card {
 		background: var(--color-white);
 		border-radius: var(--border-radius-card);
@@ -190,8 +197,106 @@ img {
 	}
 }
 
+/* Rooms */
+.c-roomsheader {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-6);
+	margin-bottom: var(--space-12);
+
+	@media (min-width: 768px) {
+		flex-direction: row;
+		align-items: flex-end;
+		justify-content: space-between;
+	}
+
+	&__tag {
+		color: var(--color-orange-primary);
+		text-transform: uppercase;
+		font-size: 0.75rem;
+		letter-spacing: 0.05em;
+		font-weight: 700;
+		display: block;
+		margin-bottom: var(--space-2);
+	}
+
+	&__title {
+		color: var(--color-text-main);
+		font-size: 2.5rem;
+		max-width: 600px;
+		margin-bottom: var(--space-4);
+	}
+
+	&__desc {
+		color: var(--color-text-muted);
+		max-width: 500px;
+	}
+}
+
+/* Rooms Grid & Cards */
+.c-roomsgrid {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: var(--space-4);
+
+	@media (min-width: 768px) {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+.c-roomscard {
+	background-color: transparent;
+	border: 1px solid var(--color-border-dark);
+	border-radius: var(--border-radius-control);
+	padding: var(--space-6) var(--space-6) var(--space-12) var(--space-6);
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-2);
+	transition:
+		border-color 0.2s ease,
+		background-color 0.2s ease;
+
+	&:hover {
+		background-color: var(--color-surface-dark);
+		border-color: var(--color-text-muted);
+	}
+
+	&--featured {
+		border-color: var(--color-text-main);
+
+		@media (min-width: 768px) {
+			grid-column: span 2;
+		}
+	}
+
+	&__header {
+		display: flex;
+		align-items: baseline;
+		gap: var(--space-3);
+		margin-bottom: var(--space-4);
+	}
+
+	&__number {
+		color: var(--color-orange-primary);
+		font-weight: 600;
+		font-size: 1.25rem;
+	}
+
+	&__title {
+		color: var(--color-text-main);
+		font-size: 1.25rem;
+		margin: 0;
+	}
+
+	&__desc {
+		color: var(--color-text-muted);
+		font-size: 0.875rem;
+		margin: 0;
+	}
+}
+
 /* Footer */
-.footer {
+.c-footer {
 	background-color: var(--color-orange-footer);
 	color: var(--color-white);
 	padding: var(--space-12) 0 var(--space-6);
@@ -270,7 +375,7 @@ img {
 }
 
 /*---------------------------------------/*
- # UTILITIES
+# UTILITIES
 /*---------------------------------------*/
 .u-text-center {
 	text-align: center;

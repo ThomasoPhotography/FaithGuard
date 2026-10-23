@@ -103,27 +103,33 @@
     </header>
     <!-- Main Content -->
     <main id="main" class="c-main container my-5">
-    <!-- The eight rooms -->
-    <section class="c-main__section c-rooms mb-5" id="rooms" aria-labelledby="rooms-title">
-    <div class="c-rooms__header">
-    <div class="c-rooms__intro">
-    <h2 class="c-main__title" id="rooms-title">Scripture is the doorway; eight rooms behind it.</h2>
-    <p class="c-main__text">Read by walking in, lived by walking further. Each doorway opens onto the same home.</p>
-    </div>
-    <a class="btn c-btn c-btn__outline" href="/contact.php">Ask about a room</a>
-    </div>
-    <ul class="c-rooms__grid">
-    <?php foreach (rooms() as $room): ?>
-    <li class="c-rooms__item<?php echo $room['slug'] === 'scripture' ? ' c-rooms__item--featured' : ''; ?>">
-    <a class="c-room-card<?php echo $room['slug'] === 'scripture' ? ' c-room-card--featured' : ''; ?>" href="/rooms/<?php echo fg_e($room['slug']); ?>">
-    <h3 class="c-room-card__name"><?php echo fg_e($room['name']); ?></h3>
-    <p class="c-room-card__short"><?php echo fg_e($room['short']); ?></p>
-    </a>
-    </li>
-    <?php endforeach; ?>
-    </ul>
-    </section>
-    <!-- Resource Section -->
+        <!-- The eight rooms -->
+        <section class="section c-rooms__section">
+            <div class="container">
+                <div class="c-roomsheader">
+                    <div class="c-roomsheader__content">
+                        <span class="c-roomsheader__tag">Under one roof</span>
+                        <h2 class="c-roomsheader__title">Scripture as the doorway; eight rooms behind it.</h2>
+                        <p class="c-roomsheader__desc">Read by walking in, lived by walking further — each doorway opens onto the same home, slowly.</p>
+                    </div>
+                    <div class="c-roomsheader__action">
+                        <a href="#" class="btn c-btn c-roomsheader__btn">Ask about a room ↗</a>
+                    </div>
+                </div>
+                <div class="c-roomsgrid">
+                    <?php foreach (rooms() as $room): ?>
+                        <a href="/rooms/<?php echo fg_e($room['slug']); ?>" class="c-roomscard<?php echo $room['slug'] === 'scripture' ? ' c-roomscard--featured' : ''; ?>">
+                            <div class="c-roomscard__header">
+                                <span class="c-roomscard__number"><?php echo fg_e($room['number']); ?></span>
+                                <h3 class="c-roomscard__title"><?php echo fg_e($room['name']); ?></h3>
+                            </div>
+                            <p class="c-roomscard__desc"><?php echo fg_e($room['short']); ?></p>
+                        </a>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </section>
+        <!-- Resource Section -->
         <section class="c-main__section mb-5">
             <h2 class="c-main__title">Our Mission</h2>
             <p class="c-main__text">FaithGuard provides resources and tools to help people regain and protect their faith from digital addictions, including pornography. Read <a href="/about.php">how FaithGuard approaches recovery</a>.</p>
