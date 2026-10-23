@@ -72,6 +72,24 @@
     $meta = fg_page_meta('home');
     fg_render_head($meta);
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="title" content="<?php echo htmlspecialchars($meta['title'] ?? 'FaithGuard'); ?>">
+    <meta name="description" content="<?php echo htmlspecialchars($meta['description'] ?? ''); ?>">
+    <meta name="version" content="0.1.4-alpha">
+    <meta name="author" content="FaithGuard Team">
+    <meta name="fg_page_meta" content="<?php echo htmlspecialchars(json_encode($meta), ENT_QUOTES, 'UTF-8'); ?>">
+    <title>FaithGuard | <?php echo htmlspecialchars($meta['fg_page_meta']['title'] ?? 'Home'); ?></title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/assets/uploads/favicon.ico">
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/assets/css/main.css">
+</head>
+<body>
 <?php require __DIR__ . '/partials/nav.php'; ?>
     <!-- Hero Content -->
     <header class="c-hero">
