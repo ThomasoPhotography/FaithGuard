@@ -135,6 +135,7 @@ All notable changes to this project will be documented in this file.
 - Enhance `db/config.php` to use `faithguardEnv()` for `APP_DEBUG` and `APP_ENV`, and add support for `'EMPTY'` passwords in local development.
 - Code structure for improved readability and maintainability.
 - Refactor CSS/SCSS and HTML structure for improved styling and layout.
+- Refactor encapsulate scripture modal logic within an IIFE for improved structure.
 
 ### Deprecated
 - replace lighten/darken functions with color.adjust for consistent color manipulation in `main.scss`.
