@@ -14,6 +14,7 @@
     if (! isset($meta) || ! is_array($meta)) {
     $meta = [];
     }
+    $currentPage = basename($_SERVER['PHP_SELF']);
 ?>
 <link rel="stylesheet" href="/assets/css/main.css">
 <nav class="navbar navbar-expand-lg navbar-light c-nav" aria-label="Main">
@@ -30,12 +31,14 @@
                 <li class="nav-item c-nav__item">
                     <a class="nav-link c-nav__link" href="/rooms/scripture"<?php echo fg_aria_current('/rooms/scripture', $meta) ?>>The Word</a>
                 </li>
+                <?php if ($currentPage === 'index.php'): ?>
                 <li class="nav-item dropdown c-nav__item">
                     <a class="nav-link dropdown-toggle c-nav__link" href="#" id="ecosystemDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">The Ecosystem</a>
                     <ul class="dropdown-menu c-dropdown__menu" aria-labelledby="ecosystemDropdown">
 <?php foreach (rooms() as $room): ?>
                         <li><a class="dropdown-item c-dropdown__item" href="/rooms/<?php echo fg_e($room['slug']) ?>"<?php echo fg_aria_current('/rooms/' . $room['slug'], $meta) ?>><?php echo fg_e($room['name']) ?></a></li>
 <?php endforeach; ?>
+<?php endif; ?>
                     </ul>
                 </li>
                 <li class="nav-item c-nav__item">
