@@ -10,6 +10,7 @@ function rooms(): array
         $data = [
             'scripture'  => [
                 'name'    => 'Scripture',
+                'number'  => 1,
                 'short'   => 'The front door',
                 'summary' => 'Scripture is where FaithGuard begins: a passage to read slowly, in English or Dutch, before anything else on your screen.',
                 'body'    => [
@@ -19,6 +20,7 @@ function rooms(): array
             ],
             'formation'  => [
                 'name'    => 'Formation',
+                'number'  => 2,
                 'short'   => 'Catechesis and apologetics',
                 'summary' => 'Learn what the Church teaches and why, through catechesis and apologetics, so your choices rest on understanding and not only willpower.',
                 'body'    => [
@@ -28,6 +30,7 @@ function rooms(): array
             ],
             'prayer'     => [
                 'name'    => 'Prayer',
+                'number'  => 3,
                 'short'   => 'Guided prayer and devotion',
                 'summary' => 'Guided prayer and devotion for the moments when the urge to reach for your phone is strongest.',
                 'body'    => [
@@ -37,6 +40,7 @@ function rooms(): array
             ],
             'community'  => [
                 'name'    => 'Community',
+                'number'  => 4,
                 'short'   => 'Small groups and study',
                 'summary' => 'Small groups and shared study, so accountability is personal and not anonymous.',
                 'body'    => [
@@ -46,6 +50,7 @@ function rooms(): array
             ],
             'service'    => [
                 'name'    => 'Service',
+                'number'  => 5,
                 'short'   => 'Charitable works',
                 'summary' => 'Charitable works that turn your attention from the screen to the people who need it.',
                 'body'    => [
@@ -55,6 +60,7 @@ function rooms(): array
             ],
             'publishing' => [
                 'name'    => 'Publishing',
+                'number'  => 6,
                 'short'   => 'A small imprint',
                 'summary' => 'A small imprint for study guides, devotionals and reflections that support the other rooms.',
                 'body'    => [
@@ -64,6 +70,7 @@ function rooms(): array
             ],
             'family'     => [
                 'name'    => 'Family',
+                'number'  => 7,
                 'short'   => 'Marriage and home',
                 'summary' => 'Support for marriage and home, where screens quietly compete with the people closest to you.',
                 'body'    => [
@@ -73,6 +80,7 @@ function rooms(): array
             ],
             'pilgrimage' => [
                 'name'    => 'Pilgrimage',
+                'number'  => 8,
                 'short'   => 'Walking somewhere holy',
                 'summary' => 'Leave the screen behind and walk somewhere holy, alone or with others.',
                 'body'    => [
