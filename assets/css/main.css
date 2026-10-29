@@ -303,6 +303,14 @@ img {
   transition: 0.3s ease-in-out;
 }
 
+/* Cookie Banner */
+.c-cookie {
+  background-color: #2c211b;
+}
+.c-cookie__icon {
+  width: 5%;
+}
+
 /*---------------------------------------/*
 # UTILITIES
 /*---------------------------------------*/

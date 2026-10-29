@@ -119,6 +119,7 @@ All notable changes to this project will be documented in this file.
 - Add scripture modal script to enhance functionality.
 - Add comprehensive website version plans and architectural roadmap documentation.
 - Add cookie banner styles and update registration modal link behavior.
+- Add styles for cookie banner and adjust icon width.
 
 ### Changed
 - `README.md` file got a professional make-over.

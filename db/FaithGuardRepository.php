@@ -2081,13 +2081,15 @@ class FaithGuardRepository
     {
         $lifetime = max(60, min($lifetime, 86400));
         $token    = CsrfTokenGenerator::generate();
-        $expires  = gmdate(
-            'Y-m-d H:i:s',
-            time() + $lifetime
-        );
+        $expires  = gmdate('Y-m-d H:i:s', time() + $lifetime);
 
-        $result = Database::execute("INSERT INTO csrf_tokens (user_id, token, expires_at)
-        VALUES (?, ?, ?)", [$userId, $token, $expires]);
+        // Force strict NULL if userId is 0, false, or empty to prevent Foreign Key crashes
+        $safeUserId = $userId ?: null;
+
+        $result = Database::execute(
+            "INSERT INTO csrf_tokens (user_id, token, expires_at) VALUES (?, ?, ?)",
+            [$safeUserId, $token, $expires]
+        );
 
         if (! $result) {
             error_log("CREATE CSRF FAILED");
