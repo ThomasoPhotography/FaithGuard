@@ -6,75 +6,32 @@ async function openRegisterModal() {
 		return;
 	}
 
-	const response = await fetch('/api/auth/register.php', {
-		method: 'GET',
-		credentials: 'same-origin',
-	});
+	try {
+		const response = await fetch('/api/auth/register.php', {
+			method: 'GET',
+			credentials: 'same-origin',
+		});
 
-	const html = await response.text();
-
-	if (!response.ok) {
-		console.error(html);
-
-		return;
-	}
-
-	container.innerHTML = html;
-
-	const modal = document.getElementById('registerModal');
-
-	new RegisterModal(modal);
-}
-
-class RegisterModal {
-	constructor(modal) {
-		this.modal = modal;
-
-		this.form = modal.querySelector('#registerForm');
-
-		this.message = modal.querySelector('.c-form__message');
-
-		this.form.addEventListener('submit', this.submit.bind(this));
-
-		bootstrap.Modal.getOrCreateInstance(modal).show();
-	}
-
-	async submit(e) {
-		e.preventDefault();
-
-		const data = Object.fromEntries(new FormData(this.form));
-
-		try {
-			const response = await fetch('/api/auth/register.php', {
-				method: 'POST',
-
-				headers: {
-					'Content-Type': 'application/json',
-				},
-
-				credentials: 'same-origin',
-
-				body: JSON.stringify(data),
-			});
-
-			const result = await response.json();
-
-			if (result.success) {
-				this.message.className = 'alert alert-success';
-
-				this.message.textContent = 'Account created';
-
-				setTimeout(() => {
-					window.location.href = '/dashboard.php';
-				}, 1000);
-			} else {
-				throw new Error(result.error || 'Registration failed');
-			}
-		} catch (error) {
-			this.message.className = 'alert alert-danger';
-
-			this.message.textContent = error.message;
+		if (!response.ok) {
+			console.error('Failed to load modal HTML');
+			return;
 		}
+
+		const html = await response.text();
+		container.innerHTML = html;
+
+		const modalEl = document.getElementById('registerModal');
+		if (modalEl && typeof bootstrap !== 'undefined') {
+			const modalInstance = new bootstrap.Modal(modalEl);
+			modalInstance.show();
+
+			// Clean up the DOM when closed so stale forms don't linger
+			modalEl.addEventListener('hidden.bs.modal', () => {
+				container.innerHTML = '';
+			});
+		}
+	} catch (error) {
+		console.error('Error opening register modal:', error);
 	}
 }
 

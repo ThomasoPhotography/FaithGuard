@@ -201,7 +201,16 @@ try {
     );
 
     setSessionCookie($sessionToken, strtotime($expires));
-    $_SESSION['user_id'] = $userId;
+
+    $_SESSION['user_id']   = $userId;
+    $_SESSION['logged_in'] = true;
+
+    if (session_status() === PHP_SESSION_ACTIVE) {
+        session_regenerate_id(true);
+        if (empty($_SESSION['csrf_token'])) {
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        }
+    }
 
     successResponse([
         'user' => [

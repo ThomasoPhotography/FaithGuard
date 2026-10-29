@@ -99,7 +99,7 @@
                     </li>
                     <li><hr class="dropdown-divider"></li>
                     <li>
-                        <a class="dropdown-item c-dropdown__item js-create" href="#" onclick="openRegisterModal(); return false;">
+                        <a class="dropdown-item c-dropdown__item js-create" href="#" data-bs-toggle="modal" data-bs-target="#registerModal">
                             <i class="bi bi-person-plus me-2" aria-hidden="true"></i>
                             <span class="c-dropdown__text">Create Account</span>
                         </a>
