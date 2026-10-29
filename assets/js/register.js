@@ -21,11 +21,13 @@ async function openRegisterModal() {
 		container.innerHTML = html;
 
 		const modalEl = document.getElementById('registerModal');
+
 		if (modalEl && typeof bootstrap !== 'undefined') {
+			// Initialize Bootstrap modal manually AFTER it exists in the DOM
 			const modalInstance = new bootstrap.Modal(modalEl);
 			modalInstance.show();
 
-			// Clean up the DOM when closed so stale forms don't linger
+			// Clean up the DOM when closed
 			modalEl.addEventListener('hidden.bs.modal', () => {
 				container.innerHTML = '';
 			});
