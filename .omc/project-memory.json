@@ -1,0 +1,141 @@
+{
+  "version": "1.0.0",
+  "lastScanned": 1793292811574,
+  "projectRoot": "C:\\Users\\deseu\\OneDrive\\Bureaublad\\FaithGuard",
+  "techStack": {
+    "languages": [],
+    "frameworks": [],
+    "packageManager": null,
+    "runtime": null
+  },
+  "build": {
+    "buildCommand": null,
+    "testCommand": null,
+    "lintCommand": null,
+    "devCommand": null,
+    "scripts": {}
+  },
+  "conventions": {
+    "namingStyle": null,
+    "importStyle": null,
+    "testPattern": null,
+    "fileOrganization": null
+  },
+  "structure": {
+    "isMonorepo": false,
+    "workspaces": [],
+    "mainDirectories": [
+      "assets",
+      "tests"
+    ],
+    "gitBranches": {
+      "defaultBranch": "main",
+      "branchingStrategy": null
+    }
+  },
+  "customNotes": [],
+  "directoryMap": {
+    "admin": {
+      "path": "admin",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1793292811524,
+      "keyFiles": [
+        "dashboard.php",
+        "edit-policy.php"
+      ]
+    },
+    "api": {
+      "path": "api",
+      "purpose": "API routes",
+      "fileCount": 4,
+      "lastAccessed": 1793292811525,
+      "keyFiles": [
+        "base.php",
+        "config.php",
+        "rate_limiter.php",
+        "_bootstrap.php"
+      ]
+    },
+    "assets": {
+      "path": "assets",
+      "purpose": "Static assets",
+      "fileCount": 0,
+      "lastAccessed": 1793292811526,
+      "keyFiles": []
+    },
+    "db": {
+      "path": "db",
+      "purpose": null,
+      "fileCount": 5,
+      "lastAccessed": 1793292811526,
+      "keyFiles": [
+        "config.php",
+        "database.php",
+        "FaithGuardRepository.php",
+        "faithguard_db.sql"
+      ]
+    },
+    "Docs": {
+      "path": "Docs",
+      "purpose": "Documentation",
+      "fileCount": 4,
+      "lastAccessed": 1793292811527,
+      "keyFiles": [
+        "changelogs.md",
+        "CSRF_BIBLICAL_TOKENS.md",
+        "CSRF_QUICK_REFERENCE.md",
+        "website_profile.md"
+      ]
+    },
+    "includes": {
+      "path": "includes",
+      "purpose": null,
+      "fileCount": 5,
+      "lastAccessed": 1793292811527,
+      "keyFiles": [
+        "pages.php",
+        "page_context.php",
+        "policy_view.php",
+        "rooms.php",
+        "seo.php"
+      ]
+    },
+    "partials": {
+      "path": "partials",
+      "purpose": null,
+      "fileCount": 3,
+      "lastAccessed": 1793292811527,
+      "keyFiles": [
+        "footer.php",
+        "nav.php",
+        "scripts.php"
+      ]
+    },
+    "templates": {
+      "path": "templates",
+      "purpose": null,
+      "fileCount": 5,
+      "lastAccessed": 1793292811528,
+      "keyFiles": [
+        "community.html",
+        "index.html",
+        "progress.html",
+        "quiz.html",
+        "resources.html"
+      ]
+    },
+    "tests": {
+      "path": "tests",
+      "purpose": "Test files",
+      "fileCount": 2,
+      "lastAccessed": 1793292811529,
+      "keyFiles": [
+        "csrf_biblical_test.php",
+        "register_csrf_test.php"
+      ]
+    }
+  },
+  "hotPaths": [],
+  "userDirectives": []
+}

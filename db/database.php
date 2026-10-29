@@ -53,7 +53,6 @@ class Database
         error_log('Database connection failed: ' . $lastError->getMessage());
         throw new Exception('Database connection failed');
     }
-    // ... (rest of the class methods remain unchanged) ...
     public static function getRows($sql, $params = [], $type = null)
     {
         try {
