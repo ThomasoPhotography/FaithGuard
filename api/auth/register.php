@@ -222,5 +222,5 @@ try {
     ]);
 
 } catch (Throwable $e) {
-    errorResponse('Server error', 500);
+    errorResponse('System Crash: ' . $e->getMessage(), 500);
 }

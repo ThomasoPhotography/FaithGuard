@@ -92,7 +92,7 @@ class FaithGuardRepository
         $lastName     = isset($data['last_name']) ? trim((string) $data['last_name']) : null;
 
         if (! filter_var($email, FILTER_VALIDATE_EMAIL) || $passwordHash === '') {
-            return false;
+            throw new \Exception("Validation failed before inserting user.");
         }
 
         try {
@@ -106,26 +106,29 @@ class FaithGuardRepository
             $stmt->execute([$email, $passwordHash, $firstName, $lastName]);
 
             $userId = (int) $pdo->lastInsertId();
-            if ($userId < 1
-                || ! self::createUserPreferences($userId)
-                || ! self::createUserProgress($userId)
-            ) {
-                if ($pdo->inTransaction()) {
-                    $pdo->rollBack();
-                }
-                return false;
+
+            if ($userId < 1) {
+                throw new \Exception("MySQL failed to generate a valid user ID.");
+            }
+
+            if (! self::createUserPreferences($userId)) {
+                throw new \Exception("Failed to create user_preferences for ID: $userId");
+            }
+
+            if (! self::createUserProgress($userId)) {
+                throw new \Exception("Failed to create user_progress for ID: $userId");
             }
 
             $pdo->commit();
             return $userId;
+
         } catch (\Throwable $e) {
             if (isset($pdo) && $pdo instanceof \PDO  && $pdo->inTransaction()) {
                 $pdo->rollBack();
             }
 
-            // Do not expose database details or write diagnostics into a public directory.
-            error_log('FaithGuardRepository::createUser failed (' . get_class($e) . ').');
-            return false;
+            // THROW THE EXACT MYSQL ERROR TO THE FRONTEND
+            throw new \Exception("DB Error: " . $e->getMessage());
         }
     }
 
