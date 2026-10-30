@@ -1,17 +1,21 @@
 <?php
 require_once __DIR__ . '/../base.php';
-require_once __DIR__ . '/../rate_limiter.php'; // Limiter
+require_once __DIR__ . '/../rate_limiter.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     errorResponse('Method not allowed', 405);
 }
 
 startAppSession();
-validateCsrfToken();
 
-$input = getJsonInput();
+$input = getJsonInput(); // Read the JSON first
+
+// Validate CSRF from the JSON payload exactly like register.php
+if (empty($_SESSION['csrf_token']) || empty($input['csrf_token']) || ! hash_equals($_SESSION['csrf_token'], $input['csrf_token'])) {
+    errorResponse('Invalid or expired CSRF token', 403);
+}
+
 validateRequired($input, ['email', 'password']);
-
 $email = filter_var(trim($input['email']), FILTER_VALIDATE_EMAIL);
 if (! $email) {
     RateLimiter::registerFailure($_SERVER['REMOTE_ADDR'], 300);

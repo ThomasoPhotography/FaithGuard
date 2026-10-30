@@ -75,12 +75,20 @@
 				const emailInput = document.getElementById('signupUsername');
 				const passwordInput = document.getElementById('signupPassword');
 
+				// Grab any CSRF token present in the DOM
+				const csrfInput = document.querySelector('input[name="csrf_token"]');
+
 				const email = emailInput ? emailInput.value.trim() : '';
 				const password = passwordInput ? passwordInput.value : '';
+				const csrf_token = csrfInput ? csrfInput.value : '';
 
-				const data = await postAuthData('/api/auth/login.php', { email, password });
+				// Send the token alongside the credentials
+				const data = await postAuthData('/api/auth/login.php', {
+					email,
+					password,
+					csrf_token,
+				});
 
-				// Dropdown lacks a `.c-form__message` container, so pass null to trigger alert fallback
 				callbackLogin(data, null);
 			}
 		});
@@ -100,37 +108,37 @@
 	};
 
 	const listenToRegister = function () {
-    document.addEventListener('submit', async function (e) {
-        if (e.target && e.target.id === 'registerForm') {
-            e.preventDefault();
-            const form = e.target;
-            const submitBtn = form.querySelector('button[type="submit"]');
+		document.addEventListener('submit', async function (e) {
+			if (e.target && e.target.id === 'registerForm') {
+				e.preventDefault();
+				const form = e.target;
+				const submitBtn = form.querySelector('button[type="submit"]');
 
-            // 1. Disable the button to prevent double-clicks
-            if (submitBtn) {
-                submitBtn.disabled = true;
-                submitBtn.textContent = 'Creating account...';
-            }
+				// 1. Disable the button to prevent double-clicks
+				if (submitBtn) {
+					submitBtn.disabled = true;
+					submitBtn.textContent = 'Creating account...';
+				}
 
-            const formData = new FormData(form);
-            const payload = Object.fromEntries(formData);
+				const formData = new FormData(form);
+				const payload = Object.fromEntries(formData);
 
-            const data = await postAuthData('/api/auth/register.php', payload);
-            
-            if (data.success) {
-                window.location.href = '/dashboard.php';
-            } else {
-                showAuthMessage(form, data.error || 'Registration failed');
-                
-                // 2. Re-enable the button if registration fails
-                if (submitBtn) {
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'Create account';
-                }
-            }
-        }
-    });
-};
+				const data = await postAuthData('/api/auth/register.php', payload);
+
+				if (data.success) {
+					window.location.href = '/dashboard.php';
+				} else {
+					showAuthMessage(form, data.error || 'Registration failed');
+
+					// 2. Re-enable the button if registration fails
+					if (submitBtn) {
+						submitBtn.disabled = false;
+						submitBtn.textContent = 'Create account';
+					}
+				}
+			}
+		});
+	};
 
 	const listenToLogout = function () {
 		document.addEventListener('click', async function (e) {
