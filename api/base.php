@@ -24,28 +24,20 @@ header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-W
  */
 function startAppSession(): void
 {
-    if (session_status() !== PHP_SESSION_NONE) {
+    if (session_status() === PHP_SESSION_NONE) {
+        session_set_cookie_params([
+            'lifetime' => SESSION_LIFETIME,
+            'path'     => '/',
+            'secure'   => SESSION_COOKIE_SECURE,
+            'httponly' => SESSION_COOKIE_HTTPONLY,
+            'samesite' => SESSION_COOKIE_SAMESITE,
+        ]);
         session_start();
     }
 
     if (empty($_SESSION['csrf_token'])) {
         $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
     }
-
-    session_set_cookie_params([
-        'lifetime' => SESSION_LIFETIME,
-        'path'     => '/',
-        'secure'   => SESSION_COOKIE_SECURE,
-        'httponly' => SESSION_COOKIE_HTTPONLY,
-        'samesite' => SESSION_COOKIE_SAMESITE,
-    ]);
-    session_start();
-}
-
-// Handle preflight requests
-if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit;
 }
 
 /**
@@ -91,8 +83,6 @@ function getCurrentUser(): ?array
     $sessionId = $_COOKIE[SESSION_COOKIE_NAME] ?? null;
 
     if (! $sessionId) {
-        // Check Authorization header as fallback. getallheaders() is not
-        // available with every PHP SAPI (for example PHP-FPM).
         $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ?? '';
 
         if ($authHeader === '' && function_exists('getallheaders')) {

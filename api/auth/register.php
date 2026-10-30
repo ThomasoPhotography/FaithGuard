@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                         <input type="password" class="form-control" id="password" name="password" autocomplete="new-password" required>
                     </div>
 
-                    <input type="hidden" name="csrf_token" value="$csrf">
+                    <input type="hidden" name="csrf_token" value="{$csrf}">
                 </div>
 
                 <div class="modal-footer">
