@@ -97,6 +97,9 @@ class FaithGuardRepository
 
         try {
             $pdo = Database::getConnection();
+            // Ensure PDO throws exceptions for the duration of this transaction
+            $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+
             $pdo->beginTransaction();
 
             $stmt = $pdo->prepare(
@@ -111,13 +114,19 @@ class FaithGuardRepository
                 throw new \Exception("MySQL failed to generate a valid user ID.");
             }
 
-            if (! self::createUserPreferences($userId)) {
-                throw new \Exception("Failed to create user_preferences for ID: $userId");
-            }
+            // Insert preferences using the active transaction connection
+            $prefStmt = $pdo->prepare("
+                INSERT INTO user_preferences (user_id, bible_language, bible_version, bible_book, theme, notifications_enabled)
+                VALUES (?, 'en', 'NRSVUE', 'Matthew', 'light', 1)
+            ");
+            $prefStmt->execute([$userId]);
 
-            if (! self::createUserProgress($userId)) {
-                throw new \Exception("Failed to create user_progress for ID: $userId");
-            }
+            // Insert progress using the active transaction connection
+            $progStmt = $pdo->prepare("
+                INSERT INTO user_progress (user_id, streak_days, longest_streak, total_checkins)
+                VALUES (?, 0, 0, 0)
+            ");
+            $progStmt->execute([$userId]);
 
             $pdo->commit();
             return $userId;
@@ -127,7 +136,7 @@ class FaithGuardRepository
                 $pdo->rollBack();
             }
 
-            // THROW THE EXACT MYSQL ERROR TO THE FRONTEND
+            // Throw the exact MySQL error to the frontend
             throw new \Exception("DB Error: " . $e->getMessage());
         }
     }

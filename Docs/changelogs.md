@@ -386,6 +386,7 @@ All notable changes to this project will be documented in this file.
 - Enhance registration process with session management and modal improvements.
 - Improve comments for modal cleanup process in registration modal.
 - Enhance error handling in user registration and database operations.
+- Enhance transaction error handling and insert user preferences and progress.
 
 ### Security
 - Changing contact link from mailto: to page so the email won't get spammed.
