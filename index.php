@@ -23,6 +23,10 @@
     session_start();
     }
 
+    if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    }
+
     // --- Core App Requirements (Always required) ---
     require_once __DIR__ . '/db/database.php';
     require_once __DIR__ . '/db/FaithGuardRepository.php';

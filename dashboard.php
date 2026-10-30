@@ -20,6 +20,10 @@
     if (session_status() === PHP_SESSION_NONE) {
     session_start();
     }
+
+    if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    }
     // --- Core Site Requirements (Always required) ---
     require_once __DIR__ . '/db/FaithGuardRepository.php';
     require_once __DIR__ . '/api/helper/user.php';

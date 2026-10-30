@@ -90,7 +90,7 @@
                     <li>
                         <label class="visually-hidden" for="signupPassword">Password</label>
                         <input type="password" id="signupPassword" class="form-control c-dropdown__info mb-2" placeholder="Password" autocomplete="current-password">
-                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+                        <input type="hidden"  id="loginCsrfToken"   name="csrf_token"   value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
                     </li>
                     <li>
                         <a class="dropdown-item c-dropdown__item js-log mb-2" href="#">

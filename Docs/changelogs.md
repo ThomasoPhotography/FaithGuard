@@ -123,6 +123,7 @@ All notable changes to this project will be documented in this file.
 - Implement CSRF token validation in login process and add token to registration form.
 - Initialize CSRF token in session if not set.
 - Enhance CSRF token handling in login and registration processes.
+- Implement CSRF token management across multiple files for enhanced security.
 
 ### Changed
 - `README.md` file got a professional make-over.

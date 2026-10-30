@@ -76,11 +76,17 @@
 				const passwordInput = document.getElementById('signupPassword');
 
 				// Grab any CSRF token present in the DOM
-				const csrfInput = document.querySelector('input[name="csrf_token"]');
+				const csrfInput = document.getElementById('loginCsrfToken');
 
 				const email = emailInput ? emailInput.value.trim() : '';
 				const password = passwordInput ? passwordInput.value : '';
-				const csrf_token = csrfInput ? csrfInput.value : '';
+				const csrf_token = csrfInput ? csrfInput.value.trim() : '';
+
+				if (!csrf_token) {
+					console.error('Login aborted: CSRF token is missing.');
+					window.alert('Your security session could not be verified. Please refresh the page and try again.');
+					return;
+				}
 
 				// Send the token alongside the credentials
 				const data = await postAuthData('/api/auth/login.php', {
