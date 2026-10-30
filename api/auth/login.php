@@ -8,9 +8,14 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 startAppSession();
 
-$input = getJsonInput(); // Read the JSON first
+$body  = file_get_contents("php://input");
+$input = json_decode($body, true);
 
-// Validate CSRF from the JSON payload exactly like register.php
+if (! is_array($input)) {
+    errorResponse('Invalid JSON', 400);
+}
+
+// Validate CSRF from JSON against session
 if (empty($_SESSION['csrf_token']) || empty($input['csrf_token']) || ! hash_equals($_SESSION['csrf_token'], $input['csrf_token'])) {
     errorResponse('Invalid or expired CSRF token', 403);
 }

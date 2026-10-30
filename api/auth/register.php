@@ -25,22 +25,8 @@ if (! defined('PASSWORD_MAX_LENGTH')) {
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     header('Content-Type: text/html; charset=utf-8');
 
-    try {
-        $csrf = FaithGuardRepository::createCsrfToken(
-            $_SESSION['user_id'] ?? null,
-            3600
-        );
-
-        if (! $csrf) {
-            throw new Exception('CSRF token creation failed');
-        }
-    } catch (Throwable $e) {
-        http_response_code(500);
-        echo "Unable to load registration form.";
-        exit;
-    }
-
-    $csrf = htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8');
+    // Use session-based CSRF for guests
+    $csrf = htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8');
 
     echo <<<HTML
 <div class="modal fade" id="registerModal" tabindex="-1">
@@ -123,8 +109,9 @@ try {
 |--------------------------------------------------------------------------
 */
 
-    if (! FaithGuardRepository::validateCsrfToken($data['csrf_token'])) {
-        errorResponse('Invalid CSRF token', 403);
+    // Validate against PHP session token instead of the database
+    if (empty($_SESSION['csrf_token']) || empty($data['csrf_token']) || ! hash_equals($_SESSION['csrf_token'], $data['csrf_token'])) {
+        errorResponse('Invalid or expired CSRF token', 403);
     }
 
 /*
@@ -189,8 +176,6 @@ try {
 |--------------------------------------------------------------------------
 */
 
-    FaithGuardRepository::consumeCsrfToken($data['csrf_token']);
-
     $sessionToken = bin2hex(random_bytes(32));
     $expires      = gmdate('Y-m-d H:i:s', time() + SESSION_LIFETIME);
 
@@ -205,11 +190,10 @@ try {
     $_SESSION['user_id']   = $userId;
     $_SESSION['logged_in'] = true;
 
+    // Regenerate session ID and create a fresh authenticated CSRF token
     if (session_status() === PHP_SESSION_ACTIVE) {
         session_regenerate_id(true);
-        if (empty($_SESSION['csrf_token'])) {
-            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-        }
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
     }
 
     successResponse([

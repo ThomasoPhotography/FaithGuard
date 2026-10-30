@@ -25,7 +25,7 @@ header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-W
 function startAppSession(): void
 {
     if (session_status() !== PHP_SESSION_NONE) {
-        return;
+        session_start();
     }
 
     if (empty($_SESSION['csrf_token'])) {

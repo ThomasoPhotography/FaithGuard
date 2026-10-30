@@ -122,6 +122,7 @@ All notable changes to this project will be documented in this file.
 - Add styles for cookie banner and adjust icon width.
 - Implement CSRF token validation in login process and add token to registration form.
 - Initialize CSRF token in session if not set.
+- Enhance CSRF token handling in login and registration processes.
 
 ### Changed
 - `README.md` file got a professional make-over.
